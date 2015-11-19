@@ -23,8 +23,8 @@ Building the search node and associated methods
 class SearchNode:
     """
     The SearchNode class implements recursive data structure to build a
-    search space for planning algorithms. Each node links to is parent
-    node and contains informations about the state, action to arrive
+    search space for planning algorithms. Each node links to its parent
+    node and contains information about the state, action to arrive
     the node and the path length in the count of applied operators.
     """
     def __init__(self, state, parent, action, g):
