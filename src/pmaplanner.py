@@ -4,7 +4,7 @@ import time
 import re
 import argparse
 import logging
-import grounding
+import sign_grounding
 from pddl.parser import Parser
 from search.pma import pma_search
 
@@ -56,10 +56,9 @@ def _parse(domain_file, problem_file):
 
 def _ground(problem):
     logging.info('Grounding start: {0}'.format(problem.name))
-    task = grounding.ground(problem)
-    logging.info('Grounding end: {0}'.format(problem.name))
-    logging.info('{0} Variables created'.format(len(task.facts)))
-    logging.info('{0} Operators created'.format(len(task.operators)))
+    task = sign_grounding.ground(problem)
+    logging.info('Grounding end: {0}'.format(task.name))
+    logging.info('{0} Signs created'.format(len(task.signs)))
     return task
 
 
