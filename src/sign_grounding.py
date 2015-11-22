@@ -3,7 +3,7 @@ __author__ = 'Aleksandr'
 import logging
 import itertools
 from collections import defaultdict
-from sign_task import Sign, Task
+from sign_task import SignImage, Sign, Task
 
 
 def ground(problem):
@@ -26,12 +26,20 @@ def ground(problem):
 
     # Sign world model
     signs = {action.name: Sign(action.name) for action in actions}
-    signs.update({obj: Sign(obj) for obj in objects})
-    signs.update({tp.name: Sign(tp.name, image=([signs[obj] for obj in objects], []))
-                  for tp, objects in type_map.items()})
-    signs.update({pred.name: Sign(pred.name) for pred in predicates})
+    for obj in objects:
+        signs[obj] = Sign(obj)
+    for tp, objects in type_map.items():
+        sign = Sign(tp.name)
+        for obj in objects:
+            sign_image = SignImage([{signs[obj]}], sign=sign)
+            sign.images.append(sign_image)
+        signs[tp.name] = sign
+
+    for pred in predicates:
+        signs[pred.name] = Sign(pred.name)
 
     _significance_from_actions(signs, actions)
+    _significance_from_abstracts(signs)
 
     start_situation = _define_situation('*start*', problem.initial_state, signs)
     goal_situation = _define_situation('*finish*', problem.goal, signs)
@@ -51,14 +59,24 @@ def _significance_from_predicates(procedural_sign, signs, predicates, condition=
     for pred in predicates:
         relation_sign = signs[pred.name]
         procedural_sign.update_image(column, relation_sign, condition)
+        relation_sign.significance.add(procedural_sign)
         for val, tp in pred.signature:
             role_name = tp[0].name + val
             if role_name not in signs:
-                signs.update({role_name: Sign(role_name, image=([signs[tp[0].name]], []))})
+                sign_image = SignImage([{signs[tp[0].name]}])
+                signs[role_name] = Sign(role_name, image=sign_image)
             procedural_sign.update_image(column, signs[role_name], condition)
+            signs[role_name].significance.add(procedural_sign)
             column += 1
         if not pred.signature:
             column += 1
+
+
+def _significance_from_abstracts(signs):
+    for sign in signs.values():
+        for parent in signs.values():
+            if not sign == parent and not parent.is_action() and parent.is_absorbing(sign):
+                sign.significance.add(parent)
 
 
 def _define_situation(name, predicates, signs):

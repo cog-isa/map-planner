@@ -1,31 +1,88 @@
 __author__ = 'Aleksandr'
 
+import itertools
+
+
+class SignImage:
+    def __init__(self, conditions, sign=None, effects=None):
+        self.conditions = conditions
+        self.sign = sign
+        if not effects:
+            self.effects = []
+        else:
+            self.effects = effects
+
+    def __str__(self):
+        return '{0}->{1}'.format(self.conditions, self.effects)
+
+    def __repr__(self):
+        return '<SignImage {0}->{1}>'.format(self.conditions, self.effects)
+
+    def update(self, column, sign, condition):
+        part = self.conditions if condition else self.effects
+
+        if len(part) <= column:
+            for _ in range(column - len(part) + 1):
+                part.append(set())
+        if sign not in part[column]:
+            part[column].add(sign)
+
+    def replace(self, old_comp, new_comp):
+        for cond in itertools.chain(self.conditions, self.effects):
+            if old_comp in cond:
+                cond.remove(old_comp)
+                cond.add(new_comp)
+
+    def copy(self):
+        return SignImage(self.conditions[:], effects=self.effects[:])
+
 
 class Sign:
     def __init__(self, name, significance=None, meaning=None, image=None):
         self.name = name
         self.significance = significance
-        self.meaning = meaning
-        if not image:
-            self.image = ([],[])
+        if not significance:
+            self.significance = set()
         else:
-            self.image = image
+            self.significance = significance
+
+        self.images = []
+        if image:
+            self.images.append(image)
+            image.sign = self
+
+        self.meaning = meaning
 
     def __str__(self):
-        s = 'Sign {0}:\n    p=[{1}]\n   m=[{2}]\n   a=[{3}]'
-        return s.format(self.name, self.image, self.significance, self.meaning)
+        s = 'Sign {0}:\n    p={1}\n   m={2}\n   a={3}'
+        return s.format(self.name, self.images, self.significance, self.meaning)
 
     def __repr__(self):
         return '<Sign {0}>'.format(self.name)
 
-    def update_image(self, i, sign, condition=True):
-        index = 0 if condition else 1
+    def __eq__(self, other):
+        return self.name == other.name
 
-        if len(self.image[index]) <= i:
-            for _ in range(i - len(self.image[index]) + 1):
-                self.image[index].append(set())
-        if sign not in self.image[index][i]:
-            self.image[index][i].update([sign])
+    def __hash__(self):
+        return hash(self.name)
+
+    def update_image(self, column, sign, condition=True, index=0):
+        if len(self.images) <= index:
+            sign_image = SignImage([], sign=self)
+            self.images.append(sign_image)
+        self.images[index].update(column, sign, condition)
+
+    def is_action(self):
+        return any([len(image.effects) > 0 for image in self.images])
+
+    def is_absorbing(self, sign):
+        for image in self.images:
+            if any([sign in column for column in image.conditions]):
+                return True
+            if any([sign in column for column in image.effects]):
+                return True
+
+        return False
 
 
 class Task:
