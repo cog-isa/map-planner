@@ -18,6 +18,16 @@ class SignImage:
     def __repr__(self):
         return '<SignImage {0}->{1}>'.format(self.conditions, self.effects)
 
+    def __eq__(self, other):
+        if not len(self.conditions) == len(other.conditions) or not len(self.effects) == len(other.effects):
+            return False
+        return all([cond1 == cond2 for cond1, cond2 in zip(self.conditions, other.conditions)]) and all(
+            [eff1 == eff2 for eff1, eff2 in zip(self.effects, other.effects)])
+
+    def __hash__(self):
+        return 3 * hash(tuple([frozenset(s) for s in self.conditions])) \
+               + 5 * hash(tuple([frozenset(s) for s in self.effects]))
+
     def update(self, column, sign, condition):
         part = self.conditions if condition else self.effects
 
@@ -33,8 +43,39 @@ class SignImage:
                 cond.remove(old_comp)
                 cond.add(new_comp)
 
+    def is_absorbing(self, sign):
+        if any([sign in column for column in self.conditions]):
+            return True
+        if any([sign in column for column in self.effects]):
+            return True
+
+        return False
+
+    def get_components(self):
+        result = frozenset()
+        for column in itertools.chain(self.conditions, self.effects):
+            result |= column
+        return result
+
+    def get_conditions(self):
+        result = frozenset()
+        for column in self.conditions:
+            result |= column
+        return result
+
+    def get_effects(self):
+        result = frozenset()
+        for column in self.effects:
+            result |= column
+        return result
+
     def copy(self):
-        return SignImage(self.conditions[:], effects=self.effects[:])
+        cond, eff = [], []
+        for c in self.conditions:
+            cond.append(c.copy())
+        for e in self.effects:
+            eff.append(e.copy())
+        return SignImage(cond, effects=eff)
 
 
 class Sign:
@@ -76,13 +117,7 @@ class Sign:
         return any([len(image.effects) > 0 for image in self.images])
 
     def is_absorbing(self, sign):
-        for image in self.images:
-            if any([sign in column for column in image.conditions]):
-                return True
-            if any([sign in column for column in image.effects]):
-                return True
-
-        return False
+        return any([img.is_absorbing(sign) for img in self.images])
 
 
 class Task:
