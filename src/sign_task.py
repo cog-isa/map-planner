@@ -1,5 +1,3 @@
-__author__ = 'Aleksandr'
-
 import itertools
 
 
@@ -38,10 +36,32 @@ class SignImage:
             part[column].add(sign)
 
     def replace(self, old_comp, new_comp):
-        for cond in itertools.chain(self.conditions, self.effects):
-            if old_comp in cond:
-                cond.remove(old_comp)
-                cond.add(new_comp)
+        for i in range(len(self.conditions)):
+            new_cond = set()
+            for val in self.conditions[i]:
+                if val.is_action():
+                    image = val.image[0].copy()
+                    image.replace(old_comp, new_comp)
+                    val.meaning.append(image)
+                    new_cond.add()
+                elif val == old_comp:
+                    new_cond.add(new_comp)
+                else:
+                    new_cond.add(val)
+            self.conditions[i] = new_cond
+        for i in range(len(self.effects)):
+            new_cond = set()
+            for val in self.effects[i]:
+                if val.is_action():
+                    new_sign = val.copy()
+                    for image in new_sign.images:
+                        image.replace(old_comp, new_comp)
+                    new_cond.add(new_sign)
+                elif val == old_comp:
+                    new_cond.add(new_comp)
+                else:
+                    new_cond.add(val)
+            self.effects[i] = new_cond
 
     def is_absorbing(self, sign):
         if any([sign in column for column in self.conditions]):
@@ -79,6 +99,14 @@ class SignImage:
 
 
 class Sign:
+    """
+        Sign - element of model of the world
+
+        name - an unique string
+        significance - a set of signs
+        image - a list of SignImages
+        meaning - a dict of SignImages
+    """
     def __init__(self, name, significance=None, meaning=None, image=None):
         self.name = name
         self.significance = significance
@@ -92,7 +120,10 @@ class Sign:
             self.images.append(image)
             image.sign = self
 
-        self.meaning = meaning
+        if not meaning:
+            self.meaning = {}
+        else:
+            self.meaning = meaning
 
     def __str__(self):
         s = 'Sign {0}:\n    p={1}\n   m={2}\n   a={3}'
@@ -115,6 +146,13 @@ class Sign:
 
     def is_action(self):
         return any([len(image.effects) > 0 for image in self.images])
+
+    def get_parents(self):
+        parents = set()
+        for val in self.significance:
+            if not val.is_action():
+                parents.add(val)
+        return parents
 
     def is_absorbing(self, sign):
         return any([img.is_absorbing(sign) for img in self.images])

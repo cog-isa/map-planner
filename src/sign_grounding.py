@@ -1,5 +1,3 @@
-__author__ = 'Aleksandr'
-
 import logging
 import itertools
 from collections import defaultdict
@@ -44,7 +42,15 @@ def ground(problem):
     start_situation = _define_situation('*start*', problem.initial_state, signs)
     goal_situation = _define_situation('*finish*', problem.goal, signs)
 
+    _expand_situation(goal_situation, signs)
     return Task(problem.name, signs, start_situation, goal_situation)
+
+
+def _expand_situation(goal_situation, signs):
+    # TODO: add common approach
+    goal_situation.meaning[0].conditions.append({signs['handempty']})
+    goal_situation.meaning[0].conditions.append({signs['ontable'], signs['a']})
+    goal_situation.meaning[0].conditions.append({signs['clear'], signs['d']})
 
 
 def _significance_from_actions(signs, actions):
@@ -55,21 +61,35 @@ def _significance_from_actions(signs, actions):
 
 
 def _significance_from_predicates(procedural_sign, signs, predicates, condition=True):
-    column = 0
-    for pred in predicates:
+    for column, pred in enumerate(predicates):
         relation_sign = signs[pred.name]
         procedural_sign.update_image(column, relation_sign, condition)
         relation_sign.significance.add(procedural_sign)
-        for val, tp in pred.signature:
-            role_name = tp[0].name + val
+        if len(pred.signature) == 1:
+            val, types = pred.signature[0]
+            role_name = types[0].name + val
             if role_name not in signs:
-                sign_image = SignImage([{signs[tp[0].name]}])
+                sign_image = SignImage([{signs[types[0].name]}])
                 signs[role_name] = Sign(role_name, image=sign_image)
             procedural_sign.update_image(column, signs[role_name], condition)
             signs[role_name].significance.add(procedural_sign)
-            column += 1
-        if not pred.signature:
-            column += 1
+        elif len(pred.signature) == 2:
+            val1, types1 = pred.signature[0]
+            val2, types2 = pred.signature[1]
+            role1_name = types1[0].name + val1
+            role2_name = types2[0].name + val2
+            if role1_name not in signs:
+                sign_image = SignImage([{signs[types1[0].name]}])
+                signs[role1_name] = Sign(role1_name, image=sign_image)
+            relation_sign.update_image(0, signs[role1_name])
+            signs[role1_name].significance.add(relation_sign)
+            if role2_name not in signs:
+                sign_image = SignImage([{signs[types2[0].name]}])
+                signs[role2_name] = Sign(role2_name, image=sign_image)
+            relation_sign.update_image(0, signs[role2_name], False)
+            signs[role2_name].significance.add(relation_sign)
+        else:
+            logging.error('Not supported predicate {0}'.format(pred.name))
 
 
 def _significance_from_abstracts(signs):
@@ -81,14 +101,17 @@ def _significance_from_abstracts(signs):
 
 def _define_situation(name, predicates, signs):
     situation = Sign(name)
-    column = 0
-    for pred in predicates:
-        situation.update_image(column, signs[pred.name])
-        for val, _ in pred.signature:
-            situation.update_image(column, signs[val])
-            column += 1
-        if not pred.signature:
-            column += 1
+    sit_meaning = SignImage([])
+    for column, pred in enumerate(predicates):
+        pred_sign = signs[pred.name]
+        sit_meaning.update(column, signs[pred.name], True)
+        if pred_sign.is_action():
+            signs[pred.name].meaning[column] =SignImage(conditions=[{signs[pred.signature[0][0]]}],
+                                                   effects=[{signs[pred.signature[1][0]]}])
+        elif len(pred.signature) > 0:
+            sit_meaning.update(column, signs[pred.signature[0][0]], True)
+
+    situation.meaning[0] = sit_meaning
     return situation
 
 
