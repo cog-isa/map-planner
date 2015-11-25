@@ -1,33 +1,46 @@
 import itertools
 
 
-class SignImage:
-    def __init__(self, conditions, sign=None, effects=None):
-        self.conditions = conditions
-        self.sign = sign
-        if not effects:
-            self.effects = []
+class NetworkFragment:
+    """
+        NetworkFragment - part of sign components
+
+        left - list of sets of pairs (index, sign)
+        left - delayed list of sets of pairs (index, sign)
+    """
+    def __init__(self, left, right=None):
+        self.left = left
+        if not right:
+            self.right = []
         else:
-            self.effects = effects
+            self.right = right
 
     def __str__(self):
-        return '{0}->{1}'.format(self.conditions, self.effects)
+        return '{0}->{1}'.format(self.left, self.right)
 
     def __repr__(self):
-        return '<SignImage {0}->{1}>'.format(self.conditions, self.effects)
+        return '<NetworkFragment {0}->{1}>'.format(self.left, self.right)
 
     def __eq__(self, other):
-        if not len(self.conditions) == len(other.conditions) or not len(self.effects) == len(other.effects):
+        if not len(self.left) == len(other.left) or not len(self.right) == len(other.right):
             return False
-        return all([cond1 == cond2 for cond1, cond2 in zip(self.conditions, other.conditions)]) and all(
-            [eff1 == eff2 for eff1, eff2 in zip(self.effects, other.effects)])
+        return all([column1 == column2 for column1, column2 in zip(self.left, other.left)]) and all(
+            [column1 == column2 for column1, column2 in zip(self.right, other.right)])
 
     def __hash__(self):
-        return 3 * hash(tuple([frozenset(s) for s in self.conditions])) \
-               + 5 * hash(tuple([frozenset(s) for s in self.effects]))
+        return 3 * hash(tuple([frozenset(s) for s in self.left])) \
+               + 5 * hash(tuple([frozenset(s) for s in self.right]))
 
-    def update(self, column, sign, condition):
-        part = self.conditions if condition else self.effects
+    def __contains__(self, sign):
+        if any([sign in [pair[1] for pair in column] for column in self.left]):
+            return True
+        if any([sign in [pair[1] for pair in column] for column in self.right]):
+            return True
+
+        return False
+
+    def add(self, column, sign, not_delay):
+        part = self.left if not_delay else self.right
 
         if len(part) <= column:
             for _ in range(column - len(part) + 1):
@@ -36,9 +49,9 @@ class SignImage:
             part[column].add(sign)
 
     def replace(self, old_comp, new_comp):
-        for i in range(len(self.conditions)):
+        for i in range(len(self.left)):
             new_cond = set()
-            for val in self.conditions[i]:
+            for val in self.right[i]:
                 if val.is_action():
                     image = val.image[0].copy()
                     image.replace(old_comp, new_comp)
@@ -63,39 +76,31 @@ class SignImage:
                     new_cond.add(val)
             self.effects[i] = new_cond
 
-    def is_absorbing(self, sign):
-        if any([sign in column for column in self.conditions]):
-            return True
-        if any([sign in column for column in self.effects]):
-            return True
-
-        return False
-
     def get_components(self):
         result = frozenset()
-        for column in itertools.chain(self.conditions, self.effects):
+        for column in itertools.chain(self.left, self.right):
             result |= column
         return result
 
-    def get_conditions(self):
+    def get_left(self):
         result = frozenset()
-        for column in self.conditions:
+        for column in self.left:
             result |= column
         return result
 
-    def get_effects(self):
+    def get_right(self):
         result = frozenset()
-        for column in self.effects:
+        for column in self.right:
             result |= column
         return result
 
     def copy(self):
-        cond, eff = [], []
-        for c in self.conditions:
-            cond.append(c.copy())
-        for e in self.effects:
-            eff.append(e.copy())
-        return SignImage(cond, effects=eff)
+        left, right = [], []
+        for c in self.left:
+            left.append(c.copy())
+        for e in self.right:
+            right.append(e.copy())
+        return NetworkFragment(left, right=right)
 
 
 class Sign:
@@ -107,9 +112,8 @@ class Sign:
         image - a list of SignImages
         meaning - a dict of SignImages
     """
-    def __init__(self, name, significance=None, meaning=None, image=None):
+    def __init__(self, name, image=None, significance=None, meaning=None):
         self.name = name
-        self.significance = significance
         if not significance:
             self.significance = set()
         else:
