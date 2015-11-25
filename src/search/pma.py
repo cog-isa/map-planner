@@ -2,41 +2,83 @@ import logging
 
 
 def pma_search(task):
+    current_situation = task.goal_situation.images[0].copy()
+    plan = []
+
+    while not _including(current_situation, task.start_situation.images[0]):
+        useful_scripts = _find_useful_scripts(current_situation, task.signs)
+        best_info = _get_best_script(useful_scripts)
+        plan.append((current_situation, best_info[0]))
+        current_situation = _replace(current_situation, *best_info[1:])
+
+    logging.info('Plan: {0}', [x[1] for x in plan])
+
+
+def _including(big_situation, small_situation):
+    # TODO: not all variants
+    included = []
+    for s_column in small_situation.conditions:
+        for j, b_column in enumerate(big_situation.conditions):
+            if j not in included and s_column < b_column:
+                included.append(j)
+                break
+        else:
+            return False
+    return True
+
+
+def _get_best_script(candidates):
+    return candidates.pop()
+
+
+def _find_useful_scripts(current_situation, signs):
+    current_signs = current_situation.get_components()
     scripts_dict = {}
-    scripts = set()
-    goals = task.goal_situation.images[0].get_components()
-    for sign in goals:
-        for name, scrs in _find_scripts(sign, task.signs).items():
+
+    for sign in current_signs:
+        for name, scrs in _find_scripts(sign, signs).items():
             old_comp = scripts_dict.get(name, set())
             for scr in scrs:
-                result = _specify(scr, goals - {sign})
-                old_comp |= result
-                scripts |= result
+                old_comp |= _specify(scr, current_signs - {sign})
             scripts_dict[name] = old_comp
 
-    useful_scripts = {(x, 0, 0) for x in scripts}
-    for i, column in enumerate(task.goal_situation.images[0].conditions):
+    useful_scripts = set()
+    for name in scripts_dict:
+        # action, action start applied index, situation start applied index, length of applied part
+        for val in scripts_dict[name]:
+            useful_scripts.add((name, val.copy(), -1, -1, 0))
+    for i, column in enumerate(current_situation.conditions):
         active_scripts = set()
         prev_scrips = useful_scripts.copy()
         while useful_scripts:
-            script, index, size = useful_scripts.pop()
-            for j in range(index, len(script.effects)):
-                if column <= script.effects[j]:
-                    active_scripts.add((script, index, size + 1))
+            name, script, act_index, sit_index, size = useful_scripts.pop()
+            if act_index == -1:  # action is not active
+                for j in range(len(script.effects)):
+                    if column <= script.effects[j]:
+                        active_scripts.add((name, script, j, i, 1))
+                        break
+            elif sit_index + size == i and act_index + size < len(script.effects):  # action is active
+                if column <= script.effects[act_index + size]:
+                    active_scripts.add((name, script, act_index, sit_index, size + 1))
         if not active_scripts:
             useful_scripts = prev_scrips
             break
         else:
             useful_scripts = active_scripts
 
-    _replace(task.goal_situation.images[0], *useful_scripts.pop())
-    logging.debug('Initial scripts: {0}', useful_scripts)
+    return useful_scripts
 
 
-def _replace(situation, action, index, size):
+def _replace(situation, action, act_index, sit_index, size):
+    new_situation = situation.copy()
     for i in range(size):
-        if situation.conditions[i] <= action.effects[i + index]:
-            situation.conditions[i] = (situation.conditions[i] - action.effects[i + index]) | action.conditions[i + index]
+        new_situation.conditions[sit_index + i] = (new_situation.conditions[sit_index + i] -
+                                                   action.effects[act_index + i]) | action.conditions[i]
+    if size < len(action.conditions):
+        new_situation.conditions = new_situation.conditions[:sit_index + size] + action.conditions[
+                                                                                 size:] + new_situation.conditions[
+                                                                                          sit_index + size:]
+    return new_situation
 
 
 def _find_scripts(sign, signs):
