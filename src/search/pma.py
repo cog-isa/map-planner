@@ -1,31 +1,42 @@
 import logging
-from sign_task import SignImage
+
 
 def pma_search(task):
-    scripts = {}
+    scripts_dict = {}
+    scripts = set()
     goals = task.goal_situation.images[0].get_components()
     for sign in goals:
         for name, scrs in _find_scripts(sign, task.signs).items():
-            old_comp = scripts.get(name, set())
+            old_comp = scripts_dict.get(name, set())
             for scr in scrs:
-                old_comp |= _specify(scr, goals - {sign})
-            scripts[name] = old_comp
+                result = _specify(scr, goals - {sign})
+                old_comp |= result
+                scripts |= result
+            scripts_dict[name] = old_comp
 
-    useful_scripts = set()
-    cumulate = []
-    reset = False
-    for column in task.goal_situation.images[0].conditions:
-        if reset:
-            cumulate = []
-            reset = False
-        cumulate.append(column)
-        for name, variants in scripts.items():
-            for script in variants:
-                if all([x in script.effects for x in cumulate]):
-                    useful_scripts.add(script)
-                    reset = True
+    useful_scripts = {(x, 0, 0) for x in scripts}
+    for i, column in enumerate(task.goal_situation.images[0].conditions):
+        active_scripts = set()
+        prev_scrips = useful_scripts.copy()
+        while useful_scripts:
+            script, index, size = useful_scripts.pop()
+            for j in range(index, len(script.effects)):
+                if column <= script.effects[j]:
+                    active_scripts.add((script, index, size + 1))
+        if not active_scripts:
+            useful_scripts = prev_scrips
+            break
+        else:
+            useful_scripts = active_scripts
 
+    _replace(task.goal_situation.images[0], *useful_scripts.pop())
     logging.debug('Initial scripts: {0}', useful_scripts)
+
+
+def _replace(situation, action, index, size):
+    for i in range(size):
+        if situation.conditions[i] <= action.effects[i + index]:
+            situation.conditions[i] = (situation.conditions[i] - action.effects[i + index]) | action.conditions[i + index]
 
 
 def _find_scripts(sign, signs):
