@@ -8,6 +8,7 @@ class NetworkFragment:
         left - list of sets of pairs (index, sign)
         left - delayed list of sets of pairs (index, sign)
     """
+
     def __init__(self, left, right=None):
         self.left = left
         if not right:
@@ -39,14 +40,20 @@ class NetworkFragment:
 
         return False
 
-    def add(self, column, sign, not_delay):
+    def add(self, pair, not_delay=True, column_index=None):
         part = self.left if not_delay else self.right
 
-        if len(part) <= column:
-            for _ in range(column - len(part) + 1):
+        if column_index is None:
+            column_index = len(part)
+            part.append(set())
+        elif len(part) <= column_index:
+            for _ in range(column_index - len(part) + 1):
                 part.append(set())
-        if sign not in part[column]:
-            part[column].add(sign)
+        if pair not in part[column_index]:
+            part[column_index].add(pair)
+
+    def is_empty(self):
+        return len(self.left) == 0 or len(self.right) == 0
 
     def replace(self, old_comp, new_comp):
         for i in range(len(self.left)):
@@ -108,26 +115,27 @@ class Sign:
         Sign - element of model of the world
 
         name - an unique string
-        significance - a set of signs
-        image - a list of SignImages
-        meaning - a dict of SignImages
+        significance - a list of NetworkFragments
+        image - a list of NetworkFragments
+        meaning - a list of NetworkFragments
     """
+
     def __init__(self, name, image=None, significance=None, meaning=None):
         self.name = name
-        if not significance:
-            self.significance = set()
-        else:
+        if significance:
             self.significance = significance
-
-        self.images = []
-        if image:
-            self.images.append(image)
-            image.sign = self
-
-        if not meaning:
-            self.meaning = {}
         else:
+            self.significance = [NetworkFragment([])]
+
+        if image:
+            self.images = [image]
+        else:
+            self.images = [NetworkFragment([])]
+
+        if meaning:
             self.meaning = meaning
+        else:
+            self.meaning = []
 
     def __str__(self):
         s = 'Sign {0}:\n    p={1}\n   m={2}\n   a={3}'
@@ -142,24 +150,18 @@ class Sign:
     def __hash__(self):
         return hash(self.name)
 
-    def update_image(self, column, sign, condition=True, index=0):
-        if len(self.images) <= index:
-            sign_image = SignImage([], sign=self)
-            self.images.append(sign_image)
-        self.images[index].update(column, sign, condition)
-
     def is_action(self):
-        return any([len(image.effects) > 0 for image in self.images])
+        return any([len(fragment.right) > 0 for fragment in self.images])
 
     def get_parents(self):
-        parents = set()
+        parents = frozenset()
         for val in self.significance:
             if not val.is_action():
-                parents.add(val)
+                parents |= {val}
         return parents
 
-    def is_absorbing(self, sign):
-        return any([img.is_absorbing(sign) for img in self.images])
+    def __contains__(self, item):
+        return any([item in img for img in self.images])
 
 
 class Task:
