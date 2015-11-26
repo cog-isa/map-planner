@@ -33,12 +33,24 @@ class NetworkFragment:
                + 5 * hash(tuple([frozenset(s) for s in self.right]))
 
     def __contains__(self, sign):
-        if any([sign in [pair[1] for pair in column] for column in self.left]):
-            return True
-        if any([sign in [pair[1] for pair in column] for column in self.right]):
-            return True
+        for column in itertools.chain(self.left, self.right):
+            for index, element in column:
+                if element == sign:
+                    return True
 
         return False
+
+    def __gt__(self, smaller):
+        # TODO: not all variants and right part
+        included = []
+        for s_column in smaller.left:
+            for j, b_column in enumerate(self.left):
+                if j not in included and s_column < b_column:
+                    included.append(j)
+                    break
+            else:
+                return False
+        return True
 
     def add(self, pair, not_delay=True, column_index=None):
         part = self.left if not_delay else self.right
@@ -53,35 +65,7 @@ class NetworkFragment:
             part[column_index].add(pair)
 
     def is_empty(self):
-        return len(self.left) == 0 or len(self.right) == 0
-
-    def replace(self, old_comp, new_comp):
-        for i in range(len(self.left)):
-            new_cond = set()
-            for val in self.right[i]:
-                if val.is_action():
-                    image = val.image[0].copy()
-                    image.replace(old_comp, new_comp)
-                    val.meaning.append(image)
-                    new_cond.add()
-                elif val == old_comp:
-                    new_cond.add(new_comp)
-                else:
-                    new_cond.add(val)
-            self.conditions[i] = new_cond
-        for i in range(len(self.effects)):
-            new_cond = set()
-            for val in self.effects[i]:
-                if val.is_action():
-                    new_sign = val.copy()
-                    for image in new_sign.images:
-                        image.replace(old_comp, new_comp)
-                    new_cond.add(new_sign)
-                elif val == old_comp:
-                    new_cond.add(new_comp)
-                else:
-                    new_cond.add(val)
-            self.effects[i] = new_cond
+        return len(self.left) == 0 and len(self.right) == 0
 
     def get_components(self):
         result = frozenset()
@@ -150,18 +134,39 @@ class Sign:
     def __hash__(self):
         return hash(self.name)
 
+    def __contains__(self, item):
+        return any([item in img for img in self.images])
+
     def is_action(self):
         return any([len(fragment.right) > 0 for fragment in self.images])
 
     def get_parents(self):
         parents = frozenset()
-        for val in self.significance:
-            if not val.is_action():
-                parents |= {val}
+        for s in self.significance:
+            for index, val in s.get_components():
+                if not val.is_action():
+                    parents |= {val}
         return parents
 
-    def __contains__(self, item):
-        return any([item in img for img in self.images])
+    def get_children(self):
+        children = frozenset()
+        for image in self.images:
+            for index, val in image.get_components():
+                second_level = val.get_children()
+                if len(second_level) > 0:
+                    children |= second_level
+                else:
+                    children |= {(index, val)}
+        return children
+
+    def has_parent(self, parent):
+        if any([parent in s for s in self.significance]):
+            return True
+        else:
+            for s in self.significance:
+                if any([component.has_parent(parent) for index, component in s.get_components()]):
+                    return True
+            return False
 
 
 class Task:

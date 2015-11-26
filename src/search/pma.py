@@ -1,106 +1,152 @@
 import logging
+import itertools
+from sign_task import NetworkFragment
 
 
 def pma_search(task):
-    current_image = task.goal_situation.meaning[0].copy()
-    start_image = task.start_situation.meaning[0]
+    current_fragment = task.goal_situation.meaning[0].copy()
+    start_fragment = task.start_situation.meaning[0]
     plan = []
 
-    while not _including(current_image, start_image):
-        meanings = _define_meanings(current_image, task.signs)
-        best_info = _get_best_script(meanings)
-        plan.append((current_image, best_info[0]))
-        current_situation = _replace(current_image, *best_info[1:])
+    #while not current_fragment > start_fragment:
+    current_signs = _get_signs(current_fragment)
+    scripts_dict = _generate_scripts(current_signs)
 
     logging.info('Plan: {0}', [x[1] for x in plan])
 
 
-def _including(big_situation, small_situation):
-    # TODO: not all variants
-    included = []
-    for s_column in small_situation.conditions:
-        for j, b_column in enumerate(big_situation.conditions):
-            if j not in included and s_column < b_column:
-                included.append(j)
-                break
-        else:
-            return False
-    return True
+def _get_signs(fragment):
+    """
+    Get all signs (recursive) from fragment
+    :param fragment: NetworkFragment
+    :return: set of Sign
+    """
+    result = set()
+    for column in itertools.chain(fragment.left, fragment.right):
+        for index, element in column:
+            if element.is_action():
+                result |= _get_signs(element.meaning[index])
+            else:
+                result.add(element)
+    return result
 
 
-def _define_meanings(current_image, signs):
-    current_signs = current_image.get_components()
+def _generate_scripts(signs):
+    """
+    Generate scripts without abstract signs
+    :param signs: All Sign
+    :return: dict of generated scripts
+    """
     scripts_dict = {}
-
-    # build scripts (specified significances) dictionary
-    for sign in current_signs:
-        for name, scrs in _find_scripts(sign, signs).items():
-            old_comp = scripts_dict.get(name, set())
-            for scr in scrs:
-                old_comp |= _specify(scr, current_signs - {sign})
-            scripts_dict[name] = old_comp
-
-    # TODO: order of columns is very important?
-    useful_scripts = set()
-    for name in scripts_dict:
-        for script in scripts_dict[name]:
-            included = []
-            for val in script.effects:
-                for i, column in enumerate(current_image.conditions):
-                    if i not in included and val == column:
-                        included.append(i)
-                        break
-            if len(included) == len(script.effects):
-                useful_scripts.add((name, script.copy(), tuple(included)))
-
-    return useful_scripts
-
-
-def _find_scripts(sign, signs):
-    scripts = {}
-    for comp in sign.significance:
-        if comp.is_action():
-            old_comp = scripts.get(comp.name, set())
-            old_comp |= {comp.images[0].copy()}
-            scripts[comp.name] = old_comp
-        else:
-            for name, scrs in _find_scripts(comp, signs).items():
-                for scr in scrs:
-                    scr.replace(comp, sign)
-                    old_comp = scripts.get(name, set())
-                    old_comp |= {scr}
-                    scripts[name] = old_comp
-
-    return scripts
-
-
-def _specify(script, signs):
-    specified = set()
     for sign in signs:
-        for comp in script.get_components():
-            if _is_signified(sign, comp):
-                new_script = script.copy()
-                new_script.replace(comp, sign)
-                specified |= _specify(new_script, signs - {sign})
-    if not specified:
-        specified |= {script}
-
-    return specified
-
-
-def _replace(situation, action, columns):
-    new_situation = situation.copy()
-    for i, column in enumerate(columns):
-        new_situation.conditions[column] = (new_situation.conditions[column] -
-                                            action.effects[i]) | action.conditions[i]
-    if len(columns) < len(action.conditions):
-        new_situation.conditions.update(action.conditions[len(columns):])
-    return new_situation
+        if not sign.is_action() and len(sign.get_parents()) > 0:
+            frg_dict = _generate_fragments(sign)
+            # TODO: add recursion generation not only for tow roles
+            for name, fragment in frg_dict.items():
+                for other_sign in signs-{sign}:
+                    replaced = _replace_parent(fragment, other_sign)
+                    scripts_dict[name] = scripts_dict.get(name, set()) | replaced
+    return scripts_dict
 
 
-def _is_signified(sign, test):
-    return test in sign.significance or any([_is_signified(s, test) for s in sign.significance])
+def _generate_fragments(sign):
+    """
+    Generate scripts from sign
+    :param sign: Start Sign
+    :return: dict of fragments with replaced sign
+    """
+    fragment_dict = {}
+    for m in sign.significance:
+        for index, component in m.get_components():
+            if component.is_action():
+                fragment_dict[component.name] = _replace_parent(component.images[index], sign)
+
+    return fragment_dict
 
 
-def _get_best_script(candidates):
-    return candidates.pop()
+def _replace_parent(script, sign):
+    """
+    Replace first occurrence parent sign to child sign
+    :param script: NetworkFragment
+    :param sign: Replacer Sign
+    :return: replaced scripts
+    """
+    replaced = set()
+    for index, component in script.get_components():
+        if sign.has_parent(component):
+            _, fragment = _create_meaning_from_image(script, script.images[0])
+            index, _ = _create_meaning_from_image(sign, sign.images[0])
+            _replace(fragment, (-1, component), (index, sign))
+            replaced.add(fragment)
+
+    return replaced
+
+
+def _create_meaning_from_image(sign, image):
+    """
+    Add new meaning element for sign from its image
+    :param sign: Sign for create meaning
+    :return: pair of (meaning index, new fragment)
+    """
+    fragment = NetworkFragment([])
+    for c_idx, column in enumerate(image.left):
+        for index, component in column:
+            idx, _ = _create_meaning_from_image(component, component.images[index])
+            fragment.add((index, component), column_index=c_idx)
+    for c_idx, column in enumerate(image.right):
+        for index, component in column:
+            idx, _ = _create_meaning_from_image(component, component.images[index])
+            fragment.add((idx, component), False, c_idx)
+    sign.meaning.append(fragment)
+
+    return len(sign.meaning) - 1, fragment
+
+
+def _create_meaning_from_meaning(sign, mean_frag):
+    """
+    Add new meaning element for sign from its image
+    :param sign: Sign for create meaning
+    :return: pair of (meaning index, new fragment)
+    """
+    fragment = NetworkFragment([])
+    for c_idx, column in enumerate(mean_frag.left):
+        for index, component in column:
+            idx, _ = _create_meaning_from_meaning(component, component.meaning[index])
+            fragment.add((index, component), column_index=c_idx)
+    for c_idx, column in enumerate(mean_frag.right):
+        for index, component in column:
+            idx, _ = _create_meaning_from_meaning(component, component.meaning[index])
+            fragment.add((idx, component), False, c_idx)
+    sign.meaning.append(fragment)
+
+    return len(sign.meaning) - 1, fragment
+
+
+def _replace(fragment, old_pair, new_pair):
+    """
+    Recurrent replace in fragment old element ot new element
+    :param fragment: NetworkFragment for replace
+    :param old_pair: old pair of (index, Sign)
+    :param new_pair: new pair of (index, Sign)
+    :return:
+    """
+
+    def _replace_part(index, part):
+        new_column = set()
+        for idn, val in part[index]:
+            if val.is_action():
+                index, frg = _create_meaning_from_meaning(val, val.meaning[idn])
+                _replace(frg, old_pair, new_pair)
+                new_column.add((index, val))
+            elif old_pair[0] >= 0 and (idn, val) == old_pair:
+                new_column.add(new_pair)
+            elif old_pair[0] == -1 and val == old_pair[1]:
+                new_column.add(new_pair)
+            else:
+                new_column.add((idn, val))
+        part[index] = new_column
+
+    for i in range(len(fragment.left)):
+        _replace_part(i, fragment.left)
+    for i in range(len(fragment.right)):
+        _replace_part(i, fragment.right)

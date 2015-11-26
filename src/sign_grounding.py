@@ -102,8 +102,8 @@ def _define_situation(name, predicates, signs):
             fragment.add((len(sign2.meaning), sign2), False)
             signs[predicate.name].meaning.append(fragment)
         else:
-            signs[predicate.name].meaning.append(NetworkFragment([])
-                                                 )
+            signs[predicate.name].meaning.append(NetworkFragment([]))
+
         situation.meaning[0].add((len(signs[predicate.name].meaning) - 1, signs[predicate.name]),
                                  column_index=column)
 
