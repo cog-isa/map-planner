@@ -4,15 +4,53 @@ from sign_task import NetworkFragment
 
 
 def pma_search(task):
-    current_fragment = task.goal_situation.meaning[0].copy()
+    current_fragment = task.goal_situation.meaning[0]
     start_fragment = task.start_situation.meaning[0]
     plan = []
 
     # while not current_fragment > start_fragment:
     current_signs = _get_signs(current_fragment)
     scripts_dict = _generate_scripts(current_signs)
+    applicable_scripts = _get_applicable(scripts_dict, current_fragment)
 
     logging.info('Plan: {0}', [x[1] for x in plan])
+
+
+def _get_applicable(script_dict, situation):
+    applicable_dict = {}
+    for name, scripts in script_dict.items():
+        for script in scripts:
+            # TODO: check that all columns different
+            for column in script.right:
+                if _contains_column(situation, column) == -1:
+                    break
+            else:
+                applicable_dict[name] = applicable_dict.get(name, set()) | {script}
+
+    return applicable_dict
+
+
+def _contains_column(fragment, to_check, not_delay=True):
+    part = fragment.left if not_delay else fragment.right
+    check_signs = [sgn for _, sgn in to_check]
+    check_inds = {sign: idx for idx, sign in to_check}
+    result = -1
+    for i, column in enumerate(part):
+        signs = [sgn for _, sgn in column]
+        inds = {sign: idx for idx, sign in column}
+        if not signs == check_signs:
+            continue
+        for sign in signs:
+            mean1 = sign.meaning[inds[sign]]
+            mean2 = sign.meaning[check_inds[sign]]
+            # TODO: compare only signs without ids
+            if sign.is_action() and not mean1 == mean2:
+                break
+        else:
+            result = i
+            break
+
+    return result
 
 
 def _get_signs(fragment):

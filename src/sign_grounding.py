@@ -55,12 +55,12 @@ def _significance_from_actions(signs, actions):
 def _significance_from_predicates(procedural_sign, signs, predicates, not_delayed=True):
     # TODO: not only for first images
     for column, predicate in enumerate(predicates):
-        def add_to_significance(sig_to_update, without_delay, signature):
+        def add_to_significance(sig_to_update, without_delay, signature, clmn):
             role_name = signature[1][0].name + signature[0]
             if role_name not in signs:
                 sign_image = NetworkFragment([{(0, signs[signature[1][0].name])}])
                 signs[role_name] = Sign(role_name, image=sign_image)
-            sig_to_update.images[0].add((0, signs[role_name]), without_delay, column)
+            sig_to_update.images[0].add((0, signs[role_name]), without_delay, clmn)
             signs[role_name].significance[0].add((0, sig_to_update))
 
         predicate_sign = signs[predicate.name]
@@ -68,10 +68,10 @@ def _significance_from_predicates(procedural_sign, signs, predicates, not_delaye
         predicate_sign.significance[0].add((0, procedural_sign))
 
         if len(predicate.signature) == 1:
-            add_to_significance(procedural_sign, not_delayed, predicate.signature[0])
+            add_to_significance(procedural_sign, not_delayed, predicate.signature[0],column)
         elif len(predicate.signature) == 2 and predicate_sign.images[0].is_empty():
-            add_to_significance(predicate_sign, True, predicate.signature[0])
-            add_to_significance(predicate_sign, False, predicate.signature[1])
+            add_to_significance(predicate_sign, True, predicate.signature[0], 0)
+            add_to_significance(predicate_sign, False, predicate.signature[1], 0)
         else:
             logging.error('Not supported predicate {0}'.format(predicate.name))
 
