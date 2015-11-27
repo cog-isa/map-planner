@@ -52,6 +52,21 @@ class NetworkFragment:
                 return False
         return True
 
+    def equal_signs(self, other):
+        if not len(self.left) == len(other.left) or not len(self.right) == len(other.right):
+            return False
+        for column1, column2 in zip(self.left, other.left):
+            signs1 = {sign for _, sign in column1}
+            signs2 = {sign for _, sign in column2}
+            if not signs1 == signs2:
+                return False
+        for column1, column2 in zip(self.right, other.right):
+            signs1 = {sign for _, sign in column1}
+            signs2 = {sign for _, sign in column2}
+            if not signs1 == signs2:
+                return False
+        return True
+
     def add(self, pair, not_delay=True, column_index=None):
         part = self.left if not_delay else self.right
 

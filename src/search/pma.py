@@ -25,7 +25,12 @@ def _get_applicable(script_dict, situation):
                 if _contains_column(situation, column) == -1:
                     break
             else:
-                applicable_dict[name] = applicable_dict.get(name, set()) | {script}
+                prev_scripts = applicable_dict.get(name, set())
+                for old_script in prev_scripts:
+                    if old_script.equal_signs(script):
+                        break
+                else:
+                    applicable_dict[name] = prev_scripts | {script}
 
     return applicable_dict
 
@@ -43,8 +48,7 @@ def _contains_column(fragment, to_check, not_delay=True):
         for sign in signs:
             mean1 = sign.meaning[inds[sign]]
             mean2 = sign.meaning[check_inds[sign]]
-            # TODO: compare only signs without ids
-            if sign.is_action() and not mean1 == mean2:
+            if sign.is_action() and not mean1.equal_signs(mean2):
                 break
         else:
             result = i
