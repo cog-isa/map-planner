@@ -2,12 +2,13 @@ import logging
 import itertools
 from sign_task import NetworkFragment
 
-MAX_ITERATION = 10
+MAX_ITERATION = 100
 
 
 def pma_search(task):
     current_fragment = task.goal_situation.meaning[0]
     start_fragment = task.start_situation.meaning[0]
+    logging.debug('Start: {0}, finish: {1}'.format(start_fragment, current_fragment))
     plan = []
 
     iteration = 0
@@ -17,7 +18,14 @@ def pma_search(task):
         applicable_scripts = _get_applicable(scripts_dict, current_fragment)
 
         logging.debug('Applicable scripts: {0}'.format(applicable_scripts))
-        heuristic, name, script = _choose_meaning(applicable_scripts, start_fragment)
+        sorted_scripts = _sort_meaning(applicable_scripts, current_fragment,
+                                       start_fragment, [x for x, _, _ in plan])
+
+        if not sorted_scripts:
+            logging.debug('Not found applicable scripts')
+            break
+
+        heuristic, name, script = sorted_scripts[0]
         logging.debug('Chosen script: {0} -> {1}'.format(name, script))
 
         plan.append((current_fragment, name, script))
@@ -26,6 +34,7 @@ def pma_search(task):
 
         iteration += 1
         if iteration >= MAX_ITERATION:
+            logging.debug('Max iteration count')
             break
     else:
         reversed(plan)
@@ -52,17 +61,53 @@ def _apply_script(fragment, script):
     return new_frag
 
 
-def _choose_meaning(applicable_dict, ref_situation):
+def _sort_meaning(applicable_dict, current_situation, ref_situation, prev_situations):
     heuristic = []
     for name, scripts in applicable_dict.items():
         for script in scripts:
-            counter = 0
-            for column in script.left:
-                if ref_situation.get_column_index(column) >= 0:
-                    counter += 1
-            heuristic.append((counter, name, script))
+            estimation = _apply_script(current_situation, script)
+            for prev in prev_situations:
+                if _deep_equal_signs(prev, estimation):
+                    break
+            else:
+                counter = 0
+                for column in script.left:
+                    if ref_situation.get_column_index(column) >= 0:
+                        counter += 1
+                heuristic.append((counter, name, script))
     heuristic.sort(reverse=True)
-    return heuristic[0]
+    return heuristic
+
+
+def _deep_equal_signs(sit1, sit2):
+    if not len(sit1.left) == len(sit2.left):
+        return False
+
+    signs1_map = {}
+    signs2_map = {}
+    for column in sit1.left:
+        for index, sign in column:
+            signs1_map[sign.name] = signs1_map.get(sign.name, []) + [(sign, index)]
+    for column in sit2.left:
+        for index, sign in column:
+            signs2_map[sign.name] = signs2_map.get(sign.name, []) + [(sign, index)]
+
+    for name, signs1 in signs1_map.items():
+        if name not in signs2_map:
+            return False
+        signs2 = signs2_map[name]
+        if not len(signs1) == len(signs2):
+            return False
+        if len(signs1) > 1:
+            checked = []
+            for sign1, index1 in signs1:
+                for i, (sign2, index2) in enumerate(signs2):
+                    if i not in checked and _deep_equal_signs(sign1.meaning[index1], sign2.meaning[index2]):
+                        checked.append(i)
+                        break
+                else:
+                    return False
+    return True
 
 
 def _get_applicable(script_dict, situation):
@@ -173,7 +218,7 @@ def _create_meaning_from_image(sign, image):
     for c_idx, column in enumerate(image.left):
         for index, component in column:
             idx, _ = _create_meaning_from_image(component, component.images[index])
-            fragment.add((index, component), column_index=c_idx)
+            fragment.add((idx, component), column_index=c_idx)
     for c_idx, column in enumerate(image.right):
         for index, component in column:
             idx, _ = _create_meaning_from_image(component, component.images[index])
@@ -193,7 +238,7 @@ def _create_meaning_from_meaning(sign, mean_frag):
     for c_idx, column in enumerate(mean_frag.left):
         for index, component in column:
             idx, _ = _create_meaning_from_meaning(component, component.meaning[index])
-            fragment.add((index, component), column_index=c_idx)
+            fragment.add((idx, component), column_index=c_idx)
     for c_idx, column in enumerate(mean_frag.right):
         for index, component in column:
             idx, _ = _create_meaning_from_meaning(component, component.meaning[index])

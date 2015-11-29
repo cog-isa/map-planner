@@ -119,7 +119,8 @@ def _expand_situation(goal_situation, signs):
     signs['a'].meaning.append(NetworkFragment([]))
     column = len(goal_situation.meaning[0].left)
     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
-    goal_situation.meaning[0].add((len(signs['a'].meaning) - 1, signs['a']), column_index=column)
+    goal_situation.meaning[0].add((len(signs['b'].meaning) - 1, signs['b']), column_index=column)
+    #goal_situation.meaning[0].add((len(signs['a'].meaning) - 1, signs['a']), column_index=column)
 
     signs['clear'].meaning.append(NetworkFragment([]))
     signs['d'].meaning.append(NetworkFragment([]))
