@@ -41,16 +41,34 @@ class NetworkFragment:
         return False
 
     def __gt__(self, smaller):
-        # TODO: not all variants and right part
-        included = []
+        # TODO: why only left?
         for s_column in smaller.left:
-            for j, b_column in enumerate(self.left):
-                if j not in included and s_column < b_column:
-                    included.append(j)
+            if self.get_column_index(s_column) < 0:
+                return False
+
+        return True
+
+    def get_column_index(self, column, not_delay=True):
+        part = self.left if not_delay else self.right
+        check_signs = {sgn for _, sgn in column}
+        check_inds = {sign: idx for idx, sign in column}
+        result = -1
+        for i, clmn in enumerate(part):
+            signs = {sgn for _, sgn in clmn}
+            inds = {sign: idx for idx, sign in clmn}
+            if not signs == check_signs:
+                continue
+            for sign in signs:
+                # TODO: why only meanings?
+                check_mean = sign.meaning[check_inds[sign]]
+                mean1 = sign.meaning[inds[sign]]
+                if sign.is_action() and not mean1.equal_signs(check_mean):
                     break
             else:
-                return False
-        return True
+                result = i
+                break
+
+        return result
 
     def equal_signs(self, other):
         if not len(self.left) == len(other.left) or not len(self.right) == len(other.right):

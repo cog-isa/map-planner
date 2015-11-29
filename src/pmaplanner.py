@@ -87,8 +87,8 @@ def search_plan(domain_file, problem_file):
 def _write_solution(solution, filename):
     assert solution is not None
     with open(filename, 'w') as file:
-        for op in solution:
-            print(op.name, file=file)
+        for name, op in solution:
+            print(name, op, file=file)
 
 
 if __name__ == '__main__':

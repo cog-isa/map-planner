@@ -2,18 +2,67 @@ import logging
 import itertools
 from sign_task import NetworkFragment
 
+MAX_ITERATION = 10
+
 
 def pma_search(task):
     current_fragment = task.goal_situation.meaning[0]
     start_fragment = task.start_situation.meaning[0]
     plan = []
 
-    # while not current_fragment > start_fragment:
-    current_signs = _get_signs(current_fragment)
-    scripts_dict = _generate_scripts(current_signs)
-    applicable_scripts = _get_applicable(scripts_dict, current_fragment)
+    iteration = 0
+    while not current_fragment > start_fragment:
+        current_signs = _get_signs(current_fragment)
+        scripts_dict = _generate_scripts(current_signs)
+        applicable_scripts = _get_applicable(scripts_dict, current_fragment)
 
-    logging.info('Applicable scripts: {0}'.format(applicable_scripts))
+        logging.debug('Applicable scripts: {0}'.format(applicable_scripts))
+        heuristic, name, script = _choose_meaning(applicable_scripts, start_fragment)
+        logging.debug('Chosen script: {0} -> {1}'.format(name, script))
+
+        plan.append((current_fragment, name, script))
+        current_fragment = _apply_script(current_fragment, script)
+        logging.debug('Next situation: {0}'.format(current_fragment))
+
+        iteration += 1
+        if iteration >= MAX_ITERATION:
+            break
+    else:
+        reversed(plan)
+        logging.info('Plan: len={0}, {1}'.format(len(plan), [name for _, name, _ in plan]))
+        return [(name, script) for _, name, script in plan]
+
+    return None
+
+
+def _apply_script(fragment, script):
+    new_frag = fragment.copy()
+    to_remove = script.right
+    to_add = script.left
+    for i, column in enumerate(to_remove):
+        index = new_frag.get_column_index(column)
+        if i < len(to_add):
+            new_frag.left[index] = to_add[i]
+        else:
+            del new_frag.left[index]
+
+    for i in range(len(to_remove), len(to_add)):
+        new_frag.left.append(to_add[i])
+
+    return new_frag
+
+
+def _choose_meaning(applicable_dict, ref_situation):
+    heuristic = []
+    for name, scripts in applicable_dict.items():
+        for script in scripts:
+            counter = 0
+            for column in script.left:
+                if ref_situation.get_column_index(column) >= 0:
+                    counter += 1
+            heuristic.append((counter, name, script))
+    heuristic.sort(reverse=True)
+    return heuristic[0]
 
 
 def _get_applicable(script_dict, situation):
@@ -21,7 +70,7 @@ def _get_applicable(script_dict, situation):
     for name, scripts in script_dict.items():
         for script in scripts:
             for column in script.right:
-                if _contains_column(situation, column) == -1:
+                if situation.get_column_index(column) == -1:
                     break
             else:
                 prev_scripts = applicable_dict.get(name, set())
@@ -32,32 +81,6 @@ def _get_applicable(script_dict, situation):
                     applicable_dict[name] = prev_scripts | {script}
 
     return applicable_dict
-
-
-def _contains_column(fragment, to_check, not_delay=True):
-    logging.debug('Check column {0} for situation {1}'.format(to_check, fragment))
-    part = fragment.left if not_delay else fragment.right
-    check_signs = {sgn for _, sgn in to_check}
-    check_inds = {sign: idx for idx, sign in to_check}
-    result = -1
-    for i, column in enumerate(part):
-        signs = {sgn for _, sgn in column}
-        inds = {sign: idx for idx, sign in column}
-        if not signs == check_signs:
-            logging.debug('\tSigns are not equal: {0} and {1}'.format(signs, check_signs))
-            continue
-        for sign in signs:
-            check_mean = sign.meaning[check_inds[sign]]
-            mean1 = sign.meaning[inds[sign]]
-            if sign.is_action() and not mean1.equal_signs(check_mean):
-                logging.debug('\tAction sign {0} is not same'.format(sign))
-                break
-        else:
-            result = i
-            break
-
-    logging.debug('\tCheck result: {0}'.format(result))
-    return result
 
 
 def _get_signs(fragment):
