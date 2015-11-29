@@ -13,14 +13,13 @@ def pma_search(task):
     scripts_dict = _generate_scripts(current_signs)
     applicable_scripts = _get_applicable(scripts_dict, current_fragment)
 
-    logging.info('Plan: {0}', [x[1] for x in plan])
+    logging.info('Applicable scripts: {0}'.format(applicable_scripts))
 
 
 def _get_applicable(script_dict, situation):
     applicable_dict = {}
     for name, scripts in script_dict.items():
         for script in scripts:
-            # TODO: check that all columns different
             for column in script.right:
                 if _contains_column(situation, column) == -1:
                     break
@@ -36,24 +35,28 @@ def _get_applicable(script_dict, situation):
 
 
 def _contains_column(fragment, to_check, not_delay=True):
+    logging.debug('Check column {0} for situation {1}'.format(to_check, fragment))
     part = fragment.left if not_delay else fragment.right
-    check_signs = [sgn for _, sgn in to_check]
+    check_signs = {sgn for _, sgn in to_check}
     check_inds = {sign: idx for idx, sign in to_check}
     result = -1
     for i, column in enumerate(part):
-        signs = [sgn for _, sgn in column]
+        signs = {sgn for _, sgn in column}
         inds = {sign: idx for idx, sign in column}
         if not signs == check_signs:
+            logging.debug('\tSigns are not equal: {0} and {1}'.format(signs, check_signs))
             continue
         for sign in signs:
+            check_mean = sign.meaning[check_inds[sign]]
             mean1 = sign.meaning[inds[sign]]
-            mean2 = sign.meaning[check_inds[sign]]
-            if sign.is_action() and not mean1.equal_signs(mean2):
+            if sign.is_action() and not mean1.equal_signs(check_mean):
+                logging.debug('\tAction sign {0} is not same'.format(sign))
                 break
         else:
             result = i
             break
 
+    logging.debug('\tCheck result: {0}'.format(result))
     return result
 
 
