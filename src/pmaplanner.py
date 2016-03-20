@@ -57,7 +57,7 @@ def _parse(domain_file, problem_file):
 def _ground(problem):
     logging.info('Grounding start: {0}'.format(problem.name))
     task = sign_grounding.ground(problem)
-    logging.info('Grounding end: {0}'.format(task.name))
+    logging.info('Grounding end: {0}'.format(problem.name))
     logging.info('{0} Signs created'.format(len(task.signs)))
     return task
 

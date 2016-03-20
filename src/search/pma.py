@@ -1,4 +1,5 @@
 import logging
+import random
 import itertools
 from sign_task import NetworkFragment
 
@@ -18,15 +19,14 @@ def pma_search(task):
         applicable_scripts = _get_applicable(scripts_dict, current_fragment)
 
         logging.debug('Applicable scripts: {0}'.format(applicable_scripts))
-        sorted_scripts = _sort_meaning(applicable_scripts, current_fragment,
+        heuristic, name, script = _select_meaning(applicable_scripts, current_fragment,
                                        start_fragment, [x for x, _, _ in plan])
 
-        if not sorted_scripts:
-            logging.debug('Not found applicable scripts')
+        if not name:
+            logging.debug('Not found applicable scripts ({0})'.format([x for _, x, _ in plan]))
             break
 
-        heuristic, name, script = sorted_scripts[0]
-        logging.debug('Chosen script: {0} -> {1}'.format(name, script))
+        logging.debug('STEP {0}: Chosen script: {1} -> {2}'.format(iteration, name, script))
 
         plan.append((current_fragment, name, script))
         current_fragment = _apply_script(current_fragment, script)
@@ -61,7 +61,7 @@ def _apply_script(fragment, script):
     return new_frag
 
 
-def _sort_meaning(applicable_dict, current_situation, ref_situation, prev_situations):
+def _select_meaning(applicable_dict, current_situation, ref_situation, prev_situations):
     heuristic = []
     for name, scripts in applicable_dict.items():
         for script in scripts:
@@ -75,8 +75,15 @@ def _sort_meaning(applicable_dict, current_situation, ref_situation, prev_situat
                     if ref_situation.get_column_index(column) >= 0:
                         counter += 1
                 heuristic.append((counter, name, script))
-    heuristic.sort(reverse=True)
-    return heuristic
+    # TODO: hack
+    max_cou = -1
+    best = None
+    for counter, name, script in heuristic:
+        if counter > max_cou or (counter == max_cou and random.random() > 0.5):
+            best = counter, name, script
+            max_cou = counter
+
+    return best if best else (None, None, None)
 
 
 def _deep_equal_signs(sit1, sit2):
@@ -85,10 +92,10 @@ def _deep_equal_signs(sit1, sit2):
 
     signs1_map = {}
     signs2_map = {}
-    for column in sit1.left:
+    for column in sit1.left + sit1.right:
         for index, sign in column:
             signs1_map[sign.name] = signs1_map.get(sign.name, []) + [(sign, index)]
-    for column in sit2.left:
+    for column in sit2.left + sit2.right:
         for index, sign in column:
             signs2_map[sign.name] = signs2_map.get(sign.name, []) + [(sign, index)]
 
@@ -98,7 +105,7 @@ def _deep_equal_signs(sit1, sit2):
         signs2 = signs2_map[name]
         if not len(signs1) == len(signs2):
             return False
-        if len(signs1) > 1:
+        if len(signs1) > 0:
             checked = []
             for sign1, index1 in signs1:
                 for i, (sign2, index2) in enumerate(signs2):

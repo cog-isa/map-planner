@@ -41,7 +41,7 @@ def ground(problem):
     start_situation = _define_situation('*start*', problem.initial_state, signs)
     goal_situation = _define_situation('*finish*', problem.goal, signs)
 
-    _expand_situation(goal_situation, signs)
+    _expand_situation2(goal_situation, signs)  # For task02
     return Task(problem.name, signs, start_situation, goal_situation)
 
 
@@ -68,12 +68,12 @@ def _significance_from_predicates(procedural_sign, signs, predicates, not_delaye
         predicate_sign.significance[0].add((0, procedural_sign))
 
         if len(predicate.signature) == 1:
-            add_to_significance(procedural_sign, not_delayed, predicate.signature[0],column)
+            add_to_significance(procedural_sign, not_delayed, predicate.signature[0], column)
         elif len(predicate.signature) == 2 and predicate_sign.images[0].is_empty():
             add_to_significance(predicate_sign, True, predicate.signature[0], 0)
             add_to_significance(predicate_sign, False, predicate.signature[1], 0)
         else:
-            logging.error('Not supported predicate {0}'.format(predicate.name))
+            logging.warning('Not supported predicate {0}'.format(predicate.name))
 
 
 def _significance_from_abstracts(signs):
@@ -117,10 +117,29 @@ def _expand_situation(goal_situation, signs):
 
     signs['ontable'].meaning.append(NetworkFragment([]))
     signs['a'].meaning.append(NetworkFragment([]))
+
+    column = len(goal_situation.meaning[0].left)
+    goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
+    goal_situation.meaning[0].add((len(signs['a'].meaning) - 1, signs['a']), column_index=column)
+
+    signs['clear'].meaning.append(NetworkFragment([]))
+    signs['d'].meaning.append(NetworkFragment([]))
+    column = len(goal_situation.meaning[0].left)
+    goal_situation.meaning[0].add((len(signs['clear'].meaning) - 1, signs['clear']), column_index=column)
+    goal_situation.meaning[0].add((len(signs['d'].meaning) - 1, signs['d']), column_index=column)
+
+
+def _expand_situation2(goal_situation, signs):
+    # TODO: add common approach
+    signs['handempty'].meaning.append(NetworkFragment([]))
+    goal_situation.meaning[0].add((len(signs['handempty'].meaning) - 1, signs['handempty']))
+
+    signs['ontable'].meaning.append(NetworkFragment([]))
+    signs['b'].meaning.append(NetworkFragment([]))
+
     column = len(goal_situation.meaning[0].left)
     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
     goal_situation.meaning[0].add((len(signs['b'].meaning) - 1, signs['b']), column_index=column)
-    #goal_situation.meaning[0].add((len(signs['a'].meaning) - 1, signs['a']), column_index=column)
 
     signs['clear'].meaning.append(NetworkFragment([]))
     signs['d'].meaning.append(NetworkFragment([]))
