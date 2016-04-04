@@ -9,7 +9,7 @@ from pddl.parser import Parser
 from search.pma import pma_search
 
 NUMBER = re.compile(r'\d+')
-
+i = 0
 
 def find_domain(problem):
     """
@@ -80,7 +80,8 @@ def search_plan(domain_file, problem_file):
     solution = pma_search(task)
     logging.info('Search end: {0}'.format(task.name))
     logging.info('Wall-clock search time: {0:.2}'.format(time.clock() -
-                                                         search_start_time))
+                                                             search_start_time))
+
     return solution
 
 
@@ -95,13 +96,14 @@ if __name__ == '__main__':
     # Commandline parsing
     log_levels = ['debug', 'info', 'warning', 'error']
 
-
     argparser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     argparser.add_argument(dest='domain', nargs='?')
     argparser.add_argument(dest='problem')
     argparser.add_argument('-l', '--loglevel', choices=log_levels,
                            default='info')
+    argparser.add_argument ('-i', '--iter', default=1, type=int)
+
     args = argparser.parse_args()
 
     logging.basicConfig(level=getattr(logging, args.loglevel.upper()),
@@ -113,12 +115,16 @@ if __name__ == '__main__':
         args.domain = find_domain(args.problem)
     else:
         args.domain = os.path.abspath(args.domain)
+    for _ in range(args.iter):
+        solution = search_plan(args.domain, args.problem)
 
-    solution = search_plan(args.domain, args.problem)
 
-    if solution is None:
-        logging.warning('No solution could be found')
-    else:
-        solution_file = args.problem + '.soln'
-        logging.info('Plan length: %s' % len(solution))
-        _write_solution(solution, solution_file)
+        if solution is None:
+            logging.warning('No solution could be found')
+        else:
+            solution_file = args.problem + '.soln'
+            logging.info('Plan length: %s' % len(solution))
+            _write_solution(solution, solution_file)
+            i+=1
+    logging.info('plan have been found for %s times from %s iterations' % (i, args.iter) )
+
