@@ -6,7 +6,7 @@ import argparse
 import logging
 import sign_grounding
 from pddl.parser import Parser
-from search.pma import pma_search
+from search.mapsearch import map_search
 
 NUMBER = re.compile(r'\d+')
 i = 0
@@ -77,7 +77,7 @@ def search_plan(domain_file, problem_file):
 
     search_start_time = time.clock()
     logging.info('Search start: {0}'.format(task.name))
-    solution = pma_search(task)
+    solution = map_search(task)
     logging.info('Search end: {0}'.format(task.name))
     logging.info('Wall-clock search time: {0:.2}'.format(time.clock() -
                                                              search_start_time))

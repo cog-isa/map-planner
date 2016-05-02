@@ -6,7 +6,7 @@ from sign_task import NetworkFragment
 MAX_ITERATION = 100
 
 
-def pma_search(task):
+def map_search(task):
     current_fragment = task.goal_situation.meaning[0]
     start_fragment = task.start_situation.meaning[0]
     logging.debug('Start: {0}, finish: {1}'.format(start_fragment, current_fragment))
