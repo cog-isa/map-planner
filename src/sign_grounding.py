@@ -41,7 +41,7 @@ def ground(problem):
     start_situation = _define_situation('*start*', problem.initial_state, signs)
     goal_situation = _define_situation('*finish*', problem.goal, signs)
 
-    _expand_situation3(goal_situation, signs)  # For task
+    _expand_situation5(goal_situation, signs)  # For task
     return Task(problem.name, signs, start_situation, goal_situation)
 
 
