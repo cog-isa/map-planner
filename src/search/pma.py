@@ -1,6 +1,6 @@
-import logging
-import random
 import itertools
+import logging
+
 from sign_task import NetworkFragment
 
 MAX_ITERATION = 100
@@ -10,38 +10,52 @@ def pma_search(task):
     current_fragment = task.goal_situation.meaning[0]
     start_fragment = task.start_situation.meaning[0]
     logging.debug('Start: {0}, finish: {1}'.format(start_fragment, current_fragment))
-    plan = []
 
-    iteration = 0
-    while not current_fragment > start_fragment:
-        current_signs = _get_signs(current_fragment)
-        scripts_dict = _generate_scripts(current_signs)
-        applicable_scripts = _get_applicable(scripts_dict, current_fragment)
-
-        logging.debug('Applicable scripts: {0}'.format(applicable_scripts))
-        heuristic, name, script = _select_meaning(applicable_scripts, current_fragment,
-                                       start_fragment, [x for x, _, _ in plan])
-
-        if not name:
-            logging.debug('Not found applicable scripts ({0})'.format([x for _, x, _ in plan]))
-            break
-
-        logging.debug('STEP {0}: Chosen script: {1} -> {2}'.format(iteration, name, script))
-
-        plan.append((current_fragment, name, script))
-        current_fragment = _apply_script(current_fragment, script)
-        logging.debug('Next situation: {0}'.format(current_fragment))
-
-        iteration += 1
-        if iteration >= MAX_ITERATION:
-            logging.debug('Max iteration count')
-            break
-    else:
+    plans = map_iteration(current_fragment, start_fragment, [], 0)
+    logging.debug('Found {0} variants'.format(len(plans)))
+    if plans:
+        plan = sorted(plans, key=lambda x: len(x))[0]
         reversed(plan)
         logging.info('Plan: len={0}, {1}'.format(len(plan), [name for _, name, _ in plan]))
         return [(name, script) for _, name, script in plan]
 
     return None
+
+
+def map_iteration(current_fragment, start_fragment, current_plan, iteration):
+    logging.debug('STEP {0}:'.format(iteration))
+    if iteration >= MAX_ITERATION:
+        logging.debug('\tMax iteration count')
+        return None
+
+    current_signs = _get_signs(current_fragment)
+    scripts_dict = _generate_scripts(current_signs)
+    applicable_scripts = _get_applicable(scripts_dict, current_fragment)
+
+    heuristics = _select_meanings(applicable_scripts, current_fragment,
+                                  start_fragment, [x for x, _, _ in current_plan])
+
+    if not heuristics:
+        logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _ in current_plan]))
+        return None
+
+    logging.debug('\tFound {0} variants'.format(len(heuristics)))
+    final_plans = []
+    for counter, name, script in heuristics:
+        logging.debug('\tChoose {0}: {1} -> {2}'.format(counter, name, script))
+
+        plan = current_plan.copy()
+        plan.append((current_fragment, name, script))
+        next_fragment = _apply_script(current_fragment, script)
+
+        if next_fragment > start_fragment:
+            final_plans.append(plan)
+        else:
+            recursive_plans = map_iteration(next_fragment, start_fragment, plan, iteration + 1)
+            if recursive_plans:
+                final_plans.extend(recursive_plans)
+
+    return final_plans
 
 
 def _apply_script(fragment, script):
@@ -61,7 +75,7 @@ def _apply_script(fragment, script):
     return new_frag
 
 
-def _select_meaning(applicable_dict, current_situation, ref_situation, prev_situations):
+def _select_meanings(applicable_dict, current_situation, ref_situation, prev_situations):
     heuristic = []
     for name, scripts in applicable_dict.items():
         for script in scripts:
@@ -71,19 +85,15 @@ def _select_meaning(applicable_dict, current_situation, ref_situation, prev_situ
                     break
             else:
                 counter = 0
-                for column in script.left:
+                for column in estimation.left:
                     if ref_situation.get_column_index(column) >= 0:
                         counter += 1
                 heuristic.append((counter, name, script))
-    # TODO: hack
-    max_cou = -1
-    best = None
-    for counter, name, script in heuristic:
-        if counter > max_cou or (counter == max_cou and random.random() > 0.5):
-            best = counter, name, script
-            max_cou = counter
-
-    return best if best else (None, None, None)
+    if heuristic:
+        best_heuristics = max(heuristic, key=lambda x: x[0])
+        return list(filter(lambda x: x[0] == best_heuristics[0], heuristic))
+    else:
+        return None
 
 
 def _deep_equal_signs(sit1, sit2):
