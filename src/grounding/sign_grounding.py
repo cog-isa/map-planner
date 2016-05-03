@@ -1,7 +1,8 @@
 import logging
 import itertools
 from collections import defaultdict
-from sign_task import NetworkFragment, Sign, Task
+from semnet import PredictionMatrix, Sign
+from .sign_task import Task
 
 
 def ground(problem):

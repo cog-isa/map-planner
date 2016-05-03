@@ -1,10 +1,11 @@
-import sys
-import os
-import time
-import re
 import argparse
 import logging
-import sign_grounding
+import os
+import re
+import sys
+import time
+
+from grounding import sign_grounding
 from pddl.parser import Parser
 from search.mapsearch import map_search
 

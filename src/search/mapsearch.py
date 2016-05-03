@@ -1,7 +1,7 @@
 import itertools
 import logging
 
-from sign_task import NetworkFragment
+from semnet import NetworkFragment
 
 MAX_ITERATION = 100
 
