@@ -34,26 +34,36 @@ def ground(problem):
 
     for predicate in predicates:
         pred_sign = Sign(predicate.name)
-        for signature in predicate.signature:
-            role_name = signature[1][0].name + signature[0]  # (?x, (block,))
-            if role_name not in signs:
-                signs[role_name] = Sign(role_name)
-                signs[role_name].significances[0].add_feature(signs[signature[1][0].name].significances[0])
-            pred_sign.significances[0].add_feature(signs[role_name].significances[0])
+        if len(predicate.signature) > 1:
+            for fact in predicate.signature:
+                role_name = fact[1][0].name + fact[0]  # (?x, (block,))
+                if role_name not in signs:
+                    signs[role_name] = Sign(role_name)
+                    signs[role_name].significances[0].add_feature(signs[fact[1][0].name].significances[0])
+                pred_sign.significances[0].add_feature(signs[role_name].significances[0])
         signs[predicate.name] = pred_sign
 
     # TODO: if signature in action is different from signature in predicate declaration
     for action in actions:
-        signs[action.name] = Sign(action.name)
+        act_sign = Sign(action.name)
+
+        def update_significance(predicate, effect=False):
+            idx = act_sign.significances[0].add_feature(signs[predicate.name].significances[0], effect=effect)
+            if len(predicate.signature) == 1:
+                fact = predicate.signature[0]
+                role_name = fact[1][0].name + fact[0]
+                act_sign.significances[0].add_feature(signs[role_name].significances[0], idx, effect=effect)
+
         for predicate in action.precondition:
-            signs[action.name].significances[0].add_feature(signs[predicate.name].significances[0])
+            update_significance(predicate)
         for predicate in action.effect.addlist:
-            signs[action.name].significances[0].add_feature(signs[predicate.name].significances[0], effect=True)
+            update_significance(predicate, effect=True)
+        signs[action.name] = act_sign
 
     start_situation = _define_situation('*start*', problem.initial_state, signs)
     goal_situation = _define_situation('*finish*', problem.goal, signs)
 
-    # _expand_situation1(goal_situation, signs)  # For task
+    _expand_situation1(goal_situation, signs)  # For task
     return Task(problem.name, signs, start_situation, goal_situation)
 
 
@@ -109,30 +119,31 @@ def _define_situation(name, predicates, signs):
     situation = Sign(name)
     for predicate in predicates:
         pred_meaning = signs[predicate.name].get_new_meaning()
-        situation.meanings[0].add_feature(pred_meaning)
-        for signature in predicate.signature:
-            sig_meaning = signs[signature[0]].get_new_meaning()
-            pred_meaning.add_feature(sig_meaning)
+        idx = situation.meanings[0].add_feature(pred_meaning)
+        if len(predicate.signature) == 1:
+            sig_meaning = signs[predicate.signature[0][0]].get_new_meaning()
+            situation.meanings[0].add_feature(sig_meaning, idx)
+        else:
+            for fact in predicate.signature:
+                sig_meaning = signs[fact[0]].get_new_meaning()
+                pred_meaning.add_feature(sig_meaning)
 
     return situation
 
-# def _expand_situation1(goal_situation, signs):
-#     # TODO: add common approach
-#     signs['handempty'].meaning.append(NetworkFragment([]))
-#     goal_situation.meaning[0].add((len(signs['handempty'].meaning) - 1, signs['handempty']))
-#
-#     signs['ontable'].meaning.append(NetworkFragment([]))
-#     signs['a'].meaning.append(NetworkFragment([]))
-#
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['a'].meaning) - 1, signs['a']), column_index=column)
-#
-#     signs['clear'].meaning.append(NetworkFragment([]))
-#     signs['d'].meaning.append(NetworkFragment([]))
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['clear'].meaning) - 1, signs['clear']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['d'].meaning) - 1, signs['d']), column_index=column)
+
+def _expand_situation1(goal_situation, signs):
+    a1 = signs['handempty'].get_new_meaning()
+    goal_situation.meanings[0].add_feature(a1)
+
+    a2 = signs['ontable'].get_new_meaning()
+    a3 = signs['a'].get_new_meaning()
+    idx = goal_situation.meanings[0].add_feature(a2)
+    goal_situation.meanings[0].add_feature(a3, idx)
+
+    a4 = signs['clear'].get_new_meaning()
+    a5 = signs['d'].get_new_meaning()
+    idx = goal_situation.meanings[0].add_feature(a4)
+    goal_situation.meanings[0].add_feature(a5, idx)
 
 # def _expand_situation2(goal_situation, signs):
 #     # TODO: add common approach

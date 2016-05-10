@@ -5,8 +5,8 @@ MAX_ITERATION = 100
 
 
 def map_search(task):
-    current_fragment = task.goal_situation.meaning[0]
-    start_fragment = task.start_situation.meaning[0]
+    current_fragment = task.goal_situation.meanings[0]
+    start_fragment = task.start_situation.meanings[0]
     logging.debug('Start: {0}, finish: {1}'.format(start_fragment, current_fragment))
 
     plans = map_iteration(current_fragment, start_fragment, [], 0)

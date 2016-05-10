@@ -67,8 +67,8 @@ class PredictionMatrix:
         if index is None or index >= len(part):
             index = len(part)
             part.append(Event(index, {feature}))
-        elif len(part) < index:
-            part[index].add(feature)
+        else:
+            part[index].coincidences.add(feature)
         return index
 
     def is_empty(self):
