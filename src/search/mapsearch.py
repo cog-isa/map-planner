@@ -1,8 +1,6 @@
 import itertools
 import logging
 
-from semnet import NetworkFragment
-
 MAX_ITERATION = 100
 
 

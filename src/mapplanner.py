@@ -12,6 +12,7 @@ from search.mapsearch import map_search
 NUMBER = re.compile(r'\d+')
 i = 0
 
+
 def find_domain(problem):
     """
     This function tries to guess a domain file from a given problem file.
@@ -81,7 +82,7 @@ def search_plan(domain_file, problem_file):
     solution = map_search(task)
     logging.info('Search end: {0}'.format(task.name))
     logging.info('Wall-clock search time: {0:.2}'.format(time.clock() -
-                                                             search_start_time))
+                                                         search_start_time))
 
     return solution
 
@@ -103,13 +104,19 @@ if __name__ == '__main__':
     argparser.add_argument(dest='problem')
     argparser.add_argument('-l', '--loglevel', choices=log_levels,
                            default='info')
-    argparser.add_argument ('-i', '--iter', default=1, type=int)
+    argparser.add_argument('-i', '--iter', default=1, type=int)
 
     args = argparser.parse_args()
 
-    logging.basicConfig(level=getattr(logging, args.loglevel.upper()),
-                        format='%(asctime)s %(levelname)-8s %(message)s',
-                        stream=sys.stdout)
+    rootLogger = logging.getLogger()
+    logFormatter = logging.Formatter("%(asctime)s %(levelname)-8s  %(message)s")
+    consoleHandler = logging.StreamHandler()
+    consoleHandler.setFormatter(logFormatter)
+    rootLogger.addHandler(consoleHandler)
+    fileHandler = logging.FileHandler('pmaplanner.log')
+    fileHandler.setFormatter(logFormatter)
+    rootLogger.addHandler(fileHandler)
+    rootLogger.setLevel(args.loglevel.upper())
 
     args.problem = os.path.abspath(args.problem)
     if args.domain is None:
@@ -119,13 +126,11 @@ if __name__ == '__main__':
     for _ in range(args.iter):
         solution = search_plan(args.domain, args.problem)
 
-
         if solution is None:
             logging.warning('No solution could be found')
         else:
             solution_file = args.problem + '.soln'
             logging.info('Plan length: %s' % len(solution))
             _write_solution(solution, solution_file)
-            i+=1
-    logging.info('plan have been found for %s times from %s iterations' % (i, args.iter) )
-
+            i += 1
+    logging.info('plan have been found for %s times from %s iterations' % (i, args.iter))
