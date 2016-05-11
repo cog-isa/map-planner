@@ -26,11 +26,20 @@ def map_iteration(current_fragment, start_fragment, current_plan, iteration):
         logging.debug('\tMax iteration count')
         return None
 
-    current_signs = _get_signs(current_fragment)
-    scripts_dict = _generate_scripts(current_signs)
-    applicable_scripts = _get_applicable(scripts_dict, current_fragment)
+    current_signs = current_fragment.get_signs()
+    significances = []
+    for sign in current_signs:
+        if not sign.is_action():
+            significances.extend(sign.get_own_scripts())
+            significances.extend(sign.get_inherited_scripts())
 
-    heuristics = _select_meanings(applicable_scripts, current_fragment,
+    meanings = []
+    for significance in significances:
+        meanings.extend(_interpret(significance, current_signs))
+
+    applicable_meaning = _get_applicable(meanings, current_fragment)
+
+    heuristics = _select_meanings(applicable_meaning, current_fragment,
                                   start_fragment, [x for x, _, _ in current_plan])
 
     if not heuristics:
@@ -54,6 +63,35 @@ def map_iteration(current_fragment, start_fragment, current_plan, iteration):
                 final_plans.extend(recursive_plans)
 
     return final_plans
+
+
+def _interpret(significance, signs):
+    meanings = []
+    return meanings
+
+
+def _generate_scripts(signs):
+    """
+    Generate scripts without abstract signs
+    :param signs: All Sign
+    :return: dict of generated scripts
+    """
+    scripts_dict = {}
+    for sign in signs:
+        if not sign.is_action() and len(sign.get_parents()) > 0:
+            frg_dict = _generate_fragments(sign)
+            # TODO: add recursion generation not only for tow roles
+            for name, fragment in frg_dict.items():
+                replaced = set()
+                for other_sign in signs - {sign}:
+                    if not other_sign.is_action() and len(other_sign.get_parents()) > 0:
+                        replaced |= _replace_parent(fragment, other_sign)
+
+                if not replaced:
+                    scripts_dict[name] = scripts_dict.get(name, set()) | {fragment}
+                else:
+                    scripts_dict[name] = scripts_dict.get(name, set()) | replaced
+    return scripts_dict
 
 
 def _apply_script(fragment, script):
@@ -157,30 +195,6 @@ def _get_signs(fragment):
             else:
                 result.add(element)
     return result
-
-
-def _generate_scripts(signs):
-    """
-    Generate scripts without abstract signs
-    :param signs: All Sign
-    :return: dict of generated scripts
-    """
-    scripts_dict = {}
-    for sign in signs:
-        if not sign.is_action() and len(sign.get_parents()) > 0:
-            frg_dict = _generate_fragments(sign)
-            # TODO: add recursion generation not only for tow roles
-            for name, fragment in frg_dict.items():
-                replaced = set()
-                for other_sign in signs - {sign}:
-                    if not other_sign.is_action() and len(other_sign.get_parents()) > 0:
-                        replaced |= _replace_parent(fragment, other_sign)
-
-                if not replaced:
-                    scripts_dict[name] = scripts_dict.get(name, set()) | {fragment}
-                else:
-                    scripts_dict[name] = scripts_dict.get(name, set()) | replaced
-    return scripts_dict
 
 
 def _generate_fragments(sign):

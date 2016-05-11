@@ -11,6 +11,7 @@ class PredictionMatrix:
     def __init__(self, sign, uid, cause=None, effect=None):
         self.sign = sign
         self.uid = uid
+        self.out_links = []
         if not cause:
             self.cause = []
         else:
@@ -29,14 +30,14 @@ class PredictionMatrix:
                                                                 ','.join(map(repr, self.effect)))
 
     def __eq__(self, other):
-        return self.sign == other.sign and self.uid == other.id
+        return self.sign == other.sign and self.uid == other.uid
 
     def __hash__(self):
         return hash(self.uid) + hash(self.sign)
 
-    def __contains__(self, sign):
+    def __contains__(self, pm):
         for event in itertools.chain(self.cause, self.effect):
-            if sign in event:
+            if pm in event:
                 return True
 
         return False
@@ -58,18 +59,26 @@ class PredictionMatrix:
         return all([event1 == event2 for event1, event2 in zip(self.cause, other.cause)]) and all(
             [event1 == event2 for event1, event2 in zip(self.effect, other.effect)])
 
-    def add_feature(self, feature, index=None, effect=False):
-        """
-        feature: PredictionMatrix of existed sign
-        """
-        part = self.effect if effect else self.cause
+    def add_feature(self, feature, seq=None, effect=False):
+        mult, part = (-1, self.effect) if effect else (1, self.cause)
 
-        if index is None or index >= len(part):
-            index = len(part)
+        if seq is None:
+            seq = len(part)
+            index = (len(part) + 1) * mult
             part.append(Event(index, {feature}))
         else:
-            part[index].coincidences.add(feature)
-        return index
+            part[seq].coincidences.add(feature)
+            index = (seq + 1) * mult
+        feature.add_out_link(self, index)
+        return seq
+
+    def add_out_link(self, pm, index):
+        for lpm, indexes in self.out_links:
+            if lpm == pm:
+                indexes.append(index)
+                break
+        else:
+            self.out_links.append((pm, [index]))
 
     def is_empty(self):
         return len(self.cause) == 0 and len(self.effect) == 0
@@ -80,19 +89,25 @@ class PredictionMatrix:
             cause.append(c.copy())
         for e in self.effect:
             effect.append(e.copy())
-        return PredictionMatrix(None, None, cause, effect)
+        return PredictionMatrix(self.sign, None, cause, effect)
+
+    def deep_copy(self):
+        cause, effect = [], []
+        for c in self.cause:
+            cause.append(c.deep_copy())
+        for e in self.effect:
+            effect.append(e.deep_copy())
+        return PredictionMatrix(self.sign, self.uid, cause, effect)
 
     def get_signs(self):
         signs = set()
         for event in itertools.chain(self.cause, self.effect):
             signs |= event.get_signs()
+        return signs
 
-    def get_index(self, sign):
-        index = 0
+    def replace(self, old_pm, new_pm):
         for event in itertools.chain(self.cause, self.effect):
-            if sign in event.get_signs():
-                return index
-            index += 1
+            event.replace(old_pm, new_pm)
 
 
 class Event:
@@ -116,18 +131,25 @@ class Event:
     def __eq__(self, other):
         return self.coincidences == other.coincidences
 
-    def __contains__(self, sign):
-        for pm in self.coincidences:
-            if pm.sign == sign:
-                return True
-
-        return False
+    def __contains__(self, pm):
+        return pm in self.coincidences
 
     def get_signs(self):
-        return [pm.sign for pm in self.coincidences]
+        return {pm.sign for pm in self.coincidences}
 
     def copy(self):
         return Event(self.index, self.coincidences.copy())
+
+    def deep_copy(self):
+        return Event(self.index, {pm.deep_copy() for pm in self.coincidences})
+
+    def replace(self, old_pm, new_pm):
+        for pm in self.coincidences.copy():
+            if pm == old_pm:
+                self.coincidences.remove(old_pm)
+                self.coincidences.add(new_pm)
+            else:
+                pm.replace(old_pm, new_pm)
 
 
 class Sign:
@@ -145,17 +167,17 @@ class Sign:
         if image:
             self.images = [image]
         else:
-            self.images = [PredictionMatrix(self, 0)]
+            self.images = []
 
         if significance:
             self.significances = [significance]
         else:
-            self.significances = [PredictionMatrix(self, 0)]
+            self.significances = []
 
         if meaning:
             self.meanings = [meaning]
         else:
-            self.meanings = [PredictionMatrix(self, 0)]
+            self.meanings = []
 
     def __str__(self):
         return '"{0}"'.format(self.name)
@@ -170,18 +192,27 @@ class Sign:
     def __hash__(self):
         return hash(self.name)
 
+    def get_new_image(self):
+        pm = PredictionMatrix(self, len(self.images))
+        self.images.append(pm)
+        return pm
+
     def get_new_significance(self):
-        if not self.significances[-1].is_empty():
-            self.significances.append(PredictionMatrix(self, len(self.significances)))
-        return self.significances[-1]
+        pm = PredictionMatrix(self, len(self.significances))
+        self.significances.append(pm)
+        return pm
 
     def get_new_meaning(self):
-        if not self.meanings[-1].is_empty():
-            self.meanings.append(PredictionMatrix(self, len(self.meanings)))
-        return self.meanings[-1]
+        pm = PredictionMatrix(self, len(self.meanings))
+        self.meanings.append(pm)
+        return pm
 
     def is_action(self):
-        return any([len(matrix.effect) > 0 for matrix in self.images])
+        return any([len(matrix.effect) > 0 for matrix in self.images]) or any(
+            [len(matrix.effect) > 0 for matrix in self.significances])
+
+    def is_abstract(self):
+        return len(self.images) == 0
 
     def get_parents(self):
         return set([pm.sign for pm, _ in self.significances if not pm.sign.is_action()])
@@ -191,3 +222,24 @@ class Sign:
         for pm in self.images:
             components |= pm.get_signs()
         return components
+
+    def get_own_scripts(self):
+        scripts = []
+        for significance in self.significances:
+            for pm, index in significance.out_links:
+                if pm.sign.is_action():
+                    scripts.append(pm.copy())
+        return scripts
+
+    def get_inherited_scripts(self):
+        scripts = []
+        for significance in self.significances:
+            for pm, index in significance.out_links:
+                # we want to replace abstract signs and not relations
+                if not pm.sign.is_action() and len(pm.get_signs()) == 1:
+                    inherited = pm.sign.get_own_scripts() + pm.sign.get_inherited_scripts()
+                    for inh in inherited:
+                        replaced = inh.deep_copy()
+                        replaced.replace(pm, significance)
+                        scripts.append(replaced)
+        return scripts

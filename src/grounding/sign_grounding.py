@@ -29,30 +29,37 @@ def ground(problem):
     for tp, objects in type_map.items():
         sign = Sign(tp.name)
         for obj in objects:
-            sign.significances[0].add_feature(signs[obj].significances[0])
+            obj_signif = signs[obj].get_new_significance()
+            signs[obj].get_new_image()
+            tp_signif = sign.get_new_significance()
+            tp_signif.add_feature(obj_signif)
         signs[tp.name] = sign
 
     for predicate in predicates:
         pred_sign = Sign(predicate.name)
+        significance = pred_sign.get_new_significance()
         if len(predicate.signature) > 1:
             for fact in predicate.signature:
                 role_name = fact[1][0].name + fact[0]  # (?x, (block,))
                 if role_name not in signs:
-                    signs[role_name] = Sign(role_name)
-                    signs[role_name].significances[0].add_feature(signs[fact[1][0].name].significances[0])
-                pred_sign.significances[0].add_feature(signs[role_name].significances[0])
+                    role_sign = Sign(role_name)
+                    role_signif = role_sign.get_new_significance()
+                    role_signif.add_feature(signs[fact[1][0].name].significances[0])
+                    significance.add_feature(role_signif)
+                    signs[role_name] = role_sign
         signs[predicate.name] = pred_sign
 
     # TODO: if signature in action is different from signature in predicate declaration
     for action in actions:
         act_sign = Sign(action.name)
+        act_signif = act_sign.get_new_significance()
 
         def update_significance(predicate, effect=False):
-            idx = act_sign.significances[0].add_feature(signs[predicate.name].significances[0], effect=effect)
+            idx = act_signif.add_feature(signs[predicate.name].significances[0], effect=effect)
             if len(predicate.signature) == 1:
                 fact = predicate.signature[0]
                 role_name = fact[1][0].name + fact[0]
-                act_sign.significances[0].add_feature(signs[role_name].significances[0], idx, effect=effect)
+                act_signif.add_feature(signs[role_name].significances[0], idx, effect=effect)
 
         for predicate in action.precondition:
             update_significance(predicate)
@@ -117,12 +124,13 @@ def _create_type_map(objects):
 
 def _define_situation(name, predicates, signs):
     situation = Sign(name)
+    sit_meaning = situation.get_new_meaning()
     for predicate in predicates:
         pred_meaning = signs[predicate.name].get_new_meaning()
-        idx = situation.meanings[0].add_feature(pred_meaning)
+        idx = sit_meaning.add_feature(pred_meaning)
         if len(predicate.signature) == 1:
             sig_meaning = signs[predicate.signature[0][0]].get_new_meaning()
-            situation.meanings[0].add_feature(sig_meaning, idx)
+            sit_meaning.add_feature(sig_meaning, idx)
         else:
             for fact in predicate.signature:
                 sig_meaning = signs[fact[0]].get_new_meaning()
