@@ -26,7 +26,7 @@ def map_iteration(current_fragment, start_fragment, current_plan, iteration):
         logging.debug('\tMax iteration count')
         return None
 
-    current_signs = current_fragment.get_signs()
+    current_signs = current_fragment.get_signs(2)
     significances = []
     for sign in current_signs:
         if not sign.is_action():
