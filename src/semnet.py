@@ -52,6 +52,20 @@ class PredictionMatrix:
 
         return True
 
+    def is_empty(self):
+        return len(self.cause) == 0 and len(self.effect) == 0
+
+    def is_causal(self):
+        return len(self.effect) > 0
+
+    def copy(self, base, new_base):
+        pm, _ = getattr(self.sign, 'add_' + new_base)()
+        for event in self.cause:
+            pm.cause.append(event.copy(base, new_base))
+        for event in self.effect:
+            pm.effect.append(event.copy(base, new_base))
+        return pm
+
     def add_feature(self, feature, seq=None, effect=False):
         """
 
@@ -70,8 +84,32 @@ class PredictionMatrix:
             index = abs(seq) * mult
         return index
 
-    def is_empty(self):
-        return len(self.cause) == 0 and len(self.effect) == 0
+    def spread_down_activity(self, base, depth):
+        """
+        Spread activity down in hierarchy
+        @param base: name of semantic net that activity spreads on
+        @param depth: recursive depth of spreading
+        @return: active PredictionMatrices
+        """
+        active_pms = []
+        if depth > 0:
+            for event in itertools.chain(self.cause, self.effect):
+                for sign, conn in event.coincidences:
+                    if conn > 0:
+                        pm = getattr(sign, base + 's')[conn - 1]
+                        active_pms.append(pm)
+                        if not pm.is_empty():
+                            active_pms.extend(pm.spread_down_activity(base, depth - 1))
+                    else:
+                        pms = getattr(sign, base)
+                        active_pms.extend(pms)
+                        for pm in pms:
+                            active_pms.extend(pm.spread_activity(base, depth - 1))
+        return active_pms
+
+    def replace(self, base, old_sign, new_sign):
+        for event in itertools.chain(self.cause, self.effect):
+            event.replace(base, old_sign, new_sign)
 
 
 class Event:
@@ -97,19 +135,40 @@ class Event:
         return self.coincidences == other.coincidences
 
     def __contains__(self, sign):
-        return sign in self.coincidences
+        for s, _ in self.coincidences:
+            if s == sign:
+                return True
+        return False
+
+    def copy(self, base, new_base):
+        e = Event(self.index)
+        for sign, conn in self.coincidences:
+            pms = getattr(sign, base + 's')
+            # TODO: copy through 0 label
+            if conn > 0:
+                new_pm = pms[conn - 1].copy(base, new_base)
+            elif len(pms) == 1:
+                new_pm = pms[0].copy(base, new_base)
+            else:
+                new_pm = None
+            _, index = getattr(sign, 'add_' + new_base)(new_pm)
+            e.coincidences.add((sign, index))
+        return e
+
+    def replace(self, base, old_sign, new_sign):
+        pair = None
+        for sign, conn in self.coincidences:
+            if sign == old_sign:
+                pair = (sign, conn)
+            else:
+                getattr(sign, base + 's')[conn - 1].replace(base, old_sign, new_sign)
+        if pair:
+            self.coincidences.remove(pair)
+            _, new_conn = getattr(new_sign, 'add_' + base)()
+            self.coincidences.add((new_sign, new_conn))
 
 
 class Sign:
-    """
-        Sign - element of model of the world
-
-        name - an unique string
-        significances - a list of parent's PredictionMatrices with indexes
-        images - a list of PredictionMatrices
-        meanings - a list of parent's PredictionMatrices with indexes
-    """
-
     def __init__(self, name, image=None, significance=None, meaning=None):
         self.name = name
         if image:
@@ -143,18 +202,24 @@ class Sign:
     def __hash__(self):
         return hash(self.name)
 
-    def get_new_image(self):
-        pm = PredictionMatrix(self, len(self.images))
+    def is_abstract(self):
+        return len(self.images) == 0
+
+    def add_image(self, pm=None):
+        if not pm:
+            pm = PredictionMatrix(self, len(self.images) + 1)
         self.images.append(pm)
         return pm, len(self.images)
 
-    def get_new_significance(self):
-        pm = PredictionMatrix(self, len(self.significances))
+    def add_significance(self, pm=None):
+        if not pm:
+            pm = PredictionMatrix(self, len(self.significances) + 1)
         self.significances.append(pm)
         return pm, len(self.significances)
 
-    def get_new_meaning(self):
-        pm = PredictionMatrix(self, len(self.meanings))
+    def add_meaning(self, pm=None):
+        if not pm:
+            pm = PredictionMatrix(self, len(self.meanings) + 1)
         self.meanings.append(pm)
         return pm, len(self.meanings)
 
@@ -182,39 +247,23 @@ class Sign:
         else:
             self.out_meanings.append((pm, [index]))
 
-    def is_action(self):
-        return any([len(matrix.effect) > 0 for matrix in self.images]) or any(
-            [len(matrix.effect) > 0 for matrix in self.significances])
-
-    def is_abstract(self):
-        return len(self.images) == 0
-
-    def get_parents(self):
-        return set([sign for sign in self.significances if not sign.is_action()])
-
-    def get_components(self):
-        components = set()
-        for pm in self.images:
-            components |= pm.get_signs()
-        return components
-
-    def get_own_scripts(self):
-        scripts = []
-        for pm in self.significances:
-            for parent, index in pm.out_links:
-                if parent.sign.is_action():
-                    scripts.append(pm.copy())
-        return scripts
-
-    def get_inherited_scripts(self):
-        scripts = []
-        for significance in self.significances:
-            for pm, index in significance.out_links:
-                # we want to replace abstract signs and not relations
-                if not pm.sign.is_action() and len(pm.get_signs()) == 1:
-                    inherited = pm.sign.get_own_scripts() + pm.sign.get_inherited_scripts()
-                    for inh in inherited:
-                        replaced = inh.deep_copy()
-                        replaced.replace(pm, significance)
-                        scripts.append(replaced)
-        return scripts
+    def spread_up_activity(self, base, new_base, depth):
+        """
+        Spread activity up in hierarchy
+        @param base: type of semantic net that activity spreads on
+        @param new_base: type of semantic net that is used for copying
+        @param depth: recursive depth of spreading
+        @return: active PredictionMatrices
+        """
+        active_pms = []
+        if depth > 0:
+            for pm, indexes in getattr(self, 'out_' + base + 's'):
+                if pm.is_causal():
+                    active_pms.append(pm.copy(base, new_base))
+                else:
+                    pms = pm.sign.spread_up_activity(base, new_base, depth - 1)
+                    _, index = getattr(self, 'add_' + new_base)()
+                    for hpm in pms:
+                        hpm.replace(new_base, pm.sign, self)
+                        active_pms.append(hpm)
+        return active_pms

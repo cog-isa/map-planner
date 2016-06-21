@@ -30,15 +30,15 @@ def ground(problem):
         tp_sign = Sign(tp.name)
         for obj in objects:
             obj_sign = signs[obj]
-            tp_signif, _ = tp_sign.get_new_significance()
+            tp_signif, _ = tp_sign.add_significance()
             index = tp_signif.add_feature((obj_sign, 0))
             obj_sign.add_out_significance(tp_signif, index)
         signs[tp.name] = tp_sign
 
     for predicate in predicates:
         pred_sign = Sign(predicate.name)
-        if len(predicate.signature) == 2:
-            significance, _ = pred_sign.get_new_significance()
+        if len(predicate.signature) == 2: # on(block?x, block?y)
+            significance, _ = pred_sign.add_significance()
 
             def update_significance(fact, effect=False):
                 role_name = fact[1][0].name + fact[0]  # (?x, (block,))
@@ -46,20 +46,20 @@ def ground(problem):
                     signs[role_name] = Sign(role_name)
                 role_sign = signs[role_name]
                 obj_sign = signs[fact[1][0].name]
-                role_signif, _ = role_sign.get_new_significance()
+                role_signif, _ = role_sign.add_significance()
                 idx1 = role_signif.add_feature((obj_sign, 0))
                 obj_sign.add_out_significance(role_signif, idx1)
                 idx2 = significance.add_feature((role_sign, 0), effect=effect)
                 role_sign.add_out_significance(significance, idx2)
 
             update_significance(predicate.signature[0])
-            update_significance(predicate.signature[1], True)
+            update_significance(predicate.signature[1])
 
         signs[predicate.name] = pred_sign
 
     for action in actions:
         act_sign = Sign(action.name)
-        act_signif, _ = act_sign.get_new_significance()
+        act_signif, _ = act_sign.add_significance()
 
         def update_significance(predicate, effect=False):
             pred_sign = signs[predicate.name]
@@ -134,22 +134,21 @@ def _create_type_map(objects):
 
 def _define_situation(name, predicates, signs):
     situation = Sign(name)
-    sit_meaning, _ = situation.get_new_meaning()
+    sit_meaning, _ = situation.add_meaning()
     for predicate in predicates:
         pred_sign = signs[predicate.name]
-        _, pred_conn = pred_sign.get_new_meaning()
+        pred_meaning, pred_conn = pred_sign.add_meaning()
         idx = sit_meaning.add_feature((pred_sign, pred_conn))
         pred_sign.add_out_meaning(sit_meaning, idx)
         if len(predicate.signature) == 1:
             sig_sign = signs[predicate.signature[0][0]]
-            _, sig_conn = sig_sign.get_new_meaning()
+            _, sig_conn = sig_sign.add_meaning()
             idxs = sit_meaning.add_feature((sig_sign, sig_conn), idx)
             sig_sign.add_out_meaning(sit_meaning, idxs)
-        else:
-            pred_meaning, _ = pred_sign.get_new_meaning()
+        elif len(predicate.signature) > 1:
             for fact in predicate.signature:
                 fact_sign = signs[fact[0]]
-                _, fact_conn = fact_sign.get_new_meaning()
+                _, fact_conn = fact_sign.add_meaning()
                 idxf = pred_meaning.add_feature((fact_sign, fact_conn))
                 fact_sign.add_out_meaning(pred_meaning, idxf)
 
@@ -157,191 +156,21 @@ def _define_situation(name, predicates, signs):
 
 
 def _expand_situation1(goal_situation, signs):
-    _, conn1 = signs['handempty'].get_new_meaning()
+    _, conn1 = signs['handempty'].add_meaning()
     id1 = goal_situation.meanings[0].add_feature((signs['handempty'], conn1))
     signs['handempty'].add_out_meaning(goal_situation.meanings[0], id1)
 
-    _, conn2 = signs['ontable'].get_new_meaning()
-    _, conn3 = signs['a'].get_new_meaning()
+    _, conn2 = signs['ontable'].add_meaning()
+    _, conn3 = signs['a'].add_meaning()
     id2 = goal_situation.meanings[0].add_feature((signs['ontable'], conn2))
     goal_situation.meanings[0].add_feature((signs['a'], conn3), id2)
     signs['ontable'].add_out_meaning(goal_situation.meanings[0], id2)
     signs['a'].add_out_meaning(goal_situation.meanings[0], id2)
 
-    _, conn4 = signs['clear'].get_new_meaning()
-    _, conn5 = signs['d'].get_new_meaning()
+    _, conn4 = signs['clear'].add_meaning()
+    _, conn5 = signs['d'].add_meaning()
     id4 = goal_situation.meanings[0].add_feature((signs['clear'], conn4))
     goal_situation.meanings[0].add_feature((signs['d'], conn5), id4)
     signs['clear'].add_out_meaning(goal_situation.meanings[0], id4)
     signs['d'].add_out_meaning(goal_situation.meanings[0], id4)
 
-# def _expand_situation2(goal_situation, signs):
-#     # TODO: add common approach
-#     signs['handempty'].meaning.append(NetworkFragment([]))
-#     goal_situation.meaning[0].add((len(signs['handempty'].meaning) - 1, signs['handempty']))
-#
-#     signs['ontable'].meaning.append(NetworkFragment([]))
-#     signs['b'].meaning.append(NetworkFragment([]))
-#
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['b'].meaning) - 1, signs['b']), column_index=column)
-#
-#     signs['clear'].meaning.append(NetworkFragment([]))
-#     signs['d'].meaning.append(NetworkFragment([]))
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['clear'].meaning) - 1, signs['clear']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['d'].meaning) - 1, signs['d']), column_index=column)
-#
-#
-# def _expand_situation3(goal_situation, signs):
-#     # TODO: add common approach
-#     signs['handempty'].meaning.append(NetworkFragment([]))
-#     goal_situation.meaning[0].add((len(signs['handempty'].meaning) - 1, signs['handempty']))
-#
-#     signs['ontable'].meaning.append(NetworkFragment([]))
-#     signs['d'].meaning.append(NetworkFragment([]))
-#
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['d'].meaning) - 1, signs['d']), column_index=column)
-#
-#     signs['clear'].meaning.append(NetworkFragment([]))
-#     signs['a'].meaning.append(NetworkFragment([]))
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['clear'].meaning) - 1, signs['clear']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['a'].meaning) - 1, signs['a']), column_index=column)
-#
-#
-# def _expand_situation4(goal_situation, signs):
-#     # TODO: add common approach
-#     signs['handempty'].meaning.append(NetworkFragment([]))
-#     goal_situation.meaning[0].add((len(signs['handempty'].meaning) - 1, signs['handempty']))
-#
-#     signs['ontable'].meaning.append(NetworkFragment([]))
-#     signs['c'].meaning.append(NetworkFragment([]))
-#
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['c'].meaning) - 1, signs['c']), column_index=column)
-#
-#     signs['clear'].meaning.append(NetworkFragment([]))
-#     signs['a'].meaning.append(NetworkFragment([]))
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['clear'].meaning) - 1, signs['clear']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['a'].meaning) - 1, signs['a']), column_index=column)
-#
-#
-# def _expand_situation5(goal_situation, signs):
-#     # TODO: add common approach
-#     signs['handempty'].meaning.append(NetworkFragment([]))
-#     goal_situation.meaning[0].add((len(signs['handempty'].meaning) - 1, signs['handempty']))
-#
-#     signs['ontable'].meaning.append(NetworkFragment([]))
-#     signs['e'].meaning.append(NetworkFragment([]))
-#
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['e'].meaning) - 1, signs['e']), column_index=column)
-#
-#     signs['clear'].meaning.append(NetworkFragment([]))
-#     signs['d'].meaning.append(NetworkFragment([]))
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['clear'].meaning) - 1, signs['clear']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['d'].meaning) - 1, signs['d']), column_index=column)
-#
-#
-# def _expand_situation6(goal_situation, signs):
-#     # TODO: add common approach
-#     signs['handempty'].meaning.append(NetworkFragment([]))
-#     goal_situation.meaning[0].add((len(signs['handempty'].meaning) - 1, signs['handempty']))
-#
-#     signs['ontable'].meaning.append(NetworkFragment([]))
-#     signs['a'].meaning.append(NetworkFragment([]))
-#
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['a'].meaning) - 1, signs['a']), column_index=column)
-#
-#     signs['clear'].meaning.append(NetworkFragment([]))
-#     signs['d'].meaning.append(NetworkFragment([]))
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['clear'].meaning) - 1, signs['clear']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['d'].meaning) - 1, signs['d']), column_index=column)
-#
-#
-# def _expand_situation7(goal_situation, signs):
-#     # TODO: add common approach
-#     signs['handempty'].meaning.append(NetworkFragment([]))
-#     goal_situation.meaning[0].add((len(signs['handempty'].meaning) - 1, signs['handempty']))
-#
-#     signs['ontable'].meaning.append(NetworkFragment([]))
-#     signs['d'].meaning.append(NetworkFragment([]))
-#
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['d'].meaning) - 1, signs['d']), column_index=column)
-#
-#     signs['clear'].meaning.append(NetworkFragment([]))
-#     signs['c'].meaning.append(NetworkFragment([]))
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['clear'].meaning) - 1, signs['clear']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['c'].meaning) - 1, signs['c']), column_index=column)
-#
-#
-# def _expand_situation8(goal_situation, signs):
-#     # TODO: add common approach
-#     signs['handempty'].meaning.append(NetworkFragment([]))
-#     goal_situation.meaning[0].add((len(signs['handempty'].meaning) - 1, signs['handempty']))
-#
-#     signs['ontable'].meaning.append(NetworkFragment([]))
-#     signs['d'].meaning.append(NetworkFragment([]))
-#
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['d'].meaning) - 1, signs['d']), column_index=column)
-#
-#     signs['clear'].meaning.append(NetworkFragment([]))
-#     signs['e'].meaning.append(NetworkFragment([]))
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['clear'].meaning) - 1, signs['clear']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['e'].meaning) - 1, signs['e']), column_index=column)
-#
-#
-# def _expand_situation9(goal_situation, signs):
-#     # TODO: add common approach
-#     signs['handempty'].meaning.append(NetworkFragment([]))
-#     goal_situation.meaning[0].add((len(signs['handempty'].meaning) - 1, signs['handempty']))
-#
-#     signs['ontable'].meaning.append(NetworkFragment([]))
-#     signs['d'].meaning.append(NetworkFragment([]))
-#
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['d'].meaning) - 1, signs['d']), column_index=column)
-#
-#     signs['clear'].meaning.append(NetworkFragment([]))
-#     signs['e'].meaning.append(NetworkFragment([]))
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['clear'].meaning) - 1, signs['clear']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['e'].meaning) - 1, signs['e']), column_index=column)
-#
-#
-# def _expand_situation10(goal_situation, signs):
-#     # TODO: add common approach
-#     signs['handempty'].meaning.append(NetworkFragment([]))
-#     goal_situation.meaning[0].add((len(signs['handempty'].meaning) - 1, signs['handempty']))
-#
-#     signs['ontable'].meaning.append(NetworkFragment([]))
-#     signs['e'].meaning.append(NetworkFragment([]))
-#
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['ontable'].meaning) - 1, signs['ontable']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['e'].meaning) - 1, signs['e']), column_index=column)
-#
-#     signs['clear'].meaning.append(NetworkFragment([]))
-#     signs['a'].meaning.append(NetworkFragment([]))
-#     column = len(goal_situation.meaning[0].left)
-#     goal_situation.meaning[0].add((len(signs['clear'].meaning) - 1, signs['clear']), column_index=column)
-#     goal_situation.meaning[0].add((len(signs['a'].meaning) - 1, signs['a']), column_index=column)
-#
