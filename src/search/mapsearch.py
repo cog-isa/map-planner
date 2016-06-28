@@ -1,4 +1,3 @@
-import itertools
 import logging
 
 MAX_ITERATION = 100
@@ -73,10 +72,33 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
 
 
 def merge_activity(chains):
-    pms = []
+    replace_map = {}
+    main_pm = None
     for chain in chains:
-        pm, idx = chain[0].replace('significance', 'meaning', chain[1], chain[-1])
-        pms.append(pm)
+        if not chain[1].sign in replace_map:
+            replace_map[chain[1].sign] = [chain[-1].sign]
+        else:
+            if not chain[-1].sign in replace_map[chain[1].sign]:
+                replace_map[chain[1].sign].append(chain[-1].sign)
+        main_pm = chain[0]
+
+    def reccur_replacement(base, new_base, base_pm, role_map):
+        result = []
+        for role in role_map:
+            for obj in role_map[role]:
+                new_pm, _ = base_pm.replace(base, new_base, role, obj)
+                if len(role_map) > 1:
+                    others = role_map.copy()
+                    others.pop(role)
+                    for l in others:
+                        others[l].remove(obj)
+                    result.extend(reccur_replacement('meaning', 'meaning', new_pm, others))
+                else:
+                    result.append(new_pm)
+        return result
+
+    # TODO: really many extra meanings (from not fully substituted)
+    pms = reccur_replacement('significance', 'meaning', main_pm, replace_map)
     return pms
 
 

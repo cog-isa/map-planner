@@ -21,7 +21,7 @@ class PredictionMatrix:
             self.effect = effect
 
     def __str__(self):
-        return '[{0}]->[{1}]'.format(','.join(map(str, self.cause)), ','.join(map(str, self.effect)))
+        return '{0}:{1}'.format(str(self.sign), str(self.uid))
 
     def __repr__(self):
         return '<PredictionMatrix {0}:{1} [{2}]->[{3}]>'.format(self.sign.name, self.uid,
@@ -146,11 +146,19 @@ class Event:
         event = Event(self.index)
         for sign, conn in self.coincidences:
             if sign == old_sign:
-                event.coincidences.add(getattr(new_sign, 'add_' + new_base))
+                # TODO: if new component is composite?
+                _, new_conn = getattr(new_sign, 'add_' + new_base)()
+                event.coincidences.add((new_sign, new_conn))
             else:
                 # TODO: spread through 0 conn
                 if conn > 0:
                     _, new_conn = getattr(sign, base + 's')[conn - 1].replace(base, new_base, old_sign, new_sign)
+                    event.coincidences.add((sign, new_conn))
+                elif len(getattr(sign, base + 's')) == 1:
+                    _, new_conn = getattr(sign, base + 's')[0].replace(base, new_base, old_sign, new_sign)
+                    event.coincidences.add((sign, new_conn))
+                else:
+                    _, new_conn = getattr(sign, 'add_' + new_base)()
                     event.coincidences.add((sign, new_conn))
         return event
 
