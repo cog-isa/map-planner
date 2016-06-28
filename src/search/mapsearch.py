@@ -25,7 +25,7 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         logging.debug('\tMax iteration count')
         return None
 
-    active_chains = active_pm.spread_down_activity('meaning', 2)
+    active_chains = active_pm.spread_down_activity('meaning', 2)  # Select current signs
     active_signif = set()
     for chain in active_chains:
         pm = chain[-1]
@@ -33,17 +33,17 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
 
     meanings = []
     for pm_signif in active_signif:
-        chains = pm_signif.spread_down_activity('significance', 3)
+        chains = pm_signif.spread_down_activity('significance', 3)  # check connected signs with actions
         merged_chains = []
         for chain in chains:
             for achain in active_chains:
                 if chain[-1].sign == achain[-1].sign:
                     merged_chains.append(chain)
                     break
-        scripts = merge_activity(merged_chains)
+        scripts = merge_activity(merged_chains)  # Replace role in abstract actions to generate scripts
         meanings.extend(scripts)
 
-    applicable_meaning = _get_applicable(meanings, active_pm)
+    applicable_meaning = check_activity(meanings, active_pm)
 
     heuristics = _select_meanings(applicable_meaning, active_pm,
                                   check_pm, [x for x, _, _ in current_plan])
@@ -100,6 +100,25 @@ def merge_activity(chains):
     # TODO: really many extra meanings (from not fully substituted)
     pms = reccur_replacement('significance', 'meaning', main_pm, replace_map)
     return pms
+
+
+def check_activity(meanings, active_pm):
+    selected = []
+
+    def check_pm(pm):
+        for event in pm.effect:
+            for fevent in active_pm.cause:
+                if event.resonate('meaning', fevent):
+                    break
+            else:
+                return False
+
+        return True
+
+    for pm in meanings:
+        if check_pm(pm):
+            selected.append(pm)
+    return selected
 
 
 def _apply_script(fragment, script):
@@ -169,21 +188,3 @@ def _deep_equal_signs(sit1, sit2):
                 else:
                     return False
     return True
-
-
-def _get_applicable(script_dict, situation):
-    applicable_dict = {}
-    for name, scripts in script_dict.items():
-        for script in scripts:
-            for column in script.right:
-                if situation.get_column_index(column) == -1:
-                    break
-            else:
-                prev_scripts = applicable_dict.get(name, set())
-                for old_script in prev_scripts:
-                    if old_script.equal_signs(script):
-                        break
-                else:
-                    applicable_dict[name] = prev_scripts | {script}
-
-    return applicable_dict

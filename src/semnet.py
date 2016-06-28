@@ -52,6 +52,17 @@ class PredictionMatrix:
 
         return True
 
+    def resonate(self, base, pm):
+        slist = list(itertools.chain(self.cause, self.effect))
+        olist = list(itertools.chain(pm.cause, pm.effect))
+        if not self.sign == pm.sign or not len(slist) == len(olist):
+            return False
+        for e1, e2 in zip(slist, olist):
+            if not e1.resonate(base, e2):
+                return False
+
+        return True
+
     def is_empty(self):
         return len(self.cause) == 0 and len(self.effect) == 0
 
@@ -141,6 +152,20 @@ class Event:
             if s == sign:
                 return True
         return False
+
+    def resonate(self, base, event):
+        if not len(self.coincidences) == len(event.coincidences):
+            return False
+        signs = {s: c for s, c in event.coincidences}
+        for sign, conn in self.coincidences:
+            if sign not in signs:
+                return False
+            else:
+                pm1 = getattr(sign, base + 's')[conn - 1]
+                pm2 = getattr(sign, base + 's')[signs[sign] - 1]
+                if not pm1.resonate(base, pm2):
+                    return False
+        return True
 
     def replace(self, base, new_base, old_sign, new_sign):
         event = Event(self.index)
