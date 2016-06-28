@@ -58,14 +58,6 @@ class PredictionMatrix:
     def is_causal(self):
         return len(self.effect) > 0
 
-    def copy(self, base, new_base):
-        pm, _ = getattr(self.sign, 'add_' + new_base)()
-        for event in self.cause:
-            pm.cause.append(event.copy(base, new_base))
-        for event in self.effect:
-            pm.effect.append(event.copy(base, new_base))
-        return pm
-
     def add_feature(self, feature, seq=None, effect=False):
         """
 
@@ -89,27 +81,37 @@ class PredictionMatrix:
         Spread activity down in hierarchy
         @param base: name of semantic net that activity spreads on
         @param depth: recursive depth of spreading
-        @return: active PredictionMatrices
+        @return: active chains of PredictionMatrices
         """
-        active_pms = []
+        active_chains = []
+
+        def check_pm(pm):
+            if not pm.is_empty():
+                chains = pm.spread_down_activity(base, depth - 1)
+                for chain in chains:
+                    active_chains.append([self] + chain)
+            else:
+                active_chains.append([self, pm])
+
         if depth > 0:
             for event in itertools.chain(self.cause, self.effect):
                 for sign, conn in event.coincidences:
                     if conn > 0:
                         pm = getattr(sign, base + 's')[conn - 1]
-                        active_pms.append(pm)
-                        if not pm.is_empty():
-                            active_pms.extend(pm.spread_down_activity(base, depth - 1))
+                        check_pm(pm)
                     else:
-                        pms = getattr(sign, base)
-                        active_pms.extend(pms)
+                        pms = getattr(sign, base + 's')
                         for pm in pms:
-                            active_pms.extend(pm.spread_activity(base, depth - 1))
-        return active_pms
+                            check_pm(pm)
+        return active_chains
 
-    def replace(self, base, old_sign, new_sign):
-        for event in itertools.chain(self.cause, self.effect):
-            event.replace(base, old_sign, new_sign)
+    def replace(self, base, new_base, old_sign, new_sign):
+        pm, idx = getattr(self.sign, 'add_' + new_base)()
+        for event in self.cause:
+            pm.cause.append(event.replace(base, new_base, old_sign, new_sign))
+        for event in self.effect:
+            pm.effect.append(event.replace(base, new_base, old_sign, new_sign))
+        return pm, idx
 
 
 class Event:
@@ -140,32 +142,17 @@ class Event:
                 return True
         return False
 
-    def copy(self, base, new_base):
-        e = Event(self.index)
-        for sign, conn in self.coincidences:
-            pms = getattr(sign, base + 's')
-            # TODO: copy through 0 label
-            if conn > 0:
-                new_pm = pms[conn - 1].copy(base, new_base)
-            elif len(pms) == 1:
-                new_pm = pms[0].copy(base, new_base)
-            else:
-                new_pm = None
-            _, index = getattr(sign, 'add_' + new_base)(new_pm)
-            e.coincidences.add((sign, index))
-        return e
-
-    def replace(self, base, old_sign, new_sign):
-        pair = None
+    def replace(self, base, new_base, old_sign, new_sign):
+        event = Event(self.index)
         for sign, conn in self.coincidences:
             if sign == old_sign:
-                pair = (sign, conn)
+                event.coincidences.add(getattr(new_sign, 'add_' + new_base))
             else:
-                getattr(sign, base + 's')[conn - 1].replace(base, old_sign, new_sign)
-        if pair:
-            self.coincidences.remove(pair)
-            _, new_conn = getattr(new_sign, 'add_' + base)()
-            self.coincidences.add((new_sign, new_conn))
+                # TODO: spread through 0 conn
+                if conn > 0:
+                    _, new_conn = getattr(sign, base + 's')[conn - 1].replace(base, new_base, old_sign, new_sign)
+                    event.coincidences.add((sign, new_conn))
+        return event
 
 
 class Sign:
@@ -247,23 +234,35 @@ class Sign:
         else:
             self.out_meanings.append((pm, [index]))
 
-    def spread_up_activity(self, base, new_base, depth):
+    def spread_up_activity_act(self, base, depth):
         """
         Spread activity up in hierarchy
         @param base: type of semantic net that activity spreads on
-        @param new_base: type of semantic net that is used for copying
         @param depth: recursive depth of spreading
         @return: active PredictionMatrices
         """
-        active_pms = []
+        active_pms = set()
         if depth > 0:
             for pm, indexes in getattr(self, 'out_' + base + 's'):
                 if pm.is_causal():
-                    active_pms.append(pm.copy(base, new_base))
+                    active_pms.add(pm)
                 else:
-                    pms = pm.sign.spread_up_activity(base, new_base, depth - 1)
-                    _, index = getattr(self, 'add_' + new_base)()
-                    for hpm in pms:
-                        hpm.replace(new_base, pm.sign, self)
-                        active_pms.append(hpm)
+                    pms = pm.sign.spread_up_activity_act(base, depth - 1)
+                    active_pms |= pms
+        return active_pms
+
+    def spread_up_activity_obj(self, base, depth):
+        """
+        Spread activity up in hierarchy
+        @param base: type of semantic net that activity spreads on
+        @param depth: recursive depth of spreading
+        @return: active PredictionMatrices
+        """
+        active_pms = set()
+        if depth > 0:
+            for pm, indexes in getattr(self, 'out_' + base + 's'):
+                if not pm.is_causal():
+                    active_pms.add(pm)
+                    pms = pm.sign.spread_up_activity_cuas(base, depth - 1)
+                    active_pms |= pms
         return active_pms

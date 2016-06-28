@@ -25,7 +25,11 @@ def ground(problem):
     logging.debug("Type to object map:\n%s" % type_map)
 
     # Sign world model
-    signs = {obj: Sign(obj) for obj in objects}
+    signs = {}
+    for obj in objects:
+        obj_sign = Sign(obj)
+        obj_sign.add_significance()
+        signs[obj] = obj_sign
     for tp, objects in type_map.items():
         tp_sign = Sign(tp.name)
         for obj in objects:

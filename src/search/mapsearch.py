@@ -26,14 +26,23 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         logging.debug('\tMax iteration count')
         return None
 
-    current_signs = active_pm.spread_down_activity('meaning', 2)
-    active_means = []
-    for pm in current_signs:
-        active_means.extend(pm.sign.spread_up_activity('significance', 'meaning', 3))
+    active_chains = active_pm.spread_down_activity('meaning', 2)
+    active_signif = set()
+    for chain in active_chains:
+        pm = chain[-1]
+        active_signif |= pm.sign.spread_up_activity_act('significance', 3)
 
     meanings = []
-    for pm in active_means:
-        meanings.extend(pm.spread_down_activity('meaning', ))
+    for pm_signif in active_signif:
+        chains = pm_signif.spread_down_activity('significance', 3)
+        merged_chains = []
+        for chain in chains:
+            for achain in active_chains:
+                if chain[-1].sign == achain[-1].sign:
+                    merged_chains.append(chain)
+                    break
+        scripts = merge_activity(merged_chains)
+        meanings.extend(scripts)
 
     applicable_meaning = _get_applicable(meanings, active_pm)
 
@@ -63,33 +72,12 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
     return final_plans
 
 
-def _interpret(significance, signs):
-    meanings = []
-    return meanings
-
-
-def _generate_scripts(signs):
-    """
-    Generate scripts without abstract signs
-    :param signs: All Sign
-    :return: dict of generated scripts
-    """
-    scripts_dict = {}
-    for sign in signs:
-        if not sign.is_action() and len(sign.get_parents()) > 0:
-            frg_dict = _generate_fragments(sign)
-            # TODO: add recursion generation not only for tow roles
-            for name, fragment in frg_dict.items():
-                replaced = set()
-                for other_sign in signs - {sign}:
-                    if not other_sign.is_action() and len(other_sign.get_parents()) > 0:
-                        replaced |= _replace_parent(fragment, other_sign)
-
-                if not replaced:
-                    scripts_dict[name] = scripts_dict.get(name, set()) | {fragment}
-                else:
-                    scripts_dict[name] = scripts_dict.get(name, set()) | replaced
-    return scripts_dict
+def merge_activity(chains):
+    pms = []
+    for chain in chains:
+        pm, idx = chain[0].replace('significance', 'meaning', chain[1], chain[-1])
+        pms.append(pm)
+    return pms
 
 
 def _apply_script(fragment, script):
@@ -177,5 +165,3 @@ def _get_applicable(script_dict, situation):
                     applicable_dict[name] = prev_scripts | {script}
 
     return applicable_dict
-
-
