@@ -1,5 +1,7 @@
 import logging
+from semnet import Sign
 
+SIT_COUNTER = 0
 MAX_ITERATION = 100
 
 
@@ -40,13 +42,13 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
                 if chain[-1].sign == achain[-1].sign:
                     merged_chains.append(chain)
                     break
-        scripts = merge_activity(merged_chains)  # Replace role in abstract actions to generate scripts
+        scripts = _merge_activity(merged_chains)  # Replace role in abstract actions to generate scripts
         meanings.extend(scripts)
 
-    applicable_meaning = check_activity(meanings, active_pm)
+    applicable_meanings = _check_activity(meanings, active_pm)
 
-    heuristics = _select_meanings(applicable_meaning, active_pm,
-                                  check_pm, [x for x, _, _ in current_plan])
+    # TODO: replace to metarule apply
+    heuristics = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _ in current_plan])
 
     if not heuristics:
         logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _ in current_plan]))
@@ -59,19 +61,19 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
 
         plan = current_plan.copy()
         plan.append((active_pm, name, script))
-        next_fragment = _apply_script(active_pm, script)
+        next_pm = _time_shift_backward(active_pm, script)
 
-        if next_fragment > check_pm:
+        if next_pm >= check_pm:
             final_plans.append(plan)
         else:
-            recursive_plans = map_iteration(next_fragment, check_pm, plan, iteration + 1)
+            recursive_plans = map_iteration(next_pm, check_pm, plan, iteration + 1)
             if recursive_plans:
                 final_plans.extend(recursive_plans)
 
     return final_plans
 
 
-def merge_activity(chains):
+def _merge_activity(chains):
     replace_map = {}
     main_pm = None
     for chain in chains:
@@ -86,7 +88,7 @@ def merge_activity(chains):
         result = []
         for role in role_map:
             for obj in role_map[role]:
-                new_pm, _ = base_pm.replace(base, new_base, role, obj)
+                new_pm, _ = base_pm.copy_replace(base, new_base, role, obj)
                 if len(role_map) > 1:
                     others = role_map.copy()
                     others.pop(role)
@@ -102,7 +104,7 @@ def merge_activity(chains):
     return pms
 
 
-def check_activity(meanings, active_pm):
+def _check_activity(meanings, active_pm):
     selected = []
 
     def check_pm(pm):
@@ -121,70 +123,40 @@ def check_activity(meanings, active_pm):
     return selected
 
 
-def _apply_script(fragment, script):
-    new_frag = fragment.copy()
-    to_remove = script.right
-    to_add = script.left
-    for i, column in enumerate(to_remove):
-        index = new_frag.get_column_index(column)
-        if i < len(to_add):
-            new_frag.left[index] = to_add[i]
+def _time_shift_backward(active_pm, script):
+    global SIT_COUNTER
+    next_pm = Sign(str(SIT_COUNTER))
+    pm, _ = next_pm.add_meaning()
+    SIT_COUNTER += 1
+    for event in active_pm.cause:
+        for es in script.effect:
+            if event.resonate('meaning', es):
+                break
         else:
-            del new_frag.left[index]
+            pm.add_event(event.copy_replace('meaning'))
+    for event in script.cause:
+        pm.add_event(event.copy_replace('meaning'))
 
-    for i in range(len(to_remove), len(to_add)):
-        new_frag.left.append(to_add[i])
-
-    return new_frag
+    return pm
 
 
-def _select_meanings(applicable_dict, current_situation, ref_situation, prev_situations):
+def _meta_check_activity(scripts, active_pm, check_pm, prev_pms):
     heuristic = []
-    for name, scripts in applicable_dict.items():
-        for script in scripts:
-            estimation = _apply_script(current_situation, script)
-            for prev in prev_situations:
-                if _deep_equal_signs(prev, estimation):
-                    break
-            else:
-                counter = 0
-                for column in estimation.left:
-                    if ref_situation.get_column_index(column) >= 0:
+    for script in scripts:
+        estimation = _time_shift_backward(active_pm, prev_pms)
+        for prev in prev_pms:
+            if estimation.resonate('meaning', prev):
+                break
+        else:
+            counter = 0
+            for event in estimation.cause:
+                for ce in check_pm.cause:
+                    if event.resonate('meaning', ce):
                         counter += 1
-                heuristic.append((counter, name, script))
+                        break
+            heuristic.append((counter, script.sign.name, script))
     if heuristic:
         best_heuristics = max(heuristic, key=lambda x: x[0])
         return list(filter(lambda x: x[0] == best_heuristics[0], heuristic))
     else:
         return None
-
-
-def _deep_equal_signs(sit1, sit2):
-    if not len(sit1.left) == len(sit2.left):
-        return False
-
-    signs1_map = {}
-    signs2_map = {}
-    for column in sit1.left + sit1.right:
-        for index, sign in column:
-            signs1_map[sign.name] = signs1_map.get(sign.name, []) + [(sign, index)]
-    for column in sit2.left + sit2.right:
-        for index, sign in column:
-            signs2_map[sign.name] = signs2_map.get(sign.name, []) + [(sign, index)]
-
-    for name, signs1 in signs1_map.items():
-        if name not in signs2_map:
-            return False
-        signs2 = signs2_map[name]
-        if not len(signs1) == len(signs2):
-            return False
-        if len(signs1) > 0:
-            checked = []
-            for sign1, index1 in signs1:
-                for i, (sign2, index2) in enumerate(signs2):
-                    if i not in checked and _deep_equal_signs(sign1.meaning[index1], sign2.meaning[index2]):
-                        checked.append(i)
-                        break
-                else:
-                    return False
-    return True

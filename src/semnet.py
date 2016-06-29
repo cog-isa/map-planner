@@ -41,7 +41,7 @@ class PredictionMatrix:
 
         return False
 
-    def __gt__(self, smaller):
+    def __ge__(self, smaller):
         for event in smaller.cause:
             if event not in self.cause:
                 return False
@@ -68,6 +68,14 @@ class PredictionMatrix:
 
     def is_causal(self):
         return len(self.effect) > 0
+
+    def add_event(self, event, effect=False):
+        mult, part = (-1, self.effect) if effect else (1, self.cause)
+
+        index = (len(part) + 1) * mult
+        part.append(event)
+
+        return index
 
     def add_feature(self, feature, seq=None, effect=False):
         """
@@ -116,12 +124,12 @@ class PredictionMatrix:
                             check_pm(pm)
         return active_chains
 
-    def replace(self, base, new_base, old_sign, new_sign):
+    def copy_replace(self, base, new_base, old_sign=None, new_sign=None):
         pm, idx = getattr(self.sign, 'add_' + new_base)()
         for event in self.cause:
-            pm.cause.append(event.replace(base, new_base, old_sign, new_sign))
+            pm.cause.append(event.copy_replace(base, new_base, old_sign, new_sign))
         for event in self.effect:
-            pm.effect.append(event.replace(base, new_base, old_sign, new_sign))
+            pm.effect.append(event.copy_replace(base, new_base, old_sign, new_sign))
         return pm, idx
 
 
@@ -167,7 +175,7 @@ class Event:
                     return False
         return True
 
-    def replace(self, base, new_base, old_sign, new_sign):
+    def copy_replace(self, base, new_base, old_sign=None, new_sign=None):
         event = Event(self.index)
         for sign, conn in self.coincidences:
             if sign == old_sign:
@@ -177,10 +185,10 @@ class Event:
             else:
                 # TODO: spread through 0 conn
                 if conn > 0:
-                    _, new_conn = getattr(sign, base + 's')[conn - 1].replace(base, new_base, old_sign, new_sign)
+                    _, new_conn = getattr(sign, base + 's')[conn - 1].copy_replace(base, new_base, old_sign, new_sign)
                     event.coincidences.add((sign, new_conn))
                 elif len(getattr(sign, base + 's')) == 1:
-                    _, new_conn = getattr(sign, base + 's')[0].replace(base, new_base, old_sign, new_sign)
+                    _, new_conn = getattr(sign, base + 's')[0].copy_replace(base, new_base, old_sign, new_sign)
                     event.coincidences.add((sign, new_conn))
                 else:
                     _, new_conn = getattr(sign, 'add_' + new_base)()
