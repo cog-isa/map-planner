@@ -41,7 +41,7 @@ def ground(problem):
 
     for predicate in predicates:
         pred_sign = Sign(predicate.name)
-        if len(predicate.signature) == 2: # on(block?x, block?y)
+        if len(predicate.signature) == 2:  # on(block?x, block?y)
             significance, _ = pred_sign.add_significance()
 
             def update_significance(fact, effect=False):
@@ -178,3 +178,22 @@ def _expand_situation1(goal_situation, signs):
     signs['clear'].add_out_meaning(goal_situation.meanings[0], id4)
     signs['d'].add_out_meaning(goal_situation.meanings[0], id4)
 
+
+def _expand_situation2(goal_situation, signs):
+    _, conn1 = signs['handempty'].add_meaning()
+    id1 = goal_situation.meanings[0].add_feature((signs['handempty'], conn1))
+    signs['handempty'].add_out_meaning(goal_situation.meanings[0], id1)
+
+    _, conn2 = signs['ontable'].add_meaning()
+    _, conn3 = signs['b'].add_meaning()
+    id2 = goal_situation.meanings[0].add_feature((signs['ontable'], conn2))
+    goal_situation.meanings[0].add_feature((signs['b'], conn3), id2)
+    signs['ontable'].add_out_meaning(goal_situation.meanings[0], id2)
+    signs['b'].add_out_meaning(goal_situation.meanings[0], id2)
+
+    _, conn4 = signs['clear'].add_meaning()
+    _, conn5 = signs['d'].add_meaning()
+    id4 = goal_situation.meanings[0].add_feature((signs['clear'], conn4))
+    goal_situation.meanings[0].add_feature((signs['d'], conn5), id4)
+    signs['clear'].add_out_meaning(goal_situation.meanings[0], id4)
+    signs['d'].add_out_meaning(goal_situation.meanings[0], id4)

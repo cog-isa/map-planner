@@ -58,17 +58,28 @@ class PredictionMatrix:
 
         return True
 
-    def resonate(self, base, pm, check_sign=True):
-        slist = list(itertools.chain(self.cause, self.effect))
-        olist = list(itertools.chain(pm.cause, pm.effect))
+    def resonate(self, base, pm, check_sign=True, check_order=True):
         if check_sign and not self.sign == pm.sign:
             return False
-        if not len(slist) == len(olist):
+        if not len(self.cause) == len(pm.cause) or not len(self.effect) == len(pm.effect):
             return False
-        for e1, e2 in zip(slist, olist):
-            if not e1.resonate(base, e2):
-                return False
-
+        if check_order:
+            for e1, e2 in zip(itertools.chain(self.cause, self.effect), itertools.chain(pm.cause, pm.effect)):
+                if not e1.resonate(base, e2):
+                    return False
+        else:
+            for e1 in self.cause:
+                for e2 in pm.cause:
+                    if e1.resonate(base, e2, check_order):
+                        break
+                else:
+                    return False
+            for e1 in self.effect:
+                for e2 in pm.effect:
+                    if e1.resonate(base, e2, check_order):
+                        break
+                else:
+                    return False
         return True
 
     def is_empty(self):
@@ -169,7 +180,7 @@ class Event:
                 return True
         return False
 
-    def resonate(self, base, event):
+    def resonate(self, base, event, check_order=True):
         if not len(self.coincidences) == len(event.coincidences):
             return False
         signs = {s: c for s, c in event.coincidences}
@@ -179,7 +190,7 @@ class Event:
             else:
                 pm1 = getattr(sign, base + 's')[conn - 1]
                 pm2 = getattr(sign, base + 's')[signs[sign] - 1]
-                if not pm1.resonate(base, pm2):
+                if not pm1.resonate(base, pm2, True, check_order):
                     return False
         return True
 

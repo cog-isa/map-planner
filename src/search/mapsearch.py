@@ -23,6 +23,7 @@ def map_search(task):
 
 def map_iteration(active_pm, check_pm, current_plan, iteration):
     logging.debug('STEP {0}:'.format(iteration))
+    logging.debug('\tSituation {0}'.format(repr(active_pm)))
     if iteration >= MAX_ITERATION:
         logging.debug('\tMax iteration count')
         return None
@@ -95,9 +96,19 @@ def _merge_activity(chains):
                         if not r == role:
                             others[r] = role_map[r].copy()
                             others[r].remove(obj)
-                    result.extend(reccur_replacement('meaning', 'meaning', new_pm, others))
+                    pms = reccur_replacement('meaning', 'meaning', new_pm, others)
+                    for pm in pms:
+                        for cpm in result:
+                            if cpm.resonate('meaning', pm):
+                                break
+                        else:
+                            result.append(pm)
                 else:
-                    result.append(new_pm)
+                    for cpm in result:
+                        if cpm.resonate('meaning', new_pm):
+                            break
+                    else:
+                        result.append(new_pm)
         return result
 
     # TODO: really many extra meanings (from not fully substituted)
@@ -146,7 +157,7 @@ def _meta_check_activity(scripts, active_pm, check_pm, prev_pms):
     for script in scripts:
         estimation = _time_shift_backward(active_pm, script)
         for prev in prev_pms:
-            if estimation.resonate('meaning', prev, False):
+            if estimation.resonate('meaning', prev, False, False):
                 break
         else:
             counter = 0
