@@ -41,21 +41,29 @@ class PredictionMatrix:
 
         return False
 
-    def __ge__(self, smaller):
+    def includes(self, base, smaller):
         for event in smaller.cause:
-            if event not in self.cause:
+            for se in self.cause:
+                if event.resonate(base, se):
+                    break
+            else:
                 return False
 
         for event in smaller.effect:
-            if event not in self.effect:
+            for se in self.effect:
+                if event.resonate(base, se):
+                    break
+            else:
                 return False
 
         return True
 
-    def resonate(self, base, pm):
+    def resonate(self, base, pm, check_sign=True):
         slist = list(itertools.chain(self.cause, self.effect))
         olist = list(itertools.chain(pm.cause, pm.effect))
-        if not self.sign == pm.sign or not len(slist) == len(olist):
+        if check_sign and not self.sign == pm.sign:
+            return False
+        if not len(slist) == len(olist):
             return False
         for e1, e2 in zip(slist, olist):
             if not e1.resonate(base, e2):
@@ -178,7 +186,7 @@ class Event:
     def copy_replace(self, base, new_base, old_sign=None, new_sign=None):
         event = Event(self.index)
         for sign, conn in self.coincidences:
-            if sign == old_sign:
+            if old_sign and sign == old_sign:
                 # TODO: if new component is composite?
                 _, new_conn = getattr(new_sign, 'add_' + new_base)()
                 event.coincidences.add((new_sign, new_conn))

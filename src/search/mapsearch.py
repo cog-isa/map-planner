@@ -63,7 +63,7 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         plan.append((active_pm, name, script))
         next_pm = _time_shift_backward(active_pm, script)
 
-        if next_pm >= check_pm:
+        if next_pm.includes('meaning', check_pm):
             final_plans.append(plan)
         else:
             recursive_plans = map_iteration(next_pm, check_pm, plan, iteration + 1)
@@ -90,10 +90,11 @@ def _merge_activity(chains):
             for obj in role_map[role]:
                 new_pm, _ = base_pm.copy_replace(base, new_base, role, obj)
                 if len(role_map) > 1:
-                    others = role_map.copy()
-                    others.pop(role)
-                    for l in others:
-                        others[l].remove(obj)
+                    others = {}
+                    for r in role_map:
+                        if not r == role:
+                            others[r] = role_map[r].copy()
+                            others[r].remove(obj)
                     result.extend(reccur_replacement('meaning', 'meaning', new_pm, others))
                 else:
                     result.append(new_pm)
@@ -133,9 +134,9 @@ def _time_shift_backward(active_pm, script):
             if event.resonate('meaning', es):
                 break
         else:
-            pm.add_event(event.copy_replace('meaning'))
+            pm.add_event(event.copy_replace('meaning', 'meaning'))
     for event in script.cause:
-        pm.add_event(event.copy_replace('meaning'))
+        pm.add_event(event.copy_replace('meaning', 'meaning'))
 
     return pm
 
@@ -143,9 +144,9 @@ def _time_shift_backward(active_pm, script):
 def _meta_check_activity(scripts, active_pm, check_pm, prev_pms):
     heuristic = []
     for script in scripts:
-        estimation = _time_shift_backward(active_pm, prev_pms)
+        estimation = _time_shift_backward(active_pm, script)
         for prev in prev_pms:
-            if estimation.resonate('meaning', prev):
+            if estimation.resonate('meaning', prev, False):
                 break
         else:
             counter = 0

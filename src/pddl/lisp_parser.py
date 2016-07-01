@@ -40,7 +40,7 @@ def parse_nested_list(input_file):
 def _tokenize(input_file):
     for line in input_file:
         line = line.partition(";")[0]  # Strip comments.
-        line = line.copy_replace("(", " ( ").copy_replace(")", " ) ").copy_replace("?", " ?")
+        line = line.replace("(", " ( ").replace(")", " ) ").replace("?", " ?")
         for token in line.split():
             yield token.lower()
 
