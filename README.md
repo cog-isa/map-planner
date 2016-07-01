@@ -1,3 +1,3 @@
-# pma-planning
+# map-planner
 
-PMA-planning algorithm based on malte
+MAP-planning algorithm based on sign world model
