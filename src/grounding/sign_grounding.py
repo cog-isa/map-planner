@@ -2,7 +2,7 @@ import itertools
 import logging
 from collections import defaultdict
 
-from semnet import Sign, PredictionMatrix
+from grounding.semnet import Sign
 from .sign_task import Task
 
 

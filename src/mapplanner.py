@@ -56,15 +56,17 @@ def _parse(domain_file, problem_file):
     return problem
 
 
-def _ground(problem):
+def _ground(problem, is_load):
     logging.info('Grounding start: {0}'.format(problem.name))
     task = sign_grounding.ground(problem)
+    if is_load:
+        task.load_signs()
     logging.info('Grounding end: {0}'.format(problem.name))
     logging.info('{0} Signs created'.format(len(task.signs)))
     return task
 
 
-def search_plan(domain_file, problem_file):
+def search_plan(domain_file, problem_file, is_load):
     """
     Parses the given input files to a specific planner task and then tries to
     find a solution using the specified  search algorithm and heuristics.
@@ -75,7 +77,7 @@ def search_plan(domain_file, problem_file):
     @return A list of actions that solve the problem
     """
     problem = _parse(domain_file, problem_file)
-    task = _ground(problem)
+    task = _ground(problem, is_load)
 
     search_start_time = time.clock()
     logging.info('Search start: {0}'.format(task.name))
@@ -83,6 +85,8 @@ def search_plan(domain_file, problem_file):
     logging.info('Search end: {0}'.format(task.name))
     logging.info('Wall-clock search time: {0:.2}'.format(time.clock() -
                                                          search_start_time))
+
+    task.save_signs()
 
     return solution
 
@@ -105,6 +109,7 @@ if __name__ == '__main__':
     argparser.add_argument('-l', '--loglevel', choices=log_levels,
                            default='info')
     argparser.add_argument('-i', '--iter', default=1, type=int)
+    argparser.add_argument('-w', '--wakeup', action='store_true')
 
     args = argparser.parse_args()
 
@@ -124,7 +129,7 @@ if __name__ == '__main__':
     else:
         args.domain = os.path.abspath(args.domain)
     for _ in range(args.iter):
-        solution = search_plan(args.domain, args.problem)
+        solution = search_plan(args.domain, args.problem, args.wakeup)
 
         if solution is None:
             logging.warning('No solution could be found')
