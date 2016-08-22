@@ -3,12 +3,12 @@ import itertools
 
 class CausalMatrix:
     """
-    Prediction matrix - main structure in semiotic network defined causal and hierarchical relations
+    Causal matrix - main structure in causal network defining causal and hierarchical relations
     cause - is the list of causal events at each moment
-    cause - is the list of effect events at each moment (can be empty)
+    effect - is the list of effect events at each moment (can be empty)
     """
 
-    def __init__(self, sign, uid, cause=None, effect=None):
+    def __init__(self, sign=None, uid=None, cause=None, effect=None):
         self.sign = sign
         self.uid = uid
         if not cause:
@@ -24,15 +24,18 @@ class CausalMatrix:
         return '{0}:{1}'.format(str(self.sign), str(self.uid))
 
     def __repr__(self):
-        return '<PredictionMatrix {0}:{1} [{2}]->[{3}]>'.format(self.sign.name, self.uid,
-                                                                ','.join(map(repr, self.cause)),
-                                                                ','.join(map(repr, self.effect)))
+        return '<CausalMatrix {0}:{1} [{2}]->[{3}]>'.format(self.sign.name, self.uid,
+                                                            ','.join(map(repr, self.cause)),
+                                                            ','.join(map(repr, self.effect)))
 
     def __eq__(self, other):
         return self.sign == other.sign and self.uid == other.uid
 
     def __hash__(self):
-        return hash(self.uid) + hash(self.sign)
+        if self.sign:
+            return 3 * hash(self.uid) + 5 * hash(self.sign)
+        else:
+            return hash(self.uid)
 
     def __contains__(self, sign):
         for event in itertools.chain(self.cause, self.effect):
@@ -40,6 +43,42 @@ class CausalMatrix:
                 return True
 
         return False
+
+    def add_event(self, event, effect=False):
+        mult, part = (-1, self.effect) if effect else (1, self.cause)
+
+        index = (len(part) + 1) * mult
+        part.append(event)
+
+        return index
+
+    def get_event(self, link):
+        d, part = (link - 1, self.cause) if link > 0 else (-1 * link - 1, self.effect)
+        return part[d]
+
+    def add_feature(self, feature, seq=None, effect=False):
+        """
+
+        @param feature: pair of sign and index, index =0 is special case for "all connection"
+        @param seq: predefined index to insert (starts from 1)
+        @param effect: if it's effect part
+        @return: resulted index inserted
+        """
+        mult, part = (-1, self.effect) if effect else (1, self.cause)
+
+        if seq is None:
+            index = (len(part) + 1) * mult
+            part.append(Event(index, {feature}))
+        else:
+            part[abs(seq) - 1].coincidences.add(feature)
+            index = abs(seq) * mult
+        return index
+
+    def is_empty(self):
+        return len(self.cause) == 0 and len(self.effect) == 0
+
+    def is_causal(self):
+        return len(self.effect) > 0
 
     def includes(self, base, smaller):
         for event in smaller.cause:
@@ -57,6 +96,14 @@ class CausalMatrix:
                 return False
 
         return True
+
+    def copy_replace(self, base, new_base, old_sign=None, new_sign=None):
+        pm, idx = getattr(self.sign, 'add_' + new_base)()
+        for event in self.cause:
+            pm.cause.append(event.copy_replace(base, new_base, old_sign, new_sign))
+        for event in self.effect:
+            pm.effect.append(event.copy_replace(base, new_base, old_sign, new_sign))
+        return pm, idx
 
     def resonate(self, base, pm, check_sign=True, check_order=True):
         if check_sign and not self.sign == pm.sign:
@@ -81,38 +128,6 @@ class CausalMatrix:
                 else:
                     return False
         return True
-
-    def is_empty(self):
-        return len(self.cause) == 0 and len(self.effect) == 0
-
-    def is_causal(self):
-        return len(self.effect) > 0
-
-    def add_event(self, event, effect=False):
-        mult, part = (-1, self.effect) if effect else (1, self.cause)
-
-        index = (len(part) + 1) * mult
-        part.append(event)
-
-        return index
-
-    def add_feature(self, feature, seq=None, effect=False):
-        """
-
-        @param feature: pair of sign and index, index =0 is special case for "all connection"
-        @param seq: predefined index to insert (starts from 1)
-        @param effect: if it's effect part
-        @return: resulted index inserted
-        """
-        mult, part = (-1, self.effect) if effect else (1, self.cause)
-
-        if seq is None:
-            index = (len(part) + 1) * mult
-            part.append(Event(index, {feature}))
-        else:
-            part[abs(seq) - 1].coincidences.add(feature)
-            index = abs(seq) * mult
-        return index
 
     def spread_down_activity(self, base, depth):
         """
@@ -142,14 +157,6 @@ class CausalMatrix:
                         for pm in pms:
                             check_pm(pm)
         return active_chains
-
-    def copy_replace(self, base, new_base, old_sign=None, new_sign=None):
-        pm, idx = getattr(self.sign, 'add_' + new_base)()
-        for event in self.cause:
-            pm.cause.append(event.copy_replace(base, new_base, old_sign, new_sign))
-        for event in self.effect:
-            pm.effect.append(event.copy_replace(base, new_base, old_sign, new_sign))
-        return pm, idx
 
 
 class Event:
@@ -247,7 +254,10 @@ class Sign:
         return self.name == other.name
 
     def __hash__(self):
-        return hash(self.name)
+        if hasattr(self, 'name'):  # pickle call hash during loading before instantiating
+            return hash(self.name)
+        else:
+            return object.__hash__(self)
 
     def is_abstract(self):
         return len(self.images) == 0
@@ -255,20 +265,44 @@ class Sign:
     def add_image(self, pm=None):
         if not pm:
             pm = CausalMatrix(self, len(self.images) + 1)
+        else:
+            pm.uid = len(self.images) + 1
         self.images.append(pm)
         return pm, len(self.images)
 
     def add_significance(self, pm=None):
         if not pm:
             pm = CausalMatrix(self, len(self.significances) + 1)
+        else:
+            pm.uid = len(self.significances) + 1
         self.significances.append(pm)
         return pm, len(self.significances)
 
     def add_meaning(self, pm=None):
         if not pm:
             pm = CausalMatrix(self, len(self.meanings) + 1)
+        else:
+            pm.uid = len(self.meanings) + 1
         self.meanings.append(pm)
         return pm, len(self.meanings)
+
+    def remove_meaning(self, pm, check_out=True):
+        for cm in self.meanings:
+            if cm.uid > pm.uid:
+                cm.uid -= 1
+        if check_out:
+            for fpm, indexes in self.out_meanings:
+                for d in indexes:
+                    event = fpm.get_event(d)
+                    for s, i in event.coincidences.copy():
+                        if s == self and i > pm.uid:
+                            event.coincidences.remove((s, i))
+                            event.coincidences.add((s, i - 1))
+
+        self.meanings.remove(pm)
+        for event in itertools.chain(pm.cuase, pm.effect):
+            for s, conn in event.coincidences:
+                s.remove_meaning(s.meanings[conn - 1])
 
     def add_out_significance(self, pm, index):
         for lpm, indexes in self.out_significances:

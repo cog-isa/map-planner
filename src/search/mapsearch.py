@@ -1,7 +1,9 @@
 import logging
-from semnet import Sign
+
+from grounding.semnet import Sign
 
 SIT_COUNTER = 0
+SIT_PREFIX = 'situation_'
 MAX_ITERATION = 100
 
 
@@ -28,22 +30,26 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         logging.debug('\tMax iteration count')
         return None
 
-    active_chains = active_pm.spread_down_activity('meaning', 2)  # Select current signs
+    # Activate all current signs (their meanings)
+    active_chains = active_pm.spread_down_activity('meaning', 2)
     active_signif = set()
+    # find all significances (actions) for all current signs
     for chain in active_chains:
         pm = chain[-1]
         active_signif |= pm.sign.spread_up_activity_act('significance', 3)
 
     meanings = []
     for pm_signif in active_signif:
-        chains = pm_signif.spread_down_activity('significance', 3)  # check connected signs with actions
+        # find all roles and role replacements in each significance (action)
+        chains = pm_signif.spread_down_activity('significance', 3)
         merged_chains = []
         for chain in chains:
             for achain in active_chains:
                 if chain[-1].sign == achain[-1].sign:
                     merged_chains.append(chain)
                     break
-        scripts = _merge_activity(merged_chains)  # Replace role in abstract actions to generate scripts
+        # Replace role in abstract actions to generate scripts
+        scripts = _generate_meanings(merged_chains)
         meanings.extend(scripts)
 
     applicable_meanings = _check_activity(meanings, active_pm)
@@ -74,9 +80,10 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
     return final_plans
 
 
-def _merge_activity(chains):
+def _generate_meanings(chains):
     replace_map = {}
     main_pm = None
+    # compose pairs - role-replacer
     for chain in chains:
         if not chain[1].sign in replace_map:
             replace_map[chain[1].sign] = [chain[-1].sign]
@@ -100,18 +107,19 @@ def _merge_activity(chains):
                     for pm in pms:
                         for cpm in result:
                             if cpm.resonate('meaning', pm):
+                                #pm.sign.remove_meaning(pm)
                                 break
                         else:
                             result.append(pm)
                 else:
                     for cpm in result:
                         if cpm.resonate('meaning', new_pm):
+                            #new_pm.sign.remove_meaning(new_pm)
                             break
                     else:
                         result.append(new_pm)
         return result
 
-    # TODO: really many extra meanings (from not fully substituted)
     pms = reccur_replacement('significance', 'meaning', main_pm, replace_map)
     return pms
 
@@ -137,7 +145,7 @@ def _check_activity(meanings, active_pm):
 
 def _time_shift_backward(active_pm, script):
     global SIT_COUNTER
-    next_pm = Sign(str(SIT_COUNTER))
+    next_pm = Sign(SIT_PREFIX + str(SIT_COUNTER))
     pm, _ = next_pm.add_meaning()
     SIT_COUNTER += 1
     for event in active_pm.cause:
