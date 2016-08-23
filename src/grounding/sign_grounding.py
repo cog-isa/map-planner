@@ -16,10 +16,6 @@ def ground(problem):
     objects.update(domain.constants)
     logging.debug('Objects:\n%s' % objects)
 
-    # Get the names of the static predicates
-    statics = _get_statics(predicates, actions)
-    logging.debug("Static predicates:\n%s" % statics)
-
     # Create a map from types to objects
     type_map = _create_type_map(objects)
     logging.debug("Type to object map:\n%s" % type_map)
@@ -86,28 +82,6 @@ def ground(problem):
 
     _expand_situation1(goal_situation, signs)  # For task
     return Task(problem.name, signs, start_situation, goal_situation)
-
-
-def _get_statics(predicates, actions):
-    """
-    Determine all static predicates and return them as a list.
-
-    We want to know the statics to avoid grounded actions with static
-    preconditions violated. A static predicate is a predicate which
-    doesn't occur in an effect of an action.
-    """
-
-    def get_effects(action):
-        return action.effect.addlist | action.effect.dellist
-
-    effects = [get_effects(action) for action in actions]
-    effects = set(itertools.chain(*effects))
-
-    def static(predicate):
-        return not any(predicate.name == eff.name for eff in effects)
-
-    statics = [pred.name for pred in predicates if static(pred)]
-    return statics
 
 
 def _create_type_map(objects):

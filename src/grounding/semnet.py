@@ -1,4 +1,4 @@
-import itertools
+import itertools, logging
 
 
 class CausalMatrix:
@@ -100,9 +100,9 @@ class CausalMatrix:
     def copy_replace(self, base, new_base, old_sign=None, new_sign=None):
         pm, idx = getattr(self.sign, 'add_' + new_base)()
         for event in self.cause:
-            pm.cause.append(event.copy_replace(base, new_base, old_sign, new_sign))
+            pm.cause.append(event.copy_replace(pm, base, new_base, old_sign, new_sign))
         for event in self.effect:
-            pm.effect.append(event.copy_replace(base, new_base, old_sign, new_sign))
+            pm.effect.append(event.copy_replace(pm, base, new_base, old_sign, new_sign))
         return pm, idx
 
     def resonate(self, base, pm, check_sign=True, check_order=True):
@@ -201,24 +201,28 @@ class Event:
                     return False
         return True
 
-    def copy_replace(self, base, new_base, old_sign=None, new_sign=None):
+    def copy_replace(self, parent, base, new_base, old_sign=None, new_sign=None):
         event = Event(self.index)
         for sign, conn in self.coincidences:
             if old_sign and sign == old_sign:
                 # TODO: if new component is composite?
                 _, new_conn = getattr(new_sign, 'add_' + new_base)()
                 event.coincidences.add((new_sign, new_conn))
+                getattr(new_sign, 'add_out_'+new_base)(parent, self.index)
             else:
                 # TODO: spread through 0 conn
                 if conn > 0:
                     _, new_conn = getattr(sign, base + 's')[conn - 1].copy_replace(base, new_base, old_sign, new_sign)
                     event.coincidences.add((sign, new_conn))
+                    getattr(sign, 'add_out_' + new_base)(parent, self.index)
                 elif len(getattr(sign, base + 's')) == 1:
                     _, new_conn = getattr(sign, base + 's')[0].copy_replace(base, new_base, old_sign, new_sign)
                     event.coincidences.add((sign, new_conn))
+                    getattr(sign, 'add_out_' + new_base)(parent, self.index)
                 else:
                     _, new_conn = getattr(sign, 'add_' + new_base)()
                     event.coincidences.add((sign, new_conn))
+                    getattr(sign, 'add_out_' + new_base)(parent, self.index)
         return event
 
 
@@ -286,21 +290,21 @@ class Sign:
         self.meanings.append(pm)
         return pm, len(self.meanings)
 
-    def remove_meaning(self, pm, check_out=True):
+    def remove_meaning(self, pm):
         for cm in self.meanings:
             if cm.uid > pm.uid:
                 cm.uid -= 1
-        if check_out:
-            for fpm, indexes in self.out_meanings:
-                for d in indexes:
-                    event = fpm.get_event(d)
-                    for s, i in event.coincidences.copy():
-                        if s == self and i > pm.uid:
-                            event.coincidences.remove((s, i))
-                            event.coincidences.add((s, i - 1))
+        for fpm, indexes in self.out_meanings:
+            for d in indexes:
+                event = fpm.get_event(d)
+                for s, i in event.coincidences.copy():
+                    if s == self and i > pm.uid:
+                        event.coincidences.remove((s, i))
+                        event.coincidences.add((s, i - 1))
+                        break
 
         self.meanings.remove(pm)
-        for event in itertools.chain(pm.cuase, pm.effect):
+        for event in itertools.chain(pm.cause, pm.effect):
             for s, conn in event.coincidences:
                 s.remove_meaning(s.meanings[conn - 1])
 

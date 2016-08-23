@@ -86,7 +86,7 @@ def search_plan(domain_file, problem_file, is_load):
     logging.info('Wall-clock search time: {0:.2}'.format(time.clock() -
                                                          search_start_time))
 
-    task.save_signs()
+    task.save_signs(solution)
 
     return solution
 

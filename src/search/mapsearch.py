@@ -107,14 +107,12 @@ def _generate_meanings(chains):
                     for pm in pms:
                         for cpm in result:
                             if cpm.resonate('meaning', pm):
-                                #pm.sign.remove_meaning(pm)
                                 break
                         else:
                             result.append(pm)
                 else:
                     for cpm in result:
                         if cpm.resonate('meaning', new_pm):
-                            #new_pm.sign.remove_meaning(new_pm)
                             break
                     else:
                         result.append(new_pm)
@@ -153,9 +151,9 @@ def _time_shift_backward(active_pm, script):
             if event.resonate('meaning', es):
                 break
         else:
-            pm.add_event(event.copy_replace('meaning', 'meaning'))
+            pm.add_event(event.copy_replace(pm, 'meaning', 'meaning'))
     for event in script.cause:
-        pm.add_event(event.copy_replace('meaning', 'meaning'))
+        pm.add_event(event.copy_replace(pm, 'meaning', 'meaning'))
 
     return pm
 
