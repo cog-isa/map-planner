@@ -1,11 +1,16 @@
-import datetime, os, pickle, logging
-from .semnet import CausalMatrix
+import datetime
+import logging
+import os
+import pickle
+
+from .semnet import Sign
 
 DEFAULT_FILE_PREFIX = 'wmodel_'
 DEFAULT_FILE_SUFFIX = '.swm'
 
 SIT_COUNTER = 0
 SIT_PREFIX = 'situation_'
+PLAN_PREFIX = 'plan_'
 
 
 class Task:
@@ -43,21 +48,38 @@ class Task:
 
             logging.info('\tSaving precedent...')
             self.start_situation.name += self.name
-            dm = self.start_situation.meanings[0].copy_replace('meaning', 'image')
+            self.goal_situation.name += self.name
+            dm = self.start_situation.meanings[1].copy('meaning', 'image')
             self.start_situation.add_image(dm)
+            dm = self.goal_situation.meanings[1].copy('meaning', 'image')
+            self.goal_situation.add_image(dm)
 
-            self.start_situation.remove_meaning(self.start_situation.meanings[0])
-            pm = CausalMatrix(self.start_situation)
-            idx = 1
+            plan_sign = Sign(PLAN_PREFIX + self.name)
+            plan_mean = plan_sign.add_meaning()
+            connector = plan_mean.add_feature(self.start_situation.meanings[1])
+            self.start_situation.add_out_meaning(connector)
+            conn = plan_mean.add_feature(self.goal_situation.meanings[1], effect=True)
+            self.goal_situation.add_out_meaning(conn)
+
+            plan_image = plan_sign.add_image()
+            effect = False
             for name, cm in plan:
-                idx = pm.add_feature(cm, idx) + 1
-            self.start_situation.add_meaning(pm)
+                # TODO: add actual triplet of components for all signs to access to the current image
+                im = cm.sign.add_image()
+                connector = plan_image.add_feature(im, effect=effect)
+                cm.sign.add_out_image(connector)
+                effect = True
 
+            self.signs[plan_sign.name] = plan_sign
             self.signs[self.start_situation.name] = self.start_situation
+            self.signs[self.goal_situation.name] = self.goal_situation
         else:
-            for name, sign in self.signs.items():
-                sign.meanings = {}
-                sign.out_meanings = []
+            for name, sign in self.signs.copy().items():
+                if name.startswith(SIT_PREFIX):
+                    self.signs.pop(name)
+                else:
+                    sign.meanings = {}
+                    sign.out_meanings = []
         logging.info('\tDumping SWM...')
         pickle.dump(self.signs, open(file_name, 'wb'))
         return file_name
