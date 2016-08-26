@@ -1,4 +1,3 @@
-import itertools
 import logging
 from collections import defaultdict
 
@@ -22,35 +21,35 @@ def ground(problem):
 
     # Sign world model
     signs = {}
+    obj_signifs = {}
     for obj in objects:
         obj_sign = Sign(obj)
-        obj_sign.add_significance()
+        obj_signifs[obj] = obj_sign.add_significance()
         signs[obj] = obj_sign
     for tp, objects in type_map.items():
         tp_sign = Sign(tp.name)
         for obj in objects:
-            obj_sign = signs[obj]
-            tp_signif, _ = tp_sign.add_significance()
-            index = tp_signif.add_feature((obj_sign, 0))
-            obj_sign.add_out_significance(tp_signif, index)
+            obj_signif = obj_signifs[obj]
+            tp_signif = tp_sign.add_significance()
+            connector = tp_signif.add_feature(obj_signif, zero_out=True)
+            signs[obj].add_out_significance(connector)
         signs[tp.name] = tp_sign
 
     for predicate in predicates:
         pred_sign = Sign(predicate.name)
+        significance = pred_sign.add_significance()
         if len(predicate.signature) == 2:  # on(block?x, block?y)
-            significance, _ = pred_sign.add_significance()
-
             def update_significance(fact, effect=False):
                 role_name = fact[1][0].name + fact[0]  # (?x, (block,))
                 if role_name not in signs:
                     signs[role_name] = Sign(role_name)
                 role_sign = signs[role_name]
                 obj_sign = signs[fact[1][0].name]
-                role_signif, _ = role_sign.add_significance()
-                idx1 = role_signif.add_feature((obj_sign, 0))
-                obj_sign.add_out_significance(role_signif, idx1)
-                idx2 = significance.add_feature((role_sign, 0), effect=effect)
-                role_sign.add_out_significance(significance, idx2)
+                role_signif = role_sign.add_significance()
+                conn = role_signif.add_feature(obj_sign.significances[1], zero_out=True)
+                obj_sign.add_out_significance(conn)
+                conn = significance.add_feature(role_signif, effect=effect, zero_out=True)
+                role_sign.add_out_significance(conn)
 
             update_significance(predicate.signature[0])
             update_significance(predicate.signature[1])
@@ -59,17 +58,18 @@ def ground(problem):
 
     for action in actions:
         act_sign = Sign(action.name)
-        act_signif, _ = act_sign.add_significance()
+        act_signif = act_sign.add_significance()
 
         def update_significance(predicate, effect=False):
             pred_sign = signs[predicate.name]
-            idx = act_signif.add_feature((pred_sign, 0), effect=effect)
-            pred_sign.add_out_significance(act_signif, idx)
+            connector = act_signif.add_feature(pred_sign.significances[1], effect=effect)
+            pred_sign.add_out_significance(connector)
             if len(predicate.signature) == 1:
                 fact = predicate.signature[0]
                 role_sign = signs[fact[1][0].name + fact[0]]
-                idxr = act_signif.add_feature((role_sign, 0), idx, effect=effect)
-                role_sign.add_out_significance(act_signif, idxr)
+                conn = act_signif.add_feature(role_sign.significances[1], connector.in_order, effect=effect,
+                                              zero_out=True)
+                role_sign.add_out_significance(conn)
 
         for predicate in action.precondition:
             update_significance(predicate)
@@ -112,62 +112,70 @@ def _create_type_map(objects):
 
 def _define_situation(name, predicates, signs):
     situation = Sign(name)
-    sit_meaning, _ = situation.add_meaning()
+    sit_meaning = situation.add_meaning()
+    elements = {}
+
+    def get_or_add(sign):
+        if sign not in elements:
+            meaning = sign.add_meaning()
+            elements[sign] = meaning
+        return elements.get(sign)
+
     for predicate in predicates:
         pred_sign = signs[predicate.name]
-        pred_meaning, pred_conn = pred_sign.add_meaning()
-        idx = sit_meaning.add_feature((pred_sign, pred_conn))
-        pred_sign.add_out_meaning(sit_meaning, idx)
+        pred_meaning = pred_sign.add_meaning()
+        connector = sit_meaning.add_feature(pred_meaning)
+        pred_sign.add_out_meaning(connector)
         if len(predicate.signature) == 1:
             sig_sign = signs[predicate.signature[0][0]]
-            _, sig_conn = sig_sign.add_meaning()
-            idxs = sit_meaning.add_feature((sig_sign, sig_conn), idx)
-            sig_sign.add_out_meaning(sit_meaning, idxs)
+            sig_meaning = get_or_add(sig_sign)
+            conn = sit_meaning.add_feature(sig_meaning, connector.in_order)
+            sig_sign.add_out_meaning(conn)
         elif len(predicate.signature) > 1:
             for fact in predicate.signature:
                 fact_sign = signs[fact[0]]
-                _, fact_conn = fact_sign.add_meaning()
-                idxf = pred_meaning.add_feature((fact_sign, fact_conn))
-                fact_sign.add_out_meaning(pred_meaning, idxf)
+                fact_meaning = get_or_add(fact_sign)
+                conn = pred_meaning.add_feature(fact_meaning)
+                fact_sign.add_out_meaning(conn)
 
     return situation
 
 
 def _expand_situation1(goal_situation, signs):
-    _, conn1 = signs['handempty'].add_meaning()
-    id1 = goal_situation.meanings[0].add_feature((signs['handempty'], conn1))
-    signs['handempty'].add_out_meaning(goal_situation.meanings[0], id1)
+    h_mean = signs['handempty'].add_meaning()
+    connector = goal_situation.meanings[1].add_feature(h_mean)
+    signs['handempty'].add_out_meaning(connector)
 
-    _, conn2 = signs['ontable'].add_meaning()
-    _, conn3 = signs['a'].add_meaning()
-    id2 = goal_situation.meanings[0].add_feature((signs['ontable'], conn2))
-    goal_situation.meanings[0].add_feature((signs['a'], conn3), id2)
-    signs['ontable'].add_out_meaning(goal_situation.meanings[0], id2)
-    signs['a'].add_out_meaning(goal_situation.meanings[0], id2)
+    ont_mean = signs['ontable'].add_meaning()
+    a_mean = signs['a'].add_meaning()
+    connector = goal_situation.meanings[1].add_feature(ont_mean)
+    conn = goal_situation.meanings[1].add_feature(a_mean, connector.in_order)
+    signs['ontable'].add_out_meaning(conn)
+    signs['a'].add_out_meaning(conn)
 
-    _, conn4 = signs['clear'].add_meaning()
-    _, conn5 = signs['d'].add_meaning()
-    id4 = goal_situation.meanings[0].add_feature((signs['clear'], conn4))
-    goal_situation.meanings[0].add_feature((signs['d'], conn5), id4)
-    signs['clear'].add_out_meaning(goal_situation.meanings[0], id4)
-    signs['d'].add_out_meaning(goal_situation.meanings[0], id4)
+    cl_mean = signs['clear'].add_meaning()
+    d_mean = signs['d'].add_meaning()
+    connector = goal_situation.meanings[1].add_feature(cl_mean)
+    conn = goal_situation.meanings[1].add_feature(d_mean, connector.in_order)
+    signs['clear'].add_out_meaning(conn)
+    signs['d'].add_out_meaning(conn)
 
 
 def _expand_situation2(goal_situation, signs):
-    _, conn1 = signs['handempty'].add_meaning()
-    id1 = goal_situation.meanings[0].add_feature((signs['handempty'], conn1))
-    signs['handempty'].add_out_meaning(goal_situation.meanings[0], id1)
+    h_mean = signs['handempty'].add_meaning()
+    conn = goal_situation.meanings[1].add_feature(h_mean)
+    signs['handempty'].add_out_meaning(conn)
 
-    _, conn2 = signs['ontable'].add_meaning()
-    _, conn3 = signs['b'].add_meaning()
-    id2 = goal_situation.meanings[0].add_feature((signs['ontable'], conn2))
-    goal_situation.meanings[0].add_feature((signs['b'], conn3), id2)
-    signs['ontable'].add_out_meaning(goal_situation.meanings[0], id2)
-    signs['b'].add_out_meaning(goal_situation.meanings[0], id2)
+    ont_mean = signs['ontable'].add_meaning()
+    b_mean = signs['b'].add_meaning()
+    conn = goal_situation.meanings[1].add_feature(ont_mean)
+    connb = goal_situation.meanings[1].add_feature(b_mean, conn.in_order)
+    signs['ontable'].add_out_meaning(conn)
+    signs['b'].add_out_meaning(connb)
 
-    _, conn4 = signs['clear'].add_meaning()
-    _, conn5 = signs['d'].add_meaning()
-    id4 = goal_situation.meanings[0].add_feature((signs['clear'], conn4))
-    goal_situation.meanings[0].add_feature((signs['d'], conn5), id4)
-    signs['clear'].add_out_meaning(goal_situation.meanings[0], id4)
-    signs['d'].add_out_meaning(goal_situation.meanings[0], id4)
+    cl_mean = signs['clear'].add_meaning()
+    d_mean = signs['d'].add_meaning()
+    conn = goal_situation.meanings[1].add_feature(cl_mean)
+    connd = goal_situation.meanings[1].add_feature(d_mean, conn.in_order)
+    signs['clear'].add_out_meaning(conn)
+    signs['d'].add_out_meaning(connd)

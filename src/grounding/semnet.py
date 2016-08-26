@@ -1,4 +1,4 @@
-import itertools, logging
+import itertools
 
 
 class CausalMatrix:
@@ -8,9 +8,9 @@ class CausalMatrix:
     effect - is the list of effect events at each moment (can be empty)
     """
 
-    def __init__(self, sign=None, uid=None, cause=None, effect=None):
+    def __init__(self, sign=None, index=None, cause=None, effect=None):
         self.sign = sign
-        self.uid = uid
+        self.index = index
         if not cause:
             self.cause = []
         else:
@@ -21,21 +21,19 @@ class CausalMatrix:
             self.effect = effect
 
     def __str__(self):
-        return '{0}:{1}'.format(str(self.sign), str(self.uid))
+        return '{0}:{1}'.format(str(self.sign), str(self.index))
 
     def __repr__(self):
-        return '<CausalMatrix {0}:{1} [{2}]->[{3}]>'.format(self.sign.name, self.uid,
-                                                            ','.join(map(repr, self.cause)),
-                                                            ','.join(map(repr, self.effect)))
+        return '{0}:{1}'.format(str(self.sign), str(self.index))
 
     def __eq__(self, other):
-        return self.sign == other.sign and self.uid == other.uid
+        return self.sign == other.sign and self.index == other.index
 
     def __hash__(self):
         if self.sign:
-            return 3 * hash(self.uid) + 5 * hash(self.sign)
+            return 3 * hash(self.index) + 5 * hash(self.sign)
         else:
-            return hash(self.uid)
+            return hash(self.index)
 
     def __contains__(self, sign):
         for event in itertools.chain(self.cause, self.effect):
@@ -44,35 +42,42 @@ class CausalMatrix:
 
         return False
 
+    def longstr(self):
+        return '{0}:{1}->{2}'.format(str(self.sign), '|'.join([str(e) for e in self.cause]),
+                                     '|'.join([str(e) for e in self.effect]))
+
     def add_event(self, event, effect=False):
         mult, part = (-1, self.effect) if effect else (1, self.cause)
 
-        index = (len(part) + 1) * mult
+        order = (len(part) + 1) * mult
         part.append(event)
 
-        return index
+        return order
 
-    def get_event(self, link):
-        d, part = (link - 1, self.cause) if link > 0 else (-1 * link - 1, self.effect)
+    def get_event(self, order):
+        d, part = (order - 1, self.cause) if order > 0 else (-1 * order - 1, self.effect)
         return part[d]
 
-    def add_feature(self, feature, seq=None, effect=False):
+    def add_feature(self, cm, order=None, effect=False, zero_out=False):
         """
-
-        @param feature: pair of sign and index, index =0 is special case for "all connection"
-        @param seq: predefined index to insert (starts from 1)
-        @param effect: if it's effect part
-        @return: resulted index inserted
+        Add causal matrix cm in the new or existed in order event
+        @param zero_out: special case of undefined out
+        @param cm: causal matrix to add
+        @param order: order of existed event
+        @param effect: if to add as effect
+        @return:
         """
+        connector = Connector(self.sign, cm.sign, self.index, cm.index, order)
         mult, part = (-1, self.effect) if effect else (1, self.cause)
 
-        if seq is None:
-            index = (len(part) + 1) * mult
-            part.append(Event(index, {feature}))
+        if order is None:
+            connector.in_order = (len(part) + 1) * mult
+            part.append(Event(connector.in_order, {connector}))
         else:
-            part[abs(seq) - 1].coincidences.add(feature)
-            index = abs(seq) * mult
-        return index
+            part[abs(order) - 1].coincidences.add(connector)
+        if zero_out:
+            connector.out_index = 0
+        return connector
 
     def is_empty(self):
         return len(self.cause) == 0 and len(self.effect) == 0
@@ -97,15 +102,23 @@ class CausalMatrix:
 
         return True
 
-    def copy_replace(self, base, new_base, old_sign=None, new_sign=None):
-        pm, idx = getattr(self.sign, 'add_' + new_base)()
+    def copy(self, base, new_base):
+        pm = getattr(self.sign, 'add_' + new_base)()
         for event in self.cause:
-            pm.cause.append(event.copy_replace(pm, base, new_base, old_sign, new_sign))
+            pm.cause.append(event.copy(pm, base, new_base))
         for event in self.effect:
-            pm.effect.append(event.copy_replace(pm, base, new_base, old_sign, new_sign))
-        return pm, idx
+            pm.effect.append(event.copy(pm, base, new_base))
+        return pm
 
-    def resonate(self, base, pm, check_sign=True, check_order=True):
+    def replace(self, base, old_sign, new_cm, deleted=None):
+        if deleted is None:
+            deleted = []
+        for event in self.cause:
+            event.replace(base, old_sign, new_cm, deleted)
+        for event in self.effect:
+            event.replace(base, old_sign, new_cm, deleted)
+
+    def resonate(self, base, pm, check_order=True, check_sign=True):
         if check_sign and not self.sign == pm.sign:
             return False
         if not len(self.cause) == len(pm.cause) or not len(self.effect) == len(pm.effect):
@@ -148,24 +161,24 @@ class CausalMatrix:
 
         if depth > 0:
             for event in itertools.chain(self.cause, self.effect):
-                for sign, conn in event.coincidences:
-                    if conn > 0:
-                        pm = getattr(sign, base + 's')[conn - 1]
+                for connector in event.coincidences:
+                    if connector.out_index > 0:
+                        pm = connector.get_out_cm(base)
                         check_pm(pm)
                     else:
-                        pms = getattr(sign, base + 's')
-                        for pm in pms:
+                        pms = getattr(connector.out_sign, base + 's')
+                        for index, pm in pms.items():
                             check_pm(pm)
         return active_chains
 
 
 class Event:
     """
-    Event - the set of coincident pairs (sign, index)
+    Event - the set of coincident connectors
     """
 
-    def __init__(self, index, coincidences=None):
-        self.index = index
+    def __init__(self, order, coincidences=None):
+        self.order = order
         if not coincidences:
             self.coincidences = set()
         else:
@@ -175,84 +188,124 @@ class Event:
         return '{{{0}}}'.format(','.join(str(x) for x in self.coincidences))
 
     def __repr__(self):
-        return '<Event {0}: {{{1}}}>'.format(self.index,
-                                             ','.join('{0}:{1}'.format(x.name, conn) for x, conn in self.coincidences))
+        return '{{{0}}}'.format(','.join(str(x) for x in self.coincidences))
 
     def __eq__(self, other):
         return self.coincidences == other.coincidences
 
     def __contains__(self, sign):
-        for s, _ in self.coincidences:
-            if s == sign:
+        for connector in self.coincidences:
+            if connector.out_sign == sign:
                 return True
         return False
+
+    def add_coincident(self, base, connector):
+        self.coincidences.add(connector)
+        getattr(connector.out_sign, 'add_out_' + base)(connector)
 
     def resonate(self, base, event, check_order=True):
         if not len(self.coincidences) == len(event.coincidences):
             return False
-        signs = {s: c for s, c in event.coincidences}
-        for sign, conn in self.coincidences:
-            if sign not in signs:
-                return False
+        for connector in self.coincidences:
+            for conn in event.coincidences:
+                if connector.out_sign == conn.out_sign:
+                    break
             else:
-                pm1 = getattr(sign, base + 's')[conn - 1]
-                pm2 = getattr(sign, base + 's')[signs[sign] - 1]
-                if not pm1.resonate(base, pm2, True, check_order):
-                    return False
+                return False
+            pm1 = connector.get_out_cm(base)
+            pm2 = conn.get_out_cm(base)
+            if not pm1.resonate(base, pm2, check_order):
+                return False
         return True
 
-    def copy_replace(self, parent, base, new_base, old_sign=None, new_sign=None):
-        event = Event(self.index)
-        for sign, conn in self.coincidences:
-            if old_sign and sign == old_sign:
-                # TODO: if new component is composite?
-                _, new_conn = getattr(new_sign, 'add_' + new_base)()
-                event.coincidences.add((new_sign, new_conn))
-                getattr(new_sign, 'add_out_'+new_base)(parent, self.index)
+    def copy(self, new_parent, base, new_base):
+        event = Event(self.order)
+        for connector in self.coincidences:
+            if connector.out_index == 0:
+                cm = getattr(connector.out_sign, 'add_' + new_base)()
             else:
-                # TODO: spread through 0 conn
-                if conn > 0:
-                    _, new_conn = getattr(sign, base + 's')[conn - 1].copy_replace(base, new_base, old_sign, new_sign)
-                    event.coincidences.add((sign, new_conn))
-                    getattr(sign, 'add_out_' + new_base)(parent, self.index)
-                elif len(getattr(sign, base + 's')) == 1:
-                    _, new_conn = getattr(sign, base + 's')[0].copy_replace(base, new_base, old_sign, new_sign)
-                    event.coincidences.add((sign, new_conn))
-                    getattr(sign, 'add_out_' + new_base)(parent, self.index)
-                else:
-                    _, new_conn = getattr(sign, 'add_' + new_base)()
-                    event.coincidences.add((sign, new_conn))
-                    getattr(sign, 'add_out_' + new_base)(parent, self.index)
+                cm = connector.get_out_cm(base).copy(base, new_base)
+            conn = Connector(new_parent.sign, connector.out_sign, new_parent.index, cm.index, event.order)
+            event.add_coincident(new_base, conn)
         return event
+
+    def replace(self, base, old_sign, new_cm, deleted):
+        for connector in self.coincidences:
+            if connector.out_sign == old_sign:
+                if connector.out_index not in deleted:
+                    getattr(old_sign, 'remove_' + base)(connector.get_out_cm(base))
+                    deleted.append(connector.out_index)
+                connector.out_sign = new_cm.sign
+                connector.out_index = new_cm.index
+            else:
+                connector.get_out_cm(base).replace(base, old_sign, new_cm, deleted)
+
+
+class Connector:
+    """
+    Connector - link between to sign components with marker (in_index, in_order, out_index)
+    """
+
+    def __init__(self, in_sign, out_sign, in_index, out_index=None, in_order=None):
+        self.in_sign = in_sign
+        self.out_sign = out_sign
+
+        self.in_index = in_index
+        self.in_order = in_order
+
+        self.out_index = out_index
+
+    def __str__(self):
+        return '{0}:{1}->{2}'.format(self.out_sign, self.out_index, self.in_order)
+
+    def __repr__(self):
+        return '{0}:{1}-{2}->{3}:{4}'.format(self.out_sign, self.out_index, self.in_order, self.in_sign, self.in_index)
+
+    # def __eq__(self, other):
+    #     return self.in_sign == other.in_sign and self.out_sign == other.out_sign \
+    #            and self.in_index == other.in_index and self.out_index == other.out_index \
+    #            and self.in_order == other.in_order
+    #
+    # def __hash__(self):
+    #     # TODO: if bases are different connectors can be equals!
+    #     return 3 * hash(self.in_sign) + 5 * hash(self.out_sign) + 7 * hash(self.out_index) + 11 * hash(
+    #         self.in_index) + 13 * hash(self.in_order)
+
+    def out_eq(self, other):
+        return self.out_sign == other.out_sign and self.out_index == other.out_index
+
+    def in_eq(self, other):
+        return self.in_sign == other.in_sign and self.in_index == other.in_index and self.in_order == other.in_order
+
+    def get_out_cm(self, base):
+        if self.out_index > 0:
+            return getattr(self.out_sign, base + 's')[self.out_index]
+        else:
+            raise Exception('In connector {0} you cannot get out causal matrix'.format(self))
+
+    def get_in_cm(self, base):
+        return getattr(self.in_sign, base + 's')[self.in_index]
 
 
 class Sign:
-    def __init__(self, name, image=None, significance=None, meaning=None):
+    def __init__(self, name):
         self.name = name
-        if image:
-            self.images = [image]
-        else:
-            self.images = []
-
-        if significance:
-            self.significances = [significance]
-        else:
-            self.significances = []
-
-        if meaning:
-            self.meanings = [meaning]
-        else:
-            self.meanings = []
+        self.images = {}
+        self.significances = {}
+        self.meanings = {}
         self.out_significances = []
         self.out_images = []
         self.out_meanings = []
+
+        self._next_image = 1
+        self._next_significance = 1
+        self._next_meaning = 1
 
     def __str__(self):
         return '"{0}"'.format(self.name)
 
     def __repr__(self):
-        return '<Sign "{0}":\n\tp={1},\n\tm={2},\n\ta={3}>'.format(self.name, self.images, self.significances,
-                                                                   self.meanings)
+        return '"{0}"'.format(self.name)
 
     def __eq__(self, other):
         return self.name == other.name
@@ -268,69 +321,58 @@ class Sign:
 
     def add_image(self, pm=None):
         if not pm:
-            pm = CausalMatrix(self, len(self.images) + 1)
+            pm = CausalMatrix(self, self._next_image)
         else:
-            pm.uid = len(self.images) + 1
-        self.images.append(pm)
-        return pm, len(self.images)
+            pm.index = self._next_image
+        self.images[pm.index] = pm
+        self._next_image += 1
+        return pm
 
     def add_significance(self, pm=None):
         if not pm:
-            pm = CausalMatrix(self, len(self.significances) + 1)
+            pm = CausalMatrix(self, self._next_significance)
         else:
-            pm.uid = len(self.significances) + 1
-        self.significances.append(pm)
-        return pm, len(self.significances)
+            pm.index = self._next_significance
+        self.significances[pm.index] = pm
+        self._next_significance += 1
+        return pm
 
     def add_meaning(self, pm=None):
         if not pm:
-            pm = CausalMatrix(self, len(self.meanings) + 1)
+            pm = CausalMatrix(self, self._next_meaning)
         else:
-            pm.uid = len(self.meanings) + 1
-        self.meanings.append(pm)
-        return pm, len(self.meanings)
+            pm.index = self._next_meaning
+        self.meanings[pm.index] = pm
+        self._next_meaning += 1
+        return pm
 
-    def remove_meaning(self, pm):
-        for cm in self.meanings:
-            if cm.uid > pm.uid:
-                cm.uid -= 1
-        for fpm, indexes in self.out_meanings:
-            for d in indexes:
-                event = fpm.get_event(d)
-                for s, i in event.coincidences.copy():
-                    if s == self and i > pm.uid:
-                        event.coincidences.remove((s, i))
-                        event.coincidences.add((s, i - 1))
-                        break
+    def add_out_significance(self, connector):
+        self.out_significances.append(connector)
 
-        self.meanings.remove(pm)
-        for event in itertools.chain(pm.cause, pm.effect):
-            for s, conn in event.coincidences:
-                s.remove_meaning(s.meanings[conn - 1])
+    def add_out_image(self, connector):
+        self.out_images.append(connector)
 
-    def add_out_significance(self, pm, index):
-        for lpm, indexes in self.out_significances:
-            if lpm == pm:
-                indexes.append(index)
-                break
-        else:
-            self.out_significances.append((pm, [index]))
+    def add_out_meaning(self, connector):
+        self.out_meanings.append(connector)
 
-    def add_out_image(self, pm, index):
-        for lpm, indexes in self.out_images:
-            if lpm == pm:
-                indexes.append(index)
-                break
-        else:
-            self.out_images.append((pm, [index]))
+    def remove_meaning(self, cm):
+        deleted = []
+        for event in cm.cause:
+            for connector in event.coincidences:
+                if connector.out_index not in deleted:
+                    connector.out_sign.remove_meaning(connector.get_out_cm('meaning'))
+                    deleted.append(connector.out_index)
+        for event in cm.effect:
+            for connector in event.coincidences:
+                if connector.out_index not in deleted:
+                    connector.out_sign.remove_meaning(connector.get_out_cm('meaning'))
+                    deleted.append(connector.out_index)
 
-    def add_out_meaning(self, pm, index):
-        for lpm, indexes in self.out_meanings:
-            if lpm == pm:
-                indexes.append(index)
-                break
-        else:
-            self.out_meanings.append((pm, [index]))
+        for connector in self.out_meanings.copy():
+            if connector.out_index == cm.index:
+                self.out_meanings.remove(connector)
+
+        del self.meanings[cm.index]
 
     def spread_up_activity_act(self, base, depth):
         """
@@ -341,11 +383,11 @@ class Sign:
         """
         active_pms = set()
         if depth > 0:
-            for pm, indexes in getattr(self, 'out_' + base + 's'):
-                if pm.is_causal():
-                    active_pms.add(pm)
+            for connector in getattr(self, 'out_' + base + 's'):
+                if connector.get_in_cm(base).is_causal():
+                    active_pms.add(connector.get_in_cm(base))
                 else:
-                    pms = pm.sign.spread_up_activity_act(base, depth - 1)
+                    pms = connector.in_sign.spread_up_activity_act(base, depth - 1)
                     active_pms |= pms
         return active_pms
 
@@ -358,9 +400,9 @@ class Sign:
         """
         active_pms = set()
         if depth > 0:
-            for pm, indexes in getattr(self, 'out_' + base + 's'):
-                if not pm.is_causal():
-                    active_pms.add(pm)
-                    pms = pm.sign.spread_up_activity_cuas(base, depth - 1)
+            for connector in getattr(self, 'out_' + base + 's'):
+                if not connector.in_sign.is_causal():
+                    active_pms.add(connector.get_in_cm(base))
+                    pms = connector.in_sign.spread_up_activity_cuas(base, depth - 1)
                     active_pms |= pms
         return active_pms

@@ -1,31 +1,36 @@
 import logging
 
-from grounding.semnet import Sign
+import grounding.sign_task as st
+from grounding.semnet import Sign, Connector
 
-SIT_COUNTER = 0
-SIT_PREFIX = 'situation_'
 MAX_ITERATION = 100
+
+world_model = None
 
 
 def map_search(task):
-    active_pm = task.goal_situation.meanings[0]
-    check_pm = task.start_situation.meanings[0]
-    logging.debug('Start: {0}, finish: {1}'.format(check_pm, active_pm))
+    global world_model
+    world_model = task.signs
+    active_pm = task.goal_situation.meanings[1]
+    check_pm = task.start_situation.meanings[1]
+    logging.debug('Start: {0}'.format(check_pm.longstr()))
+    logging.debug('Finish: {0}'.format(active_pm.longstr()))
 
     plans = map_iteration(active_pm, check_pm, [], 0)
-    logging.debug('Found {0} variants'.format(len(plans)))
     if plans:
+        logging.debug('Found {0} variants'.format(len(plans)))
         plan = sorted(plans, key=lambda x: len(x))[0]
         reversed(plan)
         logging.info('Plan: len={0}, {1}'.format(len(plan), [name for _, name, _ in plan]))
         return [(name, script) for _, name, script in plan]
-
+    else:
+        logging.debug('Variant are not found')
     return None
 
 
 def map_iteration(active_pm, check_pm, current_plan, iteration):
     logging.debug('STEP {0}:'.format(iteration))
-    logging.debug('\tSituation {0}'.format(repr(active_pm)))
+    logging.debug('\tSituation {0}'.format(active_pm.longstr()))
     if iteration >= MAX_ITERATION:
         logging.debug('\tMax iteration count')
         return None
@@ -45,7 +50,7 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         merged_chains = []
         for chain in chains:
             for achain in active_chains:
-                if chain[-1].sign == achain[-1].sign:
+                if chain[-1].sign == achain[-1].sign and len(chain) > 2 and chain not in merged_chains:
                     merged_chains.append(chain)
                     break
         # Replace role in abstract actions to generate scripts
@@ -86,39 +91,40 @@ def _generate_meanings(chains):
     # compose pairs - role-replacer
     for chain in chains:
         if not chain[1].sign in replace_map:
-            replace_map[chain[1].sign] = [chain[-1].sign]
+            replace_map[chain[1].sign] = [chain[-1]]
         else:
-            if not chain[-1].sign in replace_map[chain[1].sign]:
-                replace_map[chain[1].sign].append(chain[-1].sign)
+            if not chain[-1] in replace_map[chain[1].sign]:
+                replace_map[chain[1].sign].append(chain[-1])
         main_pm = chain[0]
 
-    def reccur_replacement(base, new_base, base_pm, role_map):
-        result = []
-        for role in role_map:
-            for obj in role_map[role]:
-                new_pm, _ = base_pm.copy_replace(base, new_base, role, obj)
+    combinations = []
+
+    def create_combinations(role_map, current=None):
+        if current is None:
+            current = {}
+        for role_sign in role_map:
+            for obj_pm in role_map[role_sign]:
+                new_current = current.copy()
+                new_current[role_sign] = obj_pm
                 if len(role_map) > 1:
                     others = {}
                     for r in role_map:
-                        if not r == role:
+                        if not r == role_sign:
                             others[r] = role_map[r].copy()
-                            others[r].remove(obj)
-                    pms = reccur_replacement('meaning', 'meaning', new_pm, others)
-                    for pm in pms:
-                        for cpm in result:
-                            if cpm.resonate('meaning', pm):
-                                break
-                        else:
-                            result.append(pm)
+                            others[r].remove(obj_pm)
+                    create_combinations(others, new_current)
                 else:
-                    for cpm in result:
-                        if cpm.resonate('meaning', new_pm):
-                            break
-                    else:
-                        result.append(new_pm)
-        return result
+                    combinations.append(new_current)
+            break
 
-    pms = reccur_replacement('significance', 'meaning', main_pm, replace_map)
+    create_combinations(replace_map)
+    pms = []
+    for combination in combinations:
+        cm = main_pm.copy('significance', 'meaning')
+        for role_sign, obj_cm in combination.items():
+            cm.replace('meaning', role_sign, obj_cm)
+        pms.append(cm)
+
     return pms
 
 
@@ -142,18 +148,18 @@ def _check_activity(meanings, active_pm):
 
 
 def _time_shift_backward(active_pm, script):
-    global SIT_COUNTER
-    next_pm = Sign(SIT_PREFIX + str(SIT_COUNTER))
-    pm, _ = next_pm.add_meaning()
-    SIT_COUNTER += 1
+    next_pm = Sign(st.SIT_PREFIX + str(st.SIT_COUNTER))
+    world_model[next_pm.name] = next_pm
+    pm = next_pm.add_meaning()
+    st.SIT_COUNTER += 1
     for event in active_pm.cause:
         for es in script.effect:
             if event.resonate('meaning', es):
                 break
         else:
-            pm.add_event(event.copy_replace(pm, 'meaning', 'meaning'))
+            pm.add_event(event.copy(pm, 'meaning', 'meaning'))
     for event in script.cause:
-        pm.add_event(event.copy_replace(pm, 'meaning', 'meaning'))
+        pm.add_event(event.copy(pm, 'meaning', 'meaning'))
 
     return pm
 

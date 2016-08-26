@@ -1,8 +1,11 @@
 import datetime, os, pickle, logging
-from .semnet import Sign, CausalMatrix
+from .semnet import CausalMatrix
 
 DEFAULT_FILE_PREFIX = 'wmodel_'
 DEFAULT_FILE_SUFFIX = '.swm'
+
+SIT_COUNTER = 0
+SIT_PREFIX = 'situation_'
 
 
 class Task:
@@ -28,10 +31,14 @@ class Task:
             pms = [pm for _, pm in plan]
             for name, sign in self.signs.items():
                 if not sign.out_meanings:
-                    for pm in sign.meanings.copy():
+                    for index, pm in sign.meanings.copy().items():
                         if pm not in pms:
                             sign.remove_meaning(pm)
-            # TODO (AP): check - not all deleted
+            for name, s in self.signs.copy().items():
+                if name.startswith(SIT_PREFIX):
+                    s.remove_meaning(s.meanings[0])
+                    self.signs.pop(name)
+
             logging.info('\tSaving precedent...')
             self.start_situation.name += self.name
             dm = self.start_situation.meanings[0].copy_replace('meaning', 'image')
@@ -46,8 +53,9 @@ class Task:
 
             self.signs[self.start_situation.name] = self.start_situation
         else:
-            for sign in self.signs:
-                sign.meanings = []
+            for name, sign in self.signs.items():
+                sign.meanings = {}
+                sign.out_meanings = []
         logging.info('\tDumping SWM...')
         pickle.dump(self.signs, open(file_name, 'wb'))
         return file_name
