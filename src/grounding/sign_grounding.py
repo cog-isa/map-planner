@@ -77,10 +77,10 @@ def ground(problem):
             update_significance(predicate, effect=True)
         signs[action.name] = act_sign
 
-    start_situation = _define_situation('*start*', problem.initial_state, signs)
-    goal_situation = _define_situation('*finish*', problem.goal, signs)
+    start_situation, pms = _define_situation('*start*', problem.initial_state, signs)
+    goal_situation, pms = _define_situation('*finish*', problem.goal, signs)
 
-    _expand_situation1(goal_situation, signs)  # For task
+    _expand_situation1(goal_situation, signs, pms)  # For task
     return Task(problem.name, signs, start_situation, goal_situation)
 
 
@@ -106,7 +106,6 @@ def _create_type_map(objects):
                 # if object_type is None:
                 break
 
-    # TODO sets in map should be ordered lists
     return type_map
 
 
@@ -138,43 +137,43 @@ def _define_situation(name, predicates, signs):
                 conn = pred_meaning.add_feature(fact_meaning)
                 fact_sign.add_out_meaning(conn)
 
-    return situation
+    return situation, elements
 
 
-def _expand_situation1(goal_situation, signs):
+def _expand_situation1(goal_situation, signs, pms):
     h_mean = signs['handempty'].add_meaning()
     connector = goal_situation.meanings[1].add_feature(h_mean)
     signs['handempty'].add_out_meaning(connector)
 
     ont_mean = signs['ontable'].add_meaning()
-    a_mean = signs['a'].add_meaning()
+    a_mean = pms[signs['a']]
     connector = goal_situation.meanings[1].add_feature(ont_mean)
     conn = goal_situation.meanings[1].add_feature(a_mean, connector.in_order)
     signs['ontable'].add_out_meaning(conn)
     signs['a'].add_out_meaning(conn)
 
     cl_mean = signs['clear'].add_meaning()
-    d_mean = signs['d'].add_meaning()
+    d_mean = pms[signs['d']]
     connector = goal_situation.meanings[1].add_feature(cl_mean)
     conn = goal_situation.meanings[1].add_feature(d_mean, connector.in_order)
     signs['clear'].add_out_meaning(conn)
     signs['d'].add_out_meaning(conn)
 
 
-def _expand_situation2(goal_situation, signs):
+def _expand_situation2(goal_situation, signs, pms):
     h_mean = signs['handempty'].add_meaning()
     conn = goal_situation.meanings[1].add_feature(h_mean)
     signs['handempty'].add_out_meaning(conn)
 
     ont_mean = signs['ontable'].add_meaning()
-    b_mean = signs['b'].add_meaning()
+    b_mean = pms[signs['b']]
     conn = goal_situation.meanings[1].add_feature(ont_mean)
     connb = goal_situation.meanings[1].add_feature(b_mean, conn.in_order)
     signs['ontable'].add_out_meaning(conn)
     signs['b'].add_out_meaning(connb)
 
     cl_mean = signs['clear'].add_meaning()
-    d_mean = signs['d'].add_meaning()
+    d_mean = pms[signs['d']]
     conn = goal_situation.meanings[1].add_feature(cl_mean)
     connd = goal_situation.meanings[1].add_feature(d_mean, conn.in_order)
     signs['clear'].add_out_meaning(conn)

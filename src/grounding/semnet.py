@@ -102,12 +102,14 @@ class CausalMatrix:
 
         return True
 
-    def copy(self, base, new_base):
+    def copy(self, base, new_base, copied=None):
+        if copied is None:
+            copied = {}
         pm = getattr(self.sign, 'add_' + new_base)()
         for event in self.cause:
-            pm.cause.append(event.copy(pm, base, new_base))
+            pm.cause.append(event.copy(pm, base, new_base, copied))
         for event in self.effect:
-            pm.effect.append(event.copy(pm, base, new_base))
+            pm.effect.append(event.copy(pm, base, new_base, copied))
         return pm
 
     def replace(self, base, old_sign, new_cm, deleted=None):
@@ -218,13 +220,20 @@ class Event:
                 return False
         return True
 
-    def copy(self, new_parent, base, new_base):
+    def copy(self, new_parent, base, new_base, copied):
+        if copied is None:
+            copied = {}
         event = Event(self.order)
         for connector in self.coincidences:
             if connector.out_index == 0:
                 cm = getattr(connector.out_sign, 'add_' + new_base)()
             else:
-                cm = connector.get_out_cm(base).copy(base, new_base)
+                pm = connector.get_out_cm(base)
+                if pm not in copied:
+                    cm = pm.copy(base, new_base, copied)
+                    copied[pm] = cm
+                else:
+                    cm = copied[pm]
             conn = Connector(new_parent.sign, connector.out_sign, new_parent.index, cm.index, event.order)
             event.add_coincident(new_base, conn)
         return event
@@ -260,16 +269,6 @@ class Connector:
 
     def __repr__(self):
         return '{0}:{1}-{2}->{3}:{4}'.format(self.out_sign, self.out_index, self.in_order, self.in_sign, self.in_index)
-
-    # def __eq__(self, other):
-    #     return self.in_sign == other.in_sign and self.out_sign == other.out_sign \
-    #            and self.in_index == other.in_index and self.out_index == other.out_index \
-    #            and self.in_order == other.in_order
-    #
-    # def __hash__(self):
-    #     # TODO: if bases are different connectors can be equals!
-    #     return 3 * hash(self.in_sign) + 5 * hash(self.out_sign) + 7 * hash(self.out_index) + 11 * hash(
-    #         self.in_index) + 13 * hash(self.in_order)
 
     def out_eq(self, other):
         return self.out_sign == other.out_sign and self.out_index == other.out_index
@@ -355,18 +354,19 @@ class Sign:
     def add_out_meaning(self, connector):
         self.out_meanings.append(connector)
 
-    def remove_meaning(self, cm):
-        deleted = []
+    def remove_meaning(self, cm, deleted=None):
+        if deleted is None:
+            deleted = []
         for event in cm.cause:
             for connector in event.coincidences:
-                if connector.out_index not in deleted:
-                    connector.out_sign.remove_meaning(connector.get_out_cm('meaning'))
-                    deleted.append(connector.out_index)
+                if (connector.out_sign, connector.out_index) not in deleted:
+                    connector.out_sign.remove_meaning(connector.get_out_cm('meaning'), deleted)
+                    deleted.append((connector.out_sign, connector.out_index))
         for event in cm.effect:
             for connector in event.coincidences:
-                if connector.out_index not in deleted:
-                    connector.out_sign.remove_meaning(connector.get_out_cm('meaning'))
-                    deleted.append(connector.out_index)
+                if (connector.out_sign, connector.out_index) not in deleted:
+                    connector.out_sign.remove_meaning(connector.get_out_cm('meaning'), deleted)
+                    deleted.append((connector.out_sign, connector.out_index))
 
         for connector in self.out_meanings.copy():
             if connector.out_index == cm.index:

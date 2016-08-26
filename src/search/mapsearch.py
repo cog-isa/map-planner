@@ -121,7 +121,8 @@ def _generate_meanings(chains):
     pms = []
     for combination in combinations:
         cm = main_pm.copy('significance', 'meaning')
-        for role_sign, obj_cm in combination.items():
+        for role_sign, obj_pm in combination.items():
+            obj_cm = obj_pm.copy('significance', 'meaning')
             cm.replace('meaning', role_sign, obj_cm)
         pms.append(cm)
 
@@ -152,14 +153,15 @@ def _time_shift_backward(active_pm, script):
     world_model[next_pm.name] = next_pm
     pm = next_pm.add_meaning()
     st.SIT_COUNTER += 1
+    copied = {}
     for event in active_pm.cause:
         for es in script.effect:
             if event.resonate('meaning', es):
                 break
         else:
-            pm.add_event(event.copy(pm, 'meaning', 'meaning'))
+            pm.add_event(event.copy(pm, 'meaning', 'meaning', copied))
     for event in script.cause:
-        pm.add_event(event.copy(pm, 'meaning', 'meaning'))
+        pm.add_event(event.copy(pm, 'meaning', 'meaning', copied))
 
     return pm
 

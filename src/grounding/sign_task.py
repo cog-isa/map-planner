@@ -36,7 +36,9 @@ class Task:
                             sign.remove_meaning(pm)
             for name, s in self.signs.copy().items():
                 if name.startswith(SIT_PREFIX):
-                    s.remove_meaning(s.meanings[0])
+                    for index, pm in s.meanings.copy().items():
+                        if pm not in pms:
+                            s.remove_meaning(pm)
                     self.signs.pop(name)
 
             logging.info('\tSaving precedent...')
