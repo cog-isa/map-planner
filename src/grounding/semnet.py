@@ -112,6 +112,16 @@ class CausalMatrix:
             pm.effect.append(event.copy(pm, base, new_base, copied))
         return pm
 
+    def expand(self, base, copied=None):
+        if copied is None:
+            copied = {}
+        cm = getattr(self.sign, 'add_' + base)()
+        for event in self.cause:
+            cm.cause.extend(event.expand(cm, base, copied))
+        for event in self.effect:
+            cm.effect.extend(event.expand(cm, base, copied))
+        return cm
+
     def replace(self, base, old_sign, new_cm, deleted=None):
         if deleted is None:
             deleted = []
@@ -237,6 +247,18 @@ class Event:
             conn = Connector(new_parent.sign, connector.out_sign, new_parent.index, cm.index, event.order)
             event.add_coincident(new_base, conn)
         return event
+
+    def expand(self, new_parent, base, copied, effect=False):
+        events = []
+        for conn in self.coincidences:
+            if conn.out_index == 0:
+                raise Exception('Cannot expand throw zero connection')
+            else:
+                cm = conn.get_out_cm(base)
+                part = cm.effect if effect else cm.cause
+                for event in part:
+                    events.append(event.copy(new_parent, base, base, copied))
+        return events
 
     def replace(self, base, old_sign, new_cm, deleted):
         for connector in self.coincidences:

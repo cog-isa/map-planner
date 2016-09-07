@@ -35,6 +35,23 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         logging.debug('\tMax iteration count')
         return None
 
+    candidates = []
+
+    # Check meanings for current situations
+    precedents = []
+    for name, sign in world_model.items():
+        for index, cm in sign.meanings.items():
+            if cm.includes('meaning', active_pm):
+                for conn in cm.sign.out_meanings:
+                    if conn.out_index == cm.index:
+                        act_pm = conn.get_in_cm('meaning')
+                        precedents.append(act_pm)
+
+    for cm in precedents:
+        result, checked = _check_activity(cm, active_pm)
+        if result:
+            candidates.append((0, cm.sign.name, checked))
+
     # Activate all current signs (their meanings)
     active_chains = active_pm.spread_down_activity('meaning', 2)
     active_signif = set()
@@ -57,18 +74,23 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         scripts = _generate_meanings(merged_chains)
         meanings.extend(scripts)
 
-    applicable_meanings = _check_activity(meanings, active_pm)
+    applicable_meanings = []
+    for pm in meanings:
+        result, checked = _check_activity(pm, active_pm, False)
+        if result:
+            applicable_meanings.append(checked)
 
     # TODO: replace to metarule apply
     heuristics = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _ in current_plan])
+    candidates.extend(heuristics)
 
-    if not heuristics:
+    if not candidates:
         logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _ in current_plan]))
         return None
 
-    logging.debug('\tFound {0} variants'.format(len(heuristics)))
+    logging.debug('\tFound {0} variants'.format(len(candidates)))
     final_plans = []
-    for counter, name, script in heuristics:
+    for counter, name, script in candidates:
         logging.debug('\tChoose {0}: {1} -> {2}'.format(counter, name, script))
 
         plan = current_plan.copy()
@@ -129,23 +151,23 @@ def _generate_meanings(chains):
     return pms
 
 
-def _check_activity(meanings, active_pm):
-    selected = []
+def _check_activity(pm, active_pm, expand=True):
+    result = True
+    for event in pm.effect:
+        for fevent in active_pm.cause:
+            if event.resonate('meaning', fevent):
+                break
+        else:
+            result = False
+            break
 
-    def check_pm(pm):
-        for event in pm.effect:
-            for fevent in active_pm.cause:
-                if event.resonate('meaning', fevent):
-                    break
-            else:
-                return False
-
-        return True
-
-    for pm in meanings:
-        if check_pm(pm):
-            selected.append(pm)
-    return selected
+    if not result and expand:
+        expanded = pm.expand('meaning')
+        if not expanded.is_empty():
+            return _check_activity(expanded, active_pm)
+        else:
+            return False, pm
+    return result, pm
 
 
 def _time_shift_backward(active_pm, script):
