@@ -10,22 +10,10 @@ from pddl.parser import Parser
 from search.mapsearch import map_search
 
 NUMBER = re.compile(r'\d+')
-i = 0
+SOLUTION_FILE_SUFFIX = '.soln'
 
 
 def find_domain(problem):
-    """
-    This function tries to guess a domain file from a given problem file.
-    It first uses a file called "domain.pddl" in the same directory as
-    the problem file. If the problem file's name contains digits, the first
-    group of digits is interpreted as a number and the directory is searched
-    for a file that contains both, the word "domain" and the number.
-    This is conforming to some domains where there is a special domain file
-    for each problem, e.g. the airport domain.
-
-    @param problem    The pathname to a problem file
-    @return A valid name of a domain
-    """
     dir, name = os.path.split(problem)
     number_match = NUMBER.search(name)
     number = number_match.group(0)
@@ -66,18 +54,9 @@ def _ground(problem, is_load):
     return task
 
 
-def search_plan(domain_file, problem_file, is_load):
-    """
-    Parses the given input files to a specific planner task and then tries to
-    find a solution using the specified  search algorithm and heuristics.
-
-    @param domain_file      The path to a domain file
-    @param problem_file     The path to a problem file in the domain given by
-                            domain_file
-    @return A list of actions that solve the problem
-    """
+def search_plan(domain_file, problem_file, saveload):
     problem = _parse(domain_file, problem_file)
-    task = _ground(problem, is_load)
+    task = _ground(problem, saveload)
 
     search_start_time = time.clock()
     logging.info('Search start: {0}'.format(task.name))
@@ -86,16 +65,10 @@ def search_plan(domain_file, problem_file, is_load):
     logging.info('Wall-clock search time: {0:.2}'.format(time.clock() -
                                                          search_start_time))
 
-    task.save_signs(solution)
+    if saveload:
+        task.save_signs(solution)
 
     return solution
-
-
-def _write_solution(solution, filename):
-    assert solution is not None
-    with open(filename, 'w') as file:
-        for name, op in solution:
-            print(name, op, file=file)
 
 
 if __name__ == '__main__':
@@ -108,8 +81,7 @@ if __name__ == '__main__':
     argparser.add_argument(dest='problem')
     argparser.add_argument('-l', '--loglevel', choices=log_levels,
                            default='info')
-    argparser.add_argument('-i', '--iter', default=1, type=int)
-    argparser.add_argument('-w', '--wakeup', action='store_true')
+    argparser.add_argument('-s', '--saveload', action='store_true')
 
     args = argparser.parse_args()
 
@@ -128,14 +100,14 @@ if __name__ == '__main__':
         args.domain = find_domain(args.problem)
     else:
         args.domain = os.path.abspath(args.domain)
-    for _ in range(args.iter):
-        solution = search_plan(args.domain, args.problem, args.wakeup)
 
-        if solution is None:
-            logging.warning('No solution could be found')
-        else:
-            solution_file = args.problem + '.soln'
-            logging.info('Plan length: %s' % len(solution))
-            _write_solution(solution, solution_file)
-            i += 1
-    logging.info('plan have been found for %s times from %s iterations' % (i, args.iter))
+    solution = search_plan(args.domain, args.problem, args.saveload)
+
+    if solution is None:
+        logging.warning('No solution could be found')
+    else:
+        solution_file = args.problem + SOLUTION_FILE_SUFFIX
+        logging.info('Plan length: %s' % len(solution))
+        with open(solution_file, 'w') as file:
+            for name, op in solution:
+                print(name, op, file=file)
