@@ -65,7 +65,7 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         meanings.extend(scripts)
 
     applicable_meanings = []
-    for cm in precedents:
+    for cm in precedents + meanings:
         result, checked = _check_activity(cm, active_pm)
         if result:
             applicable_meanings.append(checked)
@@ -152,7 +152,7 @@ def _check_activity(pm, active_pm):
 
     if not result:
         expanded = pm.expand('meaning')
-        if not expanded.is_empty():
+        if not len(expanded.effect) == 0:
             return _check_activity(expanded, active_pm)
         else:
             return False, pm
