@@ -67,15 +67,23 @@ class CausalMatrix:
         @param effect: if to add as effect
         @return:
         """
+        # self.sign - знак типа (блок, объект), cm.sign - знак объекта(а, б и тд)
+        # на выходе self.out_sign:self.out_index -> self.in_order то есть cm.sign: cm.index -> self.in_order (a:1 -> None)
         connector = Connector(self.sign, cm.sign, self.index, cm.index, order)
+        # mult -1 if action or 1 if тип объект/блок part = block.cause =[]
         mult, part = (-1, self.effect) if effect else (1, self.cause)
 
         if order is None:
-            connector.in_order = (len(part) + 1) * mult
+            # значение in_order класса connector вычисляется по формуле ниже. с:1 -> 1 тк part = [], mult = 1
+            connector.in_order = (len(part) + 1) * mult # a4:1 -> 1
+            # в список part добавляется набор совпадений в коннекторе
             part.append(Event(connector.in_order, {connector}))
         else:
+            # последним элементом в списке использований текущей км ставится получившийся коннектор
+            # добавляется в список с предикатом ontable еще и знак а с тем же ордером
             part[abs(order) - 1].coincidences.add(connector)
         if zero_out:
+            # значение out_index в классе коннектор приравнивается к 0
             connector.out_index = 0
         return connector
 
@@ -175,6 +183,7 @@ class CausalMatrix:
             for event in itertools.chain(self.cause, self.effect):
                 for connector in event.coincidences:
                     if connector.out_index > 0:
+                        # connector.out_sign with index
                         pm = connector.get_out_cm(base)
                         check_pm(pm)
                     else:
@@ -360,6 +369,7 @@ class Sign:
 
     def add_meaning(self, pm=None):
         if not pm:
+            # создается каузальная матрица личностных смыслов
             pm = CausalMatrix(self, self._next_meaning)
         else:
             pm.index = self._next_meaning
@@ -428,3 +438,18 @@ class Sign:
                     pms = connector.in_sign.spread_up_activity_cuas(base, depth - 1)
                     active_pms |= pms
         return active_pms
+
+    def find_role(self):
+        anc = []
+        for s in self.significances.items():
+            for event in s[1].cause:
+                for connector in event.coincidences:
+                    anc.append(connector.out_sign)
+        if not len(anc) == 1:
+            for sign_a in anc:
+                for sign_b in anc:
+                    if not sign_a == sign_b:
+                        raise Exception('Sign {0} have different ancestors roles on the same level'.format(self))
+                    else: anc.remove(sign_b)
+        return anc[0]
+
