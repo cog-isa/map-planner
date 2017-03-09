@@ -507,9 +507,15 @@ class TraversePDDLProblem(PDDLVisitor):
         node.goal.accept(self)
         goal_list = self.get_in(node.goal)
 
+
+        node.constraints.predicates.extend(goal_list)
+        # Apply to the constraints state definition.
+        node.constraints.accept(self)
+        constraints_list = self.get_in(node.constraints)
+
         # Create the problem data structure.
         self._problemDef = pddl.Problem(node.name, self._domain, self._objects,
-                                        init_list, goal_list)
+                                        init_list, goal_list, constraints_list)
 
     def visit_object(self, node):
         """ Visits a PDDL-problem object definition."""
@@ -558,6 +564,7 @@ class TraversePDDLProblem(PDDLVisitor):
         if len(c.children) != len(predDef.signature):
             raise SemanticError('Error: wrong number of arguments for '
                                 'predicate ' + c.key + ' in goal')
+        # take agent from formula pred and role from domain.pred.definition
         for v in c.children:
             signature.append((v.key, predDef.signature[count][1]))
             count += 1
@@ -585,6 +592,78 @@ class TraversePDDLProblem(PDDLVisitor):
             # Call helper.
             self.add_goal(goal, formula)
         self.set_in(node, goal)
+
+    def get_formula(self,formula, key):
+        if not formula.key == key:
+            formula = formula.children[0]
+            if len(formula.children) > 1:
+                for child in formula.children:
+                    if child.key == key:
+                        formula = child
+            formula = self.get_formula(formula, key)
+        return formula
+
+    def get_agent(self):
+        pass
+
+    def visit_constraints_stmt(self, node):
+        formula = node.formula
+        constr = list()
+        constraints = {}
+        predicates = node.predicates
+        if formula.key == 'and':
+            for child in formula.children:
+                formula = self.get_formula(child, 'implies')
+                blocks = []
+                for c in formula.children:
+                    predDef = self._domain.predicates[c.key]
+                    signature = []
+                    sig = []
+                    blocknames = []
+
+                    for predicate in [predicate for predicate in predicates if predicate.name==c.key]:
+                        if predicate.signature[0][0] == c.children[0].key:
+                            blocknames.append((c.children[0].key, predicate.signature[1][0]))
+                            blocks.append(predicate.signature[1][0])
+                    if len(blocknames):
+                        for name in blocknames:
+                            count = 0
+                            for v in name:
+                                sig.append((v, predDef.signature[count][1]))
+                                count += 1
+                            signature.append(sig)
+                            sig = []
+                        for sign in signature:
+                            constr.append(pddl.Predicate(c.key, sign))
+                        print()
+                    elif len(blocks):
+                        for block in blocks:
+                            blocknames.append((c.children[0].key, block))
+                            agent = c.children[0].key
+                            for name in blocknames:
+                                count = 0
+                                for v in name:
+                                    sig.append((v, predDef.signature[count][1]))
+                                    count += 1
+                                signature.append(sig)
+                                sig = []
+                            for sign in signature:
+                                constr.append(pddl.Predicate(c.key, sign))
+                            signature = []
+                            blocknames = []
+                    else:
+                        raise SemanticError('unknown predicate!')
+                constraints[agent] = constr
+                constr = []
+
+                """
+                a1 - список предикатов holding с кубиками большими
+                а2 - список предикатов holding c маленькими кубиками
+                """
+            self.set_in(node, constraints)
+
+
+
 
     def visit_predicate_instance(self, node):
         """ Visits a PDDL-problem predicate instance."""

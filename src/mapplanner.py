@@ -4,10 +4,11 @@ import os
 import re
 import sys
 import time
-
-from grounding import sign_grounding
+import logging
 from pddl.parser import Parser
-from search.mapsearch import map_search
+
+from grounding.agent_grounding import Agent
+
 
 NUMBER = re.compile(r'\d+')
 SOLUTION_FILE_SUFFIX = '.soln'
@@ -43,32 +44,41 @@ def _parse(domain_file, problem_file):
     logging.info('{0} Constants parsed'.format(len(domain.constants)))
     return problem
 
+#
+# def _ground(problem, is_load):
+#     logging.info('Grounding start: {0}'.format(problem.name))
+#     task = sign_grounding.ground(problem)
+#     if is_load:
+#         task.load_signs()
+#     logging.info('Grounding end: {0}'.format(problem.name))
+#     logging.info('{0} Signs created'.format(len(task.signs)))
+#     return task
 
-def _ground(problem, is_load):
-    logging.info('Grounding start: {0}'.format(problem.name))
-    task = sign_grounding.ground(problem)
-    if is_load:
-        task.load_signs()
-    logging.info('Grounding end: {0}'.format(problem.name))
-    logging.info('{0} Signs created'.format(len(task.signs)))
-    return task
+
+def search_plan(domain_dir, problem_dir, saveload):
+    from os import listdir
+    agent_tasks = []
+    for domain in [file for file in listdir(domain_dir) if "domain" in file.lower()]:
+        for problem in [file for file in listdir(problem_dir) if "task" in file.lower()]:
+            agent_tasks.append([domain_dir+"/"+domain, problem_dir+"/"+problem])
+
+    agents = []
+    for domain_file, problem_file in agent_tasks:
+        problem = _parse(domain_file, problem_file)
+        for obj in problem.objects:
+            if problem.objects[obj].name == 'agent':
+                agents.append(obj)
+
+    for agent in agents:
+        agent = Agent(agent, problem, saveload)
+        solution = agent.search_solution()
 
 
-def search_plan(domain_file, problem_file, saveload):
-    problem = _parse(domain_file, problem_file)
-    task = _ground(problem, saveload)
 
-    search_start_time = time.clock()
-    logging.info('Search start: {0}'.format(task.name))
-    solution = map_search(task)
-    logging.info('Search end: {0}'.format(task.name))
-    logging.info('Wall-clock search time: {0:.2}'.format(time.clock() -
-                                                         search_start_time))
-
-    if saveload:
-        task.save_signs(solution)
-
-    return solution
+    # if saveload:
+    #     task.save_signs(solution)
+    #
+    # return solution
 
 
 if __name__ == '__main__':

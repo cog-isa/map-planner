@@ -67,23 +67,15 @@ class CausalMatrix:
         @param effect: if to add as effect
         @return:
         """
-        # self.sign - знак типа (блок, объект), cm.sign - знак объекта(а, б и тд)
-        # на выходе self.out_sign:self.out_index -> self.in_order то есть cm.sign: cm.index -> self.in_order (a:1 -> None)
         connector = Connector(self.sign, cm.sign, self.index, cm.index, order)
-        # mult -1 if action or 1 if тип объект/блок part = block.cause =[]
         mult, part = (-1, self.effect) if effect else (1, self.cause)
 
         if order is None:
-            # значение in_order класса connector вычисляется по формуле ниже. с:1 -> 1 тк part = [], mult = 1
             connector.in_order = (len(part) + 1) * mult # a4:1 -> 1
-            # в список part добавляется набор совпадений в коннекторе
             part.append(Event(connector.in_order, {connector}))
         else:
-            # последним элементом в списке использований текущей км ставится получившийся коннектор
-            # добавляется в список с предикатом ontable еще и знак а с тем же ордером
             part[abs(order) - 1].coincidences.add(connector)
         if zero_out:
-            # значение out_index в классе коннектор приравнивается к 0
             connector.out_index = 0
         return connector
 

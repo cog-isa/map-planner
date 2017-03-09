@@ -121,7 +121,7 @@ class Domain:
 
 
 class Problem:
-    def __init__(self, name, domain, objects, init, goal):
+    def __init__(self, name, domain, objects, init, goal, constraints):
         """
         name: The name of the problem
         domain: The domain in which the problem has to be solved
@@ -134,6 +134,7 @@ class Problem:
         self.objects = objects
         self.initial_state = init
         self.goal = goal
+        self.constraints = constraints
 
     def __repr__(self):
         return ('< Problem definition: %s '

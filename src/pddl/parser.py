@@ -20,6 +20,7 @@ from .parser_common import *
 from .errors import *
 from .tree_visitor import Visitable, TraversePDDLDomain, TraversePDDLProblem
 from .lisp_parser import parse_lisp_iterator
+import argparse
 
 """
 This module contains the main parser logic.
@@ -255,7 +256,7 @@ class DomainDef(Visitable):
 class ProblemDef(Visitable):
     """This class represents the AST node for a pddl domain."""
 
-    def __init__(self, name, domainName, objects=None, init=None, goal=None):
+    def __init__(self, name, domainName, objects=None, init=None, goal=None, constraints=None):
         """ Construct a new Problem AST node.
 
             Keyword arguments:
@@ -271,6 +272,8 @@ class ProblemDef(Visitable):
         self.objects = objects
         self.init = init
         self.goal = goal
+        self.constraints = constraints
+
 
 
 class Object(Visitable):
@@ -314,6 +317,19 @@ class GoalStmt(Visitable):
         self._visitorName = 'visit_goal_stmt'
         self.formula = formula
 
+class ConstraintsStmt(Visitable):
+
+    def __init__(self, formula):
+        """ Construct a new GoalStmt AST node.
+
+        Keyword arguments:
+        predicates -- a list of predicates denoting the goal codition
+        """
+        self._visitorName = 'visit_constraints_stmt'
+        self.formula = formula
+        self.predicates = []
+
+
 ###
 ### some little helper functions
 ###
@@ -336,6 +352,11 @@ def parse_list_template(f, iter):
     result = list()
     # parse all possible occurences up to the end of the substring
     for elem in iter:
+        if elem.contents[0] == ":private":
+            elem.contents.remove(elem.contents[0])
+            for el in elem.contents:
+                iter.contents.append(el)
+            continue
         var = f(elem)
         if var != None:
             result.append(var)
@@ -366,6 +387,11 @@ def _parse_type_helper(iter, type_class):
     result = list()
     tmpList = list()
     while not iter.empty():
+        if iter.peek().is_structure() and iter.peek().contents[0] == ":private":
+            for el in iter.peek().contents[1:]:
+                iter.contents.append(el)
+            iter.contents.remove(iter.peek().contents)
+            continue
         var = next(iter).get_word()
         #print('VAR:', var)
         if type_class != Variable and len(var) > 0 and var[0] in reserved:
@@ -714,11 +740,17 @@ def parse_problem_def(iter):
         objects = parse_objects_stmt(next(iter))
     init = parse_init_stmt(next(iter))
     goal = parse_goal_stmt(next(iter))
+    constraints = parse_constraints_stmt(next(iter))
     # assert end is reached
     iter.match_end()
     # create new ProblemDef instance
-    return ProblemDef(probname, dom.name, objects, init, goal)
+    return ProblemDef(probname, dom.name, objects, init, goal, constraints)
 
+def parse_constraints_stmt(iter):
+    if not iter.try_match(':constraints'):
+        raise ValueError('Error found invalid keyword when parsing ConstraintsStmt')
+    con = parse_formula(next(iter))
+    return ConstraintsStmt(con)
 
 def parse_init_stmt(iter):
     """Parse the init statement of a problem definition.
