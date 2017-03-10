@@ -191,12 +191,23 @@ def _define_situation(name, predicates, signs):
             conn = sit_meaning.add_feature(sig_meaning, connector.in_order)
             sig_sign.add_out_meaning(conn)
         elif len(predicate.signature) > 1:
+            pre_signs = set()
             for fact in predicate.signature:
-                fact_sign = signs[fact[0]]
-                fact_meaning = get_or_add(fact_sign)
-                conn = pred_meaning.add_feature(fact_meaning)
-                fact_sign.add_out_meaning(conn)
-
+                pre_signs.add(signs[fact[0]].find_attribute())
+            if len(pre_signs) < len(predicate.signature):
+                for fact in predicate.signature:
+                    fact_sign = signs[fact[0]]
+                    fact_meaning = get_or_add(fact_sign)
+                    conn = pred_meaning.add_feature(fact_meaning)
+                    fact_sign.add_out_meaning(conn)
+            else:
+                for fact in predicate.signature:
+                    fact_sign = signs[fact[0]]
+                    fact_meaning = get_or_add(fact_sign)
+                    conn = sit_meaning.add_feature(fact_meaning, connector.in_order)
+                    fact_sign.add_out_meaning(conn)
+                    con3 = pred_meaning.add_feature(fact_meaning)
+                    fact_sign.add_out_meaning(con3)
     return situation, elements
 
 def _expand_situation_ma(goal_situation, signs, pms, list_signs):

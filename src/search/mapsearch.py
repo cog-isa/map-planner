@@ -18,8 +18,9 @@ def map_search(task):
     check_pm = task.start_situation.meanings[1]
     logging.debug('Start: {0}'.format(check_pm.longstr()))
     logging.debug('Finish: {0}'.format(active_pm.longstr()))
-
     plans = map_iteration(active_pm, check_pm, [], 0)
+    if plans:
+        logging.debug('Found {0} variants'.format(len(plans)))
     return plans
     # if plans:
     #     current_plans = []
@@ -34,7 +35,7 @@ def map_search(task):
     # return None
 
 
-def map_iteration(active_pm, check_pm, current_plan, iteration, current_agent=None):
+def map_iteration(active_pm, check_pm, current_plan, iteration):
     logging.debug('STEP {0}:'.format(iteration))
     logging.debug('\tSituation {0}'.format(active_pm.longstr()))
     if iteration >= MAX_ITERATION:
@@ -68,23 +69,18 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, current_agent=No
         scripts = _generate_meanings(merged_chains, agents)
         meanings.extend(scripts)
     applicable_meanings = []
-    for cm in precedents + meanings:
+    for agent, cm in precedents + meanings:
         result, checked = _check_activity(cm, active_pm)
         if result:
-            applicable_meanings.append(checked)
+            applicable_meanings.append((agent, checked))
 
-    # # del wait if other scripts, because wait has more huge counter
-    # if len(applicable_meanings) > 1:
-    #     for act in applicable_meanings:
-    #         if act.sign.name == "wait":
-    #             applicable_meanings.remove(act)
 
     # TODO: replace to metarule apply
-    candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _ in current_plan])
+    candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _, _ in current_plan])
 
     if not candidates:
-        logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _ in current_plan]))
-        return [current_plan, active_pm]
+        logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _, _ in current_plan]))
+        return None
 
     logging.debug('\tFound {0} variants'.format(len(candidates)))
     final_plans = []
@@ -92,34 +88,27 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, current_agent=No
     #     if current_agent not in [plan[0] for plan in aim_plans]:
     #         candidates = [cand for cand in candidates if get_agent(cand[2]) == current_agent]
 
-    for counter, name, script in candidates:
+    for counter, name, script, ag_mask in candidates:
         logging.debug('\tChoose {0}: {1} -> {2}'.format(counter, name, script))
 
         plan = current_plan.copy()
-        plan.append((active_pm, name, script))
-        agent = get_agent(script)
-        if current_agent is None:
-            current_agent = agent
-        # if len(final_plans):
-        #     aim_plans.extend(final_plans)
-        #     if not all(agents == agent for agents in action_agents(plan)):
-        #         break
-        #     else: current_agent = agent
-        #
-        if not agent == current_agent:
-            break
+        plan.append((active_pm, name, script, ag_mask))
+        # agent = get_agent(script)
+        # if current_agent is None:
+        #     current_agent = agent
+        # if not agent == current_agent:
+        #     break
         next_pm = _time_shift_backward(active_pm, script)
         if next_pm.includes('meaning', check_pm):
-            final_plans.append((current_agent, plan))
+            final_plans.append(plan)
         else:
-            recursive_plans = map_iteration(next_pm, check_pm, plan, iteration + 1, agent)
+            recursive_plans = map_iteration(next_pm, check_pm, plan, iteration + 1)
             if recursive_plans:
                 final_plans.extend(recursive_plans)
 
     return final_plans
 
-def next_agent():
-    pass
+
 
 def action_agents(plan):
     plan_agents = []
@@ -279,15 +268,12 @@ def _generate_meanings(chains, agents):
 
     def suitable(cm, agents):
         meanings = list()
-        cm_meanings = set()
+        cm_meanings = []
         con = set()
         ag = {}
         local = []
         script = []
-        for event in itertools.chain(cm.cause, cm.effect):
-            for connector in event.coincidences:
-                con.add(connector.out_sign.name)
-            cm_meanings.add(tuple(con))
+        cm_agent = []
         for agent in agents:
             for connector in agent.out_meanings:
                 if connector.out_sign == agent:
@@ -299,7 +285,7 @@ def _generate_meanings(chains, agents):
         for mean, attribute in ag.items():
             roles = []
             variants = set()
-            my_role = None
+            # my_role = None
             for mask, agent in local:
                 if agent == mean.name:
                     my_role = mask
@@ -310,18 +296,37 @@ def _generate_meanings(chains, agents):
                         for elem in attribute:
                             if elem[0] == role and not elem[1] == mask:
                                 variants.add(elem[1])
+                    type = max(elem for elem in variants)
+                    variants.remove(type)
+                    meanings.append((my_role, variants, type))
+        for event in itertools.chain(cm.cause, cm.effect):
+            for connector in event.coincidences:
+                con.add(connector.out_sign.name)
+            if roles[0] in con or roles[1] in con:
+                cm_meanings.append(con)
+                con = set()
+                continue
+            elif "handempty" in con and len(con) == 2:
+                cm_agent = list(con)
+                cm_agent.remove("handempty")
 
-            type = max(elem for elem in variants)
-            variants.remove(type)
-            if any(my_role in cm_meaning for cm_meaning in cm_meanings):
-                for elem in variants:
-                    for cm_meaning in cm_meanings:
-                        if elem in cm_meaning and type in cm_meaning:
-                            #todo not right select
-                            script.append([mean, cm])
-        return script
 
-        pass
+        if len(cm_meanings):
+            for mean in meanings:
+                if any(mean[0] in cm_meaning for cm_meaning in cm_meanings):
+                    for elem in mean[1]:
+                        if all(elem in cm_meaning and mean[0] in cm_meaning or elem in cm_meaning and mean[2] in cm_meaning for cm_meaning in cm_meanings):
+                            for role in local:
+                                if mean[0] == role[0]:
+                                    script.append([role[1], cm])
+                                    return script
+        elif cm_agent:
+                for mask, agent in local:
+                    if mask == cm_agent[0]:
+                        script.append([agent, cm])
+                        return script
+        else:
+            return False
 
     if len(roles) == 3:
         ma_combinations = mix_pairs3(combinations, 3)
@@ -334,8 +339,9 @@ def _generate_meanings(chains, agents):
         for role_sign, obj_pm in ma_combination.items():
             obj_cm = obj_pm.copy('significance', 'meaning')
             cm.replace('meaning', role_sign, obj_cm)
-        if suitable(cm, agents):
-            pms.append(cm)
+        test = suitable(cm, agents)
+        if test:
+            pms.append(test[0])
 
     return pms
 
@@ -379,7 +385,7 @@ def _time_shift_backward(active_pm, script):
 
 def _meta_check_activity(scripts, active_pm, check_pm, prev_pms):
     heuristic = []
-    for script in scripts:
+    for agent, script in scripts:
         estimation = _time_shift_backward(active_pm, script)
         for prev in prev_pms:
             if estimation.resonate('meaning', prev, False, False):
@@ -391,8 +397,15 @@ def _meta_check_activity(scripts, active_pm, check_pm, prev_pms):
                     if event.resonate('meaning', ce):
                         counter += 1
                         break
-            heuristic.append((counter, script.sign.name, script))
+            heuristic.append((counter, script.sign.name, script, agent))
     if heuristic:
+        if len(heuristic)>1:
+            heur = heuristic.copy()
+            for heu in heur:
+                if not heu[1] == "wait":
+                    for heu2 in heur:
+                        if heu2[1] == "wait":
+                            heuristic.remove(heu2)
         best_heuristics = max(heuristic, key=lambda x: x[0])
         return list(filter(lambda x: x[0] == best_heuristics[0], heuristic))
     else:

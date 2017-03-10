@@ -444,4 +444,9 @@ class Sign:
                         raise Exception('Sign {0} have different ancestors roles on the same level'.format(self))
                     else: anc.remove(sign_b)
         return anc[0]
-
+    def find_attribute(self):
+        attribute = []
+        for connector in self.out_meanings:
+            if not connector.in_sign.name == "object":
+                attribute.append(connector.in_sign)
+        return attribute[0]
