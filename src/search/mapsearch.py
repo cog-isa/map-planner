@@ -18,10 +18,16 @@ def map_search(task):
     check_pm = task.start_situation.meanings[1]
     logging.debug('Start: {0}'.format(check_pm.longstr()))
     logging.debug('Finish: {0}'.format(active_pm.longstr()))
+    solution = []
     plans = map_iteration(active_pm, check_pm, [], 0)
+    plans = plans[0]
     if plans:
-        logging.debug('Found {0} variants'.format(len(plans)))
-    return plans
+        for plan in plans:
+            solution.append([plan[1], plan[len(plan)-1]])
+        solution.reverse()
+        logging.info('Found {0} variants'.format(len(plans)))
+        logging.info('Plan {0}'.format(solution))
+    return solution
     # if plans:
     #     current_plans = []
     #     logging.debug('Found {0} variants'.format(len(plans)))
@@ -399,13 +405,14 @@ def _meta_check_activity(scripts, active_pm, check_pm, prev_pms):
                         break
             heuristic.append((counter, script.sign.name, script, agent))
     if heuristic:
-        if len(heuristic)>1:
-            heur = heuristic.copy()
-            for heu in heur:
-                if not heu[1] == "wait":
-                    for heu2 in heur:
-                        if heu2[1] == "wait":
-                            heuristic.remove(heu2)
+        # if len(heuristic)>1:
+        #     heur = heuristic.copy()
+        #     for heu in heur:
+        #         if not heu[1] == "wait":
+        #             for heu2 in heur:
+        #                 if heu2[1] == "wait":
+        #                     if heu2 in heuristic:
+        #                         heuristic.remove(heu2)
         best_heuristics = max(heuristic, key=lambda x: x[0])
         return list(filter(lambda x: x[0] == best_heuristics[0], heuristic))
     else:

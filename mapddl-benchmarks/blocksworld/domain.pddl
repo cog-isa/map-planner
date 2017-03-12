@@ -12,7 +12,7 @@
 )
 
 (:action pick-up
-	:parameters (?ag - agent ?x - block)
+	:parameters (?ag - agent ?x - block ?col - type)
 	:precondition (and
 		(clear ?x)
 		(ontable ?x)
@@ -22,15 +22,16 @@
 		(not (ontable ?x))
 		(not (clear ?x))
 		(not (handempty ?ag))
-		(holding ?ag ?x)
+		(holding ?ag ?x))
 	)
 )
 
 
 (:action put-down
-	:parameters (?ag - agent ?x - block)
-	:precondition 
+	:parameters (?ag - agent ?x - block ?col - type)
+	:precondition (and
 		(holding ?ag ?x)
+	)
 	:effect (and
 		(not (holding ?ag ?x))
 		(clear ?x)
@@ -41,7 +42,7 @@
 
 
 (:action stack
-	:parameters (?ag - agent ?x - block ?y - block)
+	:parameters (?ag - agent ?x - block ?y - block ?col - type)
 	:precondition (and
 		(holding ?ag ?x)
 		(clear ?y)
@@ -57,7 +58,7 @@
 
 
 (:action unstack
-	:parameters (?ag - agent ?x - block ?y - block)
+	:parameters (?ag - agent ?x - block ?y - block ?col - type)
 	:precondition (and
 		(on ?x ?y)
 		(clear ?x)
@@ -72,4 +73,13 @@
 	)
 )
 
+(:action wait
+    :parameters (?ag - agent)
+    :precondition
+        (handempty ?ag)
+    :effect
+        (handempty ?ag)
+
+
+)
 )

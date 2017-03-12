@@ -63,6 +63,7 @@ def search_plan(domain_dir, problem_dir, saveload):
             agent_tasks.append([domain_dir+"/"+domain, problem_dir+"/"+problem])
 
     agents = []
+    solutions = []
     for domain_file, problem_file in agent_tasks:
         problem = _parse(domain_file, problem_file)
         for obj in problem.objects:
@@ -72,7 +73,10 @@ def search_plan(domain_dir, problem_dir, saveload):
     for agent in agents:
         agent = Agent(agent, problem, saveload)
         solution = agent.search_solution()
+        solutions.append(solution)
 
+
+    return solutions
 
 
     # if saveload:
@@ -111,13 +115,14 @@ if __name__ == '__main__':
     else:
         args.domain = os.path.abspath(args.domain)
 
-    solution = search_plan(args.domain, args.problem, args.saveload)
+    solutions = search_plan(args.domain, args.problem, args.saveload)
 
-    if solution is None:
+    if solutions is None:
         logging.warning('No solution could be found')
     else:
         solution_file = args.problem + SOLUTION_FILE_SUFFIX
-        logging.info('Plan length: %s' % len(solution))
+        logging.info('Plan length: %s' % len(solutions))
         with open(solution_file, 'w') as file:
-            for name, op in solution:
-                print(name, op, file=file)
+            for solution in solutions:
+                for op, name in solution:
+                    print(op, name, file=file)

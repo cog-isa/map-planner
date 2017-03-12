@@ -28,4 +28,5 @@ class Agent:
         search_start_time = time.clock()
         logging.info('Search start: {0}'.format(task.name))
         self.solution = map_search(task)
+        return self.solution
 
