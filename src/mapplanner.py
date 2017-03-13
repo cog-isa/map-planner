@@ -55,12 +55,13 @@ def _parse(domain_file, problem_file):
 #     return task
 
 
-def search_plan(domain_dir, problem_dir, saveload):
+def search_plan(domain_dir, problem_numb, saveload):
     from os import listdir
     agent_tasks = []
+    if len(problem_numb) == 1:
+        problem_numb = "0"+problem_numb
     for domain in [file for file in listdir(domain_dir) if "domain" in file.lower()]:
-        for problem in [file for file in listdir(problem_dir) if "task" in file.lower()]:
-            agent_tasks.append([domain_dir+"/"+domain, problem_dir+"/"+problem])
+        agent_tasks.append([domain_dir+"/"+domain, domain_dir+"/task"+problem_numb +".pddl"])
 
     agents = []
     solutions = []
@@ -92,7 +93,7 @@ if __name__ == '__main__':
     argparser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     argparser.add_argument(dest='domain', nargs='?')
-    argparser.add_argument(dest='problem')
+    argparser.add_argument(dest='problem_numb')
     argparser.add_argument('-l', '--loglevel', choices=log_levels,
                            default='info')
     argparser.add_argument('-s', '--saveload', action='store_true')
@@ -109,18 +110,18 @@ if __name__ == '__main__':
     rootLogger.addHandler(fileHandler)
     rootLogger.setLevel(args.loglevel.upper())
 
-    args.problem = os.path.abspath(args.problem)
+    # args.problem = os.path.abspath(args.problem)
     if args.domain is None:
-        args.domain = find_domain(args.problem)
+        args.domain = find_domain(args.problem_numb)
     else:
         args.domain = os.path.abspath(args.domain)
 
-    solutions = search_plan(args.domain, args.problem, args.saveload)
+    solutions = search_plan(args.domain, args.problem_numb, args.saveload)
 
     if solutions is None:
         logging.warning('No solution could be found')
     else:
-        solution_file = args.problem + SOLUTION_FILE_SUFFIX
+        solution_file = args.domain + SOLUTION_FILE_SUFFIX
         logging.info('Plan length: %s' % len(solutions))
         with open(solution_file, 'w') as file:
             for solution in solutions:

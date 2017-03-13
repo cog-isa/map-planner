@@ -150,127 +150,159 @@ def _generate_meanings(chains, agents):
     unique3 = []
     unique4 = []
 
-    def create_combinations(role_map, current):
-        comb = []
-        for role_sign in role_map:
-            for obj_pm in role_map[role_sign]:
-                new_current = current.copy()
-                new_current[role_sign] = obj_pm
-                comb.append(new_current)
-        return comb
+    # def create_combinations(role_map, current):
+    #     comb = []
+    #     for role_sign in role_map:
+    #         for obj_pm in role_map[role_sign]:
+    #             new_current = current.copy()
+    #             new_current[role_sign] = obj_pm
+    #             comb.append(new_current)
+    #     return comb
+    #
+    #
+    # def create_ma_combinations(role_map):
+    #     used_roles = []
+    #     for role_sign in role_map:
+    #         if not role_sign in roles :
+    #             roles.append(role_sign)
+    #         for r in role_map:
+    #             if not r in roles:
+    #                 roles.append(r)
+    #             if not [role_sign, r] or not [r, role_sign] in used_roles:
+    #                 used_roles.append([role_sign, r])
+    #                 if not r == role_sign:
+    #                     for obj_pm in role_map[role_sign]:
+    #                         others = {}
+    #                         current = {}
+    #                         current[role_sign] = obj_pm
+    #                         others[r] = role_map[r].copy()
+    #                         if role_sign.find_role() == r.find_role():
+    #                             others[r].remove(obj_pm)
+    #                         combinations.extend(create_combinations(others, current))
+    #
+    #
+    # # if len(replace_map) > 1:
+    # #     create_ma_combinations(replace_map)
+    # # else:
+    # #     combinations = create_combinations(replace_map, {})
+    #
+    #
+    # def is_unique(pair_items, item3):
+    #     if len(pair_items) == 2:
+    #         if not any(pair_items[0] in item and pair_items[1] in item and item3 in item for item in unique3):
+    #             unique3.append([pair_items[0], pair_items[1], item3])
+    #             return True
+    #     if len(pair_items) == 3:
+    #         if not any(pair_items[0] in item and pair_items[1] in item and pair_items[2] in item and item3 in item for item in unique4):
+    #             unique4.append([pair_items[0], pair_items[1], pair_items[2], item3])
+    #             return True
+    #     return False
+    #
+    # def can_be_mixed(pair, element):
+    #     typemap_p = []
+    #     typemap_el = []
+    #     values = []
+    #     agent1 = None
+    #     agent2 = None
+    #     for elem in pair:
+    #         role = elem[0].name
+    #         typemap_p.append(role)
+    #         if role == "agent?ag":
+    #             agent1 = elem[1]
+    #         values.append(elem[1])
+    #     for elem in element:
+    #         role = elem[0].name
+    #         typemap_el.append(role)
+    #         if role == "agent?ag":
+    #             agent2 = elem[1]
+    #     new = list(set(element) - set(pair))
+    #
+    #     if typemap_p == typemap_el:
+    #         return False
+    #     elif agent1 and agent2 and not agent1 == agent2:
+    #         return False
+    #     elif len(list(set(typemap_el) - set(typemap_p))) < 1:
+    #         return False
+    #     elif new[0][1] in values:
+    #         return False
+    #     else:
+    #         return True
+    #
+    #
+    # #Todo обобщить
+    # def mix_pairs3(combinations, roles):
+    #     for pair in combinations:
+    #         pair = list(pair.items())
+    #         for element in combinations:
+    #             element = list(element.items())
+    #             if not pair == element:
+    #                 if can_be_mixed(pair, element):
+    #                     new = set(element) - set(pair)
+    #                     if len(new):
+    #                         new = tuple(new)[0]
+    #                         if len(pair) == roles-1:
+    #                             if is_unique(pair, new):
+    #                                 pair.append(new)
+    #                                 if len(pair) == roles:
+    #                                     ma_combinations.append({elem[0]: elem[1] for elem in pair})
+    #                                     pair.remove(new)
+    #                                     continue
+    #                         else:
+    #                             pair.append(new)
+    #     ma_combinations2 = [ma_combination for ma_combination in ma_combinations if len(ma_combination) == roles]
+    #     return ma_combinations2
+    #
+    # def mix_pairs4(combinations):
+    #     ma_combinations = []
+    #     combinations = mix_pairs3(combinations, 3)
+    #     for combination in combinations:
+    #         combination = list(combination.items())
+    #         for other_comb in combinations:
+    #             other_comb = list(other_comb.items())
+    #             if not combination == other_comb:
+    #                 dif = tuple(set(other_comb) - set(combination))[0]
+    #                 if len(dif):
+    #                     if can_be_mixed(combination, other_comb):
+    #                         if is_unique(combination, dif):
+    #                             combination.append(dif)
+    #                             ma_combinations.append({elem[0]: elem[1] for elem in combination})
+    #                             combination.remove(dif)
+    #                             continue
+    #     ma_combinations2 = [ma_combination for ma_combination in ma_combinations if len(ma_combination) == 4]
+    #
+    #     return ma_combinations2
 
+    def get_role(obj, roles):
+        for role in roles:
+            if obj in role[1]:
+                return role
 
-    def create_ma_combinations(role_map):
+    def mix_pairs(replace_map):
+        new_chain = {}
+        elements = []
+        merged_chains = []
         used_roles = []
-        for role_sign in role_map:
-            if not role_sign in roles :
-                roles.append(role_sign)
-            for r in role_map:
-                if not r in roles:
-                    roles.append(r)
-                if not [role_sign, r] or not [r, role_sign] in used_roles:
-                    used_roles.append([role_sign, r])
-                    if not r == role_sign:
-                        for obj_pm in role_map[role_sign]:
-                            others = {}
-                            current = {}
-                            current[role_sign] = obj_pm
-                            others[r] = role_map[r].copy()
-                            if role_sign.find_role() == r.find_role():
-                                others[r].remove(obj_pm)
-                            combinations.extend(create_combinations(others, current))
+        replace_map = list(replace_map.items())
 
+        for item in replace_map:
+            elements.append(item[1])
+        elements = list(itertools.product(*elements))
+        clean_el = elements.copy()
+        for element in clean_el:
+            if not len(set(element)) == len(element):
+                elements.remove(element)
+        for element in elements:
+            for obj in element:
+                avalaible_roles = [x for x in replace_map if x not in used_roles]
+                role = get_role(obj, avalaible_roles)
+                if role:
+                    used_roles.append(role)
+                    new_chain[role[0]] = obj
+            merged_chains.append(new_chain)
+            new_chain = {}
+            used_roles = []
+        return merged_chains
 
-    if len(replace_map) > 1:
-        create_ma_combinations(replace_map)
-    else:
-        combinations = create_combinations(replace_map, {})
-
-
-    def is_unique(pair_items, item3):
-        if len(pair_items) == 2:
-            if not any(pair_items[0] in item and pair_items[1] in item and item3 in item for item in unique3):
-                unique3.append([pair_items[0], pair_items[1], item3])
-                return True
-        if len(pair_items) == 3:
-            if not any(pair_items[0] in item and pair_items[1] in item and pair_items[2] in item and item3 in item for item in unique4):
-                unique4.append([pair_items[0], pair_items[1], pair_items[2], item3])
-                return True
-        return False
-
-    def can_be_mixed(pair, element):
-        typemap_p = []
-        typemap_el = []
-        values = []
-        agent1 = None
-        agent2 = None
-        for elem in pair:
-            role = elem[0].name
-            typemap_p.append(role)
-            if role == "agent?ag":
-                agent1 = elem[1]
-            values.append(elem[1])
-        for elem in element:
-            role = elem[0].name
-            typemap_el.append(role)
-            if role == "agent?ag":
-                agent2 = elem[1]
-        new = list(set(element) - set(pair))
-
-        if typemap_p == typemap_el:
-            return False
-        elif agent1 and agent2 and not agent1 == agent2:
-            return False
-        elif len(list(set(typemap_el) - set(typemap_p))) < 1:
-            return False
-        elif new[0][1] in values:
-            return False
-        else:
-            return True
-
-
-
-    def mix_pairs3(combinations, roles):
-        for pair in combinations:
-            pair = list(pair.items())
-            for element in combinations:
-                element = list(element.items())
-                if not pair == element:
-                    if can_be_mixed(pair, element):
-                        new = set(element) - set(pair)
-                        if len(new):
-                            new = tuple(new)[0]
-                            if len(pair) == roles-1:
-                                if is_unique(pair, new):
-                                    pair.append(new)
-                                    if len(pair) == roles:
-                                        ma_combinations.append({elem[0]: elem[1] for elem in pair})
-                                        pair.remove(new)
-                                        continue
-                            else:
-                                pair.append(new)
-        ma_combinations2 = [ma_combination for ma_combination in ma_combinations if len(ma_combination) == roles]
-        return ma_combinations2
-
-    def mix_pairs4(combinations):
-        ma_combinations = []
-        combinations = mix_pairs3(combinations, 3)
-        for combination in combinations:
-            combination = list(combination.items())
-            for other_comb in combinations:
-                other_comb = list(other_comb.items())
-                if not combination == other_comb:
-                    dif = tuple(set(other_comb) - set(combination))[0]
-                    if len(dif):
-                        if can_be_mixed(combination, other_comb):
-                            if is_unique(combination, dif):
-                                combination.append(dif)
-                                ma_combinations.append({elem[0]: elem[1] for elem in combination})
-                                combination.remove(dif)
-                                continue
-        ma_combinations2 = [ma_combination for ma_combination in ma_combinations if len(ma_combination) == 4]
-
-        return ma_combinations2
 
     def suitable(cm, agents):
         meanings = list()
@@ -334,11 +366,13 @@ def _generate_meanings(chains, agents):
         else:
             return False
 
-    if len(roles) == 3:
-        ma_combinations = mix_pairs3(combinations, 3)
-    elif len(roles) == 4:
-        ma_combinations = mix_pairs4(combinations)
-    else: ma_combinations = combinations
+    ma_combinations = mix_pairs(replace_map)
+
+    # if len(roles) == 3:
+    #     ma_combinations = mix_pairs3(combinations, 3)
+    # elif len(roles) == 4:
+    #     ma_combinations = mix_pairs4(combinations)
+    # else: ma_combinations = combinations
     pms = []
     for ma_combination in ma_combinations:
         cm = main_pm.copy('significance', 'meaning')
