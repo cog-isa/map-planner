@@ -76,20 +76,26 @@ def ground(problem, agent):
                 pred_sign = signs[predicate.name]
                 meaning = pred_sign.add_meaning()
                 for ag, preds in constraints.items():
-                    if ag == agent:
-                        for pred in preds:
-                            for fact in pred.signature:
-                                sign = signs[fact[0]]
-                                obj_mean = obj_means[sign.name]
-                                connector = meaning.add_feature(obj_mean, zero_out=True)
+                    for pred in preds:
+                        left_fact = None
+                        left_con = None
+                        for fact in pred.signature:
+                            sign = signs[fact[0]]
+                            obj_mean = obj_means[sign.name]
+                            if not left_fact:
+                                left_fact = obj_mean
+                            else:
+                                left_con = left_fact.add_feature(obj_mean, zero_out=True)
+                            connector = meaning.add_feature(obj_mean, zero_out=True)
+                            if ag == agent:
                                 I_sign.add_out_meaning(connector)
-                    else:
-                        for pred in preds:
-                            for fact in pred.signature:
-                                sign = signs[fact[0]]
-                                obj_mean = obj_means[sign.name]
-                                connector = meaning.add_feature(obj_mean, zero_out=True)
+                                if left_con:
+                                    I_sign.add_out_meaning(left_con)
+                            else:
                                 They_sign.add_out_meaning(connector)
+                                if left_con:
+                                    They_sign.add_out_meaning(left_con)
+
 
 
             update_significance(predicate.signature[0])

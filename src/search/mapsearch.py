@@ -20,8 +20,8 @@ def map_search(task):
     logging.debug('Finish: {0}'.format(active_pm.longstr()))
     solution = []
     plans = map_iteration(active_pm, check_pm, [], 0)
-    plans = plans[0]
     if plans:
+        plans = plans[0]
         for plan in plans:
             solution.append([plan[1], plan[len(plan)-1]])
         solution.reverse()
@@ -320,30 +320,33 @@ def _generate_meanings(chains, agents):
                     meanings.append((connector.in_sign.name, connector.out_sign.name))
             ag[agent]=list(set(meanings))
             meanings = []
+        agent_list = [ag[0] for ag in local]
         for mean, attribute in ag.items():
-            roles = []
-            variants = set()
+
             # my_role = None
             for mask, agent in local:
+                roles = []
+                variants = set()
+                type = None
                 if agent == mean.name:
-                    my_role = mask
                     for elem in attribute:
                         if elem[1] == mask:
                             roles.append(elem[0])
-                    for role in roles:
-                        for elem in attribute:
-                            if elem[0] == role and not elem[1] == mask:
-                                variants.add(elem[1])
-                    type = max(elem for elem in variants)
-                    variants.remove(type)
-                    meanings.append((my_role, variants, type))
+                        elif elem[0] == mask:
+                            variants.add(elem[1])
+                    for elem in attribute:
+                        if elem[1] in variants and not elem[0] in roles and not elem[0] == mask:
+                            type = elem[0]
+                    if type:
+                        meanings.append((mask, variants, type)) # получает [(a1 {g, a}, huge)]
         for event in itertools.chain(cm.cause, cm.effect):
             for connector in event.coincidences:
                 con.add(connector.out_sign.name)
-            if roles[0] in con or roles[1] in con:
-                cm_meanings.append(con)
-                con = set()
-                continue
+            if len(roles):
+                if roles[0] in con or roles[1] in con:
+                    cm_meanings.append(con)
+                    con = set()
+                    continue
             elif "handempty" in con and len(con) == 2:
                 cm_agent = list(con)
                 cm_agent.remove("handempty")
