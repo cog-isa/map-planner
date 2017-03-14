@@ -1057,3 +1057,34 @@
 2017-03-14 17:53:41,860 INFO      Found 10 variants
 2017-03-14 17:53:41,861 INFO      Plan [['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'I'], ['stack', 'I'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'I'], ['stack', 'I'], ['pick-up', 'They'], ['stack', 'They']]
 2017-03-14 17:53:41,861 INFO      Plan length: 3
+2017-03-14 18:03:10,037 INFO      Parsing Domain /home/gleb/PycharmProjects/multiMap/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-03-14 18:03:10,041 INFO      Parsing Problem /home/gleb/PycharmProjects/multiMap/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task06.pddl
+2017-03-14 18:03:10,044 INFO      6 Predicates parsed
+2017-03-14 18:03:10,044 INFO      5 Actions parsed
+2017-03-14 18:03:10,044 INFO      16 Objects parsed
+2017-03-14 18:03:10,044 INFO      0 Constants parsed
+2017-03-14 18:03:10,044 INFO      Grounding start: blocks-4-0
+2017-03-14 18:03:10,047 INFO      Grounding end: blocks-4-0
+2017-03-14 18:03:10,047 INFO      37 Signs created
+2017-03-14 18:03:10,047 INFO      Search start: blocks-4-0
+2017-03-14 18:03:36,743 INFO      Found 14 variants
+2017-03-14 18:03:36,744 INFO      Plan [['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'I'], ['stack', 'I'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'I'], ['stack', 'I'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They']]
+2017-03-14 18:03:36,744 INFO      Grounding start: blocks-4-0
+2017-03-14 18:03:36,746 INFO      Grounding end: blocks-4-0
+2017-03-14 18:03:36,747 INFO      37 Signs created
+2017-03-14 18:03:36,747 INFO      Search start: blocks-4-0
+2017-03-14 18:04:04,530 INFO      Found 14 variants
+2017-03-14 18:04:04,531 INFO      Plan [['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'I'], ['stack', 'I'], ['pick-up', 'I'], ['stack', 'I']]
+2017-03-14 18:04:04,531 INFO      Grounding start: blocks-4-0
+2017-03-14 18:04:04,533 INFO      Grounding end: blocks-4-0
+2017-03-14 18:04:04,533 INFO      37 Signs created
+2017-03-14 18:04:04,533 INFO      Search start: blocks-4-0
+2017-03-14 18:04:32,984 INFO      Found 14 variants
+2017-03-14 18:04:32,985 INFO      Plan [['pick-up', 'I'], ['stack', 'I'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'I'], ['stack', 'I'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They']]
+2017-03-14 18:04:32,985 INFO      Grounding start: blocks-4-0
+2017-03-14 18:04:32,988 INFO      Grounding end: blocks-4-0
+2017-03-14 18:04:32,988 INFO      37 Signs created
+2017-03-14 18:04:32,988 INFO      Search start: blocks-4-0
+2017-03-14 18:05:01,496 INFO      Found 14 variants
+2017-03-14 18:05:01,496 INFO      Plan [['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'I'], ['stack', 'I'], ['pick-up', 'They'], ['stack', 'They'], ['pick-up', 'They'], ['stack', 'They']]
+2017-03-14 18:05:01,496 INFO      Plan length: 4
