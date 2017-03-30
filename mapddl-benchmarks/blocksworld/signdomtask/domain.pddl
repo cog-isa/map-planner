@@ -1,5 +1,5 @@
 (define (domain blocks)
-	(:requirements :typing :multi-agent :unfactored-privacy)
+	(:requirements :typing :multi-agent)
 (:types
 	agent block size - object
 )

@@ -92,9 +92,10 @@ def ground(problem, agent):
                                 if left_con:
                                     I_sign.add_out_meaning(left_con)
                             else:
-                                They_sign.add_out_meaning(connector)
+                                agent_sign = signs[ag]
+                                agent_sign.add_out_meaning(connector)
                                 if left_con:
-                                    They_sign.add_out_meaning(left_con)
+                                    agent_sign.add_out_meaning(left_con)
 
 
 

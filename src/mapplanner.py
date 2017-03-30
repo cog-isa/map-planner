@@ -44,17 +44,10 @@ def _parse(domain_file, problem_file):
     logging.info('{0} Constants parsed'.format(len(domain.constants)))
     return problem
 
+
+# from memory_profiler import profile
 #
-# def _ground(problem, is_load):
-#     logging.info('Grounding start: {0}'.format(problem.name))
-#     task = sign_grounding.ground(problem)
-#     if is_load:
-#         task.load_signs()
-#     logging.info('Grounding end: {0}'.format(problem.name))
-#     logging.info('{0} Signs created'.format(len(task.signs)))
-#     return task
-
-
+# @profile
 def search_plan(domain_dir, problem_numb, saveload):
     from os import listdir
     agent_tasks = []
@@ -115,6 +108,7 @@ if __name__ == '__main__':
         args.domain = find_domain(args.problem_numb)
     else:
         args.domain = os.path.abspath(args.domain)
+
 
     solutions = search_plan(args.domain, args.problem_numb, args.saveload)
 

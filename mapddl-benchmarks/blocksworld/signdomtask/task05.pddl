@@ -4,6 +4,10 @@
 	c - block
 	b - block
 	d - block
+	e - block
+	g - block
+	f - block
+	h - block
     a1 - agent
     a2 - agent
     a3 - agent
@@ -15,31 +19,51 @@
 	(handempty a1)
 	(handempty a2)
 	(handempty a3)
+	(clear f)
+	(clear h)
 	(clear c)
 	(clear a)
 	(clear b)
 	(clear d)
+	(clear e)
+	(clear g)
+	(ontable f)
+	(ontable h)
 	(ontable c)
 	(ontable a)
 	(ontable b)
 	(ontable d)
+	(ontable e)
+	(ontable g)
+	(blocktype small f)
+	(blocktype small h)
+	(blocktype huge g)
 	(blocktype huge a)
 	(blocktype small b)
 	(blocktype middle c)
 	(blocktype small d)
+	(blocktype middle e)
 )
 (:goal
 	(and
 	    (handempty a1)
 	    (handempty a2)
 	    (handempty a3)
+	    (on h f)
+	    (on f g)
+	    (on g e)
+		(on e d)
 		(on d c)
 		(on c b)
 		(on b a)
+		(blocktype small f)
+	    (blocktype small h)
+        (blocktype huge g)
         (blocktype huge a)
         (blocktype small b)
         (blocktype middle c)
         (blocktype small d)
+        (blocktype middle e)
 	)
 )
 
