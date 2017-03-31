@@ -200,13 +200,13 @@ def _generate_meanings(chains, agents):
         agents2 = agents.copy()
         agents2.remove(I_sign)
         agents2.add(I_obj)
+        roles = []
         for mean, attribute in ag.items():
             if mean == I_sign:
                 mean = I_obj
             # my_role = None
 
             for agent in agents2:
-                roles = []
                 roles2 = []
                 variants = set()
                 type = None
@@ -253,7 +253,7 @@ def _generate_meanings(chains, agents):
         elif cm_agent:
                 for agent in agents2:
                     if agent.name == cm_agent[0]:
-                        script.append([agent, cm])
+                        script.append([agent.name, cm])
                         return script
         else:
             return False
@@ -272,6 +272,8 @@ def _generate_meanings(chains, agents):
             obj_cm = obj_pm.copy('significance', 'meaning')
             cm.replace('meaning', role_sign, obj_cm)
         test = suitable(cm, agents)
+        #for_test = [item.sign.name for _, item in ma_combination.items()]
+        #logging.info("combination: {0}, test: {1}, action: {2}".format(for_test, test, cm.sign.name))
         if test:
             pms.append(test[0])
 

@@ -116,7 +116,8 @@ if __name__ == '__main__':
         logging.warning('No solution could be found')
     else:
         solution_file = args.domain + SOLUTION_FILE_SUFFIX
-        logging.info('Plan length: %s' % len(solutions))
+        for solution  in solutions:
+            logging.info('Plan length: %s' % len(solution))
         with open(solution_file, 'w') as file:
             for solution in solutions:
                 for op, name in solution:
