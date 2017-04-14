@@ -44,7 +44,7 @@ def _parse(domain_file, problem_file):
     logging.info('{0} Constants parsed'.format(len(domain.constants)))
     return problem
 
-
+#
 # from memory_profiler import profile
 #
 # @profile
@@ -70,13 +70,10 @@ def search_plan(domain_dir, problem_numb, saveload):
         solutions.append(solution)
 
 
+
+
     return solutions
 
-
-    # if saveload:
-    #     task.save_signs(solution)
-    #
-    # return solution
 
 
 if __name__ == '__main__':
@@ -120,5 +117,5 @@ if __name__ == '__main__':
             logging.info('Plan length: %s' % len(solution))
         with open(solution_file, 'w') as file:
             for solution in solutions:
-                for op, name in solution:
-                    print(op, name, file=file)
+                for op, name, agent in solution:
+                    print(op, name,agent, file=file)

@@ -33,18 +33,20 @@ class Task:
         logging.info('Start saving to {0}'.format(file_name))
         if plan:
             logging.info('\tCleaning SWM...')
-            pms = [pm for _, pm in plan]
-            for name, sign in self.signs.items():
-                if not sign.out_meanings:
-                    for index, pm in sign.meanings.copy().items():
-                        if pm not in pms:
-                            sign.remove_meaning(pm)
+            pms = [pm for _, pm,_ in plan]
             for name, s in self.signs.copy().items():
+                signif=list(s.significances.items())
                 if name.startswith(SIT_PREFIX):
                     for index, pm in s.meanings.copy().items():
                         if pm not in pms:
                             s.remove_meaning(pm)
                     self.signs.pop(name)
+                elif len(signif):
+                    if len(signif[0][1].cause) and len(signif[0][1].effect):
+                        for index, pm in s.meanings.copy().items():
+                            if pm not in pms:
+                                s.remove_meaning(pm)
+
 
             logging.info('\tSaving precedent...')
             self.start_situation.name += self.name
@@ -63,7 +65,7 @@ class Task:
 
             plan_image = plan_sign.add_image()
             effect = False
-            for name, cm in plan:
+            for name, cm, agent in plan:
                 # TODO: add actual triplet of components for all signs to access to the current image
                 im = cm.sign.add_image()
                 connector = plan_image.add_feature(im, effect=effect)
@@ -91,6 +93,8 @@ class Task:
                     file_name = f
                     break
             else:
-                raise Exception('File not found')
-        self.signs = pickle.load(open(file_name, 'rb'))
+                logging.info('File not found')
+                return None
+        if file_name:
+            self.signs = pickle.load(open(file_name, 'rb'))
         return file_name

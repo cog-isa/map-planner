@@ -6,7 +6,7 @@ import grounding.sign_task as st
 from grounding.semnet import Sign
 from itertools import groupby
 
-MAX_ITERATION = 100
+MAX_ITERATION = 1000
 
 world_model = None
 
@@ -23,7 +23,7 @@ def map_search(task):
     if plans:
         plans = plans[0]
         for plan in plans:
-            solution.append([plan[1], plan[len(plan)-1]])
+            solution.append([plan[1], plan[2], plan[len(plan)-1]])
         solution.reverse()
         logging.info('Found {0} variants'.format(len(plans)))
         logging.info('Plan {0}'.format(solution))
@@ -63,10 +63,20 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         scripts = _generate_meanings(merged_chains, agents)
         meanings.extend(scripts)
     applicable_meanings = []
-    for agent, cm in precedents + meanings:
-        result, checked = _check_activity(cm, active_pm)
-        if result:
-            applicable_meanings.append((agent, checked))
+    agent = None
+    if not precedents:
+        for agent, cm in meanings:
+            result, checked = _check_activity(cm, active_pm)
+            if result:
+                applicable_meanings.append((agent, checked))
+    else:
+        for cm in precedents + meanings:
+            if isinstance(cm, list):
+                agent = cm[0]
+                cm = cm[1]
+            result, checked = _check_activity(cm, active_pm)
+            if result:
+                applicable_meanings.append((agent, checked))
 
 
     # TODO: replace to metarule apply
@@ -78,20 +88,12 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
 
     logging.debug('\tFound {0} variants'.format(len(candidates)))
     final_plans = []
-    # if current_agent is not None and len(aim_plans):
-    #     if current_agent not in [plan[0] for plan in aim_plans]:
-    #         candidates = [cand for cand in candidates if get_agent(cand[2]) == current_agent]
 
     for counter, name, script, ag_mask in candidates:
         logging.debug('\tChoose {0}: {1} -> {2}'.format(counter, name, script))
 
         plan = current_plan.copy()
         plan.append((active_pm, name, script, ag_mask))
-        # agent = get_agent(script)
-        # if current_agent is None:
-        #     current_agent = agent
-        # if not agent == current_agent:
-        #     break
         next_pm = _time_shift_backward(active_pm, script)
         if next_pm.includes('meaning', check_pm):
             final_plans.append(plan)
@@ -114,22 +116,6 @@ def get_agents():
                 agent_back.add(con.out_sign)
     return agent_back
 
-
-def action_agents(plan):
-    plan_agents = []
-    for _, _, script in plan:
-        agent = get_agent(script)
-        plan_agents.append(agent)
-    return plan_agents
-
-def get_agent(script):
-    roles = []
-    for event in script.cause:
-        for conn in event.coincidences:
-            for connector in conn.out_sign.out_significances:
-                roles.append(connector.in_sign.name)
-            if "agent" in roles:
-                return conn.out_sign
 
 def _generate_meanings(chains, agents):
     replace_map = {}
@@ -272,8 +258,6 @@ def _generate_meanings(chains, agents):
             obj_cm = obj_pm.copy('significance', 'meaning')
             cm.replace('meaning', role_sign, obj_cm)
         test = suitable(cm, agents)
-        #for_test = [item.sign.name for _, item in ma_combination.items()]
-        #logging.info("combination: {0}, test: {1}, action: {2}".format(for_test, test, cm.sign.name))
         if test:
             pms.append(test[0])
 

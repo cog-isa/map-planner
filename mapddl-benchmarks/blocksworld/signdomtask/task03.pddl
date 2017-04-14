@@ -8,7 +8,7 @@
     a1 - agent
     a2 - agent
     a3 - agent
-    huge - size
+    big - size
     small - size
     middle - size
 )
@@ -26,7 +26,7 @@
 	(ontable b)
 	(ontable d)
 	(ontable e)
-	(blocktype huge a)
+	(blocktype big a)
 	(blocktype small b)
 	(blocktype middle c)
 	(blocktype small d)
@@ -41,7 +41,7 @@
 		(on d c)
 		(on c a)
 		(on a b)
-        (blocktype huge a)
+        (blocktype big a)
         (blocktype small b)
         (blocktype middle c)
         (blocktype small d)
@@ -52,7 +52,7 @@
 (:constraints
     (and
         (and (always (forall (?x - block)
-            (implies (blocktype huge ?x) (holding a1 ?x))))
+            (implies (blocktype big ?x) (holding a1 ?x))))
         )
         (and (always (forall (?x - block)
             (implies (blocktype small ?x) (holding a2 ?x))))

@@ -1,56 +1,16 @@
-pick-up I
-stack I
-pick-up a3
-stack a3
-pick-up I
-stack I
-pick-up a3
-stack a3
-pick-up a1
-stack a1
-pick-up a4
-stack a4
-pick-up a4
-stack a4
-pick-up a2
-stack a2
-pick-up a3
-stack a3
-pick-up a2
-stack a2
-pick-up a3
-stack a3
-pick-up a1
-stack a1
-pick-up I
-stack I
-pick-up I
-stack I
-pick-up a2
-stack a2
-pick-up I
-stack I
-pick-up a2
-stack a2
-pick-up I
-stack I
-pick-up a1
-stack a1
-pick-up a4
-stack a4
-pick-up a4
-stack a4
-pick-up a2
-stack a2
-pick-up a3
-stack a3
-pick-up a2
-stack a2
-pick-up a3
-stack a3
-pick-up I
-stack I
-pick-up a4
-stack a4
-pick-up a4
-stack a4
+unstack "unstack":509 a2
+put-down "put-down":139 a2
+pick-up "pick-up":124 a2
+stack "stack":295 a2
+pick-up "pick-up":80 I
+stack "stack":175 I
+pick-up "pick-up":31 a2
+stack "stack":17 a2
+unstack "unstack":509 I
+put-down "put-down":139 I
+pick-up "pick-up":124 I
+stack "stack":295 I
+pick-up "pick-up":80 a1
+stack "stack":175 a1
+pick-up "pick-up":31 I
+stack "stack":17 I
