@@ -133,6 +133,21 @@ def ground(problem, agent):
             update_significance(predicate, effect=True)
         signs[action.name] = act_sign
 
+    Agent_send = Sign("Send")
+    ag_signif = Agent_send.add_significance()
+    Broadcast = Sign("Broadcast")
+    brdct_signif = Broadcast.add_significance()
+    Approve = Sign("Approve")
+    approve_signif = Approve.add_significance()
+    signs[Agent_send.name] = Agent_send
+    signs[Broadcast.name] = Broadcast
+    signs[Approve.name] = Approve
+    for object in objects:
+        pass
+
+
+
+
     start_situation, pms = _define_situation('*start*', problem.initial_state, signs)
     goal_situation, pms = _define_situation('*finish*', problem.goal, signs)
     list_signs = task_signs(problem)

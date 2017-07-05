@@ -603,8 +603,13 @@ class TraversePDDLProblem(PDDLVisitor):
             formula = self.get_formula(formula, key)
         return formula
 
-    def get_agent(self):
-        pass
+    def blocks_blocknames(self, predicates, c, blocknames, blocks):
+        for predicate in [predicate for predicate in predicates if predicate.name == c.key]:
+            if predicate.signature[0][0] == c.children[0].key:
+                list = (c.children[0].key, predicate.signature[1][0])
+                blocknames.setdefault(predicate.name, []).append(list)
+                blocks.append(predicate.signature[1][0])
+        # return (blocks, blocknames)
 
     def visit_constraints_stmt(self, node):
         formula = node.formula
@@ -615,51 +620,75 @@ class TraversePDDLProblem(PDDLVisitor):
             for child in formula.children:
                 formula = self.get_formula(child, 'implies')
                 blocks = []
+                predDef = []
                 for c in formula.children:
-                    predDef = self._domain.predicates[c.key]
                     signature = []
                     sig = []
-                    blocknames = []
+                    blocknames = {}
+                    if c.key == "or":
+                        for child in c.children:
+                            predDef.append(self._domain.predicates[child.key])
+                            self.blocks_blocknames(predicates, child, blocknames, blocks)
+                            # blocks.extend(blocks_blocknames[0])
+                            # blocknames.extend(blocks_blocknames[1])
+                    else:
+                        predDef.append(self._domain.predicates[c.key])
+                        self.blocks_blocknames(predicates, c, blocknames, blocks)
 
-                    for predicate in [predicate for predicate in predicates if predicate.name==c.key]:
-                        if predicate.signature[0][0] == c.children[0].key:
-                            blocknames.append((c.children[0].key, predicate.signature[1][0]))
-                            blocks.append(predicate.signature[1][0])
+
                     if len(blocknames):
-                        for name in blocknames:
-                            count = 0
-                            for v in name:
-                                sig.append((v, predDef.signature[count][1]))
-                                count += 1
-                            signature.append(sig)
-                            sig = []
-                        for sign in signature:
-                            constr.append(pddl.Predicate(c.key, sign))
+                        unique = []
+                        for predD in predDef:
+                            for bltype in blocknames:
+                                if predD.name == bltype:
+                                    for name in blocknames.get(bltype):
+                                        count = 0
+                                        for v in name:
+                                            sig.append((v, predD.signature[count][1]))
+                                            count += 1
+                                        sig.insert(0, predD.name)
+                                        signature.append(sig)
+                                        sig = []
+                            if c.key == "or":
+
+                                for child in c.children:
+                                    for sign in signature:
+                                        if child.key == sign[0]:
+                                            predsign = [s for s in sign if not s == sign[0]]
+                                            if predsign not in unique:
+                                                constr.append(pddl.Predicate(child.key, predsign))
+                                                unique.append(predsign)
+
+                            else:
+                                for sign in signature:
+                                    if c.key == sign[0]:
+                                        predsign = [s for s in sign if not s == sign[0]]
+                                        constr.append(pddl.Predicate(c.key, predsign))
+                        predDef = []
                         print()
                     elif len(blocks):
-                        for block in blocks:
-                            blocknames.append((c.children[0].key, block))
-                            agent = c.children[0].key
-                            for name in blocknames:
-                                count = 0
-                                for v in name:
-                                    sig.append((v, predDef.signature[count][1]))
-                                    count += 1
-                                signature.append(sig)
-                                sig = []
-                            for sign in signature:
-                                constr.append(pddl.Predicate(c.key, sign))
-                            signature = []
-                            blocknames = []
+                        # if holding predicate
+                        for predD in predDef:
+                            for block in blocks:
+                                lists = [c.children[0].key, block]
+                                blocknames.setdefault(predD.name, []).append(lists)
+                                agent = c.children[0].key
+                                for name in blocknames.get(predD.name):
+                                    count = 0
+                                    for v in name:
+                                        sig.append((v, predD.signature[count][1]))
+                                        count += 1
+                                    signature.append(sig)
+                                    sig = []
+                                for sign in signature:
+                                    constr.append(pddl.Predicate(c.key, sign))
+                                signature = []
+                                blocknames = {}
                     else:
                         raise SemanticError('unknown predicate!')
                 constraints[agent] = constr
                 constr = []
 
-                """
-                a1 - список предикатов holding с кубиками большими
-                а2 - список предикатов holding c маленькими кубиками
-                """
             self.set_in(node, constraints)
 
 

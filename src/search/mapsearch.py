@@ -4,7 +4,7 @@ import itertools
 
 import grounding.sign_task as st
 from grounding.semnet import Sign
-from itertools import groupby
+import random
 
 MAX_ITERATION = 1000
 
@@ -20,14 +20,17 @@ def map_search(task):
     logging.debug('Finish: {0}'.format(active_pm.longstr()))
     solution = []
     plans = map_iteration(active_pm, check_pm, [], 0)
-    if plans:
-        plans = plans[0]
-        for plan in plans:
-            solution.append([plan[1], plan[2], plan[len(plan)-1]])
-        solution.reverse()
-        logging.info('Found {0} variants'.format(len(plans)))
-        logging.info('Plan {0}'.format(solution))
-    return solution
+    print("Agent finish planning and start chooses the plan. len of plans is:{0}".format(len(plans)))
+    plan = long_relations(plans)
+    plan.reverse()
+    # if plans:
+    #     plans = plans[0]
+    #     for plan in plans:
+    #         solution.append([plan[1], plan[2], plan[len(plan)-1]])
+    #     solution.reverse()
+    #     logging.info('Found {0} variants'.format(len(plans)))
+    #     logging.info('Plan {0}'.format(solution))
+    return plan
 
 
 
@@ -40,16 +43,22 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
 
     precedents = []
     agents = get_agents()
+
     for name, sign in world_model.items():
         for index, cm in sign.meanings.items():
             if cm.includes('meaning', active_pm):
-                precedents.extend(cm.sign.spread_up_activity_act('meaning', 1))
+                precedents.extend(cm.sign.spread_up_activity_act('meaning', 1)) # searching for plan_sign
     active_chains = active_pm.spread_down_activity('meaning', 2)
     active_signif = set()
 
     for chain in active_chains:
         pm = chain[-1]
         active_signif |= pm.sign.spread_up_activity_act('significance', 3)
+
+    if precedents:
+        #TODO: experience here from agents to actions
+        pass
+
 
     meanings = []
     for pm_signif in active_signif:
@@ -78,16 +87,19 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
             if result:
                 applicable_meanings.append((agent, checked))
 
-
     # TODO: replace to metarule apply
+    # TODO: if experience -> choose this agent by whom had been worked
+
     candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _, _ in current_plan])
 
     if not candidates:
         logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _, _ in current_plan]))
+        # TODO: if no experience -> choose with whom the longest plan <<= return a len(recursive_plans)
         return None
 
     logging.debug('\tFound {0} variants'.format(len(candidates)))
     final_plans = []
+
 
     for counter, name, script, ag_mask in candidates:
         logging.debug('\tChoose {0}: {1} -> {2}'.format(counter, name, script))
@@ -97,6 +109,7 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         next_pm = _time_shift_backward(active_pm, script)
         if next_pm.includes('meaning', check_pm):
             final_plans.append(plan)
+            print("len of final plan is: {0}".format(len(plan)))
         else:
             recursive_plans = map_iteration(next_pm, check_pm, plan, iteration + 1)
             if recursive_plans:
@@ -104,11 +117,73 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
 
     return final_plans
 
+def long_relations(plans):
+    busiest = []
+    for index, plan in enumerate(plans):
+        previous_agent = ""
+        agents = {}
+        counter = 0
+        plan_agents = []
+        # нахождение длин подряд идущих действий у одного агента
+        for action in plan:
+            if action[3] not in agents:
+                agents[action[3]] = 1
+                previous_agent = action[3]
+                counter = 1
+                plan_agents.append(action[3])
+            elif not previous_agent == action[3]:
+                previous_agent = action[3]
+                counter = 1
+            elif previous_agent == action[3]:
+                counter+=1
+                if agents[action[3]] < counter:
+                    agents[action[3]] = counter
+        # выбираем самую длинную последовательность действий в плане - она будет главной характеристикой плана
+        longest = 0
+        agent=""
+        for element in range(len(agents)):
+            item = agents.popitem()
+            if item[1] > longest:
+                longest = item[1]
+                agent = item[0]
+        busiest.append((index, agent, longest, plan_agents))
+    cheap = []
+    alternative = []
+    cheapest = []
+    longest = 0
+    min_agents = 100
+    # находим самую длинную последовательность действий
+    for plan in busiest:
+        if plan[2] > longest:
+            longest = plan[2]
+    # находим наименьшее число агентов в самых длинных планах
+    for plan in busiest:
+        if plan[2] == longest:
+            if len(plan[3]) < min_agents:
+                min_agents = len(plan[3])
+    # из 2 предыдущих выбираем тот, в котором фигурирую я - если таких нет говорим об этом
+    for plan in busiest:
+        if plan[2] == longest and len(plan[3]) == min_agents and "I" in plan[3]:
+            plans_copy = plans.copy()
+            cheap.append(plans_copy.pop(plan[0]))
+        elif plan[2] == longest and len(plan[3]) == min_agents and not "I" in plan[3]:
+            plans_copy = plans.copy()
+            alternative.append(plans_copy.pop(plan[0]))
+    if len(cheap) >= 1:
+        cheapest.extend(random.choice(cheap))
+    elif len(cheap) == 0 and len(alternative):
+        logging.info("There are no plans in which I figure")
+        cheapest.extend(random.choice(alternative))
+
+    return cheapest
+
+
 def get_agents():
     agent_back = set()
     I_sign = world_model['I']
     agent_back.add(I_sign)
     I_obj = [con.in_sign for con in I_sign.out_meanings if con.out_sign.name == "I"][0]
+    #print("Agent {0} start planning".format(I_obj.name))
     agents = world_model['agent'].meanings
     for num, cause in agents.items():
         for con in cause.cause[0].coincidences:
@@ -195,7 +270,7 @@ def _generate_meanings(chains, agents):
             for agent in agents2:
                 roles2 = []
                 variants = set()
-                type = None
+                type = {}
                 if agent == mean:
                     for elem in attribute:
                         if elem[1] == agent.name:
@@ -204,12 +279,12 @@ def _generate_meanings(chains, agents):
                             variants.add(elem[1])
                     for elem in attribute:
                         if elem[1] in variants and not elem[0] in roles and not elem[0] == agent.name:
-                            type = elem[0]
-                        if elem[1] in variants or elem[1] == type and not elem[0] == agent.name:
+                            type.setdefault(elem[0], []).extend(elem[1])
+                        if elem[1] in variants or elem[1] in type and not elem[0] == agent.name:
                             roles2.append(elem[0])
                     roles = list(set(roles2)&set(roles))
-                    if type:
-                        meanings.append((agent.name, variants, type)) # получает [(a1 {g, a}, huge)]
+                    if len(type):
+                        meanings.append((agent.name, type)) # получает [(a1 {g, a}, huge)]
 
         for event in itertools.chain(cm.cause, cm.effect):
             for connector in event.coincidences:
@@ -227,15 +302,17 @@ def _generate_meanings(chains, agents):
         if len(cm_meanings):
             for mean in meanings:
                 if any(mean[0] in cm_meaning for cm_meaning in cm_meanings):
-                    for elem in mean[1]:
-                        if all(elem in cm_meaning and mean[0] in cm_meaning or elem in cm_meaning and mean[2] in cm_meaning for cm_meaning in cm_meanings):
-                            for role in agents2:
-                                if mean[0] == role.name:
-                                    if role == I_obj:
-                                        script.append([I_sign.name, cm])
-                                    else:
-                                        script.append([role.name, cm])
-                                    return script
+                    for type, elems in mean[1].items():
+                        for elem in elems:
+                            if all(elem in cm_meaning and mean[0] in cm_meaning or elem in cm_meaning \
+                                   and type in cm_meaning for cm_meaning in cm_meanings):
+                                for role in agents2:
+                                    if mean[0] == role.name:
+                                        if role == I_obj:
+                                            script.append([I_sign.name, cm])
+                                        else:
+                                            script.append([role.name, cm])
+                                        return script
         elif cm_agent:
                 for agent in agents2:
                     if agent.name == cm_agent[0]:

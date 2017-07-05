@@ -2,6 +2,7 @@ import datetime
 import logging
 import os
 import pickle
+import itertools
 
 from .semnet import Sign
 
@@ -39,13 +40,23 @@ class Task:
                 if name.startswith(SIT_PREFIX):
                     for index, pm in s.meanings.copy().items():
                         if pm not in pms:
-                            s.remove_meaning(pm)
+                            s.remove_meaning(pm) # delete all situations
                     self.signs.pop(name)
                 elif len(signif):
-                    if len(signif[0][1].cause) and len(signif[0][1].effect):
+                    if len(signif[0][1].cause) and len(signif[0][1].effect): #delete actions that are not in plan
                         for index, pm in s.meanings.copy().items():
                             if pm not in pms:
                                 s.remove_meaning(pm)
+
+
+            I_obj = [con.in_sign for con in self.signs["I"].out_meanings if con.out_sign.name == "I"][0]
+            agents_list = set()
+            agents = self.signs['agent'].meanings
+            for num, cause in agents.items():
+                for con in cause.cause[0].coincidences:
+                    if not con.out_sign == I_obj:
+                        agents_list.add(con.out_sign)
+
 
 
             logging.info('\tSaving precedent...')
@@ -55,7 +66,7 @@ class Task:
             self.start_situation.add_image(dm)
             dm = self.goal_situation.meanings[1].copy('meaning', 'image')
             self.goal_situation.add_image(dm)
-
+            # in start and goal sit out_meanings insert connector to plan sign
             plan_sign = Sign(PLAN_PREFIX + self.name)
             plan_mean = plan_sign.add_meaning()
             connector = plan_mean.add_feature(self.start_situation.meanings[1])
@@ -63,13 +74,24 @@ class Task:
             conn = plan_mean.add_feature(self.goal_situation.meanings[1], effect=True)
             self.goal_situation.add_out_meaning(conn)
 
-            plan_image = plan_sign.add_image()
+            for pm in pms:
+                for event in itertools.chain(pm.cause, pm.effect):
+                    for connector in event.coincidences:
+                        agent = connector.out_sign
+                        if agent in agents_list:
+                            # agent.meanings[agent.name] = pm
+                            plan_mean = plan_sign.add_meaning()
+                            agent_mean = agent.add_meaning()
+                            connector = plan_mean.add_feature(agent_mean)
+                            plan_sign.add_out_meaning(connector)
+
+            plan_image = plan_sign.add_image() # plan sign - is sign where in meanings start and goal sit (action to achieve)
             effect = False
             for name, cm, agent in plan:
                 # TODO: add actual triplet of components for all signs to access to the current image
                 im = cm.sign.add_image()
                 connector = plan_image.add_feature(im, effect=effect)
-                cm.sign.add_out_image(connector)
+                cm.sign.add_out_image(connector) # add connector to plan_sign threw images to out_image
                 effect = True
 
             self.signs[plan_sign.name] = plan_sign
@@ -80,6 +102,7 @@ class Task:
                 if name.startswith(SIT_PREFIX):
                     self.signs.pop(name)
                 else:
+                    #TODO: add memory of actions to swn significance in agent's sign from sign THEY
                     sign.meanings = {}
                     sign.out_meanings = []
         logging.info('\tDumping SWM...')

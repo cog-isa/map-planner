@@ -6,6 +6,7 @@ import sys
 import time
 import logging
 from pddl.parser import Parser
+from connection.manager import Manager
 
 from grounding.agent_grounding import Agent
 
@@ -64,10 +65,14 @@ def search_plan(domain_dir, problem_numb, saveload):
             if problem.objects[obj].name == 'agent':
                 agents.append(obj)
 
-    for agent in agents:
-        agent = Agent(agent, problem, saveload)
-        solution = agent.search_solution()
-        solutions.append(solution)
+    manager = Manager(agents, problem, saveload)
+    solution = manager.search_solution()
+    solutions.append(solution)
+
+    # for agent in agents:
+    #     agent = Agent(agent, problem, saveload)
+    #     solution = agent.search_solution()
+    #     solutions.append(solution)
 
 
 
