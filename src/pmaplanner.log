@@ -3200,3 +3200,4 @@ defaultdict(<class 'set'>, {agent: {'a1', 'a2'}, object: {'b', 'a1', 'huge', 'a'
 2017-07-05 14:39:57,531 INFO      Grounding end: blocks-4-0
 2017-07-05 14:39:57,531 INFO      36 Signs created
 2017-07-05 14:39:57,531 INFO      Search start: blocks-4-0
+2017-07-05 14:46:02,065 INFO      Plan length: 111
