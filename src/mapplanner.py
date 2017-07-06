@@ -122,5 +122,15 @@ if __name__ == '__main__':
             logging.info('Plan length: %s' % len(solution))
         with open(solution_file, 'w') as file:
             for solution in solutions:
-                for op, name, agent in solution:
-                    print(op, name,agent, file=file)
+                solution = [sol.split(" ") for sol in solution.split(";")]
+
+                csolution = []
+                for sol in solution:
+                    if len(sol) == 2:
+                        csolution.append(sol)
+                    elif len(sol) == 3:
+                        csolution.append((sol[1], sol[2]))
+
+
+                for op, agent in csolution:
+                    print(op, agent, file=file)

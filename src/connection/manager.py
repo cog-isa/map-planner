@@ -45,9 +45,6 @@ class Manager:
 
         while True:
 
-            # print([res.get(timeout=1) for res in multiple_results])
-            # print(len(multiple_results))
-
             (clientsocket, address) = serversocket.accept()
             # clientsocket.setblocking(0)
             solution = clientsocket.recv(1024)
@@ -60,9 +57,10 @@ class Manager:
                 print("No solution")
             print('connected:', address)
             if len(self.solution) == len(clagents):
+                agent, self.solution = auction(self.solution)
                 break
         clientsocket.close()
-        self.solution = auction(self.solution)
+
         return self.solution
 
 def auction(solutions):
@@ -84,7 +82,11 @@ def auction(solutions):
     print(auct)
     plan = [plan for plan, count in auct.items() if count==maxim][0]
     print(plan)
-    return plan
+    agents = []
+    for agent, pl in plans.items():
+        if pl == plan:
+            agents.append(agent)
+    return agents[0], plan
 
 
 
