@@ -6,7 +6,7 @@ import grounding.sign_task as st
 from grounding.semnet import Sign
 import random
 
-MAX_ITERATION = 1000
+MAX_ITERATION = 100
 
 world_model = None
 
@@ -18,19 +18,10 @@ def map_search(task):
     check_pm = task.start_situation.meanings[1]
     logging.debug('Start: {0}'.format(check_pm.longstr()))
     logging.debug('Finish: {0}'.format(active_pm.longstr()))
-    solution = []
     plans = map_iteration(active_pm, check_pm, [], 0)
-    print("Agent finish planning and start chooses the plan. len of plans is:{0}".format(len(plans)))
-    plan = long_relations(plans)
-    plan.reverse()
-    # if plans:
-    #     plans = plans[0]
-    #     for plan in plans:
-    #         solution.append([plan[1], plan[2], plan[len(plan)-1]])
-    #     solution.reverse()
-    #     logging.info('Found {0} variants'.format(len(plans)))
-    #     logging.info('Plan {0}'.format(solution))
-    return plan
+    solution = long_relations(plans)
+    solution.reverse()
+    return solution
 
 
 
@@ -42,9 +33,11 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         return None
 
     precedents = []
-    agents = get_agents()
+    plan_sign = None
+    I_sign, I_obj, agents = get_agents()
 
     for name, sign in world_model.items():
+        if name.startswith("plan_"): plan_sign = sign
         for index, cm in sign.meanings.items():
             if cm.includes('meaning', active_pm):
                 precedents.extend(cm.sign.spread_up_activity_act('meaning', 1)) # searching for plan_sign
@@ -55,10 +48,13 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         pm = chain[-1]
         active_signif |= pm.sign.spread_up_activity_act('significance', 3)
 
-    if precedents:
-        #TODO: experience here from agents to actions
-        pass
-
+    connection = set()
+    con_ag = [ag for ag in agents if not ag == I_sign]
+    con_ag.append(I_obj)
+    for signif in active_signif:
+        if len(signif.cause) == len(signif.effect) == 1:
+            connection.add(signif)
+    active_signif -= connection
 
     meanings = []
     for pm_signif in active_signif:
@@ -88,9 +84,10 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
                 applicable_meanings.append((agent, checked))
 
     # TODO: replace to metarule apply
-    # TODO: if experience -> choose this agent by whom had been worked
 
     candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _, _ in current_plan])
+
+    candidates = _check_experience(candidates, plan_sign, I_obj, I_sign)
 
     if not candidates:
         logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _, _ in current_plan]))
@@ -183,14 +180,26 @@ def get_agents():
     I_sign = world_model['I']
     agent_back.add(I_sign)
     I_obj = [con.in_sign for con in I_sign.out_meanings if con.out_sign.name == "I"][0]
-    #print("Agent {0} start planning".format(I_obj.name))
     agents = world_model['agent'].meanings
     for num, cause in agents.items():
         for con in cause.cause[0].coincidences:
             if not con.out_sign == I_obj:
                 agent_back.add(con.out_sign)
-    return agent_back
+    return I_sign, I_obj, agent_back
 
+def _check_experience(candidates, plan_sign, I_obj, I_sign):
+    exp_agents = set()
+    if not plan_sign is None:
+        for con in plan_sign.out_meanings:
+            exp_agents.add(con.out_sign)
+        if I_obj in exp_agents:
+            exp_agents.remove(I_obj)
+            exp_agents.add(I_sign)
+        exp_agents = [ag.name for ag in exp_agents]
+        for cand in candidates.copy():
+            if not cand[3] in exp_agents and not cand[3] is None:
+                candidates.remove(cand)
+    return candidates
 
 def _generate_meanings(chains, agents):
     replace_map = {}
@@ -257,7 +266,7 @@ def _generate_meanings(chains, agents):
                     meanings.append((connector.in_sign.name, connector.out_sign.name))
             ag[agent] = list(set(meanings))
             meanings = []
-        # agent_list = [ag[0] for ag in local]
+
         agents2 = agents.copy()
         agents2.remove(I_sign)
         agents2.add(I_obj)
@@ -265,8 +274,6 @@ def _generate_meanings(chains, agents):
         for mean, attribute in ag.items():
             if mean == I_sign:
                 mean = I_obj
-            # my_role = None
-
             for agent in agents2:
                 roles2 = []
                 variants = set()
@@ -284,7 +291,7 @@ def _generate_meanings(chains, agents):
                             roles2.append(elem[0])
                     roles = list(set(roles2)&set(roles))
                     if len(type):
-                        meanings.append((agent.name, type)) # получает [(a1 {g, a}, huge)]
+                        meanings.append((agent.name, type))
 
         for event in itertools.chain(cm.cause, cm.effect):
             for connector in event.coincidences:
@@ -323,11 +330,6 @@ def _generate_meanings(chains, agents):
 
     ma_combinations = mix_pairs(replace_map)
 
-    # if len(roles) == 3:
-    #     ma_combinations = mix_pairs3(combinations, 3)
-    # elif len(roles) == 4:
-    #     ma_combinations = mix_pairs4(combinations)
-    # else: ma_combinations = combinations
     pms = []
     for ma_combination in ma_combinations:
         cm = main_pm.copy('significance', 'meaning')

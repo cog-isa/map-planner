@@ -22,7 +22,7 @@ class Manager:
     def search_solution(self):
         # binding a server socket for solution
         clagents = []
-        port = 9098
+        port = 9097
         # socket = MySocket()
         # socket.bind('', port)
         # socket.listen()
@@ -51,7 +51,6 @@ class Manager:
             solution = solution.decode()
 
             if solution:
-                print("solution on server! "+solution)
                 self.solution.append(solution)
             else:
                 print("No solution")
@@ -60,6 +59,8 @@ class Manager:
                 agent, self.solution = auction(self.solution)
                 break
         clientsocket.close()
+
+
 
         return self.solution
 
@@ -79,7 +80,7 @@ def auction(solutions):
             auct[plan] = iter+1
             if iter+1 > maxim:
                 maxim = iter+1
-    print(auct)
+
     plan = [plan for plan, count in auct.items() if count==maxim][0]
     print(plan)
     agents = []

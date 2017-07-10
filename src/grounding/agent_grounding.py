@@ -1,8 +1,6 @@
 import logging
-from pddl.parser import Parser
 from grounding import sign_grounding
 from search.mapsearch import map_search
-import time
 from connection.messagen import Tmessage
 import time
 
@@ -12,7 +10,7 @@ class Agent:
         self.problem = problem
         self.is_load = saveload
         self.solution = []
-        self.types = ['help_request', 'help_response', 'broadcast_message']
+        self.types = ['help_request', 'Approve', 'Broadcast']
 
 
     def load_sw(self, problem, is_load):
@@ -29,23 +27,32 @@ class Agent:
         task = self.load_sw(self.problem, self.is_load)
         search_start_time = time.clock()
         logging.info('Search start: {0}'.format(task.name))
+
+        cms = task.signs["Send"].spread_up_activity_motor('significance', 1)
+        method = None
+        for sign, action in cms:
+            for connector in sign.out_significances:
+                if connector.in_sign.name == "They" and len(others) > 1:
+                    method = action
+                elif connector.in_sign.name == "agent?ag" and len(others) == 1:
+                    method = action
+
         self.solution = map_search(task)
-        mes = Tmessage(self.types[2], self.solution, self.name)
-        message = mes.broadcast()
+
+        mes = Tmessage(self.solution, self.name)
+        message = getattr(mes, method)()
 
         #send sol to server
         import socket
         socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        socket.connect(('localhost', 9098))
-
-
-
-        socket.send(message.encode())
-
-        print("data have been send from client")
+        socket.connect(('localhost', 9097))
 
         if self.is_load:
             task.save_signs(self.solution)
+
+        socket.send(message.encode())
+
+
 
         # return self.solution
 

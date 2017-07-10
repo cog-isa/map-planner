@@ -133,19 +133,38 @@ def ground(problem, agent):
             update_significance(predicate, effect=True)
         signs[action.name] = act_sign
 
-    Agent_send = Sign("Send")
-    ag_signif = Agent_send.add_significance()
+    Send = Sign("Send")
+    ag_signif= Send.add_significance()
     Broadcast = Sign("Broadcast")
     brdct_signif = Broadcast.add_significance()
+    connector = brdct_signif.add_feature(ag_signif)
+    Send.add_out_significance(connector)
     Approve = Sign("Approve")
     approve_signif = Approve.add_significance()
-    signs[Agent_send.name] = Agent_send
+    connector = approve_signif.add_feature(ag_signif)
+    Send.add_out_significance(connector)
+    signs[Send.name] = Send
     signs[Broadcast.name] = Broadcast
     signs[Approve.name] = Approve
-    for object in objects:
-        pass
+
+    They_signif = They_sign.add_significance()
+    brdct_signif = Broadcast.add_significance()
+    connector = They_signif.add_feature(brdct_signif)
+    Broadcast.add_out_significance(connector)
+    ag_signif = signs["agent?ag"].add_significance()
+    approve_signif = Approve.add_significance()
+    connector = ag_signif.add_feature(approve_signif)
+    Approve.add_out_significance(connector)
 
 
+
+    brdct_signif = Broadcast.add_significance()
+    executer = brdct_signif.add_execution(Broadcast.name.lower())
+    Send.add_out_significance(executer)
+
+    approve_signif = Approve.add_significance()
+    executer = approve_signif.add_execution(Approve.name.lower())
+    Send.add_out_significance(executer)
 
 
     start_situation, pms = _define_situation('*start*', problem.initial_state, signs)

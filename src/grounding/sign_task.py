@@ -34,7 +34,7 @@ class Task:
         logging.info('Start saving to {0}'.format(file_name))
         if plan:
             logging.info('\tCleaning SWM...')
-            pms = [pm for _, pm,_ in plan]
+            pms = [pm for _, _,pm, _ in plan]
             for name, s in self.signs.copy().items():
                 signif=list(s.significances.items())
                 if name.startswith(SIT_PREFIX):
@@ -51,6 +51,7 @@ class Task:
 
             I_obj = [con.in_sign for con in self.signs["I"].out_meanings if con.out_sign.name == "I"][0]
             agents_list = set()
+            agents_list.add(I_obj)
             agents = self.signs['agent'].meanings
             for num, cause in agents.items():
                 for con in cause.cause[0].coincidences:
@@ -87,7 +88,7 @@ class Task:
 
             plan_image = plan_sign.add_image() # plan sign - is sign where in meanings start and goal sit (action to achieve)
             effect = False
-            for name, cm, agent in plan:
+            for _, name, cm, agent in plan:
                 # TODO: add actual triplet of components for all signs to access to the current image
                 im = cm.sign.add_image()
                 connector = plan_image.add_feature(im, effect=effect)

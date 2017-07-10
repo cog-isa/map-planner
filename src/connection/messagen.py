@@ -3,7 +3,7 @@ import logging
 import random
 import re
 
-types = ['help_request', 'help_response', 'broadcast_message']
+types = ['help_request', 'Approve', 'Broadcast']
 
 greetings = ['Hello ', 'Greetings ', 'Good day ']
 questions = ['Can you help to achieve the goal?', 'What can you do in this situation?']
@@ -20,10 +20,7 @@ templates["holding"] = "agent ?ag holding block ?x"
 
 
 class Tmessage:
-    def __init__(self, message_type, plan, agents, active_pm=None, checked_pm=None):
-        self.type = message_type
-        if self.type not in types:
-            logging.info("wrong type of request!")
+    def __init__(self, plan, agents, active_pm=None, checked_pm=None):
         # for agents which can make multiple actions with different type of block. Not to remake previous actions.
         self.actions = plan
         self.agents = agents
@@ -37,7 +34,7 @@ class Tmessage:
 
     def broadcast(self):
         message=random.choice(greetings)+"all!!! My name is " +self.agents+  ". I have made a plan and it is: "
-        if self.type == types[2] and self.actions and not self.bagents:
+        if self.actions and not self.bagents:
             for situation in self.actions:
                 message+= situation[1] + " "+ situation[3]+ "; "
             return message
@@ -103,9 +100,9 @@ class Tmessage:
         message = self.make_phrase(predicates)
         return message
 
-    def language_pm(self):
+    def approve(self):
         message = ""
-        if isinstance(self.agents, list) and self.type == types[2]:
+        if isinstance(self.agents, list):
             self.bagents = self.agents
         elif isinstance(self.agents, str):
             self.hagent = self.agents

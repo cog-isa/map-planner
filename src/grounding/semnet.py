@@ -79,6 +79,23 @@ class CausalMatrix:
             connector.out_index = 0
         return connector
 
+    def add_execution(self, motor, order=None):
+        """
+        Add motor function to existed in order
+        @param motor: shortcode of handler function to some physic enviroment
+        @param order: order of motor function
+        @return:
+        """
+        actions = self.cause
+        actuator = Actuator(self.sign, motor, order)
+        if order is None:
+            actuator.in_order = len(actions) + 1
+            actions.append(Event(actuator.in_order, {actuator}))
+        else:
+            actions[order-1].coincidences.add(actuator)
+        return actuator
+
+
     def is_empty(self):
         return len(self.cause) == 0 and len(self.effect) == 0
 
@@ -308,6 +325,20 @@ class Connector:
     def get_in_cm(self, base):
         return getattr(self.in_sign, base + 's')[self.in_index]
 
+class Actuator:
+    """
+    Actuator - link between sign and motor function with order marker
+    """
+
+    def __init__(self, in_sign, motor, in_order=None):
+        self.in_sign = in_sign
+        self.motor = motor
+        self.in_order = in_order
+
+    def __str__(self):
+        return '{0}:{1}->{2}'.format(self.in_sign, self.motor, self.in_order)
+    def __repr__(self):
+        return '{0}->{1}:{2}'.format(self.in_sign, self.motor, self.in_order)
 
 class Sign:
     def __init__(self, name):
@@ -431,19 +462,22 @@ class Sign:
                     active_pms |= pms
         return active_pms
 
-    def find_role(self):
-        anc = []
-        for s in self.significances.items():
-            for event in s[1].cause:
-                for connector in event.coincidences:
-                    anc.append(connector.out_sign)
-        if not len(anc) == 1:
-            for sign_a in anc:
-                for sign_b in anc:
-                    if not sign_a == sign_b:
-                        raise Exception('Sign {0} have different ancestors roles on the same level'.format(self))
-                    else: anc.remove(sign_b)
-        return anc[0]
+    def spread_up_activity_motor(self, base, depth):
+        """
+        @param base: type a variations of function realization threw semantic net
+        @param depth: recursive depth of spreading
+        @return: dict of PM and functions that they are implemented in
+        """
+        actions = set()
+        if depth > 0:
+            for actuator in getattr(self, 'out_' + base + 's'):
+                if hasattr(actuator, 'motor'):
+                    actions.add((actuator.in_sign, actuator.motor))
+                else:
+                    pms = actuator.in_sign.spread_up_activity_motor(base, depth-1)
+                    actions |= pms
+        return actions
+
     def find_attribute(self):
         attribute = []
         for connector in self.out_meanings:
