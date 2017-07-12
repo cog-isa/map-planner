@@ -57,19 +57,15 @@
 
 (:constraints
     (and
-
         (and (always (forall (?x - block)
             (implies (or (blocktype big ?x) (blocktype middle ?x)) (holding a3 ?x))))
         )
-
         (and (always (forall (?x - block)
             (implies (or (blocktype big ?x) (blocktype small ?x)) (holding a1 ?x))))
         )
         (and (always (forall (?x - block)
             (implies (or (blocktype middle ?x) (blocktype small ?x)) (holding a2 ?x))))
         )
-
-
     )
 )
 )

@@ -147,29 +147,58 @@ class CausalMatrix:
         for event in self.effect:
             event.replace(base, old_sign, new_cm, deleted)
 
-    def resonate(self, base, pm, check_order=True, check_sign=True):
+    def resonate(self, base, pm, check_order=True, check_sign=True, agents = []):
         if check_sign and not self.sign == pm.sign:
             return False
         if not len(self.cause) == len(pm.cause) or not len(self.effect) == len(pm.effect):
-            return False
+            return self.check_applicable_by_agent(pm, agents) # for put-down/stack
         if check_order:
             for e1, e2 in zip(itertools.chain(self.cause, self.effect), itertools.chain(pm.cause, pm.effect)):
                 if not e1.resonate(base, e2):
                     return False
         else:
-            for e1 in self.cause:
-                for e2 in pm.cause:
-                    if e1.resonate(base, e2, check_order):
-                        break
-                else:
-                    return False
-            for e1 in self.effect:
-                for e2 in pm.effect:
-                    if e1.resonate(base, e2, check_order):
-                        break
-                else:
-                    return False
+            if self.check_applicable_by_agent(pm, agents): #for stack-stack
+                for e1 in self.cause:
+                    for e2 in pm.cause:
+                        if e1.resonate(base, e2, check_order):
+                            break
+                    else:
+                        return False
+                for e1 in self.effect:
+                    for e2 in pm.effect:
+                        if e1.resonate(base, e2, check_order):
+                            break
+                    else:
+                        return False
+
         return True
+
+    def check_applicable_by_agent(self, pm, agents):
+        result = False
+        for event in self.cause:
+            for connector in event.coincidences:
+                if connector.out_sign.name == "holding":
+                    scm = self.get_ev_signs(event)
+                    for event_pm in pm.cause:
+                        for connector in event_pm.coincidences:
+                            if connector.out_sign.name == "holding":
+                                pcm = self.get_ev_signs(event_pm)
+                                raz = list(scm - pcm)
+                                if len(raz) == 1 and raz[0] in agents or not len(raz):
+                                    result = True
+                                    break
+                        if result:
+                            break
+                if result:
+                    break
+
+        return result
+
+    def get_ev_signs(self, event):
+        scm = set()
+        for connector in event.coincidences:
+            scm.add(connector.out_sign)
+        return scm
 
     def spread_down_activity(self, base, depth):
         """

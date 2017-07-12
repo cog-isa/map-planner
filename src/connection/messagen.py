@@ -33,10 +33,14 @@ class Tmessage:
         self.lblocks = set()
 
     def broadcast(self):
+        def xstr(sit):
+            if sit is None:
+                return ""
+            else: return sit
         message=random.choice(greetings)+"all!!! My name is " +self.agents+  ". I have made a plan and it is: "
         if self.actions and not self.bagents:
             for situation in self.actions:
-                message+= situation[1] + " "+ situation[3]+ "; "
+                message+= situation[1] + " "+ xstr(situation[3])+ "; "
             return message
         elif self.bagents:
             return "broadcast to special agents"

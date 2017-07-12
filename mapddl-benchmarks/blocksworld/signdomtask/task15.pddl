@@ -5,6 +5,7 @@
 	b - block
 	d - block
 	e - block
+	g - block
     a1 - agent
     a2 - agent
     a3 - agent
@@ -16,15 +17,18 @@
 	(handempty a1)
 	(handempty a2)
 	(handempty a3)
-	(clear c)
+	(clear a)
 	(clear b)
 	(clear d)
 	(clear e)
-	(ontable a)
+	(clear g)
+	(ontable c)
 	(ontable b)
 	(ontable d)
 	(ontable e)
-	(on c a)
+	(ontable g)
+	(on a c)
+	(blocktype big g)
 	(blocktype big a)
 	(blocktype small b)
 	(blocktype middle c)
@@ -36,10 +40,12 @@
 	    (handempty a1)
 	    (handempty a2)
 	    (handempty a3)
+	    (on g e)
 		(on e d)
 		(on d c)
-		(on c a)
-		(on a b)
+		(on c b)
+		(on b a)
+        (blocktype big g)
         (blocktype big a)
         (blocktype small b)
         (blocktype middle c)
@@ -51,16 +57,14 @@
 (:constraints
     (and
         (and (always (forall (?x - block)
-            (implies (blocktype big ?x) (holding a1 ?x))))
+            (implies (or (blocktype big ?x) (blocktype middle ?x)) (holding a3 ?x))))
         )
         (and (always (forall (?x - block)
-            (implies (blocktype small ?x) (holding a2 ?x))))
+            (implies (or (blocktype big ?x) (blocktype small ?x)) (holding a1 ?x))))
         )
         (and (always (forall (?x - block)
-            (implies (blocktype middle ?x) (holding a3 ?x))))
+            (implies (or (blocktype middle ?x) (blocktype small ?x)) (holding a2 ?x))))
         )
     )
 )
 )
-
-

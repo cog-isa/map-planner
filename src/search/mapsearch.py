@@ -48,13 +48,6 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         pm = chain[-1]
         active_signif |= pm.sign.spread_up_activity_act('significance', 3)
 
-    connection = set()
-    con_ag = [ag for ag in agents if not ag == I_sign]
-    con_ag.append(I_obj)
-    for signif in active_signif:
-        if len(signif.cause) == len(signif.effect) == 1:
-            connection.add(signif)
-    active_signif -= connection
 
     meanings = []
     for pm_signif in active_signif:
@@ -84,10 +77,12 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
                 applicable_meanings.append((agent, checked))
 
     # TODO: replace to metarule apply
+    apl = [ag for ag in agents if not ag == I_sign]
+    apl.append(I_obj)
+    candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _, _ in current_plan], apl)
 
-    candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _, _ in current_plan])
-
-    candidates = _check_experience(candidates, plan_sign, I_obj, I_sign)
+    if candidates:
+        candidates = _check_experience(candidates, plan_sign, I_obj, I_sign)
 
     if not candidates:
         logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _, _ in current_plan]))
@@ -380,12 +375,12 @@ def _time_shift_backward(active_pm, script):
     return pm
 
 
-def _meta_check_activity(scripts, active_pm, check_pm, prev_pms):
+def _meta_check_activity(scripts, active_pm, check_pm, prev_pms, agents):
     heuristic = []
     for agent, script in scripts:
         estimation = _time_shift_backward(active_pm, script)
         for prev in prev_pms:
-            if estimation.resonate('meaning', prev, False, False):
+            if estimation.resonate('meaning', prev, False, False, agents):
                 break
         else:
             counter = 0

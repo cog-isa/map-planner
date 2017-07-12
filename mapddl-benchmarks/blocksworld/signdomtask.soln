@@ -1,9 +1,4 @@
-pick-up a1
-stack a1
-pick-up a3
-stack a3
-pick-up a2
-stack a2
-pick-up a3
-stack a3
+unstack a1
+put-down a1
+plan_blocks-4-0 
  

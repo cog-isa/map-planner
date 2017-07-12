@@ -103,7 +103,6 @@ class Task:
                 if name.startswith(SIT_PREFIX):
                     self.signs.pop(name)
                 else:
-                    #TODO: add memory of actions to swn significance in agent's sign from sign THEY
                     sign.meanings = {}
                     sign.out_meanings = []
         logging.info('\tDumping SWM...')
