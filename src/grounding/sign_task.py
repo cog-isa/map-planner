@@ -43,17 +43,24 @@ class Task:
                             s.remove_meaning(pm) # delete all situations
                     self.signs.pop(name)
                 elif len(signif):
-                    if len(signif[0][1].cause) and len(signif[0][1].effect): #delete actions that are not in plan
+                    if len(signif[0][1].cause) and len(signif[0][1].effect): #delete action's meanings that are not in plan
                         for index, pm in s.meanings.copy().items():
-                            if pm not in pms:
-                                s.remove_meaning(pm)
+                            pm_signs = pm.get_signs()
+                            for pm_sign in pm_signs:
+                                if "?" in pm_sign.name: # delete only fully signed actions
+                                    break
+                            else:
+                                if pm not in pms:
+                                    s.remove_meaning(pm)
+
+
 
 
             I_obj = [con.in_sign for con in self.signs["I"].out_meanings if con.out_sign.name == "I"][0]
             agents_list = set()
             agents_list.add(I_obj)
             agents = self.signs['agent'].meanings
-            for num, cause in agents.items():
+            for _, cause in agents.items():
                 for con in cause.cause[0].coincidences:
                     if not con.out_sign == I_obj:
                         agents_list.add(con.out_sign)
@@ -75,25 +82,26 @@ class Task:
             conn = plan_mean.add_feature(self.goal_situation.meanings[1], effect=True)
             self.goal_situation.add_out_meaning(conn)
 
+            #TODO придумать что агент актив
             for pm in pms:
                 for event in itertools.chain(pm.cause, pm.effect):
                     for connector in event.coincidences:
-                        agent = connector.out_sign
-                        if agent in agents_list:
-                            # agent.meanings[agent.name] = pm
-                            plan_mean = plan_sign.add_meaning()
-                            agent_mean = agent.add_meaning()
-                            connector = plan_mean.add_feature(agent_mean)
-                            plan_sign.add_out_meaning(connector)
+                        if connector.out_sign.name == "holding":
+                            agent = connector.out_sign
+                            if agent in agents_list:
+                                agent_mean = agent.add_meaning()
+                                pm_mean = pm.sign.add_meaning(pm)
+                                connector = pm_mean.add_feature(agent_mean)
+                                plan_sign.add_out_meaning(connector)
 
-            plan_image = plan_sign.add_image() # plan sign - is sign where in meanings start and goal sit (action to achieve)
-            effect = False
+
+            plan_image = plan_sign.add_image()
+
             for _, name, cm, agent in plan:
-                # TODO: add actual triplet of components for all signs to access to the current image
                 im = cm.sign.add_image()
-                connector = plan_image.add_feature(im, effect=effect)
+                connector = plan_image.add_feature(im)
                 cm.sign.add_out_image(connector) # add connector to plan_sign threw images to out_image
-                effect = True
+
 
             self.signs[plan_sign.name] = plan_sign
             self.signs[self.start_situation.name] = self.start_situation
@@ -109,7 +117,8 @@ class Task:
         pickle.dump(self.signs, open(file_name, 'wb'))
         return file_name
 
-    def load_signs(self, file_name=None):
+    @staticmethod
+    def load_signs(file_name=None):
         if not file_name:
             for f in os.listdir('.'):
                 if f.endswith(DEFAULT_FILE_SUFFIX):
@@ -119,5 +128,5 @@ class Task:
                 logging.info('File not found')
                 return None
         if file_name:
-            self.signs = pickle.load(open(file_name, 'rb'))
-        return file_name
+            signs = pickle.load(open(file_name, 'rb'))
+        return signs

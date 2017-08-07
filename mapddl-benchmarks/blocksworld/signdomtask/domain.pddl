@@ -82,14 +82,5 @@
 	)
 )
 
-(:action wait
-    :parameters (?ag - agent)
-    :precondition (and
-        (handempty ?ag)
-    )
-    :effect (and
-        (handempty ?ag)
-    )
-)
 
 )

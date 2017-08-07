@@ -39,8 +39,9 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
     for name, sign in world_model.items():
         if name.startswith("plan_"): plan_sign = sign
         for index, cm in sign.meanings.items():
-            if cm.includes('meaning', active_pm):
-                precedents.extend(cm.sign.spread_up_activity_act('meaning', 1)) # searching for plan_sign
+            if cm.includes('meaning', active_pm):# распространение активности на
+                precedents.extend(cm.sign.spread_up_activity_act('meaning', 1)) # личностных смыслах от матриц начальной и целевой ситуаций
+
     active_chains = active_pm.spread_down_activity('meaning', 2)
     active_signif = set()
 
@@ -86,25 +87,28 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
 
     if not candidates:
         logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _, _ in current_plan]))
-        # TODO: if no experience -> choose with whom the longest plan <<= return a len(recursive_plans)
         return None
 
     logging.debug('\tFound {0} variants'.format(len(candidates)))
     final_plans = []
 
+    # print("len of candidates is: {0}".format(len(candidates)))
 
     for counter, name, script, ag_mask in candidates:
         logging.debug('\tChoose {0}: {1} -> {2}'.format(counter, name, script))
 
         plan = current_plan.copy()
-        plan.append((active_pm, name, script, ag_mask))
-        next_pm = _time_shift_backward(active_pm, script)
+        plan.append((active_pm, name, script, ag_mask.name))
+        # if maxLen and len(plan)> maxLen:
+        #     return None
+        next_pm = _time_shift_backward(active_pm, script, agents)
         if next_pm.includes('meaning', check_pm):
             final_plans.append(plan)
-            print("len of final plan is: {0}".format(len(plan)))
+            print("len of final plan is: {0}. Len of candidates: {1}".format(len(plan), len(candidates)))
         else:
             recursive_plans = map_iteration(next_pm, check_pm, plan, iteration + 1)
             if recursive_plans:
+                #maxLen = len(recursive_plans[0])
                 final_plans.extend(recursive_plans)
 
     return final_plans
@@ -174,8 +178,8 @@ def get_agents():
     agent_back = set()
     I_sign = world_model['I']
     agent_back.add(I_sign)
-    I_obj = [con.in_sign for con in I_sign.out_meanings if con.out_sign.name == "I"][0]
-    agents = world_model['agent'].meanings
+    I_obj = [con.in_sign for con in I_sign.out_significances if con.out_sign.name == "I"][0]
+    agents = world_model['agent'].significances
     for num, cause in agents.items():
         for con in cause.cause[0].coincidences:
             if not con.out_sign == I_obj:
@@ -194,6 +198,16 @@ def _check_experience(candidates, plan_sign, I_obj, I_sign):
         for cand in candidates.copy():
             if not cand[3] in exp_agents and not cand[3] is None:
                 candidates.remove(cand)
+        actions = []
+        exp_candidates = []
+        for con in plan_sign.out_meanings:
+            actions.append(con.in_sign.meanings[con.in_index])
+        for action in actions:
+            for cand in candidates:
+                if action == cand[2]:
+                    exp_candidates.append(cand)
+        if exp_candidates:
+            candidates = exp_candidates
     return candidates
 
 def _generate_meanings(chains, agents):
@@ -241,101 +255,102 @@ def _generate_meanings(chains, agents):
             used_roles = []
         return merged_chains
 
+    connectors = [agent.out_meanings for agent in agents]
 
-    def suitable(cm, agents):
-        meanings = list()
-        cm_meanings = []
-        con = set()
-        ag = {}
-        script = []
-        cm_agent = []
-        I_sign = world_model['I']
-        I_obj = [con.in_sign for con in I_sign.out_meanings if con.out_sign.name == "I"][0]
-        for agent in agents:
-            if agent == I_sign:
-                for connector in agent.out_meanings:
-                    if not connector.out_sign == agent:
-                        meanings.append((connector.in_sign.name, connector.out_sign.name))
-            else:
-                for connector in agent.out_meanings:
-                    meanings.append((connector.in_sign.name, connector.out_sign.name))
-            ag[agent] = list(set(meanings))
-            meanings = []
+    unrenewed = {}
+    for agent_con in connectors:
+        for con in agent_con:
+            if con.in_sign == main_pm.sign:
+                unrenewed.setdefault(con.out_sign, []).append(con.in_sign.meanings[con.in_index])
 
-        agents2 = agents.copy()
-        agents2.remove(I_sign)
-        agents2.add(I_obj)
-        roles = []
-        for mean, attribute in ag.items():
-            if mean == I_sign:
-                mean = I_obj
-            for agent in agents2:
-                roles2 = []
-                variants = set()
-                type = {}
-                if agent == mean:
-                    for elem in attribute:
-                        if elem[1] == agent.name:
-                            roles.append(elem[0])
-                        elif elem[0] == agent.name:
-                            variants.add(elem[1])
-                    for elem in attribute:
-                        if elem[1] in variants and not elem[0] in roles and not elem[0] == agent.name:
-                            type.setdefault(elem[0], []).extend(elem[1])
-                        if elem[1] in variants or elem[1] in type and not elem[0] == agent.name:
-                            roles2.append(elem[0])
-                    roles = list(set(roles2)&set(roles))
-                    if len(type):
-                        meanings.append((agent.name, type))
-
-        for event in itertools.chain(cm.cause, cm.effect):
-            for connector in event.coincidences:
-                con.add(connector.out_sign.name)
-            if len(roles):
-                if roles[0] in con or roles[1] in con:
-                    cm_meanings.append(con)
-                    con = set()
-                    continue
-            elif "handempty" in con and len(con) == 2:
-                cm_agent = list(con)
-                cm_agent.remove("handempty")
-
-
-        if len(cm_meanings):
-            for mean in meanings:
-                if any(mean[0] in cm_meaning for cm_meaning in cm_meanings):
-                    for type, elems in mean[1].items():
-                        for elem in elems:
-                            if all(elem in cm_meaning and mean[0] in cm_meaning or elem in cm_meaning \
-                                   and type in cm_meaning for cm_meaning in cm_meanings):
-                                for role in agents2:
-                                    if mean[0] == role.name:
-                                        if role == I_obj:
-                                            script.append([I_sign.name, cm])
-                                        else:
-                                            script.append([role.name, cm])
-                                        return script
-        elif cm_agent:
-                for agent in agents2:
-                    if agent.name == cm_agent[0]:
-                        script.append([agent.name, cm])
-                        return script
+    roles = []
+    predicates = set()
+    # от знака блока в out_meanings -->> blocktype ->>> in_index
+    for role_sign, variants in replace_map.items():
+        for variant in variants:
+            predicates |= variant.sign.spread_up_activity_obj('meaning', 1)
+        for role in roles:
+            if variants == role[0]:
+                continue
         else:
-            return False
+            roles.append((variants, predicates))
+        predicates = set()
 
-    ma_combinations = mix_pairs(replace_map)
+    predicate_signs = []
+
+    for pms, role in roles:
+        others = []
+        [others.extend(pm) for pm, _ in roles if not pm == pms]
+        others = [pm.sign for pm in others]
+        pms_signs = [pm.sign for pm in pms]
+        for r in role:
+           pred_signs = list(r.get_signs())
+           if len(r.cause) > len(roles):
+               continue
+           if pred_signs[0] in others and pred_signs[1] in pms_signs or pred_signs[0] in pms_signs and pred_signs[1] in others:
+               predicate_signs.append(pred_signs)
+               predicates.add(r.sign)
+
+
+    for s in predicate_signs.copy():
+        others = [el for el in predicate_signs if el[1] == s[1] and el[0] == s[0] or el[1] == s[0] and el[0] == s[1]]
+        for el in others:
+            predicate_signs.remove(el)
+        predicate_signs.append(s)
+
+
 
     pms = []
-    for ma_combination in ma_combinations:
-        cm = main_pm.copy('significance', 'meaning')
-        for role_sign, obj_pm in ma_combination.items():
-            obj_cm = obj_pm.copy('significance', 'meaning')
-            cm.replace('meaning', role_sign, obj_cm)
-        test = suitable(cm, agents)
-        if test:
-            pms.append(test[0])
+    for agent, lpm in unrenewed.items():
+        for pm in lpm:
+            pm_signs = pm.get_signs()
+            new_map = {}
+            role_signX = []
+            variants = set()
+            variantsX = set()
+            variantsY = set()
+            role_signs = replace_map.keys() & pm_signs
+            if role_signs:
+                for event in itertools.chain(pm.cause, pm.effect):
+                    for pred in predicates:
+                        ev_signs = event.get_signs()
+                        if pred in ev_signs:
+                            for pred_sign in predicate_signs:
+                                if any(sign for sign in pred_sign if sign in ev_signs):
+                                    role_signX = list(ev_signs - set(pred_sign))
+                                    role_signX.remove(pred)
+                                    variants |= set(pred_sign) - ev_signs
+                role_signY = list(role_signs - set(role_signX))
+
+                for role, pmd in replace_map.items():
+                    variantsX |= {cm for cm in pmd if cm.sign in variants}
+                    if any(cm for cm in pmd if cm.sign in variants):
+                        variantsY |= set(pmd)
+
+                new_map.setdefault(*role_signX, []).extend(variantsX)
+                if role_signY:
+                    new_map.setdefault(*role_signY, []).extend(list(variantsY))
+
+
+                ma_combinations = mix_pairs(new_map)
+                for ma_combination in ma_combinations:
+                    cm = pm.copy('meaning', 'meaning')
+                    for role_sign, obj_pm in ma_combination.items():
+                        obj_cm = obj_pm.copy('significance', 'meaning')
+                        cm.replace('meaning', role_sign, obj_cm)
+                    if not pms:
+                        pms.append((agent, cm))
+                    else:
+                        for _, pmd in pms.copy():
+                            if pmd.resonate('meaning', cm):
+                                break
+                        else:
+                            pms.append((agent, cm))
+
+
 
     return pms
+
 
 
 def _check_activity(pm, active_pm):
@@ -357,7 +372,7 @@ def _check_activity(pm, active_pm):
     return result, pm
 
 
-def _time_shift_backward(active_pm, script):
+def _time_shift_backward(active_pm, script, agents):
     next_pm = Sign(st.SIT_PREFIX + str(st.SIT_COUNTER))
     world_model[next_pm.name] = next_pm
     pm = next_pm.add_meaning()
@@ -370,7 +385,7 @@ def _time_shift_backward(active_pm, script):
         else:
             pm.add_event(event.copy(pm, 'meaning', 'meaning', copied))
     for event in script.cause:
-        pm.add_event(event.copy(pm, 'meaning', 'meaning', copied))
+            pm.add_event(event.copy(pm, 'meaning', 'meaning', copied))
 
     return pm
 
@@ -378,9 +393,9 @@ def _time_shift_backward(active_pm, script):
 def _meta_check_activity(scripts, active_pm, check_pm, prev_pms, agents):
     heuristic = []
     for agent, script in scripts:
-        estimation = _time_shift_backward(active_pm, script)
+        estimation = _time_shift_backward(active_pm, script, agents)
         for prev in prev_pms:
-            if estimation.resonate('meaning', prev, False, False, agents):
+            if estimation.resonate('meaning', prev, False, False):
                 break
         else:
             counter = 0
@@ -389,6 +404,7 @@ def _meta_check_activity(scripts, active_pm, check_pm, prev_pms, agents):
                     if event.resonate('meaning', ce):
                         counter += 1
                         break
+                    
             heuristic.append((counter, script.sign.name, script, agent))
     if heuristic:
         best_heuristics = max(heuristic, key=lambda x: x[0])

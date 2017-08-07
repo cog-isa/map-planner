@@ -1,5 +1,6 @@
 import json
 import logging
+import pickle
 import random
 import re
 
@@ -32,15 +33,17 @@ class Tmessage:
         self.lsizes = set()
         self.lblocks = set()
 
+    def xstr(self, sit):
+        if sit is None:
+            return ""
+        else:
+            return sit
+
     def broadcast(self):
-        def xstr(sit):
-            if sit is None:
-                return ""
-            else: return sit
         message=random.choice(greetings)+"all!!! My name is " +self.agents+  ". I have made a plan and it is: "
         if self.actions and not self.bagents:
             for situation in self.actions:
-                message+= situation[1] + " "+ xstr(situation[3])+ "; "
+                message+= situation[1] + " "+ self.xstr(situation[3])+ "; "
             return message
         elif self.bagents:
             return "broadcast to special agents"
@@ -98,14 +101,13 @@ class Tmessage:
             phrase = phrase + item + ", "
         phrase = phrase + lphrase[len(lphrase)-1] + "."
         return phrase
-
+    #for situation grounding
     def active_pm_reader(self):
         predicates = self.get_sit_predicate(self.active_pm)
         message = self.make_phrase(predicates)
         return message
 
     def approve(self):
-        message = ""
         if isinstance(self.agents, list):
             self.bagents = self.agents
         elif isinstance(self.agents, str):
@@ -114,9 +116,23 @@ class Tmessage:
             logging.info("wrong amount of agents!")
         if self.bagents:
             self.broadcast()
+        message=random.choice(greetings)+"all!!! My name is " +self.agents+  ". I have made a plan and it is: "
+        if self.actions:
+            for situation in self.actions:
+                message+= situation[1] + " "+ self.xstr(situation[3])+ "; "
+            return message
         else:
-            message = random.choice(greetings) + self.hagent + ". " + random.choice(sit)+ ": " + self.active_pm_reader() + random.choice(questions)
-        return message
+            return "plan doesn't exist"
+    def save_achievement(self):
+        message = random.choice(greetings) + "My name is " + self.agents + ". I have made a plan and it is: "
+        if self.actions:
+            for situation in self.actions:
+                message+= situation[1] + " "+ self.xstr(situation[3])+ "; "
+            with open('data.pickle', 'wb') as f:
+                pickle.dump(message, f)
+            return message
+        else:
+            return "plan doesn't exist"
 
 def reconstructor(message):
     m = re.search('(?<=My name is )\w+', message)
