@@ -115,6 +115,14 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
     return final_plans
 
 def long_relations(plans):
+
+    #отбираем самые короткие планы
+    min = len(plans[0])
+    for plan in plans:
+        if len(plan) < min:
+            min = len(plan)
+    plans = [plan for plan in plans if len(plan) == min]
+
     busiest = []
     for index, plan in enumerate(plans):
         previous_agent = ""

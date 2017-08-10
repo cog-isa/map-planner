@@ -1602,3 +1602,94 @@
 2017-08-10 17:38:02,024 INFO      Grounding end: blocks-0-2-4
 2017-08-10 17:38:02,025 INFO      38 Signs created
 2017-08-10 17:38:02,025 INFO      Search start: blocks-0-2-4
+2017-08-10 17:49:18,282 INFO      Parsing Domain /home/gleb/PycharmProjects/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task2constr/domain.pddl
+2017-08-10 17:49:18,285 INFO      Parsing Problem /home/gleb/PycharmProjects/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task02.pddl
+2017-08-10 17:49:18,287 INFO      6 Predicates parsed
+2017-08-10 17:49:18,287 INFO      4 Actions parsed
+2017-08-10 17:49:18,287 INFO      9 Objects parsed
+2017-08-10 17:49:18,287 INFO      0 Constants parsed
+2017-08-10 17:49:18,307 INFO      Grounding start: blocks-0-2
+2017-08-10 17:49:18,307 INFO      Grounding start: blocks-0-2
+2017-08-10 17:49:18,307 INFO      File not found
+2017-08-10 17:49:18,307 INFO      File not found
+2017-08-10 17:49:18,313 INFO      Grounding end: blocks-0-2
+2017-08-10 17:49:18,313 INFO      Grounding end: blocks-0-2
+2017-08-10 17:49:18,313 INFO      32 Signs created
+2017-08-10 17:49:18,313 INFO      32 Signs created
+2017-08-10 17:49:18,313 INFO      Search start: blocks-0-2
+2017-08-10 17:49:18,313 INFO      Search start: blocks-0-2
+2017-08-10 17:49:19,743 INFO      Plan preparation to save...
+2017-08-10 17:49:19,743 INFO      	Cleaning SWM...
+2017-08-10 17:49:19,767 INFO      Plan preparation to save...
+2017-08-10 17:49:19,767 INFO      	Cleaning SWM...
+2017-08-10 17:49:20,154 INFO      	Saving precedent...
+2017-08-10 17:49:20,157 INFO      Start saving to wmodel_08_10_17_49_a1.swm
+2017-08-10 17:49:20,157 INFO      	Dumping SWM...
+2017-08-10 17:49:20,190 INFO      	Saving precedent...
+2017-08-10 17:49:20,193 INFO      Start saving to wmodel_08_10_17_49_a2.swm
+2017-08-10 17:49:20,193 INFO      	Dumping SWM...
+2017-08-10 17:49:20,201 INFO      Plan length: 89
+2017-08-10 17:49:32,436 INFO      Parsing Domain /home/gleb/PycharmProjects/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task2constr/domain.pddl
+2017-08-10 17:49:32,449 INFO      Parsing Problem /home/gleb/PycharmProjects/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task24.pddl
+2017-08-10 17:49:32,457 INFO      6 Predicates parsed
+2017-08-10 17:49:32,457 INFO      4 Actions parsed
+2017-08-10 17:49:32,458 INFO      9 Objects parsed
+2017-08-10 17:49:32,458 INFO      0 Constants parsed
+2017-08-10 17:49:32,569 INFO      Grounding start: blocks-0-2-4
+2017-08-10 17:49:32,573 INFO      Grounding start: blocks-0-2-4
+2017-08-10 17:49:32,581 INFO      Grounding end: blocks-0-2-4
+2017-08-10 17:49:32,581 INFO      35 Signs created
+2017-08-10 17:49:32,582 INFO      Search start: blocks-0-2-4
+2017-08-10 17:49:32,585 INFO      Grounding end: blocks-0-2-4
+2017-08-10 17:49:32,585 INFO      35 Signs created
+2017-08-10 17:49:32,585 INFO      Search start: blocks-0-2-4
+2017-08-10 17:55:49,037 INFO      Parsing Domain /home/gleb/PycharmProjects/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task2constr/domain.pddl
+2017-08-10 17:55:49,040 INFO      Parsing Problem /home/gleb/PycharmProjects/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task24.pddl
+2017-08-10 17:55:49,042 INFO      6 Predicates parsed
+2017-08-10 17:55:49,042 INFO      4 Actions parsed
+2017-08-10 17:55:49,042 INFO      9 Objects parsed
+2017-08-10 17:55:49,042 INFO      0 Constants parsed
+2017-08-10 17:55:49,062 INFO      Grounding start: blocks-0-2-4
+2017-08-10 17:55:49,062 INFO      Grounding start: blocks-0-2-4
+2017-08-10 17:55:49,071 INFO      Grounding end: blocks-0-2-4
+2017-08-10 17:55:49,071 INFO      Grounding end: blocks-0-2-4
+2017-08-10 17:55:49,072 INFO      35 Signs created
+2017-08-10 17:55:49,072 INFO      35 Signs created
+2017-08-10 17:55:49,072 INFO      Search start: blocks-0-2-4
+2017-08-10 17:55:49,072 INFO      Search start: blocks-0-2-4
+2017-08-10 17:55:51,394 INFO      Plan preparation to save...
+2017-08-10 17:55:51,394 INFO      	Cleaning SWM...
+2017-08-10 17:55:51,939 INFO      	Saving precedent...
+2017-08-10 17:55:51,942 INFO      Start saving to wmodel_08_10_17_55_a1.swm
+2017-08-10 17:55:51,942 INFO      	Dumping SWM...
+2017-08-10 17:55:54,875 INFO      Plan preparation to save...
+2017-08-10 17:55:54,875 INFO      	Cleaning SWM...
+2017-08-10 17:55:56,062 INFO      	Saving precedent...
+2017-08-10 17:55:56,064 INFO      Start saving to wmodel_08_10_17_55_a2.swm
+2017-08-10 17:55:56,065 INFO      	Dumping SWM...
+2017-08-10 17:55:56,077 INFO      Plan length: 46
+2017-08-10 17:56:11,379 INFO      Parsing Domain /home/gleb/PycharmProjects/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task2constr/domain.pddl
+2017-08-10 17:56:11,382 INFO      Parsing Problem /home/gleb/PycharmProjects/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task24.pddl
+2017-08-10 17:56:11,384 INFO      6 Predicates parsed
+2017-08-10 17:56:11,384 INFO      4 Actions parsed
+2017-08-10 17:56:11,384 INFO      9 Objects parsed
+2017-08-10 17:56:11,384 INFO      0 Constants parsed
+2017-08-10 17:56:11,401 INFO      Grounding start: blocks-0-2-4
+2017-08-10 17:56:11,401 INFO      Grounding start: blocks-0-2-4
+2017-08-10 17:56:11,411 INFO      Grounding end: blocks-0-2-4
+2017-08-10 17:56:11,411 INFO      Grounding end: blocks-0-2-4
+2017-08-10 17:56:11,411 INFO      35 Signs created
+2017-08-10 17:56:11,411 INFO      35 Signs created
+2017-08-10 17:56:11,411 INFO      Search start: blocks-0-2-4
+2017-08-10 17:56:11,411 INFO      Search start: blocks-0-2-4
+2017-08-10 17:56:14,353 INFO      Plan preparation to save...
+2017-08-10 17:56:14,353 INFO      	Cleaning SWM...
+2017-08-10 17:56:14,888 INFO      	Saving precedent...
+2017-08-10 17:56:14,891 INFO      Start saving to wmodel_08_10_17_56_a1.swm
+2017-08-10 17:56:14,891 INFO      	Dumping SWM...
+2017-08-10 17:56:17,714 INFO      Plan preparation to save...
+2017-08-10 17:56:17,714 INFO      	Cleaning SWM...
+2017-08-10 17:56:18,899 INFO      	Saving precedent...
+2017-08-10 17:56:18,902 INFO      Start saving to wmodel_08_10_17_56_a2.swm
+2017-08-10 17:56:18,902 INFO      	Dumping SWM...
+2017-08-10 17:56:18,914 INFO      Plan length: 46
