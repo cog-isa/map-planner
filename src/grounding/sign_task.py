@@ -11,7 +11,7 @@ DEFAULT_FILE_SUFFIX = '.swm'
 
 SIT_COUNTER = 0
 SIT_PREFIX = 'situation_'
-PLAN_PREFIX = 'plan_'
+PLAN_PREFIX = 'action_'
 
 
 class Task:
@@ -30,8 +30,8 @@ class Task:
         return '<Task {0}, signs: {1}>'.format(self.name, len(self.signs))
 
     def save_signs(self, plan):
-        file_name = DEFAULT_FILE_PREFIX + datetime.datetime.now().strftime('%y_%m_%d_%H_%M_%S') + DEFAULT_FILE_SUFFIX
-        logging.info('Start saving to {0}'.format(file_name))
+        I_obj = None
+        logging.info('Plan preparation to save...')
         if plan:
             logging.info('\tCleaning SWM...')
             pms = [pm for _, _,pm, _ in plan]
@@ -55,15 +55,19 @@ class Task:
 
 
 
+            They_signs = [con.in_sign for con in self.signs["They"].out_significances]
+            I_obj = [con.in_sign for con in self.signs["I"].out_significances if con.out_sign.name == "I"]
 
-            I_obj = [con.in_sign for con in self.signs["I"].out_meanings if con.out_sign.name == "I"][0]
-            agents_list = set()
-            agents_list.add(I_obj)
-            agents = self.signs['agent'].meanings
-            for _, cause in agents.items():
-                for con in cause.cause[0].coincidences:
-                    if not con.out_sign == I_obj:
-                        agents_list.add(con.out_sign)
+            for agent in itertools.chain(They_signs, I_obj):
+                for connector in list(agent.out_meanings.copy()):
+                    pm = connector.in_sign.meanings[connector.in_index]
+                    if pm not in pms:
+                        pm_signs = pm.get_signs()
+                        for pm_sign in pm_signs:
+                            if "?" in pm_sign.name:  # delete only fully signed actions
+                                break
+                        else:
+                            agent.out_meanings.remove(connector)
 
 
 
@@ -81,18 +85,6 @@ class Task:
             self.start_situation.add_out_meaning(connector)
             conn = plan_mean.add_feature(self.goal_situation.meanings[1], effect=True)
             self.goal_situation.add_out_meaning(conn)
-
-            #TODO придумать что агент актив
-            for pm in pms:
-                for event in itertools.chain(pm.cause, pm.effect):
-                    for connector in event.coincidences:
-                        if connector.out_sign.name == "holding":
-                            agent = connector.out_sign
-                            if agent in agents_list:
-                                agent_mean = agent.add_meaning()
-                                pm_mean = pm.sign.add_meaning(pm)
-                                connector = pm_mean.add_feature(agent_mean)
-                                plan_sign.add_out_meaning(connector)
 
 
             plan_image = plan_sign.add_image()
@@ -113,15 +105,20 @@ class Task:
                 else:
                     sign.meanings = {}
                     sign.out_meanings = []
+        if I_obj:
+            I_obj = "_"+I_obj[0].name
+        file_name = DEFAULT_FILE_PREFIX + datetime.datetime.now().strftime('%d_%H_%M') + I_obj + DEFAULT_FILE_SUFFIX
+        logging.info('Start saving to {0}'.format(file_name))
         logging.info('\tDumping SWM...')
         pickle.dump(self.signs, open(file_name, 'wb'))
         return file_name
 
     @staticmethod
-    def load_signs(file_name=None):
+    def load_signs(agent, file_name=None):
+        signs = []
         if not file_name:
             for f in os.listdir('.'):
-                if f.endswith(DEFAULT_FILE_SUFFIX):
+                if f.endswith(DEFAULT_FILE_SUFFIX) and f.split(".")[0].endswith(agent):
                     file_name = f
                     break
             else:

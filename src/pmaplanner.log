@@ -15393,3 +15393,726 @@ defaultdict(<class 'set'>, {agent: {'a1', 'a2'}, object: {'b', 'a1', 'huge', 'a'
 2017-08-07 16:51:12,395 INFO      Grounding end: blocks-4-0
 2017-08-07 16:51:12,396 INFO      35 Signs created
 2017-08-07 16:51:12,396 INFO      Search start: blocks-4-0
+2017-08-08 11:59:00,665 INFO      Parsing Domain /home/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-08 11:59:00,668 INFO      Parsing Problem /home/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-08 11:59:00,670 INFO      6 Predicates parsed
+2017-08-08 11:59:00,671 INFO      4 Actions parsed
+2017-08-08 11:59:00,671 INFO      9 Objects parsed
+2017-08-08 11:59:00,671 INFO      0 Constants parsed
+2017-08-08 11:59:00,695 INFO      Grounding start: blocks-4-0
+2017-08-08 11:59:00,695 INFO      Grounding start: blocks-4-0
+2017-08-08 11:59:00,701 INFO      Grounding end: blocks-4-0
+2017-08-08 11:59:00,701 INFO      32 Signs created
+2017-08-08 11:59:00,701 INFO      Search start: blocks-4-0
+2017-08-08 11:59:00,701 INFO      Grounding end: blocks-4-0
+2017-08-08 11:59:00,701 INFO      32 Signs created
+2017-08-08 11:59:00,701 INFO      Search start: blocks-4-0
+2017-08-08 11:59:02,150 INFO      Plan length: 89
+2017-08-08 12:05:55,821 INFO      Parsing Domain /home/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-08 12:05:55,835 INFO      Parsing Problem /home/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-08 12:05:55,843 INFO      6 Predicates parsed
+2017-08-08 12:05:55,843 INFO      4 Actions parsed
+2017-08-08 12:05:55,843 INFO      9 Objects parsed
+2017-08-08 12:05:55,843 INFO      0 Constants parsed
+2017-08-08 12:05:55,955 INFO      Grounding start: blocks-4-0
+2017-08-08 12:05:55,955 INFO      File not found
+2017-08-08 12:05:55,958 INFO      Grounding start: blocks-4-0
+2017-08-08 12:05:55,958 INFO      File not found
+2017-08-08 12:05:55,971 INFO      Grounding end: blocks-4-0
+2017-08-08 12:05:55,972 INFO      32 Signs created
+2017-08-08 12:05:55,972 INFO      Search start: blocks-4-0
+2017-08-08 12:05:55,975 INFO      Grounding end: blocks-4-0
+2017-08-08 12:05:55,975 INFO      32 Signs created
+2017-08-08 12:05:55,976 INFO      Search start: blocks-4-0
+2017-08-08 12:09:12,017 INFO      Start saving to wmodel_17_08_08_12_09_11.swm
+2017-08-08 12:09:25,864 INFO      	Cleaning SWM...
+2017-08-08 12:12:40,264 INFO      Start saving to wmodel_17_08_08_12_12_40.swm
+2017-08-08 12:12:40,265 INFO      	Cleaning SWM...
+2017-08-08 12:15:30,485 INFO      Parsing Domain /home/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-08 12:15:30,500 INFO      Parsing Problem /home/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-08 12:15:30,508 INFO      6 Predicates parsed
+2017-08-08 12:15:30,508 INFO      4 Actions parsed
+2017-08-08 12:15:30,508 INFO      9 Objects parsed
+2017-08-08 12:15:30,508 INFO      0 Constants parsed
+2017-08-08 12:15:30,620 INFO      Grounding start: blocks-4-0
+2017-08-08 12:15:30,620 INFO      File not found
+2017-08-08 12:15:30,623 INFO      Grounding start: blocks-4-0
+2017-08-08 12:15:30,624 INFO      File not found
+2017-08-08 12:15:30,636 INFO      Grounding end: blocks-4-0
+2017-08-08 12:15:30,636 INFO      32 Signs created
+2017-08-08 12:15:30,637 INFO      Search start: blocks-4-0
+2017-08-08 12:15:30,642 INFO      Grounding end: blocks-4-0
+2017-08-08 12:15:30,642 INFO      32 Signs created
+2017-08-08 12:15:30,643 INFO      Search start: blocks-4-0
+2017-08-08 12:15:37,807 INFO      Start saving to wmodel_17_08_08_12_15_37.swm
+2017-08-08 12:15:37,808 INFO      	Cleaning SWM...
+2017-08-08 12:15:37,835 INFO      Start saving to wmodel_17_08_08_12_15_37.swm
+2017-08-08 12:15:37,835 INFO      	Cleaning SWM...
+2017-08-09 12:36:07,321 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 12:36:07,347 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task10.pddl
+2017-08-09 12:36:07,355 INFO      6 Predicates parsed
+2017-08-09 12:36:07,355 INFO      4 Actions parsed
+2017-08-09 12:36:07,355 INFO      12 Objects parsed
+2017-08-09 12:36:07,355 INFO      0 Constants parsed
+2017-08-09 12:36:07,458 INFO      Grounding start: blocks-4-0
+2017-08-09 12:36:07,458 INFO      Grounding start: blocks-4-0
+2017-08-09 12:36:07,459 INFO      Grounding start: blocks-4-0
+2017-08-09 12:36:07,480 INFO      Grounding end: blocks-4-0
+2017-08-09 12:36:07,480 INFO      Grounding end: blocks-4-0
+2017-08-09 12:36:07,480 INFO      35 Signs created
+2017-08-09 12:36:07,481 INFO      35 Signs created
+2017-08-09 12:36:07,481 INFO      Search start: blocks-4-0
+2017-08-09 12:36:07,482 INFO      Grounding end: blocks-4-0
+2017-08-09 12:36:07,482 INFO      35 Signs created
+2017-08-09 12:36:07,482 INFO      Search start: blocks-4-0
+2017-08-09 12:36:07,481 INFO      Search start: blocks-4-0
+2017-08-09 12:36:48,713 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 12:36:48,845 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task10.pddl
+2017-08-09 12:36:48,893 INFO      6 Predicates parsed
+2017-08-09 12:36:48,894 INFO      4 Actions parsed
+2017-08-09 12:36:48,895 INFO      12 Objects parsed
+2017-08-09 12:36:48,895 INFO      0 Constants parsed
+2017-08-09 12:36:49,033 INFO      Grounding start: blocks-4-0
+2017-08-09 12:36:49,067 INFO      Grounding start: blocks-4-0
+2017-08-09 12:36:49,075 INFO      Grounding start: blocks-4-0
+2017-08-09 12:36:49,227 INFO      Grounding end: blocks-4-0
+2017-08-09 12:36:49,229 INFO      35 Signs created
+2017-08-09 12:36:49,230 INFO      Search start: blocks-4-0
+2017-08-09 12:36:49,273 INFO      Grounding end: blocks-4-0
+2017-08-09 12:36:49,273 INFO      Grounding end: blocks-4-0
+2017-08-09 12:36:49,274 INFO      35 Signs created
+2017-08-09 12:36:49,274 INFO      35 Signs created
+2017-08-09 12:36:49,275 INFO      Search start: blocks-4-0
+2017-08-09 12:36:49,275 INFO      Search start: blocks-4-0
+2017-08-09 12:37:09,611 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 12:37:09,648 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 12:37:09,680 INFO      6 Predicates parsed
+2017-08-09 12:37:09,682 INFO      4 Actions parsed
+2017-08-09 12:37:09,687 INFO      9 Objects parsed
+2017-08-09 12:37:09,688 INFO      0 Constants parsed
+2017-08-09 12:37:09,829 INFO      Grounding start: blocks-4-0
+2017-08-09 12:37:09,834 INFO      File not found
+2017-08-09 12:37:09,851 INFO      Grounding start: blocks-4-0
+2017-08-09 12:37:09,855 INFO      File not found
+2017-08-09 12:37:09,902 INFO      Grounding end: blocks-4-0
+2017-08-09 12:37:09,904 INFO      32 Signs created
+2017-08-09 12:37:09,906 INFO      Search start: blocks-4-0
+2017-08-09 12:37:09,923 INFO      Grounding end: blocks-4-0
+2017-08-09 12:37:09,924 INFO      32 Signs created
+2017-08-09 12:37:09,925 INFO      Search start: blocks-4-0
+2017-08-09 12:37:26,368 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 12:37:26,409 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 12:37:26,432 INFO      6 Predicates parsed
+2017-08-09 12:37:26,432 INFO      4 Actions parsed
+2017-08-09 12:37:26,432 INFO      9 Objects parsed
+2017-08-09 12:37:26,433 INFO      0 Constants parsed
+2017-08-09 12:37:26,557 INFO      Grounding start: blocks-4-0
+2017-08-09 12:37:26,558 INFO      File not found
+2017-08-09 12:37:26,567 INFO      Grounding start: blocks-4-0
+2017-08-09 12:37:26,568 INFO      File not found
+2017-08-09 12:37:26,605 INFO      Grounding end: blocks-4-0
+2017-08-09 12:37:26,606 INFO      32 Signs created
+2017-08-09 12:37:26,609 INFO      Search start: blocks-4-0
+2017-08-09 12:37:26,632 INFO      Grounding end: blocks-4-0
+2017-08-09 12:37:26,634 INFO      32 Signs created
+2017-08-09 12:37:26,636 INFO      Search start: blocks-4-0
+2017-08-09 12:37:53,084 INFO      Start saving to wmodel_17_08_09_12_37_52.swm
+2017-08-09 12:37:53,967 INFO      	Cleaning SWM...
+2017-08-09 12:49:56,308 INFO      Start saving to wmodel_17_08_09_12_49_56.swm
+2017-08-09 12:49:56,310 INFO      	Cleaning SWM...
+2017-08-09 13:20:34,381 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 13:20:34,414 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 13:20:34,432 INFO      6 Predicates parsed
+2017-08-09 13:20:34,433 INFO      4 Actions parsed
+2017-08-09 13:20:34,433 INFO      9 Objects parsed
+2017-08-09 13:20:34,433 INFO      0 Constants parsed
+2017-08-09 13:20:34,566 INFO      Grounding start: blocks-4-0
+2017-08-09 13:20:34,568 INFO      File not found
+2017-08-09 13:20:34,573 INFO      Grounding start: blocks-4-0
+2017-08-09 13:20:34,574 INFO      File not found
+2017-08-09 13:23:28,005 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 13:23:28,037 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 13:23:28,055 INFO      6 Predicates parsed
+2017-08-09 13:23:28,055 INFO      4 Actions parsed
+2017-08-09 13:23:28,056 INFO      9 Objects parsed
+2017-08-09 13:23:28,056 INFO      0 Constants parsed
+2017-08-09 13:23:28,181 INFO      Grounding start: blocks-4-0
+2017-08-09 13:23:28,182 INFO      File not found
+2017-08-09 13:23:28,185 INFO      Grounding start: blocks-4-0
+2017-08-09 13:23:28,187 INFO      File not found
+2017-08-09 13:23:32,190 INFO      Grounding end: blocks-4-0
+2017-08-09 13:23:32,190 INFO      Grounding end: blocks-4-0
+2017-08-09 13:23:32,191 INFO      32 Signs created
+2017-08-09 13:23:32,191 INFO      32 Signs created
+2017-08-09 13:23:32,192 INFO      Search start: blocks-4-0
+2017-08-09 13:23:32,192 INFO      Search start: blocks-4-0
+2017-08-09 13:24:55,272 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 13:24:55,313 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 13:24:55,337 INFO      6 Predicates parsed
+2017-08-09 13:24:55,338 INFO      4 Actions parsed
+2017-08-09 13:24:55,338 INFO      9 Objects parsed
+2017-08-09 13:24:55,339 INFO      0 Constants parsed
+2017-08-09 13:24:55,465 INFO      Grounding start: blocks-4-0
+2017-08-09 13:24:55,466 INFO      File not found
+2017-08-09 13:24:55,476 INFO      Grounding start: blocks-4-0
+2017-08-09 13:24:55,477 INFO      File not found
+2017-08-09 13:24:55,516 INFO      Grounding end: blocks-4-0
+2017-08-09 13:24:55,518 INFO      32 Signs created
+2017-08-09 13:24:55,521 INFO      Search start: blocks-4-0
+2017-08-09 13:24:55,534 INFO      Grounding end: blocks-4-0
+2017-08-09 13:24:55,535 INFO      32 Signs created
+2017-08-09 13:24:55,536 INFO      Search start: blocks-4-0
+2017-08-09 13:34:17,150 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 13:34:17,195 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 13:34:17,214 INFO      6 Predicates parsed
+2017-08-09 13:34:17,215 INFO      4 Actions parsed
+2017-08-09 13:34:17,215 INFO      9 Objects parsed
+2017-08-09 13:34:17,216 INFO      0 Constants parsed
+2017-08-09 13:34:17,342 INFO      Grounding start: blocks-4-0
+2017-08-09 13:34:17,343 INFO      File not found
+2017-08-09 13:34:17,349 INFO      Grounding start: blocks-4-0
+2017-08-09 13:34:17,350 INFO      File not found
+2017-08-09 13:34:17,389 INFO      Grounding end: blocks-4-0
+2017-08-09 13:34:17,393 INFO      32 Signs created
+2017-08-09 13:34:17,395 INFO      Search start: blocks-4-0
+2017-08-09 13:34:17,410 INFO      Grounding end: blocks-4-0
+2017-08-09 13:34:17,412 INFO      32 Signs created
+2017-08-09 13:34:17,413 INFO      Search start: blocks-4-0
+2017-08-09 13:45:08,210 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 13:45:08,245 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 13:45:08,264 INFO      6 Predicates parsed
+2017-08-09 13:45:08,265 INFO      4 Actions parsed
+2017-08-09 13:45:08,265 INFO      9 Objects parsed
+2017-08-09 13:45:08,265 INFO      0 Constants parsed
+2017-08-09 13:45:08,398 INFO      Grounding start: blocks-4-0
+2017-08-09 13:45:08,399 INFO      File not found
+2017-08-09 13:45:08,408 INFO      Grounding start: blocks-4-0
+2017-08-09 13:45:08,409 INFO      File not found
+2017-08-09 13:45:08,452 INFO      Grounding end: blocks-4-0
+2017-08-09 13:45:08,454 INFO      32 Signs created
+2017-08-09 13:45:08,456 INFO      Search start: blocks-4-0
+2017-08-09 13:45:08,464 INFO      Grounding end: blocks-4-0
+2017-08-09 13:45:08,465 INFO      32 Signs created
+2017-08-09 13:45:08,467 INFO      Search start: blocks-4-0
+2017-08-09 13:50:36,743 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 13:50:36,777 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 13:50:36,795 INFO      6 Predicates parsed
+2017-08-09 13:50:36,795 INFO      4 Actions parsed
+2017-08-09 13:50:36,796 INFO      9 Objects parsed
+2017-08-09 13:50:36,796 INFO      0 Constants parsed
+2017-08-09 13:50:36,928 INFO      Grounding start: blocks-4-0
+2017-08-09 13:50:36,929 INFO      File not found
+2017-08-09 13:50:36,935 INFO      Grounding start: blocks-4-0
+2017-08-09 13:50:36,936 INFO      File not found
+2017-08-09 13:50:36,976 INFO      Grounding end: blocks-4-0
+2017-08-09 13:50:36,978 INFO      32 Signs created
+2017-08-09 13:50:36,979 INFO      Search start: blocks-4-0
+2017-08-09 13:50:36,992 INFO      Grounding end: blocks-4-0
+2017-08-09 13:50:36,994 INFO      32 Signs created
+2017-08-09 13:50:36,996 INFO      Search start: blocks-4-0
+2017-08-09 13:50:45,665 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 13:50:45,698 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 13:50:45,716 INFO      6 Predicates parsed
+2017-08-09 13:50:45,716 INFO      4 Actions parsed
+2017-08-09 13:50:45,716 INFO      9 Objects parsed
+2017-08-09 13:50:45,717 INFO      0 Constants parsed
+2017-08-09 13:50:45,841 INFO      Grounding start: blocks-4-0
+2017-08-09 13:50:45,842 INFO      File not found
+2017-08-09 13:50:45,844 INFO      Grounding start: blocks-4-0
+2017-08-09 13:50:45,845 INFO      File not found
+2017-08-09 13:50:45,875 INFO      Grounding end: blocks-4-0
+2017-08-09 13:50:45,876 INFO      32 Signs created
+2017-08-09 13:50:45,877 INFO      Search start: blocks-4-0
+2017-08-09 13:50:45,878 INFO      Grounding end: blocks-4-0
+2017-08-09 13:50:45,880 INFO      32 Signs created
+2017-08-09 13:50:45,882 INFO      Search start: blocks-4-0
+2017-08-09 13:51:13,714 INFO      Start saving to wmodel_17_08_09_13_51_13.swm
+2017-08-09 13:51:13,714 INFO      Start saving to wmodel_17_08_09_13_51_13.swm
+2017-08-09 13:51:19,039 INFO      	Cleaning SWM...
+2017-08-09 13:53:37,720 INFO      	Cleaning SWM...
+2017-08-09 13:57:14,062 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 13:57:14,096 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 13:57:14,114 INFO      6 Predicates parsed
+2017-08-09 13:57:14,115 INFO      4 Actions parsed
+2017-08-09 13:57:14,115 INFO      9 Objects parsed
+2017-08-09 13:57:14,116 INFO      0 Constants parsed
+2017-08-09 13:57:14,242 INFO      Grounding start: blocks-4-0
+2017-08-09 13:57:14,244 INFO      File not found
+2017-08-09 13:57:14,248 INFO      Grounding start: blocks-4-0
+2017-08-09 13:57:14,250 INFO      File not found
+2017-08-09 13:57:14,296 INFO      Grounding end: blocks-4-0
+2017-08-09 13:57:14,297 INFO      32 Signs created
+2017-08-09 13:57:14,299 INFO      Search start: blocks-4-0
+2017-08-09 13:57:14,305 INFO      Grounding end: blocks-4-0
+2017-08-09 13:57:14,309 INFO      32 Signs created
+2017-08-09 13:57:14,311 INFO      Search start: blocks-4-0
+2017-08-09 13:57:40,429 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 13:57:40,464 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 13:57:40,482 INFO      6 Predicates parsed
+2017-08-09 13:57:40,482 INFO      4 Actions parsed
+2017-08-09 13:57:40,483 INFO      9 Objects parsed
+2017-08-09 13:57:40,483 INFO      0 Constants parsed
+2017-08-09 13:57:40,607 INFO      Grounding start: blocks-4-0
+2017-08-09 13:57:40,609 INFO      File not found
+2017-08-09 13:57:40,612 INFO      Grounding start: blocks-4-0
+2017-08-09 13:57:40,614 INFO      File not found
+2017-08-09 13:57:40,647 INFO      Grounding end: blocks-4-0
+2017-08-09 13:57:40,649 INFO      32 Signs created
+2017-08-09 13:57:40,651 INFO      Search start: blocks-4-0
+2017-08-09 13:57:40,657 INFO      Grounding end: blocks-4-0
+2017-08-09 13:57:40,659 INFO      32 Signs created
+2017-08-09 13:57:40,665 INFO      Search start: blocks-4-0
+2017-08-09 14:01:29,567 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 14:01:29,598 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 14:01:29,616 INFO      6 Predicates parsed
+2017-08-09 14:01:29,616 INFO      4 Actions parsed
+2017-08-09 14:01:29,617 INFO      9 Objects parsed
+2017-08-09 14:01:29,618 INFO      0 Constants parsed
+2017-08-09 14:01:29,748 INFO      Grounding start: blocks-4-0
+2017-08-09 14:01:29,749 INFO      File not found
+2017-08-09 14:01:29,753 INFO      Grounding start: blocks-4-0
+2017-08-09 14:01:29,754 INFO      File not found
+2017-08-09 14:01:29,785 INFO      Grounding end: blocks-4-0
+2017-08-09 14:01:29,786 INFO      32 Signs created
+2017-08-09 14:01:29,788 INFO      Search start: blocks-4-0
+2017-08-09 14:01:29,798 INFO      Grounding end: blocks-4-0
+2017-08-09 14:01:29,800 INFO      32 Signs created
+2017-08-09 14:01:29,801 INFO      Search start: blocks-4-0
+2017-08-09 14:22:39,689 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 14:22:39,701 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 14:22:39,704 INFO      6 Predicates parsed
+2017-08-09 14:22:39,705 INFO      4 Actions parsed
+2017-08-09 14:22:39,705 INFO      9 Objects parsed
+2017-08-09 14:22:39,705 INFO      0 Constants parsed
+2017-08-09 14:22:39,732 INFO      Grounding start: blocks-4-0
+2017-08-09 14:22:39,733 INFO      File not found
+2017-08-09 14:22:39,733 INFO      Grounding start: blocks-4-0
+2017-08-09 14:22:39,734 INFO      File not found
+2017-08-09 14:22:39,737 INFO      Grounding end: blocks-4-0
+2017-08-09 14:22:39,737 INFO      32 Signs created
+2017-08-09 14:22:39,738 INFO      Search start: blocks-4-0
+2017-08-09 14:22:39,741 INFO      Grounding end: blocks-4-0
+2017-08-09 14:22:39,742 INFO      32 Signs created
+2017-08-09 14:22:39,742 INFO      Search start: blocks-4-0
+2017-08-09 14:22:41,661 INFO      Start saving to wmodel_17_08_09_14_22_41.swm
+2017-08-09 14:22:41,661 INFO      	Cleaning SWM...
+2017-08-09 14:22:41,662 INFO      Start saving to wmodel_17_08_09_14_22_41.swm
+2017-08-09 14:22:41,663 INFO      	Cleaning SWM...
+2017-08-09 14:22:42,708 INFO      	Saving precedent...
+2017-08-09 14:22:42,710 INFO      	Dumping SWM...
+2017-08-09 14:22:42,724 INFO      	Saving precedent...
+2017-08-09 14:22:42,725 INFO      	Dumping SWM...
+2017-08-09 14:22:42,734 INFO      Plan length: 89
+2017-08-09 14:23:18,060 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 14:23:18,071 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 14:23:18,077 INFO      6 Predicates parsed
+2017-08-09 14:23:18,078 INFO      4 Actions parsed
+2017-08-09 14:23:18,078 INFO      9 Objects parsed
+2017-08-09 14:23:18,078 INFO      0 Constants parsed
+2017-08-09 14:23:18,216 INFO      Grounding start: blocks-4-0
+2017-08-09 14:23:18,219 INFO      File not found
+2017-08-09 14:23:18,234 INFO      Grounding start: blocks-4-0
+2017-08-09 14:23:18,236 INFO      File not found
+2017-08-09 14:23:18,366 INFO      Grounding end: blocks-4-0
+2017-08-09 14:23:18,368 INFO      32 Signs created
+2017-08-09 14:23:18,372 INFO      Search start: blocks-4-0
+2017-08-09 14:23:18,389 INFO      Grounding end: blocks-4-0
+2017-08-09 14:23:18,392 INFO      32 Signs created
+2017-08-09 14:23:18,394 INFO      Search start: blocks-4-0
+2017-08-09 14:34:44,932 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 14:34:44,943 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 14:34:44,948 INFO      6 Predicates parsed
+2017-08-09 14:34:44,948 INFO      4 Actions parsed
+2017-08-09 14:34:44,948 INFO      9 Objects parsed
+2017-08-09 14:34:44,949 INFO      0 Constants parsed
+2017-08-09 14:34:45,081 INFO      Grounding start: blocks-4-0
+2017-08-09 14:34:45,083 INFO      File not found
+2017-08-09 14:34:45,090 INFO      Grounding start: blocks-4-0
+2017-08-09 14:34:45,093 INFO      File not found
+2017-08-09 14:34:45,181 INFO      Grounding end: blocks-4-0
+2017-08-09 14:34:45,183 INFO      32 Signs created
+2017-08-09 14:34:45,184 INFO      Search start: blocks-4-0
+2017-08-09 14:34:45,194 INFO      Grounding end: blocks-4-0
+2017-08-09 14:34:45,197 INFO      32 Signs created
+2017-08-09 14:34:45,200 INFO      Search start: blocks-4-0
+2017-08-09 14:35:42,920 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 14:35:42,938 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 14:35:42,947 INFO      6 Predicates parsed
+2017-08-09 14:35:42,948 INFO      4 Actions parsed
+2017-08-09 14:35:42,948 INFO      9 Objects parsed
+2017-08-09 14:35:42,949 INFO      0 Constants parsed
+2017-08-09 14:35:43,137 INFO      Grounding start: blocks-4-0
+2017-08-09 14:35:43,140 INFO      File not found
+2017-08-09 14:35:43,169 INFO      Grounding start: blocks-4-0
+2017-08-09 14:35:43,171 INFO      File not found
+2017-08-09 14:35:43,234 INFO      Grounding end: blocks-4-0
+2017-08-09 14:35:43,234 INFO      32 Signs created
+2017-08-09 14:35:43,235 INFO      Search start: blocks-4-0
+2017-08-09 14:35:43,303 INFO      Grounding end: blocks-4-0
+2017-08-09 14:35:43,304 INFO      32 Signs created
+2017-08-09 14:35:43,305 INFO      Search start: blocks-4-0
+2017-08-09 14:36:08,117 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 14:36:08,135 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 14:36:08,149 INFO      6 Predicates parsed
+2017-08-09 14:36:08,150 INFO      4 Actions parsed
+2017-08-09 14:36:08,150 INFO      9 Objects parsed
+2017-08-09 14:36:08,150 INFO      0 Constants parsed
+2017-08-09 14:36:08,347 INFO      Grounding start: blocks-4-0
+2017-08-09 14:36:08,351 INFO      File not found
+2017-08-09 14:36:08,387 INFO      Grounding start: blocks-4-0
+2017-08-09 14:36:08,393 INFO      File not found
+2017-08-09 14:36:08,508 INFO      Grounding end: blocks-4-0
+2017-08-09 14:36:08,510 INFO      32 Signs created
+2017-08-09 14:36:08,513 INFO      Search start: blocks-4-0
+2017-08-09 14:36:08,526 INFO      Grounding end: blocks-4-0
+2017-08-09 14:36:08,527 INFO      32 Signs created
+2017-08-09 14:36:08,529 INFO      Search start: blocks-4-0
+2017-08-09 14:36:58,319 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 14:36:58,331 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 14:36:58,337 INFO      6 Predicates parsed
+2017-08-09 14:36:58,337 INFO      4 Actions parsed
+2017-08-09 14:36:58,337 INFO      9 Objects parsed
+2017-08-09 14:36:58,337 INFO      0 Constants parsed
+2017-08-09 14:36:58,492 INFO      Grounding start: blocks-4-0
+2017-08-09 14:36:58,502 INFO      File not found
+2017-08-09 14:36:58,509 INFO      Grounding start: blocks-4-0
+2017-08-09 14:36:58,513 INFO      File not found
+2017-08-09 14:36:58,564 INFO      Grounding end: blocks-4-0
+2017-08-09 14:36:58,567 INFO      32 Signs created
+2017-08-09 14:36:58,568 INFO      Search start: blocks-4-0
+2017-08-09 14:36:58,674 INFO      Grounding end: blocks-4-0
+2017-08-09 14:36:58,675 INFO      32 Signs created
+2017-08-09 14:36:58,676 INFO      Search start: blocks-4-0
+2017-08-09 14:37:26,296 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 14:37:26,299 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 14:37:26,302 INFO      6 Predicates parsed
+2017-08-09 14:37:26,302 INFO      4 Actions parsed
+2017-08-09 14:37:26,302 INFO      9 Objects parsed
+2017-08-09 14:37:26,302 INFO      0 Constants parsed
+2017-08-09 14:37:26,334 INFO      Grounding start: blocks-4-0
+2017-08-09 14:37:26,335 INFO      File not found
+2017-08-09 14:37:26,335 INFO      Grounding start: blocks-4-0
+2017-08-09 14:37:26,336 INFO      File not found
+2017-08-09 14:37:26,341 INFO      Grounding end: blocks-4-0
+2017-08-09 14:37:26,342 INFO      32 Signs created
+2017-08-09 14:37:26,342 INFO      Search start: blocks-4-0
+2017-08-09 14:37:26,344 INFO      Grounding end: blocks-4-0
+2017-08-09 14:37:26,344 INFO      32 Signs created
+2017-08-09 14:37:26,344 INFO      Search start: blocks-4-0
+2017-08-09 14:37:28,229 INFO      Start saving to wmodel_17_08_09_14_37_28.swm
+2017-08-09 14:37:28,230 INFO      	Cleaning SWM...
+2017-08-09 14:37:28,230 INFO      Start saving to wmodel_17_08_09_14_37_28.swm
+2017-08-09 14:37:28,231 INFO      	Cleaning SWM...
+2017-08-09 14:37:28,950 INFO      	Saving precedent...
+2017-08-09 14:37:28,952 INFO      	Dumping SWM...
+2017-08-09 14:37:28,955 INFO      	Saving precedent...
+2017-08-09 14:37:28,956 INFO      	Dumping SWM...
+2017-08-09 14:37:28,962 INFO      Plan length: 89
+2017-08-09 14:37:38,587 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 14:37:38,598 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 14:37:38,604 INFO      6 Predicates parsed
+2017-08-09 14:37:38,604 INFO      4 Actions parsed
+2017-08-09 14:37:38,604 INFO      9 Objects parsed
+2017-08-09 14:37:38,605 INFO      0 Constants parsed
+2017-08-09 14:37:38,752 INFO      Grounding start: blocks-4-0
+2017-08-09 14:37:38,755 INFO      File not found
+2017-08-09 14:37:38,817 INFO      Grounding start: blocks-4-0
+2017-08-09 14:37:38,822 INFO      File not found
+2017-08-09 14:37:38,908 INFO      Grounding end: blocks-4-0
+2017-08-09 14:37:38,911 INFO      32 Signs created
+2017-08-09 14:37:38,916 INFO      Search start: blocks-4-0
+2017-08-09 14:37:39,010 INFO      Grounding end: blocks-4-0
+2017-08-09 14:37:39,011 INFO      32 Signs created
+2017-08-09 14:37:39,013 INFO      Search start: blocks-4-0
+2017-08-09 14:56:15,343 INFO      Start saving to wmodel_17_08_09_14_56_15.swm
+2017-08-09 14:56:15,348 INFO      	Cleaning SWM...
+2017-08-09 14:56:15,370 INFO      Start saving to wmodel_17_08_09_14_56_15.swm
+2017-08-09 14:56:15,371 INFO      	Cleaning SWM...
+2017-08-09 15:01:42,362 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 15:01:42,382 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 15:01:42,399 INFO      6 Predicates parsed
+2017-08-09 15:01:42,401 INFO      4 Actions parsed
+2017-08-09 15:01:42,403 INFO      9 Objects parsed
+2017-08-09 15:01:42,404 INFO      0 Constants parsed
+2017-08-09 15:01:42,587 INFO      Grounding start: blocks-4-0
+2017-08-09 15:01:42,590 INFO      File not found
+2017-08-09 15:01:42,628 INFO      Grounding start: blocks-4-0
+2017-08-09 15:01:42,634 INFO      File not found
+2017-08-09 15:01:42,761 INFO      Grounding end: blocks-4-0
+2017-08-09 15:01:42,764 INFO      32 Signs created
+2017-08-09 15:01:42,767 INFO      Search start: blocks-4-0
+2017-08-09 15:01:42,775 INFO      Grounding end: blocks-4-0
+2017-08-09 15:01:42,777 INFO      32 Signs created
+2017-08-09 15:01:42,778 INFO      Search start: blocks-4-0
+2017-08-09 15:02:49,327 INFO      Start saving to wmodel_17_08_09_15_02_49.swm
+2017-08-09 15:02:49,327 INFO      Start saving to wmodel_17_08_09_15_02_49.swm
+2017-08-09 15:02:49,329 INFO      	Cleaning SWM...
+2017-08-09 15:02:49,329 INFO      	Cleaning SWM...
+2017-08-09 15:03:39,104 INFO      	Saving precedent...
+2017-08-09 15:07:42,650 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 15:07:42,661 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 15:07:42,666 INFO      6 Predicates parsed
+2017-08-09 15:07:42,667 INFO      4 Actions parsed
+2017-08-09 15:07:42,667 INFO      9 Objects parsed
+2017-08-09 15:07:42,667 INFO      0 Constants parsed
+2017-08-09 15:07:42,801 INFO      Grounding start: blocks-4-0
+2017-08-09 15:07:42,803 INFO      File not found
+2017-08-09 15:07:42,857 INFO      Grounding start: blocks-4-0
+2017-08-09 15:07:42,862 INFO      File not found
+2017-08-09 15:07:42,997 INFO      Grounding end: blocks-4-0
+2017-08-09 15:07:43,001 INFO      32 Signs created
+2017-08-09 15:07:43,002 INFO      Search start: blocks-4-0
+2017-08-09 15:07:43,102 INFO      Grounding end: blocks-4-0
+2017-08-09 15:07:43,104 INFO      32 Signs created
+2017-08-09 15:07:43,106 INFO      Search start: blocks-4-0
+2017-08-09 15:08:12,096 INFO      Start saving to wmodel_17_08_09_15_08_12.swm
+2017-08-09 15:08:12,097 INFO      	Cleaning SWM...
+2017-08-09 15:08:57,331 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 15:08:57,348 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 15:08:57,355 INFO      6 Predicates parsed
+2017-08-09 15:08:57,356 INFO      4 Actions parsed
+2017-08-09 15:08:57,356 INFO      9 Objects parsed
+2017-08-09 15:08:57,357 INFO      0 Constants parsed
+2017-08-09 15:08:57,512 INFO      Grounding start: blocks-4-0
+2017-08-09 15:08:57,515 INFO      File not found
+2017-08-09 15:08:57,529 INFO      Grounding start: blocks-4-0
+2017-08-09 15:08:57,531 INFO      File not found
+2017-08-09 15:08:57,595 INFO      Grounding end: blocks-4-0
+2017-08-09 15:08:57,596 INFO      32 Signs created
+2017-08-09 15:08:57,597 INFO      Search start: blocks-4-0
+2017-08-09 15:08:57,651 INFO      Grounding end: blocks-4-0
+2017-08-09 15:08:57,652 INFO      32 Signs created
+2017-08-09 15:08:57,654 INFO      Search start: blocks-4-0
+2017-08-09 15:09:26,532 INFO      Start saving to wmodel_17_08_09_15_09_26.swm
+2017-08-09 15:09:26,532 INFO      	Cleaning SWM...
+2017-08-09 15:10:43,751 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 15:10:43,801 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 15:10:43,817 INFO      6 Predicates parsed
+2017-08-09 15:10:43,817 INFO      4 Actions parsed
+2017-08-09 15:10:43,818 INFO      9 Objects parsed
+2017-08-09 15:10:43,818 INFO      0 Constants parsed
+2017-08-09 15:10:44,008 INFO      Grounding start: blocks-4-0
+2017-08-09 15:10:44,018 INFO      File not found
+2017-08-09 15:10:44,044 INFO      Grounding start: blocks-4-0
+2017-08-09 15:10:44,048 INFO      File not found
+2017-08-09 15:10:44,134 INFO      Grounding end: blocks-4-0
+2017-08-09 15:10:44,136 INFO      32 Signs created
+2017-08-09 15:10:44,137 INFO      Search start: blocks-4-0
+2017-08-09 15:10:44,151 INFO      Grounding end: blocks-4-0
+2017-08-09 15:10:44,152 INFO      32 Signs created
+2017-08-09 15:10:44,154 INFO      Search start: blocks-4-0
+2017-08-09 15:11:50,987 INFO      Start saving to wmodel_17_08_09_15_11_50.swm
+2017-08-09 15:11:50,987 INFO      Start saving to wmodel_17_08_09_15_11_50.swm
+2017-08-09 15:11:50,988 INFO      	Cleaning SWM...
+2017-08-09 15:11:50,989 INFO      	Cleaning SWM...
+2017-08-09 15:13:26,050 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 15:13:26,063 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 15:13:26,069 INFO      6 Predicates parsed
+2017-08-09 15:13:26,069 INFO      4 Actions parsed
+2017-08-09 15:13:26,069 INFO      9 Objects parsed
+2017-08-09 15:13:26,069 INFO      0 Constants parsed
+2017-08-09 15:13:26,208 INFO      Grounding start: blocks-4-0
+2017-08-09 15:13:26,210 INFO      File not found
+2017-08-09 15:13:26,238 INFO      Grounding start: blocks-4-0
+2017-08-09 15:13:26,242 INFO      File not found
+2017-08-09 15:13:26,332 INFO      Grounding end: blocks-4-0
+2017-08-09 15:13:26,334 INFO      32 Signs created
+2017-08-09 15:13:26,335 INFO      Search start: blocks-4-0
+2017-08-09 15:13:26,369 INFO      Grounding end: blocks-4-0
+2017-08-09 15:13:26,372 INFO      32 Signs created
+2017-08-09 15:13:26,375 INFO      Search start: blocks-4-0
+2017-08-09 15:14:30,953 INFO      Start saving to wmodel_17_08_09_15_14_30.swm
+2017-08-09 15:14:30,954 INFO      	Cleaning SWM...
+2017-08-09 15:14:32,548 INFO      Start saving to wmodel_17_08_09_15_14_32.swm
+2017-08-09 15:14:32,550 INFO      	Cleaning SWM...
+2017-08-09 15:38:58,871 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 15:38:58,886 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 15:38:58,893 INFO      6 Predicates parsed
+2017-08-09 15:38:58,894 INFO      4 Actions parsed
+2017-08-09 15:38:58,895 INFO      9 Objects parsed
+2017-08-09 15:38:58,897 INFO      0 Constants parsed
+2017-08-09 15:38:59,104 INFO      Grounding start: blocks-4-0
+2017-08-09 15:38:59,110 INFO      File not found
+2017-08-09 15:38:59,118 INFO      Grounding start: blocks-4-0
+2017-08-09 15:38:59,125 INFO      File not found
+2017-08-09 15:38:59,220 INFO      Grounding end: blocks-4-0
+2017-08-09 15:38:59,222 INFO      32 Signs created
+2017-08-09 15:38:59,225 INFO      Search start: blocks-4-0
+2017-08-09 15:38:59,388 INFO      Grounding end: blocks-4-0
+2017-08-09 15:38:59,393 INFO      32 Signs created
+2017-08-09 15:38:59,396 INFO      Search start: blocks-4-0
+2017-08-09 15:39:27,155 INFO      Start saving to wmodel_17_08_09_15_39_27.swm
+2017-08-09 15:39:27,156 INFO      	Cleaning SWM...
+2017-08-09 15:40:16,110 INFO      Start saving to wmodel_17_08_09_15_40_16.swm
+2017-08-09 15:40:16,111 INFO      	Cleaning SWM...
+2017-08-09 15:43:58,211 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 15:43:58,223 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 15:43:58,229 INFO      6 Predicates parsed
+2017-08-09 15:43:58,229 INFO      4 Actions parsed
+2017-08-09 15:43:58,229 INFO      9 Objects parsed
+2017-08-09 15:43:58,229 INFO      0 Constants parsed
+2017-08-09 15:43:58,366 INFO      Grounding start: blocks-4-0
+2017-08-09 15:43:58,368 INFO      File not found
+2017-08-09 15:43:58,392 INFO      Grounding start: blocks-4-0
+2017-08-09 15:43:58,395 INFO      File not found
+2017-08-09 15:43:58,482 INFO      Grounding end: blocks-4-0
+2017-08-09 15:43:58,484 INFO      32 Signs created
+2017-08-09 15:43:58,485 INFO      Search start: blocks-4-0
+2017-08-09 15:43:58,527 INFO      Grounding end: blocks-4-0
+2017-08-09 15:43:58,528 INFO      32 Signs created
+2017-08-09 15:43:58,530 INFO      Search start: blocks-4-0
+2017-08-09 15:45:50,860 INFO      Start saving to wmodel_17_08_09_15_45_50.swm
+2017-08-09 15:45:50,863 INFO      	Cleaning SWM...
+2017-08-09 15:45:52,242 INFO      Start saving to wmodel_17_08_09_15_45_52.swm
+2017-08-09 15:45:52,245 INFO      	Cleaning SWM...
+2017-08-09 15:50:12,265 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 15:50:12,271 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 15:50:12,275 INFO      6 Predicates parsed
+2017-08-09 15:50:12,275 INFO      4 Actions parsed
+2017-08-09 15:50:12,276 INFO      9 Objects parsed
+2017-08-09 15:50:12,276 INFO      0 Constants parsed
+2017-08-09 15:50:12,325 INFO      Grounding start: blocks-4-0
+2017-08-09 15:50:12,326 INFO      File not found
+2017-08-09 15:50:12,325 INFO      Grounding start: blocks-4-0
+2017-08-09 15:50:12,326 INFO      File not found
+2017-08-09 15:50:12,330 INFO      Grounding end: blocks-4-0
+2017-08-09 15:50:12,330 INFO      32 Signs created
+2017-08-09 15:50:12,331 INFO      Search start: blocks-4-0
+2017-08-09 15:50:12,335 INFO      Grounding end: blocks-4-0
+2017-08-09 15:50:12,337 INFO      32 Signs created
+2017-08-09 15:50:12,337 INFO      Search start: blocks-4-0
+2017-08-09 15:50:14,302 INFO      Start saving to wmodel_17_08_09_15_50_14.swm
+2017-08-09 15:50:14,302 INFO      	Cleaning SWM...
+2017-08-09 15:50:14,330 INFO      Start saving to wmodel_17_08_09_15_50_14.swm
+2017-08-09 15:50:14,330 INFO      	Cleaning SWM...
+2017-08-09 15:50:15,089 INFO      	Saving precedent...
+2017-08-09 15:50:15,089 INFO      	Saving precedent...
+2017-08-09 15:50:15,091 INFO      	Dumping SWM...
+2017-08-09 15:50:15,091 INFO      	Dumping SWM...
+2017-08-09 15:50:15,098 INFO      Plan length: 89
+2017-08-09 15:51:42,951 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 15:51:42,962 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 15:51:42,967 INFO      6 Predicates parsed
+2017-08-09 15:51:42,968 INFO      4 Actions parsed
+2017-08-09 15:51:42,968 INFO      9 Objects parsed
+2017-08-09 15:51:42,968 INFO      0 Constants parsed
+2017-08-09 15:51:43,122 INFO      Grounding start: blocks-4-0
+2017-08-09 15:51:43,219 INFO      Grounding start: blocks-4-0
+2017-08-09 16:09:36,956 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 16:09:36,960 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 16:09:36,963 INFO      6 Predicates parsed
+2017-08-09 16:09:36,963 INFO      4 Actions parsed
+2017-08-09 16:09:36,963 INFO      9 Objects parsed
+2017-08-09 16:09:36,963 INFO      0 Constants parsed
+2017-08-09 16:09:37,000 INFO      Grounding start: blocks-4-0
+2017-08-09 16:09:37,001 INFO      Grounding start: blocks-4-0
+2017-08-09 16:09:37,001 INFO      File not found
+2017-08-09 16:09:37,002 INFO      File not found
+2017-08-09 16:09:37,006 INFO      Grounding end: blocks-4-0
+2017-08-09 16:09:37,006 INFO      Grounding end: blocks-4-0
+2017-08-09 16:09:37,006 INFO      32 Signs created
+2017-08-09 16:09:37,006 INFO      32 Signs created
+2017-08-09 16:09:37,006 INFO      Search start: blocks-4-0
+2017-08-09 16:09:37,006 INFO      Search start: blocks-4-0
+2017-08-09 16:09:38,834 INFO      Plan preparation to save...
+2017-08-09 16:09:38,835 INFO      	Cleaning SWM...
+2017-08-09 16:09:38,855 INFO      Plan preparation to save...
+2017-08-09 16:09:38,856 INFO      	Cleaning SWM...
+2017-08-09 16:09:39,555 INFO      	Saving precedent...
+2017-08-09 16:09:39,556 INFO      Start saving to wmodel_09_16_09a1.swm
+2017-08-09 16:09:39,556 INFO      	Dumping SWM...
+2017-08-09 16:09:39,594 INFO      	Saving precedent...
+2017-08-09 16:09:39,596 INFO      Start saving to wmodel_09_16_09a2.swm
+2017-08-09 16:09:39,596 INFO      	Dumping SWM...
+2017-08-09 16:09:39,603 INFO      Plan length: 89
+2017-08-09 16:11:03,497 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 16:11:03,502 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 16:11:03,504 INFO      6 Predicates parsed
+2017-08-09 16:11:03,504 INFO      4 Actions parsed
+2017-08-09 16:11:03,504 INFO      9 Objects parsed
+2017-08-09 16:11:03,504 INFO      0 Constants parsed
+2017-08-09 16:11:03,528 INFO      Grounding start: blocks-4-0
+2017-08-09 16:11:03,528 INFO      Grounding start: blocks-4-0
+2017-08-09 16:11:03,530 INFO      File not found
+2017-08-09 16:11:03,530 INFO      File not found
+2017-08-09 16:11:03,534 INFO      Grounding end: blocks-4-0
+2017-08-09 16:11:03,535 INFO      32 Signs created
+2017-08-09 16:11:03,535 INFO      Grounding end: blocks-4-0
+2017-08-09 16:11:03,535 INFO      32 Signs created
+2017-08-09 16:11:03,535 INFO      Search start: blocks-4-0
+2017-08-09 16:11:03,535 INFO      Search start: blocks-4-0
+2017-08-09 16:11:05,684 INFO      Plan preparation to save...
+2017-08-09 16:11:05,685 INFO      	Cleaning SWM...
+2017-08-09 16:11:05,691 INFO      Plan preparation to save...
+2017-08-09 16:11:05,692 INFO      	Cleaning SWM...
+2017-08-09 16:11:06,511 INFO      	Saving precedent...
+2017-08-09 16:11:06,513 INFO      Start saving to wmodel_09_16_11_a2.swm
+2017-08-09 16:11:06,513 INFO      	Dumping SWM...
+2017-08-09 16:11:06,528 INFO      	Saving precedent...
+2017-08-09 16:11:06,530 INFO      Start saving to wmodel_09_16_11_a1.swm
+2017-08-09 16:11:06,530 INFO      	Dumping SWM...
+2017-08-09 16:11:06,536 INFO      Plan length: 89
+2017-08-09 16:19:30,490 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 16:19:30,507 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 16:19:30,518 INFO      6 Predicates parsed
+2017-08-09 16:19:30,519 INFO      4 Actions parsed
+2017-08-09 16:19:30,519 INFO      9 Objects parsed
+2017-08-09 16:19:30,519 INFO      0 Constants parsed
+2017-08-09 16:19:30,720 INFO      Grounding start: blocks-4-0
+2017-08-09 16:19:30,745 INFO      Grounding start: blocks-4-0
+2017-08-09 16:23:50,327 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 16:23:50,358 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 16:23:50,371 INFO      6 Predicates parsed
+2017-08-09 16:23:50,372 INFO      4 Actions parsed
+2017-08-09 16:23:50,373 INFO      9 Objects parsed
+2017-08-09 16:23:50,373 INFO      0 Constants parsed
+2017-08-09 16:23:50,544 INFO      Grounding start: blocks-4-0
+2017-08-09 16:23:50,563 INFO      Grounding start: blocks-4-0
+2017-08-09 16:53:40,812 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 16:53:40,843 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 16:53:40,860 INFO      6 Predicates parsed
+2017-08-09 16:53:40,861 INFO      4 Actions parsed
+2017-08-09 16:53:40,862 INFO      9 Objects parsed
+2017-08-09 16:53:40,863 INFO      0 Constants parsed
+2017-08-09 16:53:41,052 INFO      Grounding start: blocks-4-0
+2017-08-09 16:53:41,079 INFO      Grounding start: blocks-4-0
+2017-08-09 16:55:12,522 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 16:55:12,540 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 16:55:12,549 INFO      6 Predicates parsed
+2017-08-09 16:55:12,551 INFO      4 Actions parsed
+2017-08-09 16:55:12,551 INFO      9 Objects parsed
+2017-08-09 16:55:12,552 INFO      0 Constants parsed
+2017-08-09 16:55:12,723 INFO      Grounding start: blocks-4-0
+2017-08-09 16:55:12,747 INFO      Grounding start: blocks-4-0
+2017-08-09 16:56:50,667 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 16:56:50,678 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 16:56:50,683 INFO      6 Predicates parsed
+2017-08-09 16:56:50,683 INFO      4 Actions parsed
+2017-08-09 16:56:50,684 INFO      9 Objects parsed
+2017-08-09 16:56:50,684 INFO      0 Constants parsed
+2017-08-09 16:56:50,826 INFO      Grounding start: blocks-4-0
+2017-08-09 16:56:50,881 INFO      Grounding start: blocks-4-0
+2017-08-09 16:58:25,603 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 16:58:25,615 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 16:58:25,623 INFO      6 Predicates parsed
+2017-08-09 16:58:25,624 INFO      4 Actions parsed
+2017-08-09 16:58:25,624 INFO      9 Objects parsed
+2017-08-09 16:58:25,625 INFO      0 Constants parsed
+2017-08-09 16:58:25,783 INFO      Grounding start: blocks-4-0
+2017-08-09 16:58:25,796 INFO      Grounding start: blocks-4-0
+2017-08-09 17:05:15,360 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 17:05:15,381 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 17:05:15,401 INFO      6 Predicates parsed
+2017-08-09 17:05:15,403 INFO      4 Actions parsed
+2017-08-09 17:05:15,403 INFO      9 Objects parsed
+2017-08-09 17:05:15,404 INFO      0 Constants parsed
+2017-08-09 17:05:15,584 INFO      Grounding start: blocks-4-0
+2017-08-09 17:05:15,605 INFO      Grounding start: blocks-4-0
+2017-08-09 17:09:26,812 INFO      Parsing Domain /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl
+2017-08-09 17:09:26,830 INFO      Parsing Problem /Users/gleb/Dropbox/multiMAP_test/map-planner/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl
+2017-08-09 17:09:26,846 INFO      6 Predicates parsed
+2017-08-09 17:09:26,849 INFO      4 Actions parsed
+2017-08-09 17:09:26,850 INFO      9 Objects parsed
+2017-08-09 17:09:26,851 INFO      0 Constants parsed
+2017-08-09 17:09:27,021 INFO      Grounding start: blocks-4-0
+2017-08-09 17:09:27,033 INFO      Grounding start: blocks-4-0

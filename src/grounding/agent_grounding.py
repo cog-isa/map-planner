@@ -17,7 +17,7 @@ class Agent:
     def load_sw(self, problem, is_load):
         logging.info('Grounding start: {0}'.format(problem.name))
         if is_load:
-            signs = Task.load_signs()
+            signs = Task.load_signs(self.name)
             task = sign_grounding.ground(problem, self.name, signs)
         else:
             task = sign_grounding.ground(problem, self.name)

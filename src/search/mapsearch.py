@@ -327,9 +327,11 @@ def _generate_meanings(chains, agents):
                     if any(cm for cm in pmd if cm.sign in variants):
                         variantsY |= set(pmd)
 
-                new_map.setdefault(*role_signX, []).extend(variantsX)
+                new_map.setdefault(role_signX[0], []).extend(variantsX)
                 if role_signY:
-                    new_map.setdefault(*role_signY, []).extend(list(variantsY))
+                    new_map.setdefault(role_signY[0], []).extend(list(variantsY))
+
+                # other = [sign for sign in agents if not sign.name == "I"][0]
 
 
                 ma_combinations = mix_pairs(new_map)
@@ -338,6 +340,9 @@ def _generate_meanings(chains, agents):
                     for role_sign, obj_pm in ma_combination.items():
                         obj_cm = obj_pm.copy('significance', 'meaning')
                         cm.replace('meaning', role_sign, obj_cm)
+                        # for mean in other.out_meanings:
+                        #     if mean.in_sign.name == "holding":
+                        #         print()
                     if not pms:
                         pms.append((agent, cm))
                     else:
