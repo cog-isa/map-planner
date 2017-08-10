@@ -1,4 +1,4 @@
-(define (problem BLOCKS-4-0) (:domain blocks)
+(define (problem BLOCKS-1-2) (:domain blocks)
 (:objects
 	a - block
 	c - block

@@ -1,0 +1,6 @@
+unstack a1
+put-down a1
+pick-up a1
+put-down a1
+action_blocks-0-2 
+ 

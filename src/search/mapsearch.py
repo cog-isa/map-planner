@@ -33,14 +33,14 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         return None
 
     precedents = []
-    plan_sign = None
+    plan_signs = []
     I_sign, I_obj, agents = get_agents()
 
     for name, sign in world_model.items():
-        if name.startswith("plan_"): plan_sign = sign
+        if name.startswith("action_"): plan_signs.append(sign)
         for index, cm in sign.meanings.items():
-            if cm.includes('meaning', active_pm):# распространение активности на
-                precedents.extend(cm.sign.spread_up_activity_act('meaning', 1)) # личностных смыслах от матриц начальной и целевой ситуаций
+            if cm.includes('meaning', active_pm):
+                precedents.extend(cm.sign.spread_up_activity_act('meaning', 1))
 
     active_chains = active_pm.spread_down_activity('meaning', 2)
     active_signif = set()
@@ -70,7 +70,7 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
                 applicable_meanings.append((agent, checked))
     else:
         for cm in precedents + meanings:
-            if isinstance(cm, list):
+            if isinstance(cm, tuple):
                 agent = cm[0]
                 cm = cm[1]
             result, checked = _check_activity(cm, active_pm)
@@ -82,8 +82,9 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
     apl.append(I_obj)
     candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _, _ in current_plan], apl)
 
-    if candidates:
-        candidates = _check_experience(candidates, plan_sign, I_obj, I_sign)
+    #TODO если есть разные реализации действий - какой из них выбирать (нужно создать разные КМ на 1 знак действия)
+    if candidates and plan_signs:
+        candidates = _check_experience(candidates)
 
     if not candidates:
         logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _, _ in current_plan]))
@@ -98,7 +99,7 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         logging.debug('\tChoose {0}: {1} -> {2}'.format(counter, name, script))
 
         plan = current_plan.copy()
-        plan.append((active_pm, name, script, ag_mask.name))
+        plan.append((active_pm, name, script, ag_mask))
         # if maxLen and len(plan)> maxLen:
         #     return None
         next_pm = _time_shift_backward(active_pm, script, agents)
@@ -159,12 +160,16 @@ def long_relations(plans):
                 min_agents = len(plan[3])
     # из 2 предыдущих выбираем тот, в котором фигурирую я - если таких нет говорим об этом
     for plan in busiest:
-        if plan[2] == longest and len(plan[3]) == min_agents and "I" in plan[3]:
+        if plan[3][0]:
+            if plan[2] == longest and len(plan[3]) == min_agents and world_model["I"] in plan[3]:
+                plans_copy = plans.copy()
+                cheap.append(plans_copy.pop(plan[0]))
+            elif plan[2] == longest and len(plan[3]) == min_agents and not world_model["I"] in plan[3]:
+                plans_copy = plans.copy()
+                alternative.append(plans_copy.pop(plan[0]))
+        else:
             plans_copy = plans.copy()
             cheap.append(plans_copy.pop(plan[0]))
-        elif plan[2] == longest and len(plan[3]) == min_agents and not "I" in plan[3]:
-            plans_copy = plans.copy()
-            alternative.append(plans_copy.pop(plan[0]))
     if len(cheap) >= 1:
         cheapest.extend(random.choice(cheap))
     elif len(cheap) == 0 and len(alternative):
@@ -186,29 +191,17 @@ def get_agents():
                 agent_back.add(con.out_sign)
     return I_sign, I_obj, agent_back
 
-def _check_experience(candidates, plan_sign, I_obj, I_sign):
-    exp_agents = set()
-    if not plan_sign is None:
-        for con in plan_sign.out_meanings:
-            exp_agents.add(con.out_sign)
-        if I_obj in exp_agents:
-            exp_agents.remove(I_obj)
-            exp_agents.add(I_sign)
-        exp_agents = [ag.name for ag in exp_agents]
-        for cand in candidates.copy():
-            if not cand[3] in exp_agents and not cand[3] is None:
-                candidates.remove(cand)
-        actions = []
-        exp_candidates = []
-        for con in plan_sign.out_meanings:
-            actions.append(con.in_sign.meanings[con.in_index])
-        for action in actions:
-            for cand in candidates:
-                if action == cand[2]:
-                    exp_candidates.append(cand)
-        if exp_candidates:
-            candidates = exp_candidates
-    return candidates
+def _check_experience(candidates):
+    exp_actions = []
+    for candidate in candidates:
+        if candidate[3]:
+            for connector in candidate[3].out_images:
+                    if candidate[2].exp_resonate(connector.in_sign.images[connector.in_index]):
+                        exp_actions.append(candidate)
+    if exp_actions:
+        return exp_actions
+    else:
+        return candidates
 
 def _generate_meanings(chains, agents):
     replace_map = {}
@@ -265,7 +258,6 @@ def _generate_meanings(chains, agents):
 
     roles = []
     predicates = set()
-    # от знака блока в out_meanings -->> blocktype ->>> in_index
     for role_sign, variants in replace_map.items():
         for variant in variants:
             predicates |= variant.sign.spread_up_activity_obj('meaning', 1)
@@ -331,18 +323,12 @@ def _generate_meanings(chains, agents):
                 if role_signY:
                     new_map.setdefault(role_signY[0], []).extend(list(variantsY))
 
-                # other = [sign for sign in agents if not sign.name == "I"][0]
-
-
                 ma_combinations = mix_pairs(new_map)
                 for ma_combination in ma_combinations:
                     cm = pm.copy('meaning', 'meaning')
                     for role_sign, obj_pm in ma_combination.items():
                         obj_cm = obj_pm.copy('significance', 'meaning')
                         cm.replace('meaning', role_sign, obj_cm)
-                        # for mean in other.out_meanings:
-                        #     if mean.in_sign.name == "holding":
-                        #         print()
                     if not pms:
                         pms.append((agent, cm))
                     else:

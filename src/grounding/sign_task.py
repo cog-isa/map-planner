@@ -90,7 +90,8 @@ class Task:
             plan_image = plan_sign.add_image()
 
             for _, name, cm, agent in plan:
-                im = cm.sign.add_image()
+                #im = cm.sign.add_image()
+                im = cm.copy('meaning', 'image')
                 connector = plan_image.add_feature(im)
                 cm.sign.add_out_image(connector) # add connector to plan_sign threw images to out_image
 
@@ -107,7 +108,7 @@ class Task:
                     sign.out_meanings = []
         if I_obj:
             I_obj = "_"+I_obj[0].name
-        file_name = DEFAULT_FILE_PREFIX + datetime.datetime.now().strftime('%d_%H_%M') + I_obj + DEFAULT_FILE_SUFFIX
+        file_name = DEFAULT_FILE_PREFIX + datetime.datetime.now().strftime('%m_%d_%H_%M') + I_obj + DEFAULT_FILE_SUFFIX
         logging.info('Start saving to {0}'.format(file_name))
         logging.info('\tDumping SWM...')
         pickle.dump(self.signs, open(file_name, 'wb'))
@@ -115,15 +116,23 @@ class Task:
 
     @staticmethod
     def load_signs(agent, file_name=None):
-        signs = []
         if not file_name:
+            file_name = []
             for f in os.listdir('.'):
                 if f.endswith(DEFAULT_FILE_SUFFIX) and f.split(".")[0].endswith(agent):
-                    file_name = f
-                    break
-            else:
-                logging.info('File not found')
-                return None
+                    file_name.append(f)
+        else:
+            file_name = [file_name]
         if file_name:
-            signs = pickle.load(open(file_name, 'rb'))
+            newest = 0
+            file_load = ''
+            for file in file_name:
+                file_signature = int(''.join([i if i.isdigit() else '' for i in file]))
+                if file_signature > newest:
+                    newest = file_signature
+                    file_load = file
+            signs = pickle.load(open(file_load, 'rb'))
+        else:
+            logging.info('File not found')
+            return None
         return signs

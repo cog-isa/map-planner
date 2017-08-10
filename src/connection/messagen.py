@@ -37,7 +37,7 @@ class Tmessage:
         if sit is None:
             return ""
         else:
-            return sit
+            return sit.name
 
     def broadcast(self):
         message=random.choice(greetings)+"all!!! My name is " +self.agents+  ". I have made a plan and it is: "

@@ -172,28 +172,30 @@ class CausalMatrix:
 
         return True
 
-    # def check_applicable_by_agent(self, pm, agents):
-    #     result = False
-    #     for event in self.cause:
-    #         for connector in event.coincidences:
-    #             if connector.out_sign.name == "holding":
-    #                 scm = self.get_ev_signs(event)
-    #                 for event_pm in pm.cause:
-    #                     for connector in event_pm.coincidences:
-    #                         if connector.out_sign.name == "holding":
-    #                             pcm = self.get_ev_signs(event_pm)
-    #                             raz = list(scm - pcm)
-    #                             if len(raz) == 1 and raz[0] in agents or not len(raz):
-    #                                 result = True
-    #                                 break
-    #                     if result:
-    #                         break
-    #             if result:
-    #                 break
-    #
-    #     return result
-    #
+    def exp_resonate(self, pm, check_order=True, check_sign=True):
+        if check_sign and not self.sign == pm.sign:
+            return False
+        if not len(self.cause) == len(pm.cause) or not len(self.effect) == len(pm.effect):
+            return False
+        if check_order:
+            for e1, e2 in zip(itertools.chain(self.cause, self.effect), itertools.chain(pm.cause, pm.effect)):
+                if not e1.exp_resonate(e2):
+                    return False
+        else:
+            for e1 in self.cause:
+                for e2 in pm.cause:
+                    if e1.exp_resonate(e2):
+                        break
+                else:
+                    return False
+            for e1 in self.effect:
+                for e2 in pm.effect:
+                    if e1.exp_resonate(e2):
+                        break
+                else:
+                    return False
 
+        return True
 
     def get_signs(self):
         signs = set()
@@ -276,6 +278,17 @@ class Event:
             pm1 = connector.get_out_cm(base)
             pm2 = conn.get_out_cm(base)
             if not pm1.resonate(base, pm2, check_order):
+                return False
+        return True
+
+    def exp_resonate(self, event):
+        if not len(self.coincidences) == len(event.coincidences):
+            return False
+        for connector in self.coincidences:
+            for conn in event.coincidences:
+                if connector.out_sign == conn.out_sign:
+                    break
+            else:
                 return False
         return True
 
