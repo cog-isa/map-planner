@@ -41,6 +41,8 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         for index, cm in sign.meanings.items():
             if cm.includes('meaning', active_pm):
                 precedents.extend(cm.sign.spread_up_activity_act('meaning', 1))
+            elif not cm.sign.significances and active_pm.includes('meaning', cm):
+                precedents.extend(cm.sign.spread_up_activity_act('meaning', 1))
 
     active_chains = active_pm.spread_down_activity('meaning', 2)
     active_signif = set()
@@ -78,9 +80,8 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
                 applicable_meanings.append((agent, checked))
 
     # TODO: replace to metarule apply
-    apl = [ag for ag in agents if not ag == I_sign]
-    apl.append(I_obj)
-    candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _, _ in current_plan], apl)
+
+    candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _, _ in current_plan])
 
     #TODO если есть разные реализации действий - какой из них выбирать (нужно создать разные КМ на 1 знак действия)
     if candidates and plan_signs:
@@ -102,7 +103,7 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
         plan.append((active_pm, name, script, ag_mask))
         # if maxLen and len(plan)> maxLen:
         #     return None
-        next_pm = _time_shift_backward(active_pm, script, agents)
+        next_pm = _time_shift_backward(active_pm, script)
         if next_pm.includes('meaning', check_pm):
             final_plans.append(plan)
             print("len of final plan is: {0}. Len of candidates: {1}".format(len(plan), len(candidates)))
@@ -135,7 +136,10 @@ def long_relations(plans):
                 agents[action[3]] = 1
                 previous_agent = action[3]
                 counter = 1
-                plan_agents.append(action[3])
+                if not action[3] is None:
+                    plan_agents.append(action[3].name)
+                else:
+                    plan_agents.append(str(action[3]))
             elif not previous_agent == action[3]:
                 previous_agent = action[3]
                 counter = 1
@@ -169,10 +173,10 @@ def long_relations(plans):
     # из 2 предыдущих выбираем тот, в котором фигурирую я - если таких нет говорим об этом
     for plan in busiest:
         if plan[3][0]:
-            if plan[2] == longest and len(plan[3]) == min_agents and world_model["I"] in plan[3]:
+            if plan[2] == longest and len(plan[3]) == min_agents and "I" in plan[3]:
                 plans_copy = plans.copy()
                 cheap.append(plans_copy.pop(plan[0]))
-            elif plan[2] == longest and len(plan[3]) == min_agents and not world_model["I"] in plan[3]:
+            elif plan[2] == longest and len(plan[3]) == min_agents and not "I" in plan[3]:
                 plans_copy = plans.copy()
                 alternative.append(plans_copy.pop(plan[0]))
         else:
@@ -302,6 +306,21 @@ def _generate_meanings(chains, agents):
 
     pms = []
     for agent, lpm in unrenewed.items():
+        # firstly full signed actions from experience
+        for pm in lpm.copy():
+            pm_signs = pm.get_signs()
+            role_signs = replace_map.keys() & pm_signs
+            if not role_signs:
+                lpm.remove(pm)
+                if not pms:
+                    pms.append((agent, pm))
+                else:
+                    for _, pmd in pms.copy():
+                        if pmd.resonate('meaning', pm):
+                            break
+                    else:
+                        pms.append((agent, pm))
+
         for pm in lpm:
             pm_signs = pm.get_signs()
             new_map = {}
@@ -332,6 +351,25 @@ def _generate_meanings(chains, agents):
                     new_map.setdefault(role_signY[0], []).extend(list(variantsY))
 
                 ma_combinations = mix_pairs(new_map)
+
+                #search for contrast pm and pms matrixes
+                exp_combinations = []
+                for cm in pms:
+                    map = {}
+                    if agent in cm[1].get_signs():
+                        sub1 = pm - cm[1]
+                        sub2 = cm[1] - pm
+                        if len(sub1) == len(sub2):
+                            for e1, e2 in zip(sub1, sub2):
+                                value = list(e2.get_signs() - e1.get_signs())[0]
+                                key = list(e1.get_signs() - e2.get_signs())[0]
+                                value = [cm for cm in new_map[key] if cm.sign ==value][0]
+                                map[key] = value
+                    exp_combinations.append(map)
+
+                ma_combinations = [comb for comb in ma_combinations if not comb in exp_combinations]
+
+
                 for ma_combination in ma_combinations:
                     cm = pm.copy('meaning', 'meaning')
                     for role_sign, obj_pm in ma_combination.items():
@@ -371,7 +409,7 @@ def _check_activity(pm, active_pm):
     return result, pm
 
 
-def _time_shift_backward(active_pm, script, agents):
+def _time_shift_backward(active_pm, script):
     next_pm = Sign(st.SIT_PREFIX + str(st.SIT_COUNTER))
     world_model[next_pm.name] = next_pm
     pm = next_pm.add_meaning()
@@ -389,10 +427,10 @@ def _time_shift_backward(active_pm, script, agents):
     return pm
 
 
-def _meta_check_activity(scripts, active_pm, check_pm, prev_pms, agents):
+def _meta_check_activity(scripts, active_pm, check_pm, prev_pms):
     heuristic = []
     for agent, script in scripts:
-        estimation = _time_shift_backward(active_pm, script, agents)
+        estimation = _time_shift_backward(active_pm, script)
         for prev in prev_pms:
             if estimation.resonate('meaning', prev, False, False):
                 break

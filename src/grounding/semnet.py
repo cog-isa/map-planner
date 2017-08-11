@@ -42,6 +42,24 @@ class CausalMatrix:
 
         return False
 
+    def __sub__(self, cm):
+        subtraction = []
+        for e1 in self.cause:
+            for e2 in cm.cause:
+                if e1.exp_resonate(e2):
+                    break
+            else:
+                subtraction.append(e1)
+        for e1 in self.effect:
+            for e2 in cm.effect:
+                if e1.exp_resonate(e2):
+                    break
+            else:
+                subtraction.append(e1)
+        return subtraction
+
+
+
     def longstr(self):
         return '{0}:{1}->{2}'.format(str(self.sign), '|'.join([str(e) for e in self.cause]),
                                      '|'.join([str(e) for e in self.effect]))
