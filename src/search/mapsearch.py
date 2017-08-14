@@ -25,7 +25,7 @@ def map_search(task):
 
 
 
-def map_iteration(active_pm, check_pm, current_plan, iteration):
+def map_iteration(active_pm, check_pm, current_plan, iteration, exp_actions = []):
     logging.debug('STEP {0}:'.format(iteration))
     logging.debug('\tSituation {0}'.format(active_pm.longstr()))
     if iteration >= MAX_ITERATION:
@@ -83,9 +83,12 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
 
     candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _, _ in current_plan])
 
-    #TODO если есть разные реализации действий - какой из них выбирать (нужно создать разные КМ на 1 знак действия)
+    #TODO если есть разные реализации действий - какой из них выбирать (нужно создать разные кауз. матрицы на 1 знак действия)
+    if not exp_actions:
+        exp_actions = _get_experience(agents)
+
     if candidates and plan_signs:
-        candidates = _check_experience(candidates)
+        candidates = _check_experience(candidates, exp_actions)
 
     if not candidates:
         logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _, _ in current_plan]))
@@ -108,12 +111,27 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
             final_plans.append(plan)
             print("len of final plan is: {0}. Len of candidates: {1}".format(len(plan), len(candidates)))
         else:
-            recursive_plans = map_iteration(next_pm, check_pm, plan, iteration + 1)
+            recursive_plans = map_iteration(next_pm, check_pm, plan, iteration + 1, exp_actions)
             if recursive_plans:
                 #maxLen = len(recursive_plans[0])
                 final_plans.extend(recursive_plans)
 
     return final_plans
+
+def _get_experience(agents):
+    actions = []
+    for agent in agents:
+        for connector in agent.out_meanings:
+            cm = connector.in_sign.meanings[connector.in_index]
+            if max([len(event.coincidences) for event in itertools.chain(cm.cause, cm.effect)]) > 1:
+                for pm in actions:
+                    if pm.resonate('meaning', cm):
+                        break
+                else:
+                    actions.append(cm)
+
+    return actions
+
 
 def long_relations(plans):
 
@@ -203,15 +221,14 @@ def get_agents():
                 agent_back.add(con.out_sign)
     return I_sign, I_obj, agent_back
 
-def _check_experience(candidates):
-    exp_actions = []
+def _check_experience(candidates, exp_actions):
+    actions = []
     for candidate in candidates:
         if candidate[3]:
-            for connector in candidate[3].out_images:
-                    if candidate[2].exp_resonate(connector.in_sign.images[connector.in_index]):
-                        exp_actions.append(candidate)
-    if exp_actions:
-        return exp_actions
+           if candidate[2] in exp_actions:
+               actions.append(candidate)
+    if actions:
+        return actions
     else:
         return candidates
 
@@ -372,6 +389,12 @@ def _generate_meanings(chains, agents):
 
                 for ma_combination in ma_combinations:
                     cm = pm.copy('meaning', 'meaning')
+                    # for element in cm.cause:
+                    #     if not len(element.coincidences)==1:
+                    #        break
+                    # else:
+                    #     print()
+
                     for role_sign, obj_pm in ma_combination.items():
                         obj_cm = obj_pm.copy('significance', 'meaning')
                         cm.replace('meaning', role_sign, obj_cm)

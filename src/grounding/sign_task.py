@@ -90,8 +90,8 @@ class Task:
             plan_image = plan_sign.add_image()
 
             for _, name, cm, agent in plan:
-                #im = cm.sign.add_image()
-                im = cm.copy('meaning', 'image')
+                im = cm.sign.add_image()
+                #im = cm.copy('meaning', 'image')
                 connector = plan_image.add_feature(im)
                 cm.sign.add_out_image(connector) # add connector to plan_sign threw images to out_image
 

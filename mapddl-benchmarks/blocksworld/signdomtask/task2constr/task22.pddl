@@ -40,12 +40,12 @@
 	(and
 	    (handempty a1)
 	    (handempty a2)
+	    (on f h)
 	    (on h e)
 		(on e d)
 		(on d c)
 		(on c b)
 		(on b a)
-		(on a f)
 		(blocktype huge f)
 		(blocktype small h)
         (blocktype huge a)
@@ -67,5 +67,3 @@
     )
 )
 )
-
-

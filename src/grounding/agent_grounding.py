@@ -31,18 +31,24 @@ class Agent:
         search_start_time = time.clock()
         logging.info('Search start: {0}'.format(task.name))
 
-        cms = task.signs["Send"].spread_up_activity_motor('significance', 1)
+        sit_sign = task.signs["Send"]
+        cms = sit_sign.spread_up_activity_motor('significance', 1)
         method = None
+        cm = None
         for sign, action in cms:
             for connector in sign.out_significances:
                 if connector.in_sign.name == "They" and len(others) > 1:
                     method = action
+                    cm = connector.out_sign.significances[connector.in_index].copy('significance', 'meaning')
                 elif connector.in_sign.name == "agent?ag" and len(others) == 1:
                     method = action
+                    cm = connector.out_sign.significances[connector.in_index].copy('significance', 'meaning')
                 elif len(others) == 0:
                     method = 'save_achievement'
 
         self.solution = map_search(task)
+
+        self.solution.append((sit_sign.add_meaning(), method, cm, task.signs["I"]))
 
         mes = Tmessage(self.solution, self.name)
         message = getattr(mes, method)()
