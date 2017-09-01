@@ -49,30 +49,35 @@ def _parse(domain_file, problem_file):
 # from memory_profiler import profile
 #
 # @profile
-def search_plan(domain_dir, problem_numb, saveload):
+def search_plan(domain, problem, saveload):
     from os import listdir
     agent_tasks = []
-    if len(problem_numb) == 1:
-        problem_numb = "0"+problem_numb
-    for domain in [file for file in listdir(domain_dir) if "domain" in file.lower()]:
-        agent_tasks.append([domain_dir+"/"+domain, domain_dir+"/task"+problem_numb +".pddl"])
+    # if len(problem_numb) == 1:
+    #     problem_numb = "0"+problem_numb
+    # for domain in [file for file in listdir(domain_dir) if "domain" in file.lower()]:
+    #     agent_tasks.append([domain_dir+"/"+domain, domain_dir+"/task"+problem_numb +".pddl"])
 
-    agents = []
+    agent_tasks.append([domain, problem])
+    subjects = set()
     solutions = []
     for domain_file, problem_file in agent_tasks:
         problem = _parse(domain_file, problem_file)
-        for obj in problem.objects:
-            if problem.objects[obj].name == 'agent':
-                agents.append(obj)
+        if problem.constraints:
+            for agent in problem.constraints:
+                subjects.add(agent)
+        else:
+            for _, action in problem.domain.actions.items():
+                for ag in action.agents:
+                    for obj, type in problem.objects.items():
+                        if type.name == ag:
+                            subjects.add(obj)
+        # for obj in problem.objects:
+        #     if problem.objects[obj].name == 'agent':
+        #         agents.append(obj)
 
-    manager = Manager(agents, problem, saveload)
+    manager = Manager(subjects, problem, saveload)
     solution = manager.search_solution()
     solutions.append(solution)
-
-    # for agent in agents:
-    #     agent = Agent(agent, problem, saveload)
-    #     solution = agent.search_solution()
-    #     solutions.append(solution)
 
 
 
@@ -117,7 +122,7 @@ if __name__ == '__main__':
     if solutions is None:
         logging.warning('No solution could be found')
     else:
-        solution_file = args.domain + SOLUTION_FILE_SUFFIX
+        solution_file = args.problem_numb + SOLUTION_FILE_SUFFIX
         for solution  in solutions:
             logging.info('Plan length: %s' % len(solution))
         with open(solution_file, 'w') as file:

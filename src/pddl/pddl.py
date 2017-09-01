@@ -52,6 +52,15 @@ class Predicate:
     def __str__(self):
         return self.name + str(self.signature)
 
+    # def __eq__(self, other):
+    #     if self.name != other.name:
+    #         return False
+    #     for s1, s2 in zip(self.signature, other.signature):
+    #         if s1[0] != s2[0]:
+    #             break
+    #     else:
+    #         return True
+
 
 # Formula is unused right now!
 #class Formula:
@@ -80,9 +89,10 @@ class Effect:
 
 
 class Action:
-    def __init__(self, name, signature, precondition, effect):
+    def __init__(self, name, agents, signature, precondition, effect):
         """
         name: The name identifying the action
+
         signature: A list of tuples (name, [types]) to represent a list of
                    parameters an their type(s).
         precondition: A list of predicates that have to be true before the
@@ -90,6 +100,7 @@ class Action:
         effect: An effect instance specifying the postcondition of the action
         """
         self.name = name
+        self.agents = agents
         self.signature = signature
         self.precondition = precondition
         self.effect = effect

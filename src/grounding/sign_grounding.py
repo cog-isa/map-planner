@@ -7,15 +7,11 @@ from grounding.semnet import Sign
 from .sign_task import Task
 
 
-
-
-
-def ground(problem, agent, exp_signs = None):
+def ground(problem, agent, subjects, exp_signs=None):
     domain = problem.domain
     actions = domain.actions.values()
     predicates = domain.predicates.values()
     constraints = problem.constraints
-
 
     # Objects
     objects = problem.objects
@@ -26,10 +22,12 @@ def ground(problem, agent, exp_signs = None):
     if exp_signs:
         objects = _update_exp_signs(exp_signs, objects)
 
-
     # Create a map from types to objects
     type_map = _create_type_map(objects)
     logging.debug("Type to object map:\n%s" % type_map)
+
+    # Create type subtype map
+    subtype_map = _crate_subtype(domain.types)
 
     obj_signifs = {}
     obj_means = {}
@@ -61,8 +59,6 @@ def ground(problem, agent, exp_signs = None):
         obj_signifs[They_sign] = They_sign.add_significance()
         signs[They_sign.name] = They_sign
 
-
-
     for obj in objects:
         obj_sign = Sign(obj)
         obj_signifs[obj] = obj_sign.add_significance()
@@ -82,56 +78,199 @@ def ground(problem, agent, exp_signs = None):
             tp_signif = tp_sign.add_significance()
             connector = tp_signif.add_feature(obj_signif, zero_out=True)
             signs[obj].add_out_significance(connector)
-            if tp_sign.name == "agent" and not obj == agent:
-                connector = obj_signif.add_feature(obj_signifs[They_sign], zero_out=True)
-                They_sign.add_out_significance(connector)
         if not exp_signs:
             signs[tp.name] = tp_sign
 
+    for sub in subjects:
+        if sub != agent:
+            connector = obj_signifs[sub].add_feature(obj_signifs[They_sign], zero_out=True)
+            They_sign.add_out_significance(connector)
 
     if not exp_signs:
-
-        signify_predicates(predicates, signs)
+        updated_predicates = _update_predicates(predicates, actions)
+        signify_predicates(predicates, updated_predicates, signs, subtype_map)
         signify_actions(actions, constraints, signs, agent, events, obj_means)
         signify_connection(signs)
 
-
-
     start_situation, pms = _define_situation('*start*', problem.initial_state, signs, events)
     goal_situation, pms = _define_situation('*finish*', problem.goal, signs, events)
-    list_signs = task_signs(problem)
-    _expand_situation_ma(goal_situation, signs, pms, list_signs)  # For task
+    # expand_ma(start_situation, goal_situation, signs, type_map, actions, problem.initial_state, problem.goal)
+    if problem.name.startswith("blocks"):
+        list_signs = task_signs(problem)
+        _expand_situation_ma_blocks(goal_situation, signs, pms, list_signs)  # For task
+    elif problem.name.startswith("logistics"):
+        _expand_situation_ma_logistics(goal_situation, signs, pms)
     return Task(problem.name, signs, start_situation, goal_situation)
 
-def signify_predicates(predicates, signs):
+
+def expand_ma(start_situation, goal_situation, signs, type_map, actions, start, goal):
+    upload_events = start_situation.meanings[1] - goal_situation.meanings[1]
+    goal_added_events = goal_situation.meanings[1] - start_situation.meanings[1]
+    goal_events = [goal_situation.meanings[1].get_event(event + 1) for event in
+                   range(len(goal_situation.meanings[1].cause))]
+    # TODO найти те предикаты в которых не учавствуют объекты из гоал и скопировать в гоал
+    # TODO находим разницу целевой и начальной сит - смотрим по действиям если предикат из
+    # TODO разницы в add действия - берем и означиваем все дел эффекты действия - если они в
+    # TODO предикатах начальной ситуации - удаляем их, а оставшиеся после общего отбора предикаты кидаем в целевую ситуацию
+
+    difference = []
+    for predicate in goal:
+        predicate_obj = {ptuple[0] for ptuple in predicate.signature}
+        for pred in start:
+            if predicate.name != pred.name:
+                continue
+            if len(predicate.signature) != len(pred.signature):
+                continue
+            pred_obj = {ptuple[0] for ptuple in pred.signature}
+            if predicate_obj == pred_obj:
+                break
+
+        else:
+            difference.append(predicate)
+
+    action_used = []
+    for action in actions:
+        for predicate in action.effect.addlist:
+            for pred in difference:
+                type_map = {}
+                if predicate.name == pred.name:
+                    for index, ptuple in enumerate(predicate.signature):
+                        type_map[ptuple[0]] = pred.signature[index][0]
+                    action_used.append((action, type_map))
+
+    predicates_to_delete = []
+
+    for action, replacemap in action_used:
+        for pred in action.effect.dellist:
+            if len(pred.signature) > len(replacemap):
+                continue
+            flag = False
+            for fact in pred.signature:
+                if not fact[0] in replacemap.keys():
+                    flag = True
+                    break
+            if flag:
+                continue
+            used_fact = {}
+            used_fact["name"] = pred.name
+            for key, attribute in replacemap.items():
+                for index, fact in enumerate(pred.signature):
+                    if fact[0] == key:
+                        used_fact[index] = attribute
+            predicates_to_delete.append(used_fact)
+
+    print()
+
+
+def signify_predicates(predicates, updated_predicates, signs, subtype_map):
     for predicate in predicates:
         pred_sign = Sign(predicate.name)
-        significance = pred_sign.add_significance()
+        # significance = pred_sign.add_significance()
         signs[predicate.name] = pred_sign
         if len(predicate.signature) == 2:
-            def update_significance(fact, effect=False):
+            signifs = []
+
+            def update_significance(fact, predicate, subtype_map, updated_predicates, effect=False):
                 role_name = fact[1][0].name + fact[0]
+                fact_name = fact[1][0].name
+                roles = set()
+                roles.add(role_name)
+                role_signifs = []
                 if role_name not in signs:
                     signs[role_name] = Sign(role_name)
-                role_sign = signs[role_name]
-                obj_sign = signs[fact[1][0].name]
-                role_signif = role_sign.add_significance()
-                conn = role_signif.add_feature(obj_sign.significances[1], zero_out=True)
-                obj_sign.add_out_significance(conn)
-                conn = significance.add_feature(role_signif, effect=effect, zero_out=True)
-                role_sign.add_out_significance(conn)
+                if fact_name in subtype_map.keys():
+                    subroles = subtype_map[fact_name]
+                    for role, signif in subtype_map.items():
+                        if fact_name in signif:
+                            for srole in subroles:
+                                srole_name = role + "?" + srole
+                                signs[srole_name] = Sign(srole_name)
+                                roles.add(srole_name)
+                                sfact_name = fact_name + "?" + srole
+                                signs[sfact_name] = Sign(sfact_name)
+                                roles.add(sfact_name)
+                used_facts = set()
+                for updated_fact in updated_predicates[pred_sign.name]:
+                    updated_fact_name = updated_fact[1][0].name
+                    updated_fact_role = updated_fact[1][0].name + updated_fact[0]
+                    predicate_names = [signa[1][0].name for signa in predicate.signature]
+                    if fact_name == updated_fact_name:
+                        srole_name = updated_fact_role
+                        used_facts.add(updated_fact[0][1:])
+                        if srole_name not in signs:
+                            signs[srole_name] = Sign(srole_name)
+                        roles.add(srole_name)
+                    elif fact[0] == updated_fact[0]:
+                        srole_name = updated_fact_role
+                        used_facts.add(updated_fact_name)
+                        if srole_name not in signs:
+                            signs[srole_name] = Sign(srole_name)
+                        roles.add(srole_name)
+                    elif updated_fact_name in subtype_map[fact_name] and not updated_fact_name in predicate_names:
+                        srole_name = updated_fact_role
+                        used_facts.add(updated_fact_name)
+                        if srole_name not in signs:
+                            signs[srole_name] = Sign(srole_name)
+                        roles.add(srole_name)
+                for role_name in roles:
+                    role_sign = signs[role_name]
+                    obj_sign = signs[fact_name]
+                    smaller_roles = [obj for obj in used_facts if obj in role_name and obj in signs]
+                    if smaller_roles:
+                        for obj in smaller_roles:
+                            updated_obj_sign = signs[obj]
+                            if not obj_sign == updated_obj_sign:
+                                role_signif = role_sign.add_significance()
+                                connector = role_signif.add_feature(updated_obj_sign.significances[1], zero_out=True)
+                                updated_obj_sign.add_out_significance(connector)
+                                role_signifs.append(role_signif)
+                            else:
+                                role_signif = role_sign.add_significance()
+                                conn = role_signif.add_feature(obj_sign.significances[1], zero_out=True)
+                                obj_sign.add_out_significance(conn)
+                                role_signifs.append(role_signif)
+                    else:
+                        role_signif = role_sign.add_significance()
+                        conn = role_signif.add_feature(obj_sign.significances[1], zero_out=True)
+                        obj_sign.add_out_significance(conn)
+                        role_signifs.append(role_signif)
 
-            update_significance(predicate.signature[0])
-            update_significance(predicate.signature[1])
+                if not signifs:
+                    signifs.extend(role_signifs)
+                else:
+                    role_signs = [cm.sign for cm in role_signifs]
+                    if signifs[0].sign in role_signs and signifs[1].sign in role_signs:
+                        significance = pred_sign.add_significance()
+                        conn = significance.add_feature(signifs[0], effect=False, zero_out=True)
+                        signifs[0].sign.add_out_significance(conn)
+                        connector = significance.add_feature(signifs[1], effect=effect, zero_out=True)
+                        signifs[1].sign.add_out_significance(connector)
+                    else:
+                        for pair in itertools.product(signifs, role_signifs):
+                            significance = pred_sign.add_significance()
+                            conn = significance.add_feature(pair[0], effect=False, zero_out=True)
+                            pair[0].sign.add_out_significance(conn)
+                            connector = significance.add_feature(pair[1], effect=effect, zero_out=True)
+                            pair[1].sign.add_out_significance(connector)
+
+            update_significance(predicate.signature[0], predicate, subtype_map, updated_predicates)
+            update_significance(predicate.signature[1], predicate, subtype_map, updated_predicates)
+        elif len(predicate.signature):
+            pred_sign.add_significance()
+
 
 def signify_actions(actions, constraints, signs, agent, events, obj_means):
     for action in actions:
         act_sign = Sign(action.name)
         act_signif = act_sign.add_significance()
 
-        def update_significance(predicate, effect=False):
+        def update_significance(predicate, signature, effect=False):
             pred_sign = signs[predicate.name]
-            connector = act_signif.add_feature(pred_sign.significances[1], effect=effect)
+            if len(pred_sign.significances) > 1:
+                pred_cm = pred_resonate('significance', pred_sign, predicate, signs, signature)
+            else:
+                pred_cm = pred_sign.significances[1]
+            connector = act_signif.add_feature(pred_cm, effect=effect)
             pred_sign.add_out_significance(connector)
             if len(predicate.signature) == 1:
                 fact = predicate.signature[0]
@@ -140,91 +279,177 @@ def signify_actions(actions, constraints, signs, agent, events, obj_means):
                                               zero_out=True)
                 role_sign.add_out_significance(conn)
             elif not predicate.signature[0][1][0].name == predicate.signature[1][1][0].name:
-                for fact in predicate.signature:
-                    role_sign = signs[fact[1][0].name + fact[0]]
+                for role_sign in pred_cm.get_signs():
                     connector_new = act_signif.add_feature(role_sign.significances[1], connector.in_order,
                                                            effect=effect,
                                                            zero_out=True)
                     role_sign.add_out_significance(connector_new)
 
         for predicate in action.precondition:
-            update_significance(predicate)
+            update_significance(predicate,  action.signature, False)
         for predicate in action.effect.addlist:
-            update_significance(predicate, effect=True)
+            update_significance(predicate, action.signature, True)
         signs[action.name] = act_sign
 
-        for ag, constraint in constraints.items():
-            predicates = {pred.name for pred in constraint}
-            signatures = [pred.signature for pred in constraint]
-            variants = []
-            csignatures = signatures.copy()
-            for signa in signatures:
-                csignatures.remove(signa)
-                signat = [signat[0] for signat in csignatures if signat[1] == signa[1]]
-                if len(signat):
-                    signat.append(signa[0])
-                    if not signat in variants:
-                        variants.append(signat)
-            for variant in variants:
-                act_mean = act_signif.copy('significance', 'meaning')
-                for event in itertools.chain(act_mean.cause, act_mean.effect):
-                    ev_signs = [connector.out_sign for connector in event.coincidences]
-                    if any(signs[pred] in ev_signs for pred in predicates):
-                        for var in variant:
-                            role_sign = [role_sign for role_sign in list(signs[var[1][0].name].get_role()) if
-                                         role_sign in ev_signs]
-                            if role_sign:
-                                role_sign = role_sign[0]
-                                act_mean.replace('meaning', role_sign, obj_means[var[0]])
-                                # event.replace('meaning', role_sign, obj_means[var[0]], [])
-                if ag == agent:
-                    I_sign = signs["I"]
-                    connector = act_mean.add_feature(obj_means[I_sign])
-                    efconnector = act_mean.add_feature(obj_means[I_sign], effect=True)
-                    events.append(act_mean.effect[abs(efconnector.in_order) - 1])
-                    I_sign.add_out_meaning(connector)
-                else:
-                    connector = act_mean.add_feature(obj_means[ag])
-                    efconnector = act_mean.add_feature(obj_means[ag], effect=True)
-                    events.append(act_mean.effect[abs(efconnector.in_order) - 1])
-                    signs[ag].add_out_meaning(connector)
+        if constraints:
+            for ag, constraint in constraints.items():
+                predicates = {pred.name for pred in constraint}
+                signatures = [pred.signature for pred in constraint]
+                variants = []
+                csignatures = signatures.copy()
+                for signa in signatures:
+                    csignatures.remove(signa)
+                    signat = [signat[0] for signat in csignatures if signat[1] == signa[1]]
+                    if len(signat):
+                        signat.append(signa[0])
+                        if not signat in variants:
+                            variants.append(signat)
+                for variant in variants:
+                    act_mean = act_signif.copy('significance', 'meaning')
+                    for event in itertools.chain(act_mean.cause, act_mean.effect):
+                        ev_signs = [connector.out_sign for connector in event.coincidences]
+                        if any(signs[pred] in ev_signs for pred in predicates):
+                            for var in variant:
+                                role_sign = [role_sign for role_sign in list(signs[var[1][0].name].get_role()) if
+                                             role_sign in ev_signs]
+                                if role_sign:
+                                    role_sign = role_sign[0]
+                                    act_mean.replace('meaning', role_sign, obj_means[var[0]])
+                                    # event.replace('meaning', role_sign, obj_means[var[0]], [])
+                    if ag == agent:
+                        I_sign = signs["I"]
+                        connector = act_mean.add_feature(obj_means[I_sign])
+                        efconnector = act_mean.add_feature(obj_means[I_sign], effect=True)
+                        events.append(act_mean.effect[abs(efconnector.in_order) - 1])
+                        I_sign.add_out_meaning(connector)
+                    else:
+                        connector = act_mean.add_feature(obj_means[ag])
+                        efconnector = act_mean.add_feature(obj_means[ag], effect=True)
+                        events.append(act_mean.effect[abs(efconnector.in_order) - 1])
+                        signs[ag].add_out_meaning(connector)
+        else:
+            if action.agents:
+                agent_signs = []
+                for ag in action.agents:
+                    for cm in signs[ag].significances.values():
+                        agent_signs.extend(list(cm.get_signs()))
+                agent_roles = {}
+                for ag in agent_signs:
+                    for a in ag.get_role():
+                        if a.name != "object":
+                            agent_roles.setdefault(ag, set()).update(a.get_role())
+                for ag in agent_roles.keys():
+                    act_mean = act_signif.copy('significance', 'meaning')
+                    role_signs = [sign for sign in act_mean.get_signs() if sign in agent_roles[ag]]
+                    for role_sign in role_signs:
+                        if role_sign in act_mean.get_signs():
+                            # logging.info("action {0}, role_sign {1}".format(act_signif.sign.name, role_sign.name))
+                            act_mean.replace('meaning', role_sign, obj_means[ag.name])
+                    if ag.name == agent:
+                        I_sign = signs["I"]
+                        connector = act_mean.add_feature(obj_means[I_sign])
+                        efconnector = act_mean.add_feature(obj_means[I_sign], effect=True)
+                        events.append(act_mean.effect[abs(efconnector.in_order) - 1])
+                        I_sign.add_out_meaning(connector)
+                    else:
+                        connector = act_mean.add_feature(obj_means[ag.name])
+                        efconnector = act_mean.add_feature(obj_means[ag.name], effect=True)
+                        events.append(act_mean.effect[abs(efconnector.in_order) - 1])
+                        ag.add_out_meaning(connector)
+
+
+
+def pred_resonate(base, sign, predicate, signs, signature):
+    cms = getattr(sign, base + 's')
+    roles = []
+    for fact in predicate.signature:
+        sfact = [signa for signa in signature if fact[0] == signa[0]]
+        if sfact:
+            if sfact[0][1][0].name+sfact[0][0] in signs:
+                roles.extend(sfact)
+        else:
+            roles.append(fact)
+    roles = [signs[signa[1][0].name + signa[0]] for signa in roles]
+    for index, cm in cms.items():
+        if not len(cm.cause) + len(cm.effect) == len(predicate.signature):
+            continue
+        cm_signs = cm.get_signs()
+        for role in roles:
+            if not role in cm_signs:
+                break
+        else:
+            #pm = cm.copy('significance', 'significance')
+            return cm
+    return None
+
 
 def signify_connection(signs):
     Send = Sign("Send")
-    ag_signif = Send.add_significance()
+    send_signif = Send.add_significance()
     Broadcast = Sign("Broadcast")
     brdct_signif = Broadcast.add_significance()
-    connector = brdct_signif.add_feature(ag_signif)
+    connector = brdct_signif.add_feature(send_signif)
     Send.add_out_significance(connector)
     Approve = Sign("Approve")
     approve_signif = Approve.add_significance()
-    connector = approve_signif.add_feature(ag_signif)
+    connector = approve_signif.add_feature(send_signif)
     Send.add_out_significance(connector)
     signs[Send.name] = Send
     signs[Broadcast.name] = Broadcast
     signs[Approve.name] = Approve
 
     They_sign = signs["They"]
+    agents = They_sign.spread_up_activity_obj("significance", 1)
+    agents_type = []
+    for agent in agents:
+        agents_type.append({cm.sign for cm in agent.sign.spread_up_activity_obj("significance", 1)})
+    type = set()
+    for type1 in agents_type:
+        for type2 in agents_type:
+            if type1 != type2:
+                type |= type1 & type2
+            else:
+                type = [t for t in type2 if t.name != "object"][0]
+    if not type:
+        type = [t for t in type if t.name != "object"][0]
 
     They_signif = They_sign.add_significance()
     brdct_signif = Broadcast.add_significance()
     connector = They_signif.add_feature(brdct_signif)
     Broadcast.add_out_significance(connector)
-    ag_signif = signs["agent?ag"].add_significance()
+    type_signif = type.add_significance()
     approve_signif = Approve.add_significance()
-    connector = ag_signif.add_feature(approve_signif)
+    # They_signif = They_sign.add_significance()
+    connector = type_signif.add_feature(approve_signif)
     Approve.add_out_significance(connector)
 
     brdct_signif = Broadcast.add_significance()
-    executer = brdct_signif.add_execution(Broadcast.name.lower())
+    executer = brdct_signif.add_execution(Broadcast.name.lower(), effect=True)
     Send.add_out_significance(executer)
 
     approve_signif = Approve.add_significance()
-    executer = approve_signif.add_execution(Approve.name.lower())
+    executer = approve_signif.add_execution(Approve.name.lower(), effect=True)
     Send.add_out_significance(executer)
 
+
+def _update_predicates(predicates, actions):
+    predicates = {pred.name: set(pred.signature) for pred in predicates}
+    for action in actions:
+        actions_predicates = action.precondition.copy()
+        actions_predicates.extend([pred for pred in action.effect.addlist.copy()])
+        for predicate in actions_predicates:
+            predicates[predicate.name] |= set(predicate.signature)
+            for fact in predicate.signature:
+                for action_fact in action.signature:
+                    if fact[0] == action_fact[0] and fact in predicates[predicate.name]:
+                        #predicates[predicate.name].remove(fact)
+                        predicates[predicate.name].add(action_fact)
+
+    return predicates
+
+
 def task_signs(problem):
-    signs= []
+    signs = []
     above = []
     bottom = []
     for pred in problem.goal:
@@ -235,6 +460,7 @@ def task_signs(problem):
     signs.append(list(set(bottom) - set(above))[0])
     return signs
 
+
 def _update_exp_signs(signs, objects):
     for obj, type in list(objects.items()).copy():
         if signs.get(obj):
@@ -244,6 +470,20 @@ def _update_exp_signs(signs, objects):
                 break
 
     return objects
+
+
+def _crate_subtype(types):
+    """
+    Create a map of types/subtypes to make true role signs
+    """
+    subtype_map = defaultdict(set)
+
+    for object_name, object_type in types.items():
+        parent_type = object_type.parent
+        if parent_type:
+            subtype_map[parent_type.name].add(object_type.name)
+    return subtype_map
+
 
 def _create_type_map(objects):
     """
@@ -315,7 +555,8 @@ def _define_situation(name, predicates, signs, events):
 
     return situation, elements
 
-def _expand_situation_ma(goal_situation, signs, pms, list_signs):
+
+def _expand_situation_ma_blocks(goal_situation, signs, pms, list_signs):
     ont_mean = signs['ontable'].add_meaning()
     a_mean = pms[signs[list_signs[1]]]
     connector = goal_situation.meanings[1].add_feature(ont_mean)
@@ -330,5 +571,24 @@ def _expand_situation_ma(goal_situation, signs, pms, list_signs):
     signs[list_signs[0]].add_out_meaning(conn)
 
 
+def _expand_situation_ma_logistics(goal_situation, signs, pms):
+    at_mean = signs['at'].add_meaning()
+    apn_mean = signs['apn1'].add_meaning()
+    apt_mean = pms[signs['apt1']]
+    connector = goal_situation.meanings[1].add_feature(at_mean)
+    conn = goal_situation.meanings[1].add_feature(apn_mean, connector.in_order)
+    con = goal_situation.meanings[1].add_feature(apt_mean, connector.in_order)
 
+    at_mean = signs['at'].add_meaning()
+    tru1_mean = signs['tru1'].add_meaning()
+    pos1_mean = pms[signs['pos1']]
+    connector = goal_situation.meanings[1].add_feature(at_mean)
+    conn = goal_situation.meanings[1].add_feature(tru1_mean, connector.in_order)
+    con = goal_situation.meanings[1].add_feature(pos1_mean, connector.in_order)
 
+    at_mean = signs['at'].add_meaning()
+    tru2_mean = signs['tru2'].add_meaning()
+    pos2_mean = pms[signs['pos2']]
+    connector = goal_situation.meanings[1].add_feature(at_mean)
+    conn = goal_situation.meanings[1].add_feature(tru2_mean, connector.in_order)
+    con = goal_situation.meanings[1].add_feature(pos2_mean, connector.in_order)

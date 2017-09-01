@@ -6,8 +6,9 @@ import time
 from .sign_task import Task
 
 class Agent:
-    def __init__(self, name, problem, saveload):
+    def __init__(self, name, subjects, problem, saveload):
         self.name = name
+        self.subjects = subjects
         self.problem = problem
         self.is_load = saveload
         self.solution = []
@@ -18,9 +19,9 @@ class Agent:
         logging.info('Grounding start: {0}'.format(problem.name))
         if is_load:
             signs = Task.load_signs(self.name)
-            task = sign_grounding.ground(problem, self.name, signs)
+            task = sign_grounding.ground(problem, self.name, self.subjects, signs)
         else:
-            task = sign_grounding.ground(problem, self.name)
+            task = sign_grounding.ground(problem, self.name, self.subjects)
         logging.info('Grounding end: {0}'.format(problem.name))
         logging.info('{0} Signs created'.format(len(task.signs)))
         return task
@@ -39,10 +40,11 @@ class Agent:
             for connector in sign.out_significances:
                 if connector.in_sign.name == "They" and len(others) > 1:
                     method = action
-                    cm = connector.out_sign.significances[connector.in_index].copy('significance', 'meaning')
-                elif connector.in_sign.name == "agent?ag" and len(others) == 1:
+                    pm = connector.out_sign.significances[1]
+                    cm = pm.copy('significance', 'meaning')
+                elif connector.in_sign.name != "They" and len(others) == 1:
                     method = action
-                    cm = connector.out_sign.significances[connector.in_index].copy('significance', 'meaning')
+                    cm = connector.out_sign.significances[1].copy('significance', 'meaning')
                 elif len(others) == 0:
                     method = 'save_achievement'
 

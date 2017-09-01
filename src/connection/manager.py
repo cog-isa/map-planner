@@ -32,7 +32,7 @@ class Manager:
         serversocket.listen(5)
         new = 1
         for agent in self.agents:
-            agent = Agent(agent, self.problem, self.saveload)
+            agent = Agent(agent, self.agents, self.problem, self.saveload)
             port += new
             clagents.append([agent, port])
         for current_agent in clagents:

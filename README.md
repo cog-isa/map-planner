@@ -7,7 +7,8 @@ MAP-planning algorithm based on sign world model
 
 With I and they:
 
-../mapddl-benchmarks/blocksworld/signdomtask/ X
+../mapddl-benchmarks/blocksworld/signdomtask/task2constr/task21.pddl
 
 where X  - problem number like 01, 1, 2, 50
 
+../mapddl-benchmarks/logistics00/signlogistick/probLOGISTICS-4-0.pddl

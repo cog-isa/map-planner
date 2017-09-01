@@ -196,7 +196,7 @@ class Formula(Visitable):
 class ActionStmt(Visitable):
     """This class represents the AST node for a pddl action."""
 
-    def __init__(self, name, parameters, precond, effect):
+    def __init__(self, name, agent, parameters, precond, effect):
         """ Construct a new Action.
 
         Keyword arguments:
@@ -207,6 +207,7 @@ class ActionStmt(Visitable):
         """
         self._visitorName = 'visit_action_stmt'
         self.name = name
+        self.agent = agent
         self.parameters = parameters  # a list of parameters
         self.precond = precond  # right now: a Formula << PreconditionStmt
         # right now also a Formula << EffectStmt
@@ -328,6 +329,7 @@ class ConstraintsStmt(Visitable):
         self._visitorName = 'visit_constraints_stmt'
         self.formula = formula
         self.predicates = []
+        self.init_predicates = []
 
 
 ###
@@ -480,6 +482,17 @@ def parse_typed_var_list(iter):
     """
     return _parse_type_helper(iter, Variable)
 
+
+def parse_agent(iter):
+    """
+    Pasrses a list of parameters using the parse_typed_var_list parser function.
+    """
+    if not iter.try_match(':agent'):
+        return None
+        # raise ValueError('Error keyword ":agent" required before '
+        #                  'parameter list!')
+    varList = parse_typed_var_list(next(iter))
+    return varList
 
 def parse_parameters(iter):
     """
@@ -635,10 +648,11 @@ def parse_action_stmt(iter):
         raise ValueError('Error: action must start with ":action" keyword!')
     name = parse_name(iter, 'action')
     # call parsers to parse parameters, precondition, effect
+    agent = parse_agent(iter)
     param = parse_parameters(iter)
     pre = parse_precondition_stmt(iter)
     eff = parse_effect_stmt(iter)
-    return ActionStmt(name, param, pre, eff)
+    return ActionStmt(name, agent, param, pre, eff)
 
 
 def parse_predicates_stmt(iter):
@@ -740,7 +754,10 @@ def parse_problem_def(iter):
         objects = parse_objects_stmt(next(iter))
     init = parse_init_stmt(next(iter))
     goal = parse_goal_stmt(next(iter))
-    constraints = parse_constraints_stmt(next(iter))
+    if len(iter.contents) > iter.position:
+        constraints = parse_constraints_stmt(next(iter))
+    else:
+        constraints = {}
     # assert end is reached
     iter.match_end()
     # create new ProblemDef instance

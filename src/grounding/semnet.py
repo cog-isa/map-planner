@@ -97,14 +97,17 @@ class CausalMatrix:
             connector.out_index = 0
         return connector
 
-    def add_execution(self, motor, order=None):
+    def add_execution(self, motor, order=None, effect = False):
         """
         Add motor function to existed in order
         @param motor: shortcode of handler function to some physic enviroment
         @param order: order of motor function
         @return:
         """
-        actions = self.cause
+        if effect:
+            actions = self.effect
+        else:
+            actions = self.cause
         actuator = Actuator(self.sign, motor, order)
         if order is None:
             actuator.in_order = len(actions) + 1
@@ -344,7 +347,7 @@ class Event:
         for connector in self.coincidences:
             if connector.out_sign == old_sign:
                 if connector.out_index not in deleted:
-                    getattr(old_sign, 'remove_' + base)(connector.get_out_cm(base))
+                    getattr(connector.out_sign, 'remove_' + base)(connector.get_out_cm(base))
                     deleted.append(connector.out_index)
                 connector.out_sign = new_cm.sign
                 connector.out_index = new_cm.index
@@ -384,6 +387,8 @@ class Connector:
 
     def get_out_cm(self, base):
         if self.out_index > 0:
+            if not self.out_index in getattr(self.out_sign, base + 's'):
+                print()
             return getattr(self.out_sign, base + 's')[self.out_index]
         else:
             raise Exception('In connector {0} you cannot get out causal matrix'.format(self))
@@ -496,6 +501,7 @@ class Sign:
 
         del self.meanings[cm.index]
 
+
     def spread_up_activity_act(self, base, depth):
         """
         Spread activity up in hierarchy
@@ -552,8 +558,8 @@ class Sign:
                 attribute.append(connector.in_sign)
         return attribute[0]
 
-    def get_role(self):
+    def get_role(self, base = "significance"):
         sub_role = set()
-        for con in self.out_significances:
+        for con in getattr(self, 'out_' + base + 's'):
             sub_role.add(con.in_sign)
         return sub_role
