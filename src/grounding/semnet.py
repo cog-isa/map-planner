@@ -124,19 +124,28 @@ class CausalMatrix:
         return len(self.effect) > 0
 
     def includes(self, base, smaller):
-        for event in smaller.cause:
-            for se in self.cause:
-                if event.resonate(base, se):
+        sub1 = [event for event in itertools.chain(self.cause, self.effect) if len(event.coincidences) > 1]
+        sub2 = [event for event in itertools.chain(smaller.cause, smaller.effect) if len(event.coincidences) > 1]
+        for event2 in sub2:
+            for event1 in sub1:
+                if event2.resonate(base, event1):
                     break
             else:
                 return False
 
-        for event in smaller.effect:
-            for se in self.effect:
-                if event.resonate(base, se):
-                    break
-            else:
-                return False
+        # for event in smaller.cause:
+        #     for se in self.cause:
+        #         if event.resonate(base, se):
+        #             break
+        #     else:
+        #         return False
+        #
+        # for event in smaller.effect:
+        #     for se in self.effect:
+        #         if event.resonate(base, se):
+        #             break
+        #     else:
+        #         return False
 
         return True
 
@@ -171,25 +180,34 @@ class CausalMatrix:
     def resonate(self, base, pm, check_order=True, check_sign=True):
         if check_sign and not self.sign == pm.sign:
             return False
-        if not len(self.cause) == len(pm.cause) or not len(self.effect) == len(pm.effect):
+        sub1 = [event for event in itertools.chain(self.cause, self.effect) if len(event.coincidences) != 1]
+        sub2 = [event for event in itertools.chain(pm.cause, pm.effect) if len(event.coincidences) != 1]
+        if not len(sub1) == len(sub2):
             return False
         if check_order:
             for e1, e2 in zip(itertools.chain(self.cause, self.effect), itertools.chain(pm.cause, pm.effect)):
                 if not e1.resonate(base, e2):
                     return False
         else:
-            for e1 in self.cause:
-                for e2 in pm.cause:
+            for e1 in sub1:
+                for e2 in sub2:
                     if e1.resonate(base, e2, check_order):
                         break
                 else:
                     return False
-            for e1 in self.effect:
-                for e2 in pm.effect:
-                    if e1.resonate(base, e2, check_order):
-                        break
-                else:
-                    return False
+
+            # for e1 in self.cause:
+            #     for e2 in pm.cause:
+            #         if e1.resonate(base, e2, check_order):
+            #             break
+            #     else:
+            #         return False
+            # for e1 in self.effect:
+            #     for e2 in pm.effect:
+            #         if e1.resonate(base, e2, check_order):
+            #             break
+            #     else:
+            #         return False
 
         return True
 

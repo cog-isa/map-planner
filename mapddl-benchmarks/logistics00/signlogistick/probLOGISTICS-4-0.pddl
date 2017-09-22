@@ -30,6 +30,9 @@
 	(in-city apt1 cit1)
 	(in-city pos2 cit2)
 	(in-city apt2 cit2)
+	(empty tru1)
+	(empty tru2)
+	(empty apn1)
 )
 (:goal
 	(and
@@ -41,7 +44,9 @@
 	    (in-city apt1 cit1)
 	    (in-city pos2 cit2)
 	    (in-city apt2 cit2)
-
+        (empty tru1)
+	    (empty tru2)
+	    (empty apn1)
 	)
 )
 
@@ -50,8 +55,8 @@
         (and (always (forall (?loc - location ?city - city ?truck - truck)
             (implies (in-city ?loc cit1) (at tru1 ?loc))))
         )
-        (and (always (forall (?loc-from - location ?loc-to - location ?city - city ?truck - truck)
-            (implies (in-city ?loc-from cit2) (at tru2 ?loc-from) (in-city ?loc-to cit2) (at tru2 ?loc-to))))
+        (and (always (forall (?loc - location ?city - city ?truck - truck)
+            (implies (in-city ?loc cit2) (at tru2 ?loc))))
         )
     )
 )

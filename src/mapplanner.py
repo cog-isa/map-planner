@@ -63,8 +63,11 @@ def search_plan(domain, problem, saveload):
     for domain_file, problem_file in agent_tasks:
         problem = _parse(domain_file, problem_file)
         if problem.constraints:
-            for agent in problem.constraints:
-                subjects.add(agent)
+            for _, action in problem.domain.actions.items():
+                for ag in action.agents:
+                    for obj, type in problem.objects.items():
+                        if type.name == ag:
+                            subjects.add(obj)
         else:
             for _, action in problem.domain.actions.items():
                 for ag in action.agents:

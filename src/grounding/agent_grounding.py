@@ -65,7 +65,7 @@ class Agent:
 
         socket.send(message.encode())
 
-
+        #TODO возвращать итоговый план агенту для сохранения в опыт, а не свой план.
 
         # return self.solution
 

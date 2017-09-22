@@ -19,13 +19,16 @@ def map_search(task):
     logging.debug('Start: {0}'.format(check_pm.longstr()))
     logging.debug('Finish: {0}'.format(active_pm.longstr()))
     plans = map_iteration(active_pm, check_pm, [], 0)
-    solution = long_relations(plans)
-    solution.reverse()
+    if plans:
+        solution = long_relations(plans)
+        solution.reverse()
+    else:
+        logging.info('No solution can be found!')
+        return None
     return solution
 
 
-
-def map_iteration(active_pm, check_pm, current_plan, iteration, exp_actions = []):
+def map_iteration(active_pm, check_pm, current_plan, iteration, exp_actions=[]):
     logging.debug('STEP {0}:'.format(iteration))
     logging.debug('\tSituation {0}'.format(active_pm.longstr()))
     if iteration >= MAX_ITERATION:
@@ -50,7 +53,6 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, exp_actions = []
     for chain in active_chains:
         pm = chain[-1]
         active_signif |= pm.sign.spread_up_activity_act('significance', 3)
-
 
     meanings = []
     for pm_signif in active_signif:
@@ -83,8 +85,8 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, exp_actions = []
 
     candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _, _ in current_plan])
 
-    #TODO если есть разные реализации действий - какой из них выбирать (нужно создать разные кауз. матрицы на 1 знак действия)
-    # if not exp_actions:
+    # TODO если есть разные реализации действий - какой из них выбирать (нужно создать разные кауз. матрицы на 1 знак действия)
+    # if not exp_actions and iteration == 0:
     #     exp_actions = _get_experience(agents)
 
     if candidates and plan_signs:
@@ -98,12 +100,11 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, exp_actions = []
     final_plans = []
 
     # print("len of candidates is: {0}".format(len(candidates)))
-
+    print("len of final curent plan is: {0}. Len of candidates: {1}".format(len(current_plan), len(candidates)))
     for counter, name, script, ag_mask in candidates:
-
-        if len(current_plan):
-            if script in [cand[2] for cand in current_plan]:
-                return None
+        # if len(current_plan):
+        #     if script in [cand[2] for cand in current_plan]:
+        #         return None
 
         logging.debug('\tChoose {0}: {1} -> {2}'.format(counter, name, script))
 
@@ -118,10 +119,11 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, exp_actions = []
         else:
             recursive_plans = map_iteration(next_pm, check_pm, plan, iteration + 1, exp_actions)
             if recursive_plans:
-                #maxLen = len(recursive_plans[0])
+                # maxLen = len(recursive_plans[0])
                 final_plans.extend(recursive_plans)
 
     return final_plans
+
 
 def _get_experience(agents):
     actions = []
@@ -130,6 +132,7 @@ def _get_experience(agents):
             cm = connector.in_sign.meanings[connector.in_index]
             if max([len(event.coincidences) for event in itertools.chain(cm.cause, cm.effect)]) > 1:
                 if cm.is_causal():
+                    #for sign
                     for pm in actions:
                         if pm.resonate('meaning', cm):
                             break
@@ -140,8 +143,7 @@ def _get_experience(agents):
 
 
 def long_relations(plans):
-
-    #отбираем самые короткие планы
+    # отбираем самые короткие планы
     min = len(plans[0])
     for plan in plans:
         if len(plan) < min:
@@ -168,12 +170,12 @@ def long_relations(plans):
                 previous_agent = action[3]
                 counter = 1
             elif previous_agent == action[3]:
-                counter+=1
+                counter += 1
                 if agents[action[3]] < counter:
                     agents[action[3]] = counter
         # выбираем самую длинную последовательность действий в плане - она будет главной характеристикой плана
         longest = 0
-        agent=""
+        agent = ""
         for element in range(len(agents)):
             item = agents.popitem()
             if item[1] > longest:
@@ -226,22 +228,55 @@ def get_agents():
         agent_back.add(cm.sign)
     return I_sign, I_obj, agent_back
 
+
 def _check_experience(candidates, exp_actions):
     actions = []
     for candidate in candidates:
         if candidate[3]:
-           if candidate[2] in exp_actions:
-               actions.append(candidate)
+            if candidate[2] in exp_actions:
+                actions.append(candidate)
     if actions:
         return actions
     else:
         return candidates
 
+
+def mix_pairs(replace_map):
+    new_chain = {}
+    elements = []
+    merged_chains = []
+    used_roles = []
+    replace_map = list(replace_map.items())
+
+    def get_role(obj, roles):
+        for role in roles:
+            if obj in role[1]:
+                return role
+
+    for item in replace_map:
+        elements.append(item[1])
+    elements = list(itertools.product(*elements))
+    clean_el = elements.copy()
+    for element in clean_el:
+        if not len(set(element)) == len(element):
+            elements.remove(element)
+    for element in elements:
+        for obj in element:
+            avalaible_roles = [x for x in replace_map if x not in used_roles]
+            role = get_role(obj, avalaible_roles)
+            if role:
+                used_roles.append(role)
+                new_chain[role[0]] = obj
+        merged_chains.append(new_chain)
+        new_chain = {}
+        used_roles = []
+    return merged_chains
+
+
 def _generate_meanings(chains, agents):
     replace_map = {}
     main_pm = None
     # compose pairs - role-replacer
-    # TODO replace_map от эвента действия, чтобы не было location?loc-to pos1 у самолета
     for chain in chains:
         if not chain[1].sign in replace_map:
             replace_map[chain[1].sign] = [chain[-1]]
@@ -250,80 +285,13 @@ def _generate_meanings(chains, agents):
                 replace_map[chain[1].sign].append(chain[-1])
         main_pm = chain[0]
 
-
-
-    def get_role(obj, roles):
-        for role in roles:
-            if obj in role[1]:
-                return role
-
-    def mix_pairs(replace_map):
-        new_chain = {}
-        elements = []
-        merged_chains = []
-        used_roles = []
-        replace_map = list(replace_map.items())
-
-        for item in replace_map:
-            elements.append(item[1])
-        elements = list(itertools.product(*elements))
-        clean_el = elements.copy()
-        for element in clean_el:
-            if not len(set(element)) == len(element):
-                elements.remove(element)
-        for element in elements:
-            for obj in element:
-                avalaible_roles = [x for x in replace_map if x not in used_roles]
-                role = get_role(obj, avalaible_roles)
-                if role:
-                    used_roles.append(role)
-                    new_chain[role[0]] = obj
-            merged_chains.append(new_chain)
-            new_chain = {}
-            used_roles = []
-        return merged_chains
-
     connectors = [agent.out_meanings for agent in agents]
 
     unrenewed = {}
     for agent_con in connectors:
         for con in agent_con:
             if con.in_sign == main_pm.sign:
-                unrenewed.setdefault(con.out_sign, []).append(con.in_sign.meanings[con.in_index])
-
-    # roles = []
-    # predicates = set()
-    # for role_sign, variants in replace_map.items():
-    #     for variant in variants:
-    #         predicates |= variant.sign.spread_up_activity_obj('meaning', 1)
-    #     for role in roles:
-    #         if variants == role[0]:
-    #             continue
-    #     else:
-    #         roles.append((variants, predicates))
-    #     predicates = set()
-    #
-    # predicate_signs = []
-    #
-    # for pms, role in roles:
-    #     others = []
-    #     [others.extend(pm) for pm, _ in roles if not pm == pms]
-    #     others = [pm.sign for pm in others]
-    #     pms_signs = [pm.sign for pm in pms]
-    #     for r in role:
-    #        pred_signs = list(r.get_signs())
-    #        if len(r.cause) > len(roles):
-    #            continue
-    #        if pred_signs[0] in others and pred_signs[1] in pms_signs or pred_signs[0] in pms_signs and pred_signs[1] in others:
-    #            predicate_signs.append(pred_signs)
-    #            predicates.add(r.sign)
-    #
-    #
-    # for s in predicate_signs.copy():
-    #     others = [el for el in predicate_signs if el[1] == s[1] and el[0] == s[0] or el[1] == s[0] and el[0] == s[1]]
-    #     for el in others:
-    #         predicate_signs.remove(el)
-    #     predicate_signs.append(s)
+                unrenewed.setdefault(con.out_sign, set()).add(con.in_sign.meanings[con.in_index])
 
     new_map = {}
 
@@ -346,65 +314,39 @@ def _generate_meanings(chains, agents):
 
         for pm in lpm:
             pm_signs = pm.get_signs()
-            # new_map = {}
-            # role_signX = []
-            # variants = set()
-            # variantsX = set()
-            # variantsY = set()
             role_signs = replace_map.keys() & pm_signs
             for role_sign in role_signs:
                 new_map[role_sign] = replace_map[role_sign]
-            # if role_signs:
-            #     for event in itertools.chain(pm.cause, pm.effect):
-            #         for pred in predicates:
-            #             ev_signs = event.get_signs()
-            #             if pred in ev_signs:
-            #                 for pred_sign in predicate_signs:
-            #                     #TODO pred signs переделать
-            #                     if any(sign for sign in pred_sign if sign in ev_signs):
-            #                         role_signX = list(ev_signs - set(pred_sign))
-            #                         role_signX.remove(pred)
-            #                         variants |= set(pred_sign) - ev_signs
-            #     role_signY = list(role_signs - set(role_signX))
-            #
-            #     for role, pmd in replace_map.items():
-            #         variantsX |= {cm for cm in pmd if cm.sign in variants}
-            #         if any(cm for cm in pmd if cm.sign in variants):
-            #             variantsY |= set(pmd)
-            #
-            #     new_map.setdefault(role_signX[0], []).extend(variantsX)
-            #     if role_signY:
-            #         new_map.setdefault(role_signY[0], []).extend(list(variantsY))
             ma_combinations = mix_pairs(new_map)
 
-            #search for contrast pm and pms matrixes
-            exp_combinations = []
-            for cm in pms:
-                map = {}
-                if agent in cm[1].get_signs():
-                    if max([len(event.coincidences) for event in itertools.chain(cm[1].cause, cm[1].effect)]) > 1:
-                        sub1 = pm - cm[1]
-                        sub2 = cm[1] - pm
-                        if len(sub1) == len(sub2):
-                            for e1, e2 in zip(sub1, sub2):
-                                values = list(e2.get_signs() - e1.get_signs())
-                                keys = list(e1.get_signs() - e2.get_signs())
-                                for pair in itertools.product(values, keys):
-                                    if pair[0] in [cm.sign for cm in new_map[pair[1]]]:
-                                        value = [cm for cm in new_map[pair[1]] if cm.sign ==pair[0]][0]
-                                        map[pair[1]] = value
-                if map:
-                    exp_combinations.append(map)
-
-            ma_combinations = [comb for comb in ma_combinations if not comb in exp_combinations]
-
+            # search for contrast pm and pms matrixes
+            # exp_combinations = []
+            # for cm in pms:
+            #     map = {}
+            #     if agent in cm[1].get_signs():
+            #         if max([len(event.coincidences) for event in itertools.chain(cm[1].cause, cm[1].effect)]) > 1:
+            #             sub1 = pm - cm[1]
+            #             sub2 = cm[1] - pm
+            #             if len(sub1) == len(sub2):
+            #                 for e1, e2 in zip(sub1, sub2):
+            #                     values = list(e2.get_signs() - e1.get_signs())
+            #                     keys = list(e1.get_signs() - e2.get_signs())
+            #                     for pair in itertools.product(values, keys):
+            #                         if pair[1] in new_map.keys():
+            #                             if pair[0] in [cm.sign for cm in new_map[pair[1]]]:
+            #                                 value = [cm for cm in new_map[pair[1]] if cm.sign == pair[0]][0]
+            #                                 map[pair[1]] = value
+            #     if map:
+            #         exp_combinations.append(map)
+            #
+            # ma_combinations = [comb for comb in ma_combinations if not comb in exp_combinations]
 
             for ma_combination in ma_combinations:
                 cm = pm.copy('meaning', 'meaning')
 
                 for role_sign, obj_pm in ma_combination.items():
                     obj_cm = obj_pm.copy('significance', 'meaning')
-                    role_sign = [sign for sign in cm.get_signs() if sign == role_sign][0]
+                    # role_sign = [sign for sign in cm.get_signs() if sign == role_sign][0]
                     cm.replace('meaning', role_sign, obj_cm)
                 if not pms:
                     pms.append((agent, cm))
@@ -415,10 +357,7 @@ def _generate_meanings(chains, agents):
                     else:
                         pms.append((agent, cm))
 
-
-
     return pms
-
 
 
 def _check_activity(pm, active_pm):
@@ -453,8 +392,7 @@ def _time_shift_backward(active_pm, script):
         else:
             pm.add_event(event.copy(pm, 'meaning', 'meaning', copied))
     for event in script.cause:
-            pm.add_event(event.copy(pm, 'meaning', 'meaning', copied))
-
+        pm.add_event(event.copy(pm, 'meaning', 'meaning', copied))
     return pm
 
 
@@ -467,12 +405,12 @@ def _meta_check_activity(scripts, active_pm, check_pm, prev_pms):
                 break
         else:
             counter = 0
-            for event in estimation.cause:
-                for ce in check_pm.cause:
+            for event in [event for event in estimation.cause if len(event.coincidences) > 1]:
+                for ce in [event for event in check_pm.cause if len(event.coincidences) > 1]:
                     if event.resonate('meaning', ce):
                         counter += 1
                         break
-                    
+
             heuristic.append((counter, script.sign.name, script, agent))
     if heuristic:
         best_heuristics = max(heuristic, key=lambda x: x[0])

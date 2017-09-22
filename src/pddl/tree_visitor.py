@@ -692,12 +692,13 @@ class TraversePDDLProblem(PDDLVisitor):
                             else:
                                 for sign in signature:
                                     if c.key == sign[0]:
-                                        predsign = [s for s in sign if not s == sign[0]]
-                                        used_predicates = [pred for pred in itertools.chain(init_predicates, predicates) if pred.name == c.key and pred.signature == predsign]
-                                        if used_predicates:
-                                            constr.extend(used_predicates)
-                                        else:
-                                            constr.append(pddl.Predicate(c.key, predsign))
+                                        predsign = [s[0] for s in sign if not s == sign[0]]
+                                        predsignature = [s for s in sign if not s == sign[0]]
+                                        used_predicates = [pred for pred in itertools.chain(init_predicates, predicates)
+                                                           if pred.name == c.key and pred.signature[0][0] in predsign and
+                                                           pred.signature[1][0] in predsign]
+                                        agent = predsignature[0][0]
+                                        constr.append(pddl.Predicate(c.key, predsignature))
                         predDef = []
 
                     elif len(blocks):
