@@ -5,6 +5,7 @@ import itertools
 import grounding.sign_task as st
 from grounding.semnet import Sign
 import random
+from functools import reduce
 
 MAX_ITERATION = 100
 
@@ -86,8 +87,8 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, exp_actions=[]):
     candidates = _meta_check_activity(applicable_meanings, active_pm, check_pm, [x for x, _, _, _ in current_plan])
 
     # TODO если есть разные реализации действий - какой из них выбирать (нужно создать разные кауз. матрицы на 1 знак действия)
-    # if not exp_actions and iteration == 0:
-    #     exp_actions = _get_experience(agents)
+    if not exp_actions and iteration == 0:
+        exp_actions = _get_experience(agents)
 
     if candidates and plan_signs:
         candidates = _check_experience(candidates, exp_actions)
@@ -143,6 +144,7 @@ def _get_experience(agents):
 
 
 def long_relations(plans):
+    logging.info("in long relations")
     # отбираем самые короткие планы
     min = len(plans[0])
     for plan in plans:
@@ -317,6 +319,48 @@ def _generate_meanings(chains, agents):
             role_signs = replace_map.keys() & pm_signs
             for role_sign in role_signs:
                 new_map[role_sign] = replace_map[role_sign]
+            #todo узнавать размер блоков
+
+            # search for changed in grounding
+            old_map = {}
+            changed_event = []
+            changed_signs = set()
+            for key, value in replace_map.items():
+                if key not in new_map:
+                    old_map[key] = value
+            for key, value in old_map.items():
+                value_signs = {cm.sign for cm in value}
+                for event in itertools.chain(pm.cause, pm.effect):
+                    event_signs = event.get_signs()
+                    changed_sign = event_signs & value_signs
+                    if changed_sign:
+                        changed_signs |= changed_sign
+                        changed_event.append((event_signs - changed_signs))
+
+            predicates = set()
+            for changed_sign in changed_signs:
+                predicates |= {cm.sign for cm in changed_sign.spread_up_activity_obj('meaning', 1)}
+            # search for pred name where changed
+            predicates_signs = set()
+            for element in changed_event:
+                predicates_signs |= predicates & element
+
+            signs_to_change = set()
+            for pred in predicates_signs:
+                matrix_signs = [cm.get_signs() for _, cm in pred.meanings.items()]
+                for elem in matrix_signs:
+                    change = elem & changed_signs
+                    if change:
+                        signs_to_change |= elem -change
+
+            sign_to_change = signs_to_change & new_map.keys()
+
+            for key, item in new_map.copy().items():
+                new_dict = {}
+                if key in signs_to_change:
+                    new_dict[key] = [cm for cm in new_map[key] if cm.sign in signs_to_change - sign_to_change]
+                    new_map.update(new_dict)
+
             ma_combinations = mix_pairs(new_map)
 
             # search for contrast pm and pms matrixes

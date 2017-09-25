@@ -68,6 +68,9 @@ def search_plan(domain, problem, saveload):
                     for obj, type in problem.objects.items():
                         if type.name == ag:
                             subjects.add(obj)
+            if not subjects:
+                for constr in problem.constraints:
+                    subjects.add(constr)
         else:
             for _, action in problem.domain.actions.items():
                 for ag in action.agents:
