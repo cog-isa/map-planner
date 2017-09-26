@@ -174,8 +174,8 @@ def signify_predicates(predicates, updated_predicates, signs, subtype_map):
             def update_significance(fact, predicate, subtype_map, updated_predicates, effect=False):
                 role_name = fact[1][0].name + fact[0]
                 fact_name = fact[1][0].name
-                roles = set()
-                roles.add(role_name)
+                roles = []
+                roles.append(role_name)
                 role_signifs = []
                 if role_name not in signs:
                     signs[role_name] = Sign(role_name)
@@ -186,10 +186,12 @@ def signify_predicates(predicates, updated_predicates, signs, subtype_map):
                             for srole in subroles:
                                 srole_name = role + "?" + srole
                                 signs[srole_name] = Sign(srole_name)
-                                roles.add(srole_name)
+                                if not srole_name in roles:
+                                    roles.append(srole_name)
                                 sfact_name = fact_name + "?" + srole
                                 signs[sfact_name] = Sign(sfact_name)
-                                roles.add(sfact_name)
+                                if not sfact_name in roles:
+                                    roles.append(sfact_name)
                 used_facts = set()
                 for updated_fact in updated_predicates[pred_sign.name]:
                     updated_fact_name = updated_fact[1][0].name
@@ -200,19 +202,22 @@ def signify_predicates(predicates, updated_predicates, signs, subtype_map):
                         used_facts.add(updated_fact[0][1:])
                         if srole_name not in signs:
                             signs[srole_name] = Sign(srole_name)
-                        roles.add(srole_name)
+                        if not srole_name in roles:
+                            roles.append(srole_name)
                     elif fact[0] == updated_fact[0]:
                         srole_name = updated_fact_role
                         used_facts.add(updated_fact_name)
                         if srole_name not in signs:
                             signs[srole_name] = Sign(srole_name)
-                        roles.add(srole_name)
+                        if not srole_name in roles:
+                            roles.append(srole_name)
                     elif updated_fact_name in subtype_map[fact_name] and not updated_fact_name in predicate_names:
                         srole_name = updated_fact_role
                         used_facts.add(updated_fact_name)
                         if srole_name not in signs:
                             signs[srole_name] = Sign(srole_name)
-                        roles.add(srole_name)
+                        if not srole_name in roles:
+                            roles.append(srole_name)
                 for role_name in roles:
                     role_sign = signs[role_name]
                     obj_sign = signs[fact_name]
@@ -525,6 +530,24 @@ def signify_connection(signs):
     executer = approve_signif.add_execution(Approve.name.lower(), effect=True)
     Send.add_out_significance(executer)
 
+
+# def _update_predicates(predicates, actions):
+#     predicates = {pred.name: list(pred.signature) for pred in predicates}
+#     for action in actions:
+#         actions_predicates = action.precondition.copy()
+#         actions_predicates.extend([pred for pred in action.effect.addlist.copy()])
+#         for predicate in actions_predicates:
+#             # for signa in predicate.signature:
+#             #     if not signa in predicates[predicate.name]:
+#             #         predicates[predicate.name].append(signa)
+#             #predicates[predicate.name] |= set(predicate.signature)
+#             for fact in predicate.signature:
+#                 for action_fact in action.signature:
+#                     if fact[0] == action_fact[0] and fact in predicates[predicate.name] and not action_fact in predicates[predicate.name]:
+#                         #predicates[predicate.name].remove(fact)
+#                         predicates[predicate.name].append(action_fact)
+#
+#     return predicates
 
 def _update_predicates(predicates, actions):
     predicates = {pred.name: set(pred.signature) for pred in predicates}
