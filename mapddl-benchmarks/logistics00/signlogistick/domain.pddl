@@ -1,7 +1,7 @@
 (define (domain logistics)
 	(:requirements :typing :multi-agent)
 (:types
-	location vehicle package city - object
+	location vehicle package city weight - object
 	airport - location
 	truck airplane - vehicle
 )
@@ -10,6 +10,7 @@
 	(in ?obj - package ?veh - vehicle)
 	(in-city ?loc - location ?city - city)
 	(empty ?veh - vehicle)
+	(cargo ?w - weight ?obj - package)
 )
 
 (:action load-airplane
@@ -60,10 +61,11 @@
 
 (:action load-truck
 	:agent (?truck - truck)
-	:parameters (?obj - package ?loc - location ?veh - vehicle)
+	:parameters (?obj - package ?loc - location ?veh - vehicle ?w - weight)
 	:precondition (and
 		(at ?truck ?loc)
 		(at ?obj ?loc)
+		(cargo ?w ?obj)
 		(empty ?veh)
 	)
 	:effect (and
@@ -71,22 +73,25 @@
 		(not (empty ?veh))
 		(in ?obj ?truck)
 		(at ?truck ?loc)
+		(cargo ?w ?obj)
 	)
 )
 
 
 (:action unload-truck
 	:agent (?truck - truck)
-	:parameters (?obj - package ?loc - location ?veh - vehicle)
+	:parameters (?obj - package ?loc - location ?veh - vehicle ?w - weight)
 	:precondition (and
 		(at ?truck ?loc)
 		(in ?obj ?truck)
+		(cargo ?w ?obj)
 	)
 	:effect (and
 		(not (in ?obj ?truck))
 		(at ?obj ?loc)
 		(empty ?veh)
 		(at ?truck ?loc)
+		(cargo ?w ?obj)
 	)
 )
 

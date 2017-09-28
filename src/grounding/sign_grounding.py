@@ -2,6 +2,7 @@ import logging
 from collections import defaultdict
 
 import itertools
+from functools import reduce
 
 from grounding.semnet import Sign
 from .sign_task import Task
@@ -306,6 +307,10 @@ def signify_actions(actions, constraints, signs, agent, events, obj_means):
         else:
             specialized(action, signs, events, obj_means, act_signif, agent, constraints)
 
+def spec(action, signs, events, obj_means, act_signif, agent, constraints):
+    print()
+    pass
+
 
 
 def specialized(action, signs, events, obj_means, act_signif, agent, constraints):
@@ -313,10 +318,11 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
     agents_with_constraints = []
     for ag in action.agents:
         for cm in signs[ag].significances.values():
-            agent_signs.extend(list(cm.get_signs()))
+            agent_signs.extend(list(cm.get_signs())) #add current agents's signs
     for ag in constraints.keys():
         agents_with_constraints.append(signs[ag])
     agent_roles = {}
+    # receiving all agent's roles.
     for ag in agent_signs:
         for a in ag.get_role():
             if a.name != "object":
@@ -324,7 +330,7 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
     for ag in agent_roles.keys():
         act_mean = act_signif.copy('significance', 'meaning')
         role_signs = [sign for sign in act_mean.get_signs() if sign in agent_roles[ag]]
-        for role_sign in role_signs:
+        for role_sign in role_signs: # changing agent's roles to agents cms
             if role_sign in act_mean.get_signs():
                 # logging.info("action {0}, role_sign {1}".format(act_signif.sign.name, role_sign.name))
                 act_mean.replace('meaning', role_sign, obj_means[ag.name])
@@ -337,16 +343,22 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
             for pred in predicates:
                 for signa in pred.signature:
                     if signa[0] == ag.name:
-                        agent_preds.append(pred)
+                        agent_preds.append(pred) # predicates with agent signature
                         break
                     else:
                         continue
                 else:
-                    non_agent_preds.append(pred)
+                    non_agent_preds.append(pred) # predicates without agent signature
 
-            agent_signs = [pred.signature[1][0] for pred in agent_preds]
+            agent_signs= []
+            for predicate in agent_preds:
+                agent_signs.extend([signa[0] for signa in predicate.signature if signa[0] != ag.name])
+            #agent_signs = [pred.signature[1][0] for pred in agent_preds]
             for pred in non_agent_preds.copy():
-                if not pred.signature[0][0] in agent_signs:
+                signatures = []
+                for signa in pred.signature:
+                    signatures.append(signa[0])
+                if not any(signa in agent_signs for signa in signatures):
                     non_agent_preds.remove(pred)
             non_agent_preds_signs = {signs[pred.name] for pred in non_agent_preds}
             for event in itertools.chain(act_mean.cause, act_mean.effect):
@@ -356,6 +368,7 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
                     if pred_signs:
                         event_signs.remove(ag)
                         for pred in pred_signs:
+                            #TODO убрать package?obj
                             role_signature = {sign for sign in event_signs if sign != signs[pred.name]}
                             for role in role_signature:
                                 pred_roles = [signif.get_signs() for _, signif in role.significances.items()]
@@ -379,14 +392,29 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
                                             pred_signats.add(signs[signa[0]])
                 elif event_signs & non_agent_preds_signs:
                     for predicate in non_agent_preds:
-                        pred_sign = signs[predicate.signature[1][0]]
-                        attribute = pred_sign.find_attribute()
-                        while not attribute in event_signs:
-                            attribute = attribute.find_attribute()
-                        role_signifs.setdefault(attribute, set()).add(pred_sign)
+                        pred_signats = {signs[signa[0]] for signa in predicate.signature}
+                        used_signs = reduce(lambda x, y: x|y, role_signifs.values())
+                        new_signs = pred_signats - used_signs
+                        # if not signs[signa[0]] in role_signifs.values()
+                        for pred_sign in new_signs:
+                            #pred_sign = signs[predicate.signature[0][0]]
+                            attribute = pred_sign.find_attribute()
+                            depth = 2
+                            while depth > 0:
+                                if not attribute in event_signs:
+                                    attribute = attribute.find_attribute()
+                                    if attribute in event_signs:
+                                        break
+                                    else:
+                                        depth-=1
+                            else:
+                                continue
+                            role_signifs.setdefault(attribute, set()).add(pred_sign)
 
-
-
+            #TODO
+            obj_sign = signs['package?obj']
+            if obj_sign in role_signifs.keys():
+                role_signifs.pop(obj_sign)
 
 
             pairs = mix_pairs(role_signifs)
@@ -499,18 +527,19 @@ def signify_connection(signs):
     agents_type = []
     for agent in agents:
         agents_type.append({cm.sign for cm in agent.sign.spread_up_activity_obj("significance", 1)})
-    type = set()
-    for type1 in agents_type:
-        for type2 in agents_type:
-            if type1 != type2:
-                type |= type1 & type2
-            else:
-                type = [t for t in type2 if t.name != "object"][0]
-    if not type:
-        if agents:
-            type = [t for t in type if t.name != "object"]
-        else:
-            type = signs["I"]
+    # for type1 in agents_type:
+    #     for type2 in agents_type:
+    #         if type1 != type2:
+    #             type |= type1 & type2
+    #         else:
+    #             type = [t for t in type2 if t.name != "object"][0]
+    types = [t for t in reduce(lambda x,y: x&y, agents_type) if t != signs["object"]]
+    if types and len(agents):
+        type = types[0]
+    else:
+        type = signs["I"]
+
+
 
     They_signif = They_sign.add_significance()
     brdct_signif = Broadcast.add_significance()

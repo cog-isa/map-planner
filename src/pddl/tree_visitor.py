@@ -705,9 +705,17 @@ class TraversePDDLProblem(PDDLVisitor):
                         # if holding predicate
                         for predD in predDef:
                             for block in blocks:
-                                lists = [c.children[0].key, block]
+                                key = None
+                                child_place = 0
+                                for child in c.children:
+                                    if isinstance(child.key, str):
+                                        key = child.key
+                                        child_place = c.children.index(child)
+                                lists = [block]
+                                lists.insert(child_place, key)
+                                #lists = [c.children[0].key, block]
                                 blocknames.setdefault(predD.name, []).append(lists)
-                                agent = c.children[0].key
+                                agent = key
                                 for name in blocknames.get(predD.name):
                                     count = 0
                                     for v in name:
@@ -721,7 +729,8 @@ class TraversePDDLProblem(PDDLVisitor):
                                 blocknames = {}
                     else:
                         raise SemanticError('unknown predicate!')
-                constraints[agent] = constr
+                #constraints[agent] = constr
+                constraints.setdefault(agent, []).extend(constr)
                 constr = []
 
             self.set_in(node, constraints)
