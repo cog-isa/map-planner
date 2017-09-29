@@ -102,7 +102,7 @@ def ground(problem, agent, subjects, exp_signs=None):
         _expand_situation_ma_blocks(goal_situation, signs, pms, list_signs)  # For task
     elif problem.name.startswith("logistics"):
         _expand_situation_ma_logistics(goal_situation, signs, pms)
-    return Task(problem.name, signs, start_situation, goal_situation)
+    return Task(problem.name, signs, constraints, start_situation, goal_situation)
 
 
 def expand_ma(start_situation, goal_situation, signs, type_map, actions, start, goal):
@@ -559,24 +559,6 @@ def signify_connection(signs):
     executer = approve_signif.add_execution(Approve.name.lower(), effect=True)
     Send.add_out_significance(executer)
 
-
-# def _update_predicates(predicates, actions):
-#     predicates = {pred.name: list(pred.signature) for pred in predicates}
-#     for action in actions:
-#         actions_predicates = action.precondition.copy()
-#         actions_predicates.extend([pred for pred in action.effect.addlist.copy()])
-#         for predicate in actions_predicates:
-#             # for signa in predicate.signature:
-#             #     if not signa in predicates[predicate.name]:
-#             #         predicates[predicate.name].append(signa)
-#             #predicates[predicate.name] |= set(predicate.signature)
-#             for fact in predicate.signature:
-#                 for action_fact in action.signature:
-#                     if fact[0] == action_fact[0] and fact in predicates[predicate.name] and not action_fact in predicates[predicate.name]:
-#                         #predicates[predicate.name].remove(fact)
-#                         predicates[predicate.name].append(action_fact)
-#
-#     return predicates
 
 def _update_predicates(predicates, actions):
     predicates = {pred.name: set(pred.signature) for pred in predicates}
