@@ -1,0 +1,18 @@
+load-truck tru1
+drive-truck tru1
+unload-truck tru1
+drive-truck tru1
+drive-truck tru2
+drive-truck tru1
+drive-truck tru1
+drive-truck tru2
+load-truck tru2
+drive-truck tru2
+unload-truck tru2
+drive-truck tru2
+load-truck tru2
+drive-truck tru2
+unload-truck tru2
+drive-truck tru2
+approve tru2
+ 

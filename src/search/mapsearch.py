@@ -97,19 +97,17 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, constraints = []
     if not candidates:
         logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _, _ in current_plan]))
         return None
-
+    # мининг апн - пустые!!!
     logging.debug('\tFound {0} variants'.format(len(candidates)))
     final_plans = []
 
     # print("len of candidates is: {0}".format(len(candidates)))
     print("len of curent plan is: {0}. Len of candidates: {1}".format(len(current_plan), len(candidates)))
+    # if len(current_plan) > 10:
+    #     print([(pl[1], pl[3].name) for pl in current_plan])
     for counter, name, script, ag_mask in candidates:
-        # if len(current_plan):
-        #     if script in [cand[2] for cand in current_plan]:
-        #         return None
 
         logging.debug('\tChoose {0}: {1} -> {2}'.format(counter, name, script))
-
         plan = current_plan.copy()
         plan.append((active_pm, name, script, ag_mask))
         # if maxLen and len(plan)> maxLen:

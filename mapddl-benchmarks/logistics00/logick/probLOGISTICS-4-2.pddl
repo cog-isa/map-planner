@@ -14,12 +14,10 @@
 	tru12 - truck
 	tru2 - truck
 	tru22 - truck
-	apn1 - airplane
 	heavy - weight
     light - weight
 	)
 (:init
-	(at apn1 apt2)
 	(at tru1 pos1)
 	(at tru12 pos1)
 	(at tru2 pos2)
@@ -36,7 +34,6 @@
 	(empty tru12)
 	(empty tru2)
 	(empty tru22)
-	(empty apn1)
 	(cargo heavy obj21)
 	(cargo light obj22)
 	(cargo heavy obj11)
@@ -44,15 +41,14 @@
 )
 (:goal
 	(and
-	    (at apn1 apt2)
 	    (at tru1 pos1)
 	    (at tru12 pos1)
 	    (at tru2 pos2)
 	    (at tru22 pos2)
 		(at obj11 apt1)
-		(at obj22 pos1)
+		(at obj22 apt2)
 		(at obj12 apt1)
-		(at obj21 pos1)
+		(at obj21 apt2)
 		(in-city pos1 cit1)
 	    (in-city apt1 cit1)
 	    (in-city pos2 cit2)
@@ -61,7 +57,6 @@
         (empty tru12)
         (empty tru2)
         (empty tru22)
-        (empty apn1)
         (cargo heavy obj21)
         (cargo light obj22)
         (cargo heavy obj11)
