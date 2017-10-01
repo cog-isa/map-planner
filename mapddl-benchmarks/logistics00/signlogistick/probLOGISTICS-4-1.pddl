@@ -1,4 +1,4 @@
-(define (problem logistics-4-0-1) (:domain logistics)
+(define (problem logistics-4-1) (:domain logistics)
 (:objects
 	obj21 - package
 	obj22 - package

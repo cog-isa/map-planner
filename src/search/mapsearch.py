@@ -7,7 +7,7 @@ from grounding.semnet import Sign
 import random
 from functools import reduce
 
-MAX_ITERATION = 100
+MAX_ITERATION = 20
 
 world_model = None
 
