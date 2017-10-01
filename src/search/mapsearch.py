@@ -7,20 +7,21 @@ from grounding.semnet import Sign
 import random
 from functools import reduce
 
-MAX_ITERATION = 20
+MAX_ITERATION = 60
 
 world_model = None
-
+constraints = None
 
 def map_search(task):
     global world_model
+    global constraints
     world_model = task.signs
     active_pm = task.goal_situation.meanings[1]
     check_pm = task.start_situation.meanings[1]
     constraints = task.constraints
     logging.debug('Start: {0}'.format(check_pm.longstr()))
     logging.debug('Finish: {0}'.format(active_pm.longstr()))
-    plans = map_iteration(active_pm, check_pm, [], 0, constraints)
+    plans = map_iteration(active_pm, check_pm, [], 0)
     if plans:
         solution = long_relations(plans)
         solution.reverse()
@@ -30,7 +31,7 @@ def map_search(task):
     return solution
 
 
-def map_iteration(active_pm, check_pm, current_plan, iteration, constraints = [], exp_actions=[]):
+def map_iteration(active_pm, check_pm, current_plan, iteration, exp_actions=[]):
     logging.debug('STEP {0}:'.format(iteration))
     logging.debug('\tSituation {0}'.format(active_pm.longstr()))
     if iteration >= MAX_ITERATION:
@@ -65,12 +66,14 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, constraints = []
                 if chain[-1].sign == achain[-1].sign and len(chain) > 2 and chain not in merged_chains:
                     merged_chains.append(chain)
                     break
-        scripts = _generate_meanings(merged_chains, agents, constraints)
+        scripts = _generate_meanings(merged_chains, agents)
         meanings.extend(scripts)
     applicable_meanings = []
     agent = None
     if not precedents:
         for agent, cm in meanings:
+            # if world_model["a1"] in cm.get_signs() and cm.sign.name == "stack" and world_model["z"] in cm.get_signs():
+            #     print()
             result, checked = _check_activity(cm, active_pm)
             if result:
                 applicable_meanings.append((agent, checked))
@@ -97,11 +100,11 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, constraints = []
     if not candidates:
         logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _, _ in current_plan]))
         return None
-    # мининг апн - пустые!!!
+
     logging.debug('\tFound {0} variants'.format(len(candidates)))
     final_plans = []
 
-    # print("len of candidates is: {0}".format(len(candidates)))
+
     print("len of curent plan is: {0}. Len of candidates: {1}".format(len(current_plan), len(candidates)))
     # if len(current_plan) > 10:
     #     print([(pl[1], pl[3].name) for pl in current_plan])
@@ -117,7 +120,7 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, constraints = []
             final_plans.append(plan)
             print("len of final plan is: {0}. Len of candidates: {1}".format(len(plan), len(candidates)))
         else:
-            recursive_plans = map_iteration(next_pm, check_pm, plan, iteration + 1, constraints, exp_actions)
+            recursive_plans = map_iteration(next_pm, check_pm, plan, iteration + 1, exp_actions)
             if recursive_plans:
                 # maxLen = len(recursive_plans[0])
                 final_plans.extend(recursive_plans)
@@ -274,7 +277,7 @@ def mix_pairs(replace_map):
     return merged_chains
 
 
-def _generate_meanings(chains, agents, constraints):
+def _generate_meanings(chains, agents):
     replace_map = {}
     main_pm = None
     # compose pairs - role-replacer
@@ -355,14 +358,26 @@ def _generate_meanings(chains, agents, constraints):
                 agent_predicates = []
             predicates_signatures = []
             for pred in agent_predicates:
-                predicates_signatures.extend(pred.signature)
-            predicates_objects = {world_model[signa[0]] for signa in predicates_signatures}
+                predicates_signatures.append([signa[0] for signa in pred.signature])
+            #predicates_objects = {world_model[signa[0]] for signa in predicates_signatures}
+            changed = []
+            for sign in changed_signs:
+                changed = [signa for signa in predicates_signatures if sign.name in signa]
+            predicates_objects = set()
+            for sign in changed_signs:
+                for signa in changed:
+                    for element in signa:
+                        if element != sign.name:
+                            predicates_objects.add(world_model[element])
+
+            changed_event = reduce(lambda x, y: x|y, changed_event)
 
             for key, item in new_map.copy().items():
-                new_dict = {}
-                if predicates_objects:
-                    new_dict[key] = [cm for cm in new_map[key] if cm.sign in predicates_objects]
-                    new_map.update(new_dict)
+                if key in changed_event:
+                    new_dict = {}
+                    if predicates_objects:
+                        new_dict[key] = [cm for cm in new_map[key] if cm.sign in predicates_objects]
+                        new_map.update(new_dict)
 
             ma_combinations = mix_pairs(new_map)
 

@@ -46,9 +46,9 @@ def _parse(domain_file, problem_file):
     return problem
 
 #
-# from memory_profiler import profile
+from memory_profiler import profile
 #
-# @profile
+@profile
 def search_plan(domain, problem, saveload):
     from os import listdir
     agent_tasks = []

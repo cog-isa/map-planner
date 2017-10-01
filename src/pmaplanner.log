@@ -10741,3 +10741,730 @@
 2017-10-01 13:58:23,626 INFO      Grounding end: logistics-4-2
 2017-10-01 13:58:23,626 INFO      53 Signs created
 2017-10-01 13:58:23,627 INFO      Search start: logistics-4-2
+2017-10-01 14:05:50,402 INFO      Found domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:05:50,402 INFO      Parsing Domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:05:50,406 INFO      Parsing Problem ../mapddl-benchmarks/logistics00/logisticks_air/probLOGISTICS-4-2.pddl
+2017-10-01 14:05:50,408 INFO      5 Predicates parsed
+2017-10-01 14:05:50,408 INFO      6 Actions parsed
+2017-10-01 14:05:50,408 INFO      11 Objects parsed
+2017-10-01 14:05:50,408 INFO      0 Constants parsed
+2017-10-01 14:05:50,442 INFO      Grounding start: logistics-4-2
+2017-10-01 14:05:50,443 INFO      Grounding start: logistics-4-2
+2017-10-01 14:05:50,444 INFO      File not found
+2017-10-01 14:05:50,444 INFO      File not found
+2017-10-01 14:05:50,462 INFO      Grounding end: logistics-4-2
+2017-10-01 14:05:50,463 INFO      53 Signs created
+2017-10-01 14:05:50,463 INFO      Search start: logistics-4-2
+2017-10-01 14:05:50,466 INFO      Grounding end: logistics-4-2
+2017-10-01 14:05:50,466 INFO      53 Signs created
+2017-10-01 14:05:50,467 INFO      Search start: logistics-4-2
+2017-10-01 14:07:26,606 INFO      Found domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:07:26,606 INFO      Parsing Domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:07:26,610 INFO      Parsing Problem ../mapddl-benchmarks/logistics00/logisticks_air/probLOGISTICS-4-2.pddl
+2017-10-01 14:07:26,612 INFO      5 Predicates parsed
+2017-10-01 14:07:26,612 INFO      6 Actions parsed
+2017-10-01 14:07:26,612 INFO      11 Objects parsed
+2017-10-01 14:07:26,613 INFO      0 Constants parsed
+2017-10-01 14:07:26,633 INFO      Grounding start: logistics-4-2
+2017-10-01 14:07:26,633 INFO      Grounding start: logistics-4-2
+2017-10-01 14:07:26,634 INFO      File not found
+2017-10-01 14:07:26,634 INFO      File not found
+2017-10-01 14:07:26,643 INFO      Grounding end: logistics-4-2
+2017-10-01 14:07:26,643 INFO      Grounding end: logistics-4-2
+2017-10-01 14:07:26,643 INFO      53 Signs created
+2017-10-01 14:07:26,644 INFO      53 Signs created
+2017-10-01 14:07:26,644 INFO      Search start: logistics-4-2
+2017-10-01 14:07:26,644 INFO      Search start: logistics-4-2
+2017-10-01 14:12:12,875 INFO      Found domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:12:12,876 INFO      Parsing Domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:12:12,887 INFO      Parsing Problem ../mapddl-benchmarks/logistics00/logisticks_air/probLOGISTICS-4-2.pddl
+2017-10-01 14:12:12,892 INFO      5 Predicates parsed
+2017-10-01 14:12:12,892 INFO      6 Actions parsed
+2017-10-01 14:12:12,892 INFO      11 Objects parsed
+2017-10-01 14:12:12,892 INFO      0 Constants parsed
+2017-10-01 14:12:13,023 INFO      Grounding start: logistics-4-2
+2017-10-01 14:12:13,026 INFO      File not found
+2017-10-01 14:12:13,034 INFO      Grounding start: logistics-4-2
+2017-10-01 14:12:13,036 INFO      File not found
+2017-10-01 14:12:13,158 INFO      Grounding end: logistics-4-2
+2017-10-01 14:12:13,159 INFO      53 Signs created
+2017-10-01 14:12:13,160 INFO      Search start: logistics-4-2
+2017-10-01 14:12:13,386 INFO      Grounding end: logistics-4-2
+2017-10-01 14:12:13,387 INFO      53 Signs created
+2017-10-01 14:12:13,389 INFO      Search start: logistics-4-2
+2017-10-01 14:13:23,673 INFO      Found domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:13:23,674 INFO      Parsing Domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:13:23,685 INFO      Parsing Problem ../mapddl-benchmarks/logistics00/logisticks_air/probLOGISTICS-4-2.pddl
+2017-10-01 14:13:23,690 INFO      5 Predicates parsed
+2017-10-01 14:13:23,690 INFO      6 Actions parsed
+2017-10-01 14:13:23,691 INFO      11 Objects parsed
+2017-10-01 14:13:23,691 INFO      0 Constants parsed
+2017-10-01 14:13:23,824 INFO      Grounding start: logistics-4-2
+2017-10-01 14:13:23,827 INFO      File not found
+2017-10-01 14:13:23,841 INFO      Grounding start: logistics-4-2
+2017-10-01 14:13:23,845 INFO      File not found
+2017-10-01 14:13:24,159 INFO      Grounding end: logistics-4-2
+2017-10-01 14:13:24,161 INFO      53 Signs created
+2017-10-01 14:13:24,162 INFO      Search start: logistics-4-2
+2017-10-01 14:13:24,166 INFO      Grounding end: logistics-4-2
+2017-10-01 14:13:24,167 INFO      53 Signs created
+2017-10-01 14:13:24,168 INFO      Search start: logistics-4-2
+2017-10-01 14:13:42,384 INFO      Found domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:13:42,384 INFO      Parsing Domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:13:42,388 INFO      Parsing Problem ../mapddl-benchmarks/logistics00/logisticks_air/probLOGISTICS-4-2.pddl
+2017-10-01 14:13:42,390 INFO      5 Predicates parsed
+2017-10-01 14:13:42,391 INFO      6 Actions parsed
+2017-10-01 14:13:42,391 INFO      11 Objects parsed
+2017-10-01 14:13:42,391 INFO      0 Constants parsed
+2017-10-01 14:13:42,411 INFO      Grounding start: logistics-4-2
+2017-10-01 14:13:42,412 INFO      File not found
+2017-10-01 14:13:42,412 INFO      Grounding start: logistics-4-2
+2017-10-01 14:13:42,413 INFO      File not found
+2017-10-01 14:13:42,421 INFO      Grounding end: logistics-4-2
+2017-10-01 14:13:42,422 INFO      53 Signs created
+2017-10-01 14:13:42,422 INFO      Search start: logistics-4-2
+2017-10-01 14:13:42,428 INFO      Grounding end: logistics-4-2
+2017-10-01 14:13:42,429 INFO      53 Signs created
+2017-10-01 14:13:42,429 INFO      Search start: logistics-4-2
+2017-10-01 14:16:04,150 INFO      Found domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:16:04,151 INFO      Parsing Domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:16:04,165 INFO      Parsing Problem ../mapddl-benchmarks/logistics00/logisticks_air/probLOGISTICS-4-2.pddl
+2017-10-01 14:16:04,171 INFO      5 Predicates parsed
+2017-10-01 14:16:04,171 INFO      6 Actions parsed
+2017-10-01 14:16:04,171 INFO      11 Objects parsed
+2017-10-01 14:16:04,172 INFO      0 Constants parsed
+2017-10-01 14:16:04,304 INFO      Grounding start: logistics-4-2
+2017-10-01 14:16:04,306 INFO      File not found
+2017-10-01 14:16:04,308 INFO      Grounding start: logistics-4-2
+2017-10-01 14:16:04,310 INFO      File not found
+2017-10-01 14:16:04,573 INFO      Grounding end: logistics-4-2
+2017-10-01 14:16:04,575 INFO      53 Signs created
+2017-10-01 14:16:04,576 INFO      Search start: logistics-4-2
+2017-10-01 14:16:04,577 INFO      Grounding end: logistics-4-2
+2017-10-01 14:16:04,579 INFO      53 Signs created
+2017-10-01 14:16:04,580 INFO      Search start: logistics-4-2
+2017-10-01 14:16:18,939 INFO      Found domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:16:18,940 INFO      Parsing Domain ../mapddl-benchmarks/logistics00/logisticks_air/domain.pddl
+2017-10-01 14:16:18,950 INFO      Parsing Problem ../mapddl-benchmarks/logistics00/logisticks_air/probLOGISTICS-4-2.pddl
+2017-10-01 14:16:18,955 INFO      5 Predicates parsed
+2017-10-01 14:16:18,956 INFO      6 Actions parsed
+2017-10-01 14:16:18,956 INFO      11 Objects parsed
+2017-10-01 14:16:18,956 INFO      0 Constants parsed
+2017-10-01 14:16:19,093 INFO      Grounding start: logistics-4-2
+2017-10-01 14:16:19,093 INFO      Grounding start: logistics-4-2
+2017-10-01 14:16:19,095 INFO      File not found
+2017-10-01 14:16:19,096 INFO      File not found
+2017-10-01 14:16:19,164 INFO      Grounding end: logistics-4-2
+2017-10-01 14:16:19,165 INFO      53 Signs created
+2017-10-01 14:16:19,166 INFO      Search start: logistics-4-2
+2017-10-01 14:16:19,339 INFO      Grounding end: logistics-4-2
+2017-10-01 14:16:19,343 INFO      53 Signs created
+2017-10-01 14:16:19,346 INFO      Search start: logistics-4-2
+2017-10-01 14:55:45,126 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 14:55:45,126 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 14:55:45,130 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 14:55:45,133 INFO      6 Predicates parsed
+2017-10-01 14:55:45,133 INFO      4 Actions parsed
+2017-10-01 14:55:45,133 INFO      12 Objects parsed
+2017-10-01 14:55:45,133 INFO      0 Constants parsed
+2017-10-01 14:55:45,160 INFO      Grounding start: blocks-1-0
+2017-10-01 14:55:45,160 INFO      Grounding start: blocks-1-0
+2017-10-01 14:55:45,161 INFO      File not found
+2017-10-01 14:55:45,161 INFO      File not found
+2017-10-01 14:55:45,161 INFO      Grounding start: blocks-1-0
+2017-10-01 14:55:45,162 INFO      File not found
+2017-10-01 14:55:45,171 INFO      Grounding end: blocks-1-0
+2017-10-01 14:55:45,172 INFO      35 Signs created
+2017-10-01 14:55:45,172 INFO      Search start: blocks-1-0
+2017-10-01 14:55:45,180 INFO      Grounding end: blocks-1-0
+2017-10-01 14:55:45,181 INFO      35 Signs created
+2017-10-01 14:55:45,181 INFO      Search start: blocks-1-0
+2017-10-01 14:55:45,181 INFO      Grounding end: blocks-1-0
+2017-10-01 14:55:45,182 INFO      35 Signs created
+2017-10-01 14:55:45,182 INFO      Search start: blocks-1-0
+2017-10-01 14:56:11,216 INFO      in long relations
+2017-10-01 14:56:11,220 INFO      Plan preparation to save...
+2017-10-01 14:56:11,220 INFO      	Cleaning SWM...
+2017-10-01 14:56:12,218 INFO      in long relations
+2017-10-01 14:56:12,222 INFO      Plan preparation to save...
+2017-10-01 14:56:12,222 INFO      	Cleaning SWM...
+2017-10-01 14:56:12,315 INFO      in long relations
+2017-10-01 14:56:12,319 INFO      Plan preparation to save...
+2017-10-01 14:56:12,319 INFO      	Cleaning SWM...
+2017-10-01 14:56:29,591 INFO      	Saving precedent...
+2017-10-01 14:56:29,593 INFO      Start saving to wmodel_10_01_14_56_a1.swm
+2017-10-01 14:56:29,593 INFO      	Dumping SWM...
+2017-10-01 14:56:30,205 INFO      	Saving precedent...
+2017-10-01 14:56:30,207 INFO      Start saving to wmodel_10_01_14_56_a2.swm
+2017-10-01 14:56:30,208 INFO      	Dumping SWM...
+2017-10-01 14:56:30,299 INFO      	Saving precedent...
+2017-10-01 14:56:30,301 INFO      Start saving to wmodel_10_01_14_56_a3.swm
+2017-10-01 14:56:30,302 INFO      	Dumping SWM...
+2017-10-01 14:56:30,311 INFO      Plan length: 125
+2017-10-01 15:07:30,123 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:07:30,124 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:07:30,127 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:07:30,129 INFO      6 Predicates parsed
+2017-10-01 15:07:30,129 INFO      4 Actions parsed
+2017-10-01 15:07:30,129 INFO      12 Objects parsed
+2017-10-01 15:07:30,129 INFO      0 Constants parsed
+2017-10-01 15:07:30,166 INFO      Grounding start: blocks-1-0
+2017-10-01 15:07:30,166 INFO      Grounding start: blocks-1-0
+2017-10-01 15:07:30,168 INFO      File not found
+2017-10-01 15:07:30,168 INFO      File not found
+2017-10-01 15:07:30,168 INFO      Grounding start: blocks-1-0
+2017-10-01 15:07:30,169 INFO      File not found
+2017-10-01 15:07:30,183 INFO      Grounding end: blocks-1-0
+2017-10-01 15:07:30,184 INFO      35 Signs created
+2017-10-01 15:07:30,184 INFO      Search start: blocks-1-0
+2017-10-01 15:07:30,190 INFO      Grounding end: blocks-1-0
+2017-10-01 15:07:30,191 INFO      35 Signs created
+2017-10-01 15:07:30,191 INFO      Search start: blocks-1-0
+2017-10-01 15:07:30,192 INFO      Grounding end: blocks-1-0
+2017-10-01 15:07:30,193 INFO      35 Signs created
+2017-10-01 15:07:30,193 INFO      Search start: blocks-1-0
+2017-10-01 15:07:54,717 INFO      in long relations
+2017-10-01 15:07:54,722 INFO      Plan preparation to save...
+2017-10-01 15:07:54,723 INFO      	Cleaning SWM...
+2017-10-01 15:07:55,029 INFO      in long relations
+2017-10-01 15:07:55,034 INFO      Plan preparation to save...
+2017-10-01 15:07:55,034 INFO      	Cleaning SWM...
+2017-10-01 15:07:55,101 INFO      in long relations
+2017-10-01 15:07:55,106 INFO      Plan preparation to save...
+2017-10-01 15:07:55,107 INFO      	Cleaning SWM...
+2017-10-01 15:08:12,529 INFO      	Saving precedent...
+2017-10-01 15:08:12,533 INFO      Start saving to wmodel_10_01_15_08_a2.swm
+2017-10-01 15:08:12,533 INFO      	Dumping SWM...
+2017-10-01 15:08:12,767 INFO      	Saving precedent...
+2017-10-01 15:08:12,769 INFO      Start saving to wmodel_10_01_15_08_a1.swm
+2017-10-01 15:08:12,769 INFO      	Dumping SWM...
+2017-10-01 15:08:12,946 INFO      	Saving precedent...
+2017-10-01 15:08:12,948 INFO      Start saving to wmodel_10_01_15_08_a3.swm
+2017-10-01 15:08:12,948 INFO      	Dumping SWM...
+2017-10-01 15:08:12,958 INFO      Plan length: 125
+2017-10-01 15:14:53,360 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:14:53,439 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:14:53,467 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:14:53,493 INFO      6 Predicates parsed
+2017-10-01 15:14:53,493 INFO      4 Actions parsed
+2017-10-01 15:14:53,494 INFO      12 Objects parsed
+2017-10-01 15:14:53,494 INFO      0 Constants parsed
+2017-10-01 15:14:53,642 INFO      Grounding start: blocks-1-0
+2017-10-01 15:14:53,643 INFO      Grounding start: blocks-1-0
+2017-10-01 15:14:53,645 INFO      Grounding start: blocks-1-0
+2017-10-01 15:15:15,978 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:15:16,063 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:15:16,089 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:15:16,113 INFO      6 Predicates parsed
+2017-10-01 15:15:16,114 INFO      4 Actions parsed
+2017-10-01 15:15:16,114 INFO      12 Objects parsed
+2017-10-01 15:15:16,115 INFO      0 Constants parsed
+2017-10-01 15:15:16,285 INFO      Grounding start: blocks-1-0
+2017-10-01 15:15:16,286 INFO      Grounding start: blocks-1-0
+2017-10-01 15:15:16,287 INFO      Grounding start: blocks-1-0
+2017-10-01 15:15:37,009 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:15:37,088 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:15:37,117 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:15:37,141 INFO      6 Predicates parsed
+2017-10-01 15:15:37,141 INFO      4 Actions parsed
+2017-10-01 15:15:37,142 INFO      12 Objects parsed
+2017-10-01 15:15:37,143 INFO      0 Constants parsed
+2017-10-01 15:15:37,300 INFO      Grounding start: blocks-1-0
+2017-10-01 15:15:37,300 INFO      Grounding start: blocks-1-0
+2017-10-01 15:15:37,302 INFO      File not found
+2017-10-01 15:15:37,302 INFO      Grounding start: blocks-1-0
+2017-10-01 15:15:37,304 INFO      File not found
+2017-10-01 15:15:37,306 INFO      File not found
+2017-10-01 15:15:37,445 INFO      Grounding end: blocks-1-0
+2017-10-01 15:15:37,447 INFO      35 Signs created
+2017-10-01 15:15:37,448 INFO      Search start: blocks-1-0
+2017-10-01 15:15:37,464 INFO      Grounding end: blocks-1-0
+2017-10-01 15:15:37,465 INFO      35 Signs created
+2017-10-01 15:15:37,466 INFO      Search start: blocks-1-0
+2017-10-01 15:15:37,477 INFO      Grounding end: blocks-1-0
+2017-10-01 15:15:37,479 INFO      35 Signs created
+2017-10-01 15:15:37,480 INFO      Search start: blocks-1-0
+2017-10-01 15:19:09,850 INFO      in long relations
+2017-10-01 15:19:09,857 INFO      Plan preparation to save...
+2017-10-01 15:19:09,858 INFO      	Cleaning SWM...
+2017-10-01 15:19:11,099 INFO      in long relations
+2017-10-01 15:19:11,105 INFO      Plan preparation to save...
+2017-10-01 15:19:11,107 INFO      	Cleaning SWM...
+2017-10-01 15:19:11,215 INFO      in long relations
+2017-10-01 15:19:11,222 INFO      Plan preparation to save...
+2017-10-01 15:19:11,223 INFO      	Cleaning SWM...
+2017-10-01 15:21:37,526 INFO      	Saving precedent...
+2017-10-01 15:21:37,543 INFO      Start saving to wmodel_10_01_15_21_a3.swm
+2017-10-01 15:21:37,544 INFO      	Dumping SWM...
+2017-10-01 15:21:38,203 INFO      	Saving precedent...
+2017-10-01 15:21:38,216 INFO      Start saving to wmodel_10_01_15_21_a1.swm
+2017-10-01 15:21:38,216 INFO      	Dumping SWM...
+2017-10-01 15:21:39,329 INFO      	Saving precedent...
+2017-10-01 15:21:39,343 INFO      Start saving to wmodel_10_01_15_21_a2.swm
+2017-10-01 15:21:39,344 INFO      	Dumping SWM...
+2017-10-01 15:21:39,379 INFO      Plan length: 125
+2017-10-01 15:30:42,119 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:30:42,286 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:30:42,334 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:30:42,374 INFO      6 Predicates parsed
+2017-10-01 15:30:42,375 INFO      4 Actions parsed
+2017-10-01 15:30:42,376 INFO      12 Objects parsed
+2017-10-01 15:30:42,376 INFO      0 Constants parsed
+2017-10-01 15:30:42,577 INFO      Grounding start: blocks-1-0
+2017-10-01 15:30:42,586 INFO      Grounding start: blocks-1-0
+2017-10-01 15:30:42,616 INFO      Grounding start: blocks-1-0
+2017-10-01 15:30:56,218 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:30:56,402 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:30:56,452 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:30:56,494 INFO      6 Predicates parsed
+2017-10-01 15:30:56,495 INFO      4 Actions parsed
+2017-10-01 15:30:56,496 INFO      12 Objects parsed
+2017-10-01 15:30:56,496 INFO      0 Constants parsed
+2017-10-01 15:30:56,661 INFO      Grounding start: blocks-1-0
+2017-10-01 15:30:56,674 INFO      Grounding start: blocks-1-0
+2017-10-01 15:30:56,689 INFO      Grounding start: blocks-1-0
+2017-10-01 15:32:11,936 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:32:12,100 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:32:12,143 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:32:12,186 INFO      6 Predicates parsed
+2017-10-01 15:32:12,186 INFO      4 Actions parsed
+2017-10-01 15:32:12,187 INFO      12 Objects parsed
+2017-10-01 15:32:12,188 INFO      0 Constants parsed
+2017-10-01 15:32:12,354 INFO      Grounding start: blocks-1-0
+2017-10-01 15:32:12,376 INFO      Grounding start: blocks-1-0
+2017-10-01 15:32:12,381 INFO      Grounding start: blocks-1-0
+2017-10-01 15:33:38,747 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:33:38,951 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:33:39,002 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:33:39,044 INFO      6 Predicates parsed
+2017-10-01 15:33:39,045 INFO      4 Actions parsed
+2017-10-01 15:33:39,046 INFO      12 Objects parsed
+2017-10-01 15:33:39,047 INFO      0 Constants parsed
+2017-10-01 15:33:39,222 INFO      Grounding start: blocks-1-0
+2017-10-01 15:33:39,236 INFO      Grounding start: blocks-1-0
+2017-10-01 15:33:39,249 INFO      Grounding start: blocks-1-0
+2017-10-01 15:37:41,866 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:37:42,047 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:37:42,090 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:37:42,129 INFO      6 Predicates parsed
+2017-10-01 15:37:42,129 INFO      4 Actions parsed
+2017-10-01 15:37:42,130 INFO      12 Objects parsed
+2017-10-01 15:37:42,131 INFO      0 Constants parsed
+2017-10-01 15:37:42,302 INFO      Grounding start: blocks-1-0
+2017-10-01 15:37:42,310 INFO      Grounding start: blocks-1-0
+2017-10-01 15:37:42,327 INFO      Grounding start: blocks-1-0
+2017-10-01 15:38:24,676 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:38:24,866 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:38:24,942 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:38:24,987 INFO      6 Predicates parsed
+2017-10-01 15:38:24,989 INFO      4 Actions parsed
+2017-10-01 15:38:24,990 INFO      12 Objects parsed
+2017-10-01 15:38:24,993 INFO      0 Constants parsed
+2017-10-01 15:38:25,198 INFO      Grounding start: blocks-1-0
+2017-10-01 15:38:25,203 INFO      Grounding start: blocks-1-0
+2017-10-01 15:38:25,228 INFO      Grounding start: blocks-1-0
+2017-10-01 15:40:10,512 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:40:10,718 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:40:10,768 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:40:10,809 INFO      6 Predicates parsed
+2017-10-01 15:40:10,810 INFO      4 Actions parsed
+2017-10-01 15:40:10,811 INFO      12 Objects parsed
+2017-10-01 15:40:10,812 INFO      0 Constants parsed
+2017-10-01 15:40:10,985 INFO      Grounding start: blocks-1-0
+2017-10-01 15:40:10,998 INFO      Grounding start: blocks-1-0
+2017-10-01 15:40:11,013 INFO      Grounding start: blocks-1-0
+2017-10-01 15:40:24,754 INFO      Grounding end: blocks-1-0
+2017-10-01 15:40:25,419 INFO      38 Signs created
+2017-10-01 15:40:31,006 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:40:31,061 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:40:31,086 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:40:31,111 INFO      6 Predicates parsed
+2017-10-01 15:40:31,111 INFO      4 Actions parsed
+2017-10-01 15:40:31,112 INFO      12 Objects parsed
+2017-10-01 15:40:31,112 INFO      0 Constants parsed
+2017-10-01 15:40:31,142 INFO      Grounding start: blocks-1-0
+2017-10-01 15:40:31,142 INFO      Grounding start: blocks-1-0
+2017-10-01 15:40:31,143 INFO      Grounding start: blocks-1-0
+2017-10-01 15:40:31,161 INFO      Grounding end: blocks-1-0
+2017-10-01 15:40:31,162 INFO      38 Signs created
+2017-10-01 15:40:31,163 INFO      Search start: blocks-1-0
+2017-10-01 15:40:31,175 INFO      Grounding end: blocks-1-0
+2017-10-01 15:40:31,176 INFO      38 Signs created
+2017-10-01 15:40:31,177 INFO      Grounding end: blocks-1-0
+2017-10-01 15:40:31,177 INFO      Search start: blocks-1-0
+2017-10-01 15:40:31,178 INFO      38 Signs created
+2017-10-01 15:40:31,179 INFO      Search start: blocks-1-0
+2017-10-01 15:40:45,081 INFO      in long relations
+2017-10-01 15:40:45,083 INFO      There are no plans in which I figure
+2017-10-01 15:40:45,090 INFO      Plan preparation to save...
+2017-10-01 15:40:45,091 INFO      	Cleaning SWM...
+2017-10-01 15:40:45,901 INFO      in long relations
+2017-10-01 15:40:45,902 INFO      There are no plans in which I figure
+2017-10-01 15:40:45,908 INFO      Plan preparation to save...
+2017-10-01 15:40:45,909 INFO      	Cleaning SWM...
+2017-10-01 15:40:46,329 INFO      in long relations
+2017-10-01 15:40:46,331 INFO      There are no plans in which I figure
+2017-10-01 15:40:46,339 INFO      Plan preparation to save...
+2017-10-01 15:40:46,339 INFO      	Cleaning SWM...
+2017-10-01 15:40:47,586 INFO      	Saving precedent...
+2017-10-01 15:40:47,609 INFO      Start saving to wmodel_10_01_15_40_a2.swm
+2017-10-01 15:40:47,610 INFO      	Dumping SWM...
+2017-10-01 15:40:48,088 INFO      	Saving precedent...
+2017-10-01 15:40:48,101 INFO      Start saving to wmodel_10_01_15_40_a1.swm
+2017-10-01 15:40:48,101 INFO      	Dumping SWM...
+2017-10-01 15:40:48,323 INFO      	Saving precedent...
+2017-10-01 15:40:48,337 INFO      Start saving to wmodel_10_01_15_40_a3.swm
+2017-10-01 15:40:48,338 INFO      	Dumping SWM...
+2017-10-01 15:40:48,358 INFO      Plan length: 35
+2017-10-01 15:43:28,524 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:43:28,524 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:43:28,528 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 15:43:28,531 INFO      6 Predicates parsed
+2017-10-01 15:43:28,531 INFO      4 Actions parsed
+2017-10-01 15:43:28,531 INFO      12 Objects parsed
+2017-10-01 15:43:28,531 INFO      0 Constants parsed
+2017-10-01 15:43:28,545 INFO      Grounding start: blocks-1-0
+2017-10-01 15:43:28,545 INFO      Grounding start: blocks-1-0
+2017-10-01 15:43:28,546 INFO      File not found
+2017-10-01 15:43:28,546 INFO      File not found
+2017-10-01 15:43:28,546 INFO      Grounding start: blocks-1-0
+2017-10-01 15:43:28,547 INFO      File not found
+2017-10-01 15:43:28,558 INFO      Grounding end: blocks-1-0
+2017-10-01 15:43:28,558 INFO      35 Signs created
+2017-10-01 15:43:28,558 INFO      Search start: blocks-1-0
+2017-10-01 15:43:28,567 INFO      Grounding end: blocks-1-0
+2017-10-01 15:43:28,568 INFO      35 Signs created
+2017-10-01 15:43:28,568 INFO      Search start: blocks-1-0
+2017-10-01 15:43:28,568 INFO      Grounding end: blocks-1-0
+2017-10-01 15:43:28,569 INFO      35 Signs created
+2017-10-01 15:43:28,569 INFO      Search start: blocks-1-0
+2017-10-01 15:43:55,628 INFO      in long relations
+2017-10-01 15:43:55,633 INFO      Plan preparation to save...
+2017-10-01 15:43:55,634 INFO      	Cleaning SWM...
+2017-10-01 15:43:55,728 INFO      in long relations
+2017-10-01 15:43:55,732 INFO      Plan preparation to save...
+2017-10-01 15:43:55,733 INFO      	Cleaning SWM...
+2017-10-01 15:43:56,084 INFO      in long relations
+2017-10-01 15:43:56,088 INFO      Plan preparation to save...
+2017-10-01 15:43:56,089 INFO      	Cleaning SWM...
+2017-10-01 15:44:15,585 INFO      	Saving precedent...
+2017-10-01 15:44:15,587 INFO      Start saving to wmodel_10_01_15_44_a3.swm
+2017-10-01 15:44:15,587 INFO      	Dumping SWM...
+2017-10-01 15:44:15,666 INFO      	Saving precedent...
+2017-10-01 15:44:15,669 INFO      Start saving to wmodel_10_01_15_44_a2.swm
+2017-10-01 15:44:15,669 INFO      	Dumping SWM...
+2017-10-01 15:44:15,790 INFO      	Saving precedent...
+2017-10-01 15:44:15,792 INFO      Start saving to wmodel_10_01_15_44_a1.swm
+2017-10-01 15:44:15,792 INFO      	Dumping SWM...
+2017-10-01 15:44:15,812 INFO      Plan length: 125
+2017-10-01 15:45:36,795 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:45:36,848 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:45:36,876 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 15:45:36,909 INFO      6 Predicates parsed
+2017-10-01 15:45:36,910 INFO      4 Actions parsed
+2017-10-01 15:45:36,910 INFO      14 Objects parsed
+2017-10-01 15:45:36,911 INFO      0 Constants parsed
+2017-10-01 15:45:36,943 INFO      Grounding start: blocks-1-0
+2017-10-01 15:45:36,943 INFO      Grounding start: blocks-1-0
+2017-10-01 15:45:36,944 INFO      Grounding start: blocks-1-0
+2017-10-01 15:45:36,967 INFO      Grounding end: blocks-1-0
+2017-10-01 15:45:36,968 INFO      40 Signs created
+2017-10-01 15:45:36,968 INFO      Search start: blocks-1-0
+2017-10-01 15:45:36,977 INFO      Grounding end: blocks-1-0
+2017-10-01 15:45:36,977 INFO      40 Signs created
+2017-10-01 15:45:36,978 INFO      Search start: blocks-1-0
+2017-10-01 15:45:36,982 INFO      Grounding end: blocks-1-0
+2017-10-01 15:45:36,983 INFO      40 Signs created
+2017-10-01 15:45:36,984 INFO      Search start: blocks-1-0
+2017-10-01 15:46:31,208 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:46:31,211 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:46:31,236 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 15:46:31,257 INFO      6 Predicates parsed
+2017-10-01 15:46:31,258 INFO      4 Actions parsed
+2017-10-01 15:46:31,258 INFO      14 Objects parsed
+2017-10-01 15:46:31,258 INFO      0 Constants parsed
+2017-10-01 15:46:31,403 INFO      Grounding start: blocks-1-0
+2017-10-01 15:46:31,415 INFO      Grounding start: blocks-1-0
+2017-10-01 15:46:31,447 INFO      Grounding start: blocks-1-0
+2017-10-01 15:48:19,144 INFO      Grounding end: blocks-1-0
+2017-10-01 15:48:20,281 INFO      40 Signs created
+2017-10-01 15:48:35,010 INFO      Search start: blocks-1-0
+2017-10-01 15:49:19,211 INFO      Grounding end: blocks-1-0
+2017-10-01 15:49:19,213 INFO      40 Signs created
+2017-10-01 15:49:19,214 INFO      Search start: blocks-1-0
+2017-10-01 15:49:19,216 INFO      Grounding end: blocks-1-0
+2017-10-01 15:49:19,219 INFO      40 Signs created
+2017-10-01 15:49:19,221 INFO      Search start: blocks-1-0
+2017-10-01 15:53:10,469 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:53:10,470 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:53:10,474 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 15:53:10,477 INFO      6 Predicates parsed
+2017-10-01 15:53:10,477 INFO      4 Actions parsed
+2017-10-01 15:53:10,477 INFO      14 Objects parsed
+2017-10-01 15:53:10,477 INFO      0 Constants parsed
+2017-10-01 15:53:10,493 INFO      Grounding start: blocks-1-0
+2017-10-01 15:53:10,493 INFO      Grounding start: blocks-1-0
+2017-10-01 15:53:10,493 INFO      Grounding start: blocks-1-0
+2017-10-01 15:53:10,507 INFO      Grounding end: blocks-1-0
+2017-10-01 15:53:10,507 INFO      40 Signs created
+2017-10-01 15:53:10,507 INFO      Search start: blocks-1-0
+2017-10-01 15:53:10,510 INFO      Grounding end: blocks-1-0
+2017-10-01 15:53:10,510 INFO      Grounding end: blocks-1-0
+2017-10-01 15:53:10,511 INFO      40 Signs created
+2017-10-01 15:53:10,511 INFO      40 Signs created
+2017-10-01 15:53:10,511 INFO      Search start: blocks-1-0
+2017-10-01 15:53:10,511 INFO      Search start: blocks-1-0
+2017-10-01 15:53:31,707 INFO      in long relations
+2017-10-01 15:53:31,711 INFO      Plan preparation to save...
+2017-10-01 15:53:31,712 INFO      	Cleaning SWM...
+2017-10-01 15:53:32,902 INFO      in long relations
+2017-10-01 15:53:32,902 INFO      There are no plans in which I figure
+2017-10-01 15:53:32,907 INFO      Plan preparation to save...
+2017-10-01 15:53:32,907 INFO      	Cleaning SWM...
+2017-10-01 15:53:33,058 INFO      in long relations
+2017-10-01 15:53:33,059 INFO      There are no plans in which I figure
+2017-10-01 15:53:33,063 INFO      Plan preparation to save...
+2017-10-01 15:53:33,063 INFO      	Cleaning SWM...
+2017-10-01 15:53:44,849 INFO      	Saving precedent...
+2017-10-01 15:53:44,852 INFO      Start saving to wmodel_10_01_15_53_a3.swm
+2017-10-01 15:53:44,853 INFO      	Dumping SWM...
+2017-10-01 15:53:45,720 INFO      	Saving precedent...
+2017-10-01 15:53:45,722 INFO      Start saving to wmodel_10_01_15_53_a1.swm
+2017-10-01 15:53:45,722 INFO      	Dumping SWM...
+2017-10-01 15:53:45,818 INFO      	Saving precedent...
+2017-10-01 15:53:45,821 INFO      Start saving to wmodel_10_01_15_53_a2.swm
+2017-10-01 15:53:45,821 INFO      	Dumping SWM...
+2017-10-01 15:53:45,833 INFO      Plan length: 79
+2017-10-01 15:56:22,991 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:56:22,992 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 15:56:23,000 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 15:56:23,008 INFO      6 Predicates parsed
+2017-10-01 15:56:23,009 INFO      4 Actions parsed
+2017-10-01 15:56:23,009 INFO      14 Objects parsed
+2017-10-01 15:56:23,009 INFO      0 Constants parsed
+2017-10-01 15:56:23,175 INFO      Grounding start: blocks-1-0
+2017-10-01 15:56:23,191 INFO      Grounding start: blocks-1-0
+2017-10-01 15:56:23,199 INFO      Grounding start: blocks-1-0
+2017-10-01 15:56:29,422 INFO      Grounding end: blocks-1-0
+2017-10-01 15:56:29,423 INFO      40 Signs created
+2017-10-01 15:56:29,424 INFO      Search start: blocks-1-0
+2017-10-01 15:56:29,451 INFO      Grounding end: blocks-1-0
+2017-10-01 15:56:29,453 INFO      40 Signs created
+2017-10-01 15:56:29,456 INFO      Search start: blocks-1-0
+2017-10-01 15:56:29,455 INFO      Grounding end: blocks-1-0
+2017-10-01 15:56:29,457 INFO      40 Signs created
+2017-10-01 15:56:29,459 INFO      Search start: blocks-1-0
+2017-10-01 16:28:56,456 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:28:56,456 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:28:56,465 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 16:28:56,473 INFO      6 Predicates parsed
+2017-10-01 16:28:56,473 INFO      4 Actions parsed
+2017-10-01 16:28:56,473 INFO      14 Objects parsed
+2017-10-01 16:28:56,473 INFO      0 Constants parsed
+2017-10-01 16:28:56,643 INFO      Grounding start: blocks-1-0
+2017-10-01 16:28:56,650 INFO      Grounding start: blocks-1-0
+2017-10-01 16:28:56,657 INFO      Grounding start: blocks-1-0
+2017-10-01 16:28:56,688 INFO      Grounding end: blocks-1-0
+2017-10-01 16:28:56,688 INFO      40 Signs created
+2017-10-01 16:28:56,689 INFO      Search start: blocks-1-0
+2017-10-01 16:28:56,687 INFO      Grounding end: blocks-1-0
+2017-10-01 16:28:56,690 INFO      40 Signs created
+2017-10-01 16:28:56,693 INFO      Search start: blocks-1-0
+2017-10-01 16:28:56,705 INFO      Grounding end: blocks-1-0
+2017-10-01 16:28:56,707 INFO      40 Signs created
+2017-10-01 16:28:56,708 INFO      Search start: blocks-1-0
+2017-10-01 16:30:02,557 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:30:02,557 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:30:02,566 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 16:30:02,574 INFO      6 Predicates parsed
+2017-10-01 16:30:02,574 INFO      4 Actions parsed
+2017-10-01 16:30:02,574 INFO      14 Objects parsed
+2017-10-01 16:30:02,574 INFO      0 Constants parsed
+2017-10-01 16:30:02,715 INFO      Grounding start: blocks-1-0
+2017-10-01 16:30:02,741 INFO      Grounding start: blocks-1-0
+2017-10-01 16:30:02,756 INFO      Grounding end: blocks-1-0
+2017-10-01 16:30:02,759 INFO      40 Signs created
+2017-10-01 16:30:02,759 INFO      Grounding start: blocks-1-0
+2017-10-01 16:30:02,760 INFO      Search start: blocks-1-0
+2017-10-01 16:30:02,801 INFO      Grounding end: blocks-1-0
+2017-10-01 16:30:02,805 INFO      40 Signs created
+2017-10-01 16:30:02,808 INFO      Search start: blocks-1-0
+2017-10-01 16:30:02,830 INFO      Grounding end: blocks-1-0
+2017-10-01 16:30:02,832 INFO      40 Signs created
+2017-10-01 16:30:02,835 INFO      Search start: blocks-1-0
+2017-10-01 16:32:04,714 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:32:04,715 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:32:04,723 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 16:32:04,732 INFO      6 Predicates parsed
+2017-10-01 16:32:04,732 INFO      4 Actions parsed
+2017-10-01 16:32:04,732 INFO      14 Objects parsed
+2017-10-01 16:32:04,732 INFO      0 Constants parsed
+2017-10-01 16:32:04,887 INFO      Grounding start: blocks-1-0
+2017-10-01 16:32:04,899 INFO      Grounding start: blocks-1-0
+2017-10-01 16:32:04,911 INFO      Grounding start: blocks-1-0
+2017-10-01 16:32:04,932 INFO      Grounding end: blocks-1-0
+2017-10-01 16:32:04,932 INFO      40 Signs created
+2017-10-01 16:32:04,933 INFO      Search start: blocks-1-0
+2017-10-01 16:32:04,946 INFO      Grounding end: blocks-1-0
+2017-10-01 16:32:04,949 INFO      40 Signs created
+2017-10-01 16:32:04,951 INFO      Search start: blocks-1-0
+2017-10-01 16:32:04,953 INFO      Grounding end: blocks-1-0
+2017-10-01 16:32:04,954 INFO      40 Signs created
+2017-10-01 16:32:04,956 INFO      Search start: blocks-1-0
+2017-10-01 16:33:19,160 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:33:19,161 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:33:19,169 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 16:33:19,180 INFO      6 Predicates parsed
+2017-10-01 16:33:19,180 INFO      4 Actions parsed
+2017-10-01 16:33:19,180 INFO      14 Objects parsed
+2017-10-01 16:33:19,181 INFO      0 Constants parsed
+2017-10-01 16:33:19,330 INFO      Grounding start: blocks-1-0
+2017-10-01 16:33:19,341 INFO      Grounding start: blocks-1-0
+2017-10-01 16:33:19,357 INFO      Grounding start: blocks-1-0
+2017-10-01 16:33:19,381 INFO      Grounding end: blocks-1-0
+2017-10-01 16:33:19,383 INFO      40 Signs created
+2017-10-01 16:33:19,384 INFO      Search start: blocks-1-0
+2017-10-01 16:33:19,393 INFO      Grounding end: blocks-1-0
+2017-10-01 16:33:19,395 INFO      40 Signs created
+2017-10-01 16:33:19,396 INFO      Search start: blocks-1-0
+2017-10-01 16:33:19,410 INFO      Grounding end: blocks-1-0
+2017-10-01 16:33:19,411 INFO      40 Signs created
+2017-10-01 16:33:19,413 INFO      Search start: blocks-1-0
+2017-10-01 16:55:07,783 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:55:07,784 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:55:07,792 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 16:55:07,801 INFO      6 Predicates parsed
+2017-10-01 16:55:07,801 INFO      4 Actions parsed
+2017-10-01 16:55:07,801 INFO      14 Objects parsed
+2017-10-01 16:55:07,801 INFO      0 Constants parsed
+2017-10-01 16:55:07,964 INFO      Grounding start: blocks-1-0
+2017-10-01 16:55:07,969 INFO      Grounding start: blocks-1-0
+2017-10-01 16:55:07,980 INFO      Grounding start: blocks-1-0
+2017-10-01 16:55:08,005 INFO      Grounding end: blocks-1-0
+2017-10-01 16:55:08,006 INFO      40 Signs created
+2017-10-01 16:55:08,008 INFO      Search start: blocks-1-0
+2017-10-01 16:55:08,013 INFO      Grounding end: blocks-1-0
+2017-10-01 16:55:08,014 INFO      40 Signs created
+2017-10-01 16:55:08,015 INFO      Search start: blocks-1-0
+2017-10-01 16:55:08,023 INFO      Grounding end: blocks-1-0
+2017-10-01 16:55:08,025 INFO      40 Signs created
+2017-10-01 16:55:08,028 INFO      Search start: blocks-1-0
+2017-10-01 16:57:40,008 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:57:40,008 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 16:57:40,017 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 16:57:40,025 INFO      6 Predicates parsed
+2017-10-01 16:57:40,025 INFO      4 Actions parsed
+2017-10-01 16:57:40,025 INFO      14 Objects parsed
+2017-10-01 16:57:40,026 INFO      0 Constants parsed
+2017-10-01 16:57:40,174 INFO      Grounding start: blocks-1-0
+2017-10-01 16:57:40,190 INFO      Grounding start: blocks-1-0
+2017-10-01 16:57:40,205 INFO      Grounding start: blocks-1-0
+2017-10-01 16:57:40,224 INFO      Grounding end: blocks-1-0
+2017-10-01 16:57:40,225 INFO      40 Signs created
+2017-10-01 16:57:40,227 INFO      Search start: blocks-1-0
+2017-10-01 16:57:40,230 INFO      Grounding end: blocks-1-0
+2017-10-01 16:57:40,231 INFO      40 Signs created
+2017-10-01 16:57:40,231 INFO      Search start: blocks-1-0
+2017-10-01 16:57:40,254 INFO      Grounding end: blocks-1-0
+2017-10-01 16:57:40,255 INFO      40 Signs created
+2017-10-01 16:57:40,257 INFO      Search start: blocks-1-0
+2017-10-01 17:00:37,594 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:00:37,594 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:00:37,603 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 17:00:37,611 INFO      6 Predicates parsed
+2017-10-01 17:00:37,612 INFO      4 Actions parsed
+2017-10-01 17:00:37,612 INFO      14 Objects parsed
+2017-10-01 17:00:37,613 INFO      0 Constants parsed
+2017-10-01 17:00:37,780 INFO      Grounding start: blocks-1-0
+2017-10-01 17:00:37,786 INFO      Grounding start: blocks-1-0
+2017-10-01 17:00:37,790 INFO      Grounding start: blocks-1-0
+2017-10-01 17:00:37,847 INFO      Grounding end: blocks-1-0
+2017-10-01 17:00:37,853 INFO      40 Signs created
+2017-10-01 17:00:37,859 INFO      Search start: blocks-1-0
+2017-10-01 17:00:37,878 INFO      Grounding end: blocks-1-0
+2017-10-01 17:00:37,882 INFO      40 Signs created
+2017-10-01 17:00:37,883 INFO      Grounding end: blocks-1-0
+2017-10-01 17:00:37,889 INFO      40 Signs created
+2017-10-01 17:00:37,887 INFO      Search start: blocks-1-0
+2017-10-01 17:00:37,893 INFO      Search start: blocks-1-0
+2017-10-01 17:01:37,005 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:01:37,006 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:01:37,015 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 17:01:37,023 INFO      6 Predicates parsed
+2017-10-01 17:01:37,023 INFO      4 Actions parsed
+2017-10-01 17:01:37,024 INFO      14 Objects parsed
+2017-10-01 17:01:37,024 INFO      0 Constants parsed
+2017-10-01 17:01:37,185 INFO      Grounding start: blocks-1-0
+2017-10-01 17:01:37,197 INFO      Grounding start: blocks-1-0
+2017-10-01 17:01:37,205 INFO      Grounding start: blocks-1-0
+2017-10-01 17:01:37,265 INFO      Grounding end: blocks-1-0
+2017-10-01 17:01:37,267 INFO      40 Signs created
+2017-10-01 17:01:37,271 INFO      Search start: blocks-1-0
+2017-10-01 17:01:37,272 INFO      Grounding end: blocks-1-0
+2017-10-01 17:01:37,274 INFO      40 Signs created
+2017-10-01 17:01:37,276 INFO      Search start: blocks-1-0
+2017-10-01 17:01:37,279 INFO      Grounding end: blocks-1-0
+2017-10-01 17:01:37,281 INFO      40 Signs created
+2017-10-01 17:01:37,282 INFO      Search start: blocks-1-0
+2017-10-01 17:02:20,955 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:02:20,956 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:02:20,958 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-01 17:02:20,962 INFO      6 Predicates parsed
+2017-10-01 17:02:20,962 INFO      4 Actions parsed
+2017-10-01 17:02:20,962 INFO      14 Objects parsed
+2017-10-01 17:02:20,962 INFO      0 Constants parsed
+2017-10-01 17:02:20,976 INFO      Grounding start: blocks-1-0
+2017-10-01 17:02:20,976 INFO      Grounding start: blocks-1-0
+2017-10-01 17:02:20,977 INFO      Grounding start: blocks-1-0
+2017-10-01 17:02:21,002 INFO      Grounding end: blocks-1-0
+2017-10-01 17:02:21,003 INFO      40 Signs created
+2017-10-01 17:02:21,003 INFO      Search start: blocks-1-0
+2017-10-01 17:02:21,008 INFO      Grounding end: blocks-1-0
+2017-10-01 17:02:21,009 INFO      40 Signs created
+2017-10-01 17:02:21,009 INFO      Grounding end: blocks-1-0
+2017-10-01 17:02:21,009 INFO      Search start: blocks-1-0
+2017-10-01 17:02:21,010 INFO      40 Signs created
+2017-10-01 17:02:21,010 INFO      Search start: blocks-1-0
+2017-10-01 17:03:18,710 INFO      in long relations
+2017-10-01 17:03:18,710 INFO      There are no plans in which I figure
+2017-10-01 17:03:18,715 INFO      Plan preparation to save...
+2017-10-01 17:03:18,716 INFO      	Cleaning SWM...
+2017-10-01 17:03:37,633 INFO      in long relations
+2017-10-01 17:03:37,637 INFO      Plan preparation to save...
+2017-10-01 17:03:37,638 INFO      	Cleaning SWM...
+2017-10-01 17:03:39,377 INFO      in long relations
+2017-10-01 17:03:39,377 INFO      There are no plans in which I figure
+2017-10-01 17:03:39,382 INFO      Plan preparation to save...
+2017-10-01 17:03:39,382 INFO      	Cleaning SWM...
+2017-10-01 17:03:56,978 INFO      	Saving precedent...
+2017-10-01 17:03:56,982 INFO      Start saving to wmodel_10_01_17_03_a2.swm
+2017-10-01 17:03:56,983 INFO      	Dumping SWM...
+2017-10-01 17:04:29,517 INFO      	Saving precedent...
+2017-10-01 17:04:29,519 INFO      Start saving to wmodel_10_01_17_04_a3.swm
+2017-10-01 17:04:29,520 INFO      	Dumping SWM...
+2017-10-01 17:04:30,828 INFO      	Saving precedent...
+2017-10-01 17:04:30,831 INFO      Start saving to wmodel_10_01_17_04_a1.swm
+2017-10-01 17:04:30,831 INFO      	Dumping SWM...
+2017-10-01 17:04:30,846 INFO      Plan length: 79
+2017-10-01 17:05:31,373 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:05:31,428 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:05:31,453 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 17:05:31,477 INFO      6 Predicates parsed
+2017-10-01 17:05:31,478 INFO      4 Actions parsed
+2017-10-01 17:05:31,478 INFO      12 Objects parsed
+2017-10-01 17:05:31,479 INFO      0 Constants parsed
+2017-10-01 17:05:31,514 INFO      Grounding start: blocks-1-0
+2017-10-01 17:05:31,514 INFO      Grounding start: blocks-1-0
+2017-10-01 17:05:31,515 INFO      File not found
+2017-10-01 17:05:31,515 INFO      Grounding start: blocks-1-0
+2017-10-01 17:05:31,516 INFO      File not found
+2017-10-01 17:05:31,517 INFO      File not found
+2017-10-01 17:05:31,656 INFO      Grounding end: blocks-1-0
+2017-10-01 17:05:31,657 INFO      35 Signs created
+2017-10-01 17:05:31,657 INFO      Grounding end: blocks-1-0
+2017-10-01 17:05:31,658 INFO      Search start: blocks-1-0
+2017-10-01 17:05:31,659 INFO      35 Signs created
+2017-10-01 17:05:31,660 INFO      Search start: blocks-1-0
+2017-10-01 17:05:31,669 INFO      Grounding end: blocks-1-0
+2017-10-01 17:05:31,671 INFO      35 Signs created
+2017-10-01 17:05:31,672 INFO      Search start: blocks-1-0

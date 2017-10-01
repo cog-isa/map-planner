@@ -29,7 +29,7 @@ def ground(problem, agent, subjects, exp_signs=None):
     logging.debug("Type to object map:\n%s" % type_map)
 
     # Create type subtype map
-    subtype_map = _crate_subtype(domain.types)
+    subtype_map = _create_subtype(domain.types)
 
     obj_signifs = {}
     obj_means = {}
@@ -85,8 +85,9 @@ def ground(problem, agent, subjects, exp_signs=None):
 
     for sub in subjects:
         if sub != agent:
-            connector = obj_signifs[sub].add_feature(obj_signifs[They_sign], zero_out=True)
-            They_sign.add_out_significance(connector)
+            if not They_sign in signs[sub].significances[1]:
+                connector = signs[sub].significances[1].add_feature(obj_signifs[They_sign], zero_out=True)
+                They_sign.add_out_significance(connector)
 
     if not exp_signs:
         updated_predicates = _update_predicates(predicates, actions)
@@ -600,7 +601,7 @@ def _update_exp_signs(signs, objects):
     return objects
 
 
-def _crate_subtype(types):
+def _create_subtype(types):
     """
     Create a map of types/subtypes to make true role signs
     """
