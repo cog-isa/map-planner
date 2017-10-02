@@ -11468,3 +11468,66 @@
 2017-10-01 17:05:31,669 INFO      Grounding end: blocks-1-0
 2017-10-01 17:05:31,671 INFO      35 Signs created
 2017-10-01 17:05:31,672 INFO      Search start: blocks-1-0
+2017-10-01 17:28:57,657 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:28:57,878 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:28:57,913 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 17:28:57,941 INFO      6 Predicates parsed
+2017-10-01 17:28:57,942 INFO      4 Actions parsed
+2017-10-01 17:28:57,942 INFO      12 Objects parsed
+2017-10-01 17:28:57,943 INFO      0 Constants parsed
+2017-10-01 17:28:58,419 INFO      Grounding start: blocks-1-0
+2017-10-01 17:28:58,419 INFO      Grounding start: blocks-1-0
+2017-10-01 17:28:58,420 INFO      Grounding start: blocks-1-0
+2017-10-01 17:28:58,420 INFO      File not found
+2017-10-01 17:28:58,421 INFO      File not found
+2017-10-01 17:28:58,421 INFO      File not found
+2017-10-01 17:28:58,517 INFO      Grounding end: blocks-1-0
+2017-10-01 17:28:58,518 INFO      35 Signs created
+2017-10-01 17:28:58,518 INFO      Search start: blocks-1-0
+2017-10-01 17:28:58,570 INFO      Grounding end: blocks-1-0
+2017-10-01 17:28:58,570 INFO      Grounding end: blocks-1-0
+2017-10-01 17:28:58,571 INFO      35 Signs created
+2017-10-01 17:28:58,571 INFO      35 Signs created
+2017-10-01 17:28:58,572 INFO      Search start: blocks-1-0
+2017-10-01 17:28:58,572 INFO      Search start: blocks-1-0
+2017-10-01 17:29:45,110 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:29:45,120 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-01 17:29:45,143 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-01 17:29:45,166 INFO      6 Predicates parsed
+2017-10-01 17:29:45,166 INFO      4 Actions parsed
+2017-10-01 17:29:45,167 INFO      12 Objects parsed
+2017-10-01 17:29:45,167 INFO      0 Constants parsed
+2017-10-01 17:29:45,202 INFO      Grounding start: blocks-1-0
+2017-10-01 17:29:45,203 INFO      Grounding start: blocks-1-0
+2017-10-01 17:29:45,203 INFO      Grounding start: blocks-1-0
+2017-10-01 17:29:45,204 INFO      File not found
+2017-10-01 17:29:45,205 INFO      File not found
+2017-10-01 17:29:45,205 INFO      File not found
+2017-10-01 17:29:45,314 INFO      Grounding end: blocks-1-0
+2017-10-01 17:29:45,314 INFO      35 Signs created
+2017-10-01 17:29:45,315 INFO      Search start: blocks-1-0
+2017-10-01 17:29:45,388 INFO      Grounding end: blocks-1-0
+2017-10-01 17:29:45,388 INFO      Grounding end: blocks-1-0
+2017-10-01 17:29:45,389 INFO      35 Signs created
+2017-10-01 17:29:45,389 INFO      35 Signs created
+2017-10-01 17:29:45,390 INFO      Search start: blocks-1-0
+2017-10-01 17:29:45,390 INFO      Search start: blocks-1-0
+2017-10-01 18:56:19,913 INFO      in long relations
+2017-10-01 18:56:19,922 INFO      Plan preparation to save...
+2017-10-01 18:56:19,922 INFO      	Cleaning SWM...
+2017-10-01 18:56:35,837 INFO      in long relations
+2017-10-01 18:56:35,846 INFO      Plan preparation to save...
+2017-10-01 18:56:35,846 INFO      	Cleaning SWM...
+2017-10-01 18:57:02,278 INFO      in long relations
+2017-10-01 18:57:02,286 INFO      Plan preparation to save...
+2017-10-01 18:57:02,287 INFO      	Cleaning SWM...
+2017-10-01 20:01:39,979 INFO      	Saving precedent...
+2017-10-01 20:01:39,988 INFO      Start saving to wmodel_10_01_20_01_a3.swm
+2017-10-01 20:01:39,989 INFO      	Dumping SWM...
+2017-10-01 20:01:46,022 INFO      	Saving precedent...
+2017-10-01 20:01:46,031 INFO      Start saving to wmodel_10_01_20_01_a2.swm
+2017-10-01 20:01:46,032 INFO      	Dumping SWM...
+2017-10-01 20:01:54,583 INFO      	Saving precedent...
+2017-10-01 20:01:54,591 INFO      Start saving to wmodel_10_01_20_01_a1.swm
+2017-10-01 20:01:54,592 INFO      	Dumping SWM...
+2017-10-01 20:01:54,605 INFO      Plan length: 125
