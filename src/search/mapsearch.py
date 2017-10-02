@@ -72,8 +72,6 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, exp_actions=[]):
     agent = None
     if not precedents:
         for agent, cm in meanings:
-            # if world_model["a1"] in cm.get_signs() and cm.sign.name == "stack" and world_model["z"] in cm.get_signs():
-            #     print()
             result, checked = _check_activity(cm, active_pm)
             if result:
                 applicable_meanings.append((agent, checked))
