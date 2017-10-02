@@ -11773,3 +11773,44 @@
 2017-10-01 19:32:36,440 INFO      Grounding end: logistics-4-1
 2017-10-01 19:32:36,441 INFO      59 Signs created
 2017-10-01 19:32:36,442 INFO      Search start: logistics-4-1
+2017-10-02 11:30:34,827 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-02 11:30:34,882 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-02 11:30:34,918 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
+2017-10-02 11:30:34,944 INFO      6 Predicates parsed
+2017-10-02 11:30:34,944 INFO      4 Actions parsed
+2017-10-02 11:30:34,945 INFO      12 Objects parsed
+2017-10-02 11:30:34,945 INFO      0 Constants parsed
+2017-10-02 11:30:34,980 INFO      Grounding start: blocks-1-0
+2017-10-02 11:30:34,981 INFO      Grounding start: blocks-1-0
+2017-10-02 11:30:34,982 INFO      Grounding start: blocks-1-0
+2017-10-02 11:30:35,004 INFO      Grounding end: blocks-1-0
+2017-10-02 11:30:35,005 INFO      38 Signs created
+2017-10-02 11:30:35,006 INFO      Search start: blocks-1-0
+2017-10-02 11:30:35,011 INFO      Grounding end: blocks-1-0
+2017-10-02 11:30:35,011 INFO      38 Signs created
+2017-10-02 11:30:35,012 INFO      Search start: blocks-1-0
+2017-10-02 11:30:35,015 INFO      Grounding end: blocks-1-0
+2017-10-02 11:30:35,016 INFO      38 Signs created
+2017-10-02 11:30:35,017 INFO      Search start: blocks-1-0
+2017-10-02 11:30:46,480 INFO      in long relations
+2017-10-02 11:30:46,482 INFO      There are no plans in which I figure
+2017-10-02 11:30:46,491 INFO      Plan preparation to save...
+2017-10-02 11:30:46,492 INFO      	Cleaning SWM...
+2017-10-02 11:30:46,899 INFO      in long relations
+2017-10-02 11:30:46,901 INFO      There are no plans in which I figure
+2017-10-02 11:30:46,907 INFO      Plan preparation to save...
+2017-10-02 11:30:46,908 INFO      	Cleaning SWM...
+2017-10-02 11:30:46,950 INFO      in long relations
+2017-10-02 11:30:46,951 INFO      There are no plans in which I figure
+2017-10-02 11:30:46,957 INFO      Plan preparation to save...
+2017-10-02 11:30:46,958 INFO      	Cleaning SWM...
+2017-10-02 11:30:48,309 INFO      	Saving precedent...
+2017-10-02 11:30:48,333 INFO      Start saving to wmodel_10_02_11_30_a2.swm
+2017-10-02 11:30:48,334 INFO      	Dumping SWM...
+2017-10-02 11:30:48,588 INFO      	Saving precedent...
+2017-10-02 11:30:48,599 INFO      	Saving precedent...
+2017-10-02 11:30:48,608 INFO      Start saving to wmodel_10_02_11_30_a3.swm
+2017-10-02 11:30:48,609 INFO      	Dumping SWM...
+2017-10-02 11:30:48,619 INFO      Start saving to wmodel_10_02_11_30_a1.swm
+2017-10-02 11:30:48,620 INFO      	Dumping SWM...
+2017-10-02 11:30:48,644 INFO      Plan length: 35

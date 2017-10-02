@@ -11,7 +11,7 @@ With I and they:
 
 with multiple roles:
 
-../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task03.pddl
+../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
 
 where X  - problem number like 01, 1, 2, 50
 
