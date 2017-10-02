@@ -15,4 +15,4 @@ with multiple roles:
 
 where X  - problem number like 01, 1, 2, 50
 
-../mapddl-benchmarks/logistics00/signlogistick/probLOGISTICS-4-0.pddl
+../mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-1.pddl

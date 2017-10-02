@@ -1,0 +1,62 @@
+2017-10-02 11:42:53,563 INFO      Found domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-02 11:42:53,614 INFO      Parsing Domain ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl
+2017-10-02 11:42:53,640 INFO      Parsing Problem ../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl
+2017-10-02 11:42:53,671 INFO      6 Predicates parsed
+2017-10-02 11:42:53,672 INFO      4 Actions parsed
+2017-10-02 11:42:53,672 INFO      14 Objects parsed
+2017-10-02 11:42:53,673 INFO      0 Constants parsed
+2017-10-02 11:42:53,711 INFO      Grounding start: blocks-1-0
+2017-10-02 11:42:53,711 INFO      Grounding start: blocks-1-0
+2017-10-02 11:42:53,713 INFO      Grounding start: blocks-1-0
+2017-10-02 11:42:53,745 INFO      Grounding end: blocks-1-0
+2017-10-02 11:42:53,746 INFO      40 Signs created
+2017-10-02 11:42:53,746 INFO      Search start: blocks-1-0
+2017-10-02 11:42:53,749 INFO      Grounding end: blocks-1-0
+2017-10-02 11:42:53,750 INFO      40 Signs created
+2017-10-02 11:42:53,750 INFO      Grounding end: blocks-1-0
+2017-10-02 11:42:53,751 INFO      40 Signs created
+2017-10-02 11:42:53,751 INFO      Search start: blocks-1-0
+2017-10-02 11:42:53,752 INFO      Search start: blocks-1-0
+2017-10-02 11:53:23,504 INFO      in long relations
+2017-10-02 11:53:23,512 INFO      Plan preparation to save...
+2017-10-02 11:53:23,513 INFO      	Cleaning SWM...
+2017-10-02 11:53:55,195 INFO      in long relations
+2017-10-02 11:53:55,197 INFO      There are no plans in which I figure
+2017-10-02 11:53:55,202 INFO      Plan preparation to save...
+2017-10-02 11:53:55,204 INFO      	Cleaning SWM...
+2017-10-02 11:54:01,635 INFO      in long relations
+2017-10-02 11:54:01,638 INFO      There are no plans in which I figure
+2017-10-02 11:54:01,644 INFO      Plan preparation to save...
+2017-10-02 11:54:01,645 INFO      	Cleaning SWM...
+2017-10-02 12:00:46,685 INFO      	Saving precedent...
+2017-10-02 12:00:46,706 INFO      Start saving to wmodel_10_02_12_00_a3.swm
+2017-10-02 12:00:46,707 INFO      	Dumping SWM...
+2017-10-02 12:01:10,870 INFO      	Saving precedent...
+2017-10-02 12:01:10,886 INFO      Start saving to wmodel_10_02_12_01_a2.swm
+2017-10-02 12:01:10,887 INFO      	Dumping SWM...
+2017-10-02 12:01:16,135 INFO      	Saving precedent...
+2017-10-02 12:01:16,151 INFO      Start saving to wmodel_10_02_12_01_a1.swm
+2017-10-02 12:01:16,152 INFO      	Dumping SWM...
+2017-10-02 12:01:16,172 INFO      Plan length: 79
+2017-10-02 12:07:41,699 INFO      Found domain ../mapddl-benchmarks/logistics00/air_trucks_constr/domain.pddl
+2017-10-02 12:07:41,751 INFO      Parsing Domain ../mapddl-benchmarks/logistics00/air_trucks_constr/domain.pddl
+2017-10-02 12:07:41,788 INFO      Parsing Problem ../mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-1.pddl
+2017-10-02 12:07:41,812 INFO      5 Predicates parsed
+2017-10-02 12:07:41,812 INFO      6 Actions parsed
+2017-10-02 12:07:41,813 INFO      13 Objects parsed
+2017-10-02 12:07:41,813 INFO      0 Constants parsed
+2017-10-02 12:07:41,858 INFO      Grounding start: logistics-4-1
+2017-10-02 12:07:41,858 INFO      Grounding start: logistics-4-1
+2017-10-02 12:07:41,859 INFO      File not found
+2017-10-02 12:07:41,859 INFO      Grounding start: logistics-4-1
+2017-10-02 12:07:41,860 INFO      File not found
+2017-10-02 12:07:41,861 INFO      File not found
+2017-10-02 12:07:42,090 INFO      Grounding end: logistics-4-1
+2017-10-02 12:07:42,091 INFO      55 Signs created
+2017-10-02 12:07:42,093 INFO      Search start: logistics-4-1
+2017-10-02 12:07:42,110 INFO      Grounding end: logistics-4-1
+2017-10-02 12:07:42,111 INFO      55 Signs created
+2017-10-02 12:07:42,112 INFO      Search start: logistics-4-1
+2017-10-02 12:07:42,114 INFO      Grounding end: logistics-4-1
+2017-10-02 12:07:42,115 INFO      55 Signs created
+2017-10-02 12:07:42,116 INFO      Search start: logistics-4-1

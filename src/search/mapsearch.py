@@ -370,8 +370,6 @@ def _generate_meanings(chains, agents):
 
             if changed_event:
                 changed_event = reduce(lambda x, y: x|y, changed_event)
-            else:
-                pass
 
             for key, item in new_map.copy().items():
                 if key in changed_event:
