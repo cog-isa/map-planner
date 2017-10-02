@@ -370,13 +370,18 @@ def _generate_meanings(chains, agents):
                         if element != sign.name:
                             predicates_objects.add(world_model[element])
 
-            changed_event = reduce(lambda x, y: x|y, changed_event)
+            if changed_event:
+                changed_event = reduce(lambda x, y: x|y, changed_event)
+            else:
+                pass
 
             for key, item in new_map.copy().items():
                 if key in changed_event:
                     new_dict = {}
                     if predicates_objects:
                         new_dict[key] = [cm for cm in new_map[key] if cm.sign in predicates_objects]
+                        if not new_dict[key]:
+                            new_dict[key] = new_map[key]
                         new_map.update(new_dict)
 
             ma_combinations = mix_pairs(new_map)
