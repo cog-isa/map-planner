@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import argparse
 import logging
 import os
@@ -48,7 +50,7 @@ def _parse(domain_file, problem_file):
 #
 from memory_profiler import profile
 #
-@profile
+#@profile
 def search_plan(domain, problem, saveload):
     from os import listdir
     agent_tasks = []
@@ -144,4 +146,4 @@ if __name__ == '__main__':
 
 
                 for op, agent in csolution:
-                    print(op, agent, file=file)
+                    print(op, agent, file)

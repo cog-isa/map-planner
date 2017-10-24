@@ -224,6 +224,11 @@ def signify_predicates(predicates, updated_predicates, signs, subtype_map):
                     role_sign = signs[role_name]
                     obj_sign = signs[fact_name]
                     smaller_roles = [obj for obj in used_facts if obj in role_name and obj in signs]
+
+                    if not smaller_roles:
+                        if obj_sign.name in role_sign.name:
+                            fact_sign = role_sign.name[len(obj_sign.name)+1 : ]
+                            smaller_roles = [obj for obj in used_facts if fact_sign in obj and obj in signs]
                     if smaller_roles:
                         for obj in smaller_roles:
                             updated_obj_sign = signs[obj]
@@ -308,11 +313,6 @@ def signify_actions(actions, constraints, signs, agent, events, obj_means):
         else:
             specialized(action, signs, events, obj_means, act_signif, agent, constraints)
 
-def spec(action, signs, events, obj_means, act_signif, agent, constraints):
-    print()
-    pass
-
-
 
 def specialized(action, signs, events, obj_means, act_signif, agent, constraints):
     agent_signs = []
@@ -369,7 +369,6 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
                     if pred_signs:
                         event_signs.remove(ag)
                         for pred in pred_signs:
-                            #TODO убрать package?obj
                             role_signature = {sign for sign in event_signs if sign != signs[pred.name]}
                             for role in role_signature:
                                 pred_roles = [signif.get_signs() for _, signif in role.significances.items()]
@@ -394,46 +393,57 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
                 elif event_signs & non_agent_preds_signs:
                     for predicate in non_agent_preds:
                         pred_signats = {signs[signa[0]] for signa in predicate.signature}
-                        used_signs = reduce(lambda x, y: x|y, role_signifs.values())
+                        if role_signifs:
+                            used_signs = reduce(lambda x, y: x|y, role_signifs.values())
+                        else:
+                            used_signs = set()
                         new_signs = pred_signats - used_signs
                         # if not signs[signa[0]] in role_signifs.values()
                         for pred_sign in new_signs:
                             #pred_sign = signs[predicate.signature[0][0]]
-                            attribute = pred_sign.find_attribute()
+                            attributes = pred_sign.find_attribute()
+                            key_at = None
                             depth = 2
                             while depth > 0:
-                                if not attribute in event_signs:
-                                    attribute = attribute.find_attribute()
-                                    if attribute in event_signs:
+                                for attribute in attributes:
+                                    if not attribute in event_signs:
+                                        attribute = attribute.find_attribute()
+                                        for at in attribute.copy():
+                                            if at in event_signs:
+                                                key_at = at
+                                            break
+                                        else:
+                                            depth-=1
                                         break
-                                    else:
-                                        depth-=1
-                            else:
-                                continue
-                            role_signifs.setdefault(attribute, set()).add(pred_sign)
+                                break
+                            role_signifs.setdefault(key_at, set()).add(pred_sign)
+
 
             #TODO
-            obj_sign = signs['package?obj']
-            if obj_sign in role_signifs.keys():
-                role_signifs.pop(obj_sign)
+
+            obj_signs = signs['block?x'], signs['block?y']
+            for obj_sign in obj_signs:
+                if obj_sign in role_signifs.keys():
+                    role_signifs.pop(obj_sign)
 
 
             pairs = mix_pairs(role_signifs)
-            for pair in pairs:
-                act_mean_constr = act_mean.copy('meaning', 'meaning')
-                for role_sign, obj in pair.items():
-                    act_mean_constr.replace('meaning', role_sign, obj_means[obj.name])
-                if ag.name == agent:
-                    I_sign = signs["I"]
-                    connector = act_mean_constr.add_feature(obj_means[I_sign])
-                    efconnector = act_mean_constr.add_feature(obj_means[I_sign], effect=True)
-                    events.append(act_mean_constr.effect[abs(efconnector.in_order) - 1])
-                    I_sign.add_out_meaning(connector)
-                else:
-                    connector = act_mean_constr.add_feature(obj_means[ag.name])
-                    efconnector = act_mean_constr.add_feature(obj_means[ag.name], effect=True)
-                    events.append(act_mean_constr.effect[abs(efconnector.in_order) - 1])
-                    ag.add_out_meaning(connector)
+            if pairs:
+                for pair in pairs:
+                    act_mean_constr = act_mean.copy('meaning', 'meaning')
+                    for role_sign, obj in pair.items():
+                        act_mean_constr.replace('meaning', role_sign, obj_means[obj.name])
+                    if ag.name == agent:
+                        I_sign = signs["I"]
+                        connector = act_mean_constr.add_feature(obj_means[I_sign])
+                        efconnector = act_mean_constr.add_feature(obj_means[I_sign], effect=True)
+                        events.append(act_mean_constr.effect[abs(efconnector.in_order) - 1])
+                        I_sign.add_out_meaning(connector)
+                    else:
+                        connector = act_mean_constr.add_feature(obj_means[ag.name])
+                        efconnector = act_mean_constr.add_feature(obj_means[ag.name], effect=True)
+                        events.append(act_mean_constr.effect[abs(efconnector.in_order) - 1])
+                        ag.add_out_meaning(connector)
         else:
             if ag.name == agent:
                 I_sign = signs["I"]
@@ -663,7 +673,9 @@ def _define_situation(name, predicates, signs, events):
         elif len(predicate.signature) > 1:
             pre_signs = set()
             for fact in predicate.signature:
-                pre_signs.add(signs[fact[0]].find_attribute())
+                fact_signs = signs[fact[0]].find_attribute()
+                for sign in fact_signs:
+                    pre_signs.add(sign)
             if len(pre_signs) < len(predicate.signature):
                 for fact in predicate.signature:
                     fact_sign = signs[fact[0]]

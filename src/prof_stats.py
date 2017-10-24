@@ -38,17 +38,17 @@ from matplotlib import rc
 import matplotlib.pyplot as plt
 
 fig, ax1 = plt.subplots()
-t = [1, 2, 3, 4, 5, 6, 7, 8]
-s1 = [9.189,20.153,61.627,114.927, 321.948, 731.760, 15.343, 7.842]
-ax1.plot(t, s1, linestyle='-', marker='o', color='r')
+t = [1, 2, 3, 4, 5, 6]
+s1 = [8940, 17, 6600, 4040, 160000, 5020]
+ax1.plot(t, s1, linestyle='-', marker='o', color='b')
 ax1.set_xlabel('task complexity')
 # Make the y-axis label, ticks and tick labels match the line color.
 ax1.set_ylabel('time', color='b')
 ax1.tick_params('y', colors='b')
 
 ax2 = ax1.twinx()
-s2 = [21.9,45.3,85.0,131.9, 307.6, 503.1, 143.1, 49.7]
-ax2.plot(t, s2, linestyle='-', marker='o', color='b')
+s2 = [38.6, 33.3, 39.9, 62.1, 180.4, 69.5]
+ax2.plot(t, s2, linestyle='-', marker='o', color='r')
 ax2.set_ylabel('memory', color='r')
 ax2.tick_params('y', colors='r')
 

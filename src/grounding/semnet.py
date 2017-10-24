@@ -574,7 +574,8 @@ class Sign:
         for connector in self.out_significances:
             if not connector.in_sign.name == "object":
                 attribute.append(connector.in_sign)
-        return attribute[0]
+        attribute = list(set(attribute))
+        return attribute
 
     def get_role(self, base = "significance"):
         sub_role = set()

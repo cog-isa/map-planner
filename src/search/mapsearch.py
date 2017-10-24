@@ -104,8 +104,8 @@ def map_iteration(active_pm, check_pm, current_plan, iteration, exp_actions=[]):
 
 
     print("len of curent plan is: {0}. Len of candidates: {1}".format(len(current_plan), len(candidates)))
-    # if len(current_plan) > 10:
-    #     print([(pl[1], pl[3].name) for pl in current_plan])
+    if len(current_plan) > 5:
+        print([(pl[1], pl[3].name) for pl in current_plan])
     for counter, name, script, ag_mask in candidates:
 
         logging.debug('\tChoose {0}: {1} -> {2}'.format(counter, name, script))
