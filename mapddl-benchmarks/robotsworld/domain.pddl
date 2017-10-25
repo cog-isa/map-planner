@@ -17,7 +17,7 @@
 
 (:action pick-up
     :agent (?rob - robot)
-	:parameters (?rob - robot ?x - block ?s - size ?loc - location)
+	:parameters (?x - block ?s - size ?loc - location)
 	:precondition (and
 		(clear ?x)
 		(ontable ?x)
@@ -40,7 +40,7 @@
 
 (:action put-down
     :agent (?rob - robot)
-	:parameters (?rob - robot ?x - block ?s - size ?loc - location)
+	:parameters (?x - block ?s - size ?loc - location)
 	:precondition (and
 		(holding ?rob ?x)
 		(blocktype ?s ?x)
@@ -61,7 +61,7 @@
 
 (:action stack
     :agent (?rob - robot)
-	:parameters (?rob - robot ?x - block ?y - block ?s - size ?loc - location)
+	:parameters (?x - block ?y - block ?s - size ?loc - location)
 	:precondition (and
 		(holding ?rob ?x)
 		(clear ?y)
@@ -86,7 +86,7 @@
 
 (:action unstack
     :agent (?rob - robot)
-	:parameters (?rob - robot ?x - block ?y - block ?s - size ?loc - location)
+	:parameters (?x - block ?y - block ?s - size ?loc - location)
 	:precondition (and
 		(on ?x ?y)
 		(clear ?x)
@@ -109,27 +109,68 @@
 	)
 )
 
-(:action drive-position
+(:action drive-position-empty
 	:agent (?rob - robot)
 	:parameters (?loc-to - location ?r - room)
 	:precondition (and
+	    (handempty ?rob)
 		(at ?rob ?r)
 	)
 	:effect (and
 		(at ?rob ?loc-to)
 		(in-room ?loc-to ?r)
+		(handempty ?rob)
 	)
 )
 
-(:action drive-room
+(:action drive-room-empty
 	:agent (?rob - robot)
 	:parameters (?loc-from - room ?loc-to - room)
 	:precondition (and
 		(at ?rob ?loc-from)
+		(handempty ?rob)
 	)
 	:effect (and
 		(not (at ?rob ?loc-from))
 		(at ?rob ?loc-to)
+		(handempty ?rob)
+	)
+)
+
+(:action carry-to-position
+	:agent (?rob - robot)
+	:parameters (?loc-to - location ?r - room ?x - block ?s - size)
+	:precondition (and
+	    (holding ?rob ?x)
+		(at ?rob ?r)
+		(at ?x ?r)
+		(blocktype ?s ?x)
+	)
+	:effect (and
+		(at ?rob ?loc-to)
+		(at ?x ?loc-to)
+		(in-room ?loc-to ?r)
+		(holding ?rob ?x)
+		(blocktype ?s ?x)
+	)
+)
+
+(:action carry-to-room
+	:agent (?rob - robot)
+	:parameters (?loc-from - room ?loc-to - room ?x - block ?s - size)
+	:precondition (and
+	    (holding ?rob ?x)
+		(at ?rob ?loc-from)
+		(at ?rob ?loc-from)
+		(blocktype ?s ?x)
+	)
+	:effect (and
+		(not(at ?rob ?loc-from))
+		(not(at ?x ?loc-from))
+		(at ?rob ?loc-to)
+		(at ?x ?loc-to)
+		(holding ?rob ?x)
+		(blocktype ?s ?x)
 	)
 )
 

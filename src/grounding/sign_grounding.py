@@ -179,6 +179,7 @@ def signify_predicates(predicates, updated_predicates, signs, subtype_map):
                 roles = []
                 roles.append(role_name)
                 role_signifs = []
+                subroles = []
                 if role_name not in signs:
                     signs[role_name] = Sign(role_name)
                 if fact_name in subtype_map.keys():
@@ -223,12 +224,18 @@ def signify_predicates(predicates, updated_predicates, signs, subtype_map):
                 for role_name in roles:
                     role_sign = signs[role_name]
                     obj_sign = signs[fact_name]
-                    smaller_roles = [obj for obj in used_facts if obj in role_name and obj in signs]
+                    spec_sign = None
+                    if obj_sign.name in role_sign.name:
+                            spec_sign = role_sign.name[len(obj_sign.name)+1 : ]
+                    smaller_roles = []
+                    if spec_sign and subroles:
+                        for srole in subroles:
+                            if spec_sign in srole:
+                                smaller_roles.append(srole)
+                    #smaller_roles = [obj for obj in used_facts if obj in role_name and obj in signs]
 
-                    if not smaller_roles:
-                        if obj_sign.name in role_sign.name:
-                            fact_sign = role_sign.name[len(obj_sign.name)+1 : ]
-                            smaller_roles = [obj for obj in used_facts if fact_sign in obj and obj in signs]
+                    if not smaller_roles and spec_sign:
+                        smaller_roles = [obj for obj in used_facts if spec_sign in obj and obj in signs]
                     if smaller_roles:
                         for obj in smaller_roles:
                             updated_obj_sign = signs[obj]
@@ -411,7 +418,7 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
                                         for at in attribute.copy():
                                             if at in event_signs:
                                                 key_at = at
-                                            break
+                                                break
                                         else:
                                             depth-=1
                                         break
