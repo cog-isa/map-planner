@@ -8,7 +8,6 @@ from .semnet import Sign
 DEFAULT_FILE_PREFIX = 'wmodel_'
 DEFAULT_FILE_SUFFIX = '.swm'
 
-SIT_COUNTER = 0
 SIT_PREFIX = 'situation_'
 PLAN_PREFIX = 'plan_'
 
@@ -62,13 +61,13 @@ class Task:
             self.goal_situation.add_out_meaning(conn)
 
             plan_image = plan_sign.add_image()
-            effect = False
-            for name, cm in plan:
-                # TODO: add actual triplet of components for all signs to access to the current image
-                im = cm.sign.add_image()
-                connector = plan_image.add_feature(im, effect=effect)
-                cm.sign.add_out_image(connector)
-                effect = True
+            # effect = False
+            # for name, cm in plan:
+            #     # TODO: add actual triplet of components for all signs to access to the current image
+            #     im = cm.sign.add_image()
+            #     connector = plan_image.add_feature(im, effect=effect)
+            #     cm.sign.add_out_image(connector)
+            #     effect = True
 
             self.signs[plan_sign.name] = plan_sign
             self.signs[self.start_situation.name] = self.start_situation

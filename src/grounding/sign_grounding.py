@@ -1,7 +1,7 @@
 import logging
 from collections import defaultdict
 
-from grounding.semnet import Sign
+from .semnet import Sign
 from .sign_task import Task
 
 
@@ -80,7 +80,7 @@ def ground(problem):
     start_situation, pms = _define_situation('*start*', problem.initial_state, signs)
     goal_situation, pms = _define_situation('*finish*', problem.goal, signs)
 
-    _expand_situation1(goal_situation, signs, pms)  # For task
+    #_expand_situation1(goal_situation, signs, pms)  # For task
     return Task(problem.name, signs, start_situation, goal_situation)
 
 

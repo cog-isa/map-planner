@@ -1,16 +1,20 @@
 import logging
 
-import grounding.sign_task as st
-from grounding.semnet import Sign
+from ..grounding.sign_task import SIT_PREFIX, Task
+from ..grounding.semnet import Sign
 
 MAX_ITERATION = 100
+SIT_COUNTER = 0
 
 world_model = None
+_waste_scripts = None
 
 
-def map_search(task):
+def map_search(task, waste_scripts=None):
     global world_model
+    global _waste_scripts
     world_model = task.signs
+    _waste_scripts = waste_scripts
     active_pm = task.goal_situation.meanings[1]
     check_pm = task.start_situation.meanings[1]
     logging.debug('Start: {0}'.format(check_pm.longstr()))
@@ -22,6 +26,14 @@ def map_search(task):
         plan = sorted(plans, key=lambda x: len(x))[0]
         reversed(plan)
         logging.info('Plan: len={0}, {1}'.format(len(plan), [name for _, name, _ in plan]))
+        for pm, _, script in plan:
+            if len(script.sign.images) > 0 and all(cm.is_empty() for _, cm in script.sign.images.items()):
+                logging.info(
+                    'CHOOSE NEW GOAL {0} due to action {1} is abstract, start new planning procedure'.format(pm,
+                                                                                                             script))
+                map_search(Task(task.name, world_model, check_pm.sign, pm.sign),
+                           [script.sign.name] + (_waste_scripts if _waste_scripts else []))
+
         return [(name, script) for _, name, script in plan]
     else:
         logging.debug('Variant are not found')
@@ -38,9 +50,11 @@ def map_iteration(active_pm, check_pm, current_plan, iteration):
     # Check meanings for current situations
     precedents = []
     for name, sign in world_model.items():
-        for index, cm in sign.meanings.items():
-            if cm.includes('meaning', active_pm):
-                precedents.extend(cm.sign.spread_up_activity_act('meaning', 1))
+        for index, cm in list(sign.meanings.items()):
+            if cm.is_causal() and not (_waste_scripts and cm.sign.name in _waste_scripts):
+                result, checked = _check_activity(cm, active_pm)
+                if result:
+                    precedents.append(checked)
 
     # Activate all current signs (their meanings)
     active_chains = active_pm.spread_down_activity('meaning', 2)
@@ -160,10 +174,11 @@ def _check_activity(pm, active_pm):
 
 
 def _time_shift_backward(active_pm, script):
-    next_pm = Sign(st.SIT_PREFIX + str(st.SIT_COUNTER))
+    global SIT_COUNTER
+    next_pm = Sign(SIT_PREFIX + str(SIT_COUNTER))
     world_model[next_pm.name] = next_pm
     pm = next_pm.add_meaning()
-    st.SIT_COUNTER += 1
+    SIT_COUNTER += 1
     copied = {}
     for event in active_pm.cause:
         for es in script.effect:

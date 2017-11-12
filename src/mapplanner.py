@@ -5,9 +5,9 @@ import re
 import sys
 import time
 
-from grounding import sign_grounding
-from pddl.parser import Parser
-from search.mapsearch import map_search
+from .grounding import sign_grounding
+from .pddl.parser import Parser
+from .search.mapsearch import map_search
 
 NUMBER = re.compile(r'\d+')
 SOLUTION_FILE_SUFFIX = '.soln'
@@ -54,9 +54,9 @@ def _ground(problem, is_load):
     return task
 
 
-def search_plan(domain_file, problem_file, saveload):
+def search_plan(domain_file, problem_file, save, load):
     problem = _parse(domain_file, problem_file)
-    task = _ground(problem, saveload)
+    task = _ground(problem, load)
 
     search_start_time = time.clock()
     logging.info('Search start: {0}'.format(task.name))
@@ -65,7 +65,7 @@ def search_plan(domain_file, problem_file, saveload):
     logging.info('Wall-clock search time: {0:.2}'.format(time.clock() -
                                                          search_start_time))
 
-    if saveload:
+    if save:
         task.save_signs(solution)
 
     return solution
@@ -81,7 +81,8 @@ if __name__ == '__main__':
     argparser.add_argument(dest='problem')
     argparser.add_argument('-l', '--loglevel', choices=log_levels,
                            default='info')
-    argparser.add_argument('-s', '--saveload', action='store_true')
+    argparser.add_argument('-s', '--save', action='store_true')
+    argparser.add_argument('-w', '--load', action='store_true')
 
     args = argparser.parse_args()
 
@@ -101,7 +102,7 @@ if __name__ == '__main__':
     else:
         args.domain = os.path.abspath(args.domain)
 
-    solution = search_plan(args.domain, args.problem, args.saveload)
+    solution = search_plan(args.domain, args.problem, args.save, args.load)
 
     if solution is None:
         logging.warning('No solution could be found')
