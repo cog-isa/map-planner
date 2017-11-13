@@ -48,24 +48,29 @@ class Mapbuilder:
             prev_cell = None
 
             for id, cell in enumerate(col_cells):
-                near_mean = near.add_meaning()
-                wall = walls.pop(0)
-                wall_mean = wall.add_meaning()
-                cell_mean = cell.add_meaning()
-                con = near_mean.add_feature(cell_mean)
-                conn = near_mean.add_feature(wall_mean, effect=True)
-                cell.add_out_meaning(con)
-                wall.add_out_meaning(conn)
-                connector = sit_meaning.add_feature(near_mean)
-                near.add_out_meaning(connector)
-                if id == 0:
-                    dir = signs['north']
-                    con = sit_meaning.add_feature(dir.add_meaning(), connector.in_order)
-                    dir.add_out_meaning(con)
-                elif id == len(col_cells) - 1:
-                    dir = signs['south']
-                    con = sit_meaning.add_feature(dir.add_meaning(), connector.in_order)
-                    dir.add_out_meaning(con)
+
+                if id==0 or id == len(col_cells)-1:
+                    near_mean = near.add_meaning()
+                    if not walls:
+                        print()
+                    wall = walls.pop(0)
+
+                    wall_mean = wall.add_meaning()
+                    cell_mean = cell.add_meaning()
+                    con = near_mean.add_feature(cell_mean)
+                    conn = near_mean.add_feature(wall_mean, effect=True)
+                    cell.add_out_meaning(con)
+                    wall.add_out_meaning(conn)
+                    connector = sit_meaning.add_feature(near_mean)
+                    near.add_out_meaning(connector)
+                    if id == 0:
+                        dir = signs['north']
+                        con = sit_meaning.add_feature(dir.add_meaning(), connector.in_order)
+                        dir.add_out_meaning(con)
+                    elif id == len(col_cells) - 1:
+                        dir = signs['south']
+                        con = sit_meaning.add_feature(dir.add_meaning(), connector.in_order)
+                        dir.add_out_meaning(con)
 
                 if column == 0 or column == self.length -1:
                     near_mean = near.add_meaning()
@@ -144,12 +149,11 @@ class Mapbuilder:
                     east = signs['east']
                     con = sit_meaning.add_feature(east.add_meaning(), connector.in_order)
                     east.add_out_meaning(con)
-                    print()
             prev_column = col_cells
-        print()
+        return signs
 
 
 if __name__ == '__main__':
 
-    map = Mapbuilder(3, 2, 0)
-    map.build()
+    map = Mapbuilder(100, 50, 0)
+    print(len(map.build()))
