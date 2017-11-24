@@ -13,7 +13,7 @@ class Mapbuilder:
         self.Robots = Robots
         self.Blocks = Blocks
 
-    def build(self):
+    def build_cells(self):
         """
 
         :return: 16 cells
@@ -117,12 +117,20 @@ class Mapbuilder:
             prev_column = col_cells
         return situation
 
-    def localize_robots(self):
+    def stretch_map(self):
         """
         there is a relationship between concepts far, nearby, beside, within
         the limits of the dependence of the size of the robot and the map
         :return:
         """
+        global_cell = self.length
+
+    def localize_robots(self):
+        """
+        there is robot localization in cells
+        :return:
+        """
+
 
 
 if __name__ == '__main__':
@@ -133,4 +141,4 @@ if __name__ == '__main__':
 
 
     map = Mapbuilder(ox = 100, oy = 50, Robots = robots, Blocks = blocks)
-    print(len(map.build().meanings[1].cause))
+    print(len(map.build_cells().meanings[1].cause))
