@@ -1,3 +1,6 @@
+import itertools
+from collections import namedtuple
+
 from grounding.semnet import Sign
 
 
@@ -7,15 +10,18 @@ class Mapbuilder:
         self.length = ox
         self.width = oy
         self.directions = ['north-west', 'north', 'north-east', 'east', 'south-east', 'south', 'south-west', 'west']
-        self.name = 'start'
+        self.name = 'start_situation'
         self.dimension = 4
         self.signs = {}
-        self.Robots = Robots
-        self.Blocks = Blocks
+        self.robots = Robots
+        self.blocks = Blocks
+        self.cells = []
+        for object in itertools.chain(self.robots, self.blocks):
+            self.signs[object['name']] = Sign(object['name'])
 
     def build_cells(self):
         """
-
+        Can build 2 types of cells - global cells and local-robot's cells
         :return: 16 cells
         """
         cells = []
@@ -58,6 +64,7 @@ class Mapbuilder:
             cell_sign = Sign('pos_' + str(cell_id))
             self.signs['pos_' + str(cell_id)] = cell_sign
             cells.append(cell_sign)
+            self.cells.append([cell_sign])
         for wall_id in range (self.dimension**2):
             wall_sign = Sign('wall_' + str(wall_id))
             self.signs['wall_'+ str(wall_id)] = wall_sign
@@ -123,22 +130,54 @@ class Mapbuilder:
         the limits of the dependence of the size of the robot and the map
         :return:
         """
-        global_cell = self.length
 
-    def localize_robots(self):
+        length = 0
+        width = 0
+        slipx = round(self.length/self.dimension, 1)
+        slipy = round(self.width/self.dimension, 1)
+        column = 0
+        for cell in self.cells:
+            column+=1
+            cell.extend((length, width, length+slipx, width+slipy))
+            width +=slipy
+            if column % self.dimension ==0:
+                length +=slipx
+                width = 0
+        print()
+
+
+
+    def localize_objects(self, searchobject = None):
         """
-        there is robot localization in cells
-        :return:
+        there is robots localization in cells
+        :return: tupe(cell name, object) or list of tuples if not arg
         """
+        localization = []
+        for cell in self.cells:
+            if not len(cell) > 1:
+                self.stretch_map()
+                break
+        for object in itertools.chain(self.robots, self.blocks):
+            if searchobject and searchobject == object['name']:
+                for cell_dimensions in self.cells:
+                    if cell_dimensions[1] <= object['ox'] <= cell_dimensions[3] and cell_dimensions[2] <= object[
+                        'oy'] <= cell_dimensions[4]:
+                        localization.append((cell_dimensions[0], self.signs[object['name']]))
+            elif not searchobject:
+                for cell_dimensions in self.cells:
+                    if cell_dimensions[1] <= object['ox'] <= cell_dimensions[3] and cell_dimensions[2] <= object['oy'] <= cell_dimensions[4]:
+                        localization.append((cell_dimensions[0], self.signs[object['name']]))
+        return localization
 
 
 
 if __name__ == '__main__':
 
 
-    robots = {'Robot1':{'diametr': 0.5, 'ox': 1, 'oy': 1}}
-    blocks = {'Block1':{'diametr': 0.1, 'ox': 88, 'oy': 48}}
+    robots = [{'name':'Robot1', 'diametr': 0.5, 'ox': 1, 'oy': 1}]
+    blocks = [{'name':'Block1','diametr': 0.1, 'ox': 88, 'oy': 48}]
 
 
     map = Mapbuilder(ox = 100, oy = 50, Robots = robots, Blocks = blocks)
-    print(len(map.build_cells().meanings[1].cause))
+    sit = map.build_cells()
+    map.localize_objects()
