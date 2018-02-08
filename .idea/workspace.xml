@@ -2,7 +2,1073 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec1abfb1-a60a-4f36-9512-08cc12e2270b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/mapbuilder/mapper.py" afterPath="$PROJECT_DIR$/src/mapbuilder/mapper.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/grounding/medicine/Knowledge.dot" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/grounding/medicine/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/grounding/medicine/dot_grounding.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/grounding/spatial_cognition/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/grounding/spatial_cognition/map_grounding.py" />
+      <change beforePath="$PROJECT_DIR$/.idea/map-planner.iml" afterPath="$PROJECT_DIR$/.idea/map-planner.iml" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change beforePath="$PROJECT_DIR$/__init__.py" afterPath="$PROJECT_DIR$/__init__.py" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/README" afterPath="$PROJECT_DIR$/benchmarks/README" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain01.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain02.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain03.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain04.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain05.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain06.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain07.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain08.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain09.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain10.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain11.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain12.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain13.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain14.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain15.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain16.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain17.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain18.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain19.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain20.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain21.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain22.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain23.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain24.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain25.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain26.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain27.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain28.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain29.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/domain30.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/domain30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/airport/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/airport/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task31.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task31.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task32.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task32.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task33.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task33.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task34.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task34.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/blocks/task35.pddl" afterPath="$PROJECT_DIR$/benchmarks/blocks/task35.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/depot/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/depot/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/elevators/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/elevators/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/freecell/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/freecell/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/gripper/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/gripper/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/logistics/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/logistics/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/miconic/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/miconic/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/movie/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/movie/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain01.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain02.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain03.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain04.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain05.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain06.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain07.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain08.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain09.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain10.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain11.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain12.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain13.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain14.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain15.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain16.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain17.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain18.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain19.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain20.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain21.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain22.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain23.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain24.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain25.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain26.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain27.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain28.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain29.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/domain30.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/domain30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/openstacks/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/openstacks/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain01.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain02.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain03.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain04.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain05.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain06.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain07.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain08.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain09.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain10.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain11.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain12.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain13.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain14.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain15.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain16.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain17.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain18.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain19.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain20.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain21.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain22.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain23.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain24.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain25.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain26.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain27.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain28.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain29.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/domain30.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/domain30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/parcprinter/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/parcprinter/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/pegsol/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/pegsol/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain01.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain02.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain03.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain04.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain05.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain06.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain07.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain08.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain09.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain10.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain11.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain12.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain13.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain14.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain15.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain16.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain17.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain18.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain19.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain20.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain21.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain22.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain23.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain24.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain25.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain26.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain27.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain28.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain29.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain30.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain31.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain31.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain32.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain32.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain33.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain33.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain34.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain34.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain35.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain35.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain36.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain36.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain37.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain37.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain38.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain38.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain39.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain39.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain40.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain40.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain41.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain41.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain42.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain42.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain43.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain43.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain44.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain44.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain45.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain45.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain46.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain46.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain47.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain47.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain48.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain48.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain49.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain49.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/domain50.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/domain50.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task31.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task31.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task32.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task32.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task33.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task33.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task34.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task34.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task35.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task35.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task36.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task36.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task37.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task37.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task38.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task38.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task39.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task39.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task40.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task40.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task41.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task41.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task42.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task42.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task43.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task43.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task44.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task44.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task45.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task45.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task46.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task46.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task47.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task47.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task48.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task48.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task49.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task49.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/psr-small/task50.pddl" afterPath="$PROJECT_DIR$/benchmarks/psr-small/task50.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/rovers/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/rovers/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/satellite/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/satellite/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/scanalyzer/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/scanalyzer/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/sokoban/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/sokoban/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/tpp/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/tpp/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/transport/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/transport/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task21.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task22.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task23.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task24.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task24.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task25.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task25.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task26.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task26.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task27.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task27.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task28.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task28.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task29.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task29.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/woodworking/task30.pddl" afterPath="$PROJECT_DIR$/benchmarks/woodworking/task30.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/domain.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task01.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task02.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task03.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task04.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task05.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task06.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task07.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task08.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task09.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task10.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task11.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task12.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task13.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task14.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task15.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task16.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task16.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task17.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task17.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task18.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task18.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task19.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task19.pddl" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zenotravel/task20.pddl" afterPath="$PROJECT_DIR$/benchmarks/zenotravel/task20.pddl" />
+      <change beforePath="$PROJECT_DIR$/experience/wmodel_10_01_20_01_a1.swm" afterPath="$PROJECT_DIR$/experience/wmodel_10_01_20_01_a1.swm" />
+      <change beforePath="$PROJECT_DIR$/experience/wmodel_10_01_20_01_a2.swm" afterPath="$PROJECT_DIR$/experience/wmodel_10_01_20_01_a2.swm" />
+      <change beforePath="$PROJECT_DIR$/experience/wmodel_10_01_20_01_a3.swm" afterPath="$PROJECT_DIR$/experience/wmodel_10_01_20_01_a3.swm" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS-10-0/domain-a1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS-10-0/domain-a2.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS-10-0/problem-a1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS-10-0/problem-a2.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/domain.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-10-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-10-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-10-2.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-11-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-11-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-11-2.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-12-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-12-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-13-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-13-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-14-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-14-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-15-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-15-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-16-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-16-2.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-17-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-4-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-4-2.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-5-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-5-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-5-2.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-6-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-6-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-6-2.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-7-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-7-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-7-2.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-8-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-8-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-8-2.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-9-0.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-9-1.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS/probBLOCKS-9-2.pddl" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask.soln" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask.soln" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task01.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task01.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task03.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task04.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task04.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task05.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task05.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task06.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task06.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task07.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task07.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task08.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task08.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task09.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task09.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task10.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task10.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task11.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task11.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task12.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task12.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task13.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task13.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task14.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task14.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task15.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task15.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task02.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task02.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task21.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task21.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task21.pddl.soln" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task21.pddl.soln" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task22.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task22.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task23.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task2constr/task23.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task03.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task03.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl.soln" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl.soln" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl.soln" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl.soln" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task33.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task33.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile1.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile1.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile10.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile10.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile11.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile11.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile12.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile12.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile13.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile13.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile14.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile14.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile15.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile15.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile16.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile16.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile17.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile17.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile18.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile18.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile19.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile19.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile2.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile2.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile20.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile20.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile3.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile3.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile4.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile4.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile5.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile5.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile6.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile6.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile7.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile7.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile8.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile8.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile9.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/depot/pfile9.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile1.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile1.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile10.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile10.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile11.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile11.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile12.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile12.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile13.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile13.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile14.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile14.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile15.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile15.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile16.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile16.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile17.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile17.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile18.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile18.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile19.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile19.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile2.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile2.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile20.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile20.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile3.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile3.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile4.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile4.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile5.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile5.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile6.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile6.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile7.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile7.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile8.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile8.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile9.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile9.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/air_trucks_constr/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/air_trucks_constr/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-1.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-1.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-2.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-2.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-3.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-3.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks/probLOGISTICS-4-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks/probLOGISTICS-4-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks_constr/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks_constr/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks_constr/probLOGISTICS-4-2.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks_constr/probLOGISTICS-4-2.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks_constr/probLOGISTICS-4-3.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks_constr/probLOGISTICS-4-3.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks_constr/probLOGISTICS-4-3.pddl.soln" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks_constr/probLOGISTICS-4-3.pddl.soln" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-10-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-10-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-10-1.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-10-1.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-11-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-11-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-12-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-12-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-13-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-13-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-13-1.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-13-1.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-14-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-14-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-14-1.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-14-1.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-15-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-15-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-15-1.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-15-1.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-4-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-4-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-5-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-5-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-6-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-6-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-7-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-7-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-8-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-8-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-8-1.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-8-1.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-9-0.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-9-0.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-9-1.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-9-1.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/robotsworld/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/robotsworld/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/robotsworld/task1.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/robotsworld/task1.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p03.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p03.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p04.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p04.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p05.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p05.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p06.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p06.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p07.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p07.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p08.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p08.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p09.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p09.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p10.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p10.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p11.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p11.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p12.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p12.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p13.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p13.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p14.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p14.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p15.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p15.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p16.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p16.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p17.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p17.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p18.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p18.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p19.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p19.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p20.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/rovers/p20.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p03-pfile3.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p03-pfile3.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p04-pfile4.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p04-pfile4.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p05-pfile5.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p05-pfile5.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p06-pfile6.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p06-pfile6.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p07-pfile7.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p07-pfile7.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p08-pfile8.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p08-pfile8.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p09-pfile9.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p09-pfile9.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p10-pfile10.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p10-pfile10.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p11-pfile11.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p11-pfile11.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p12-pfile12.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p12-pfile12.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p13-pfile13.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p13-pfile13.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p14-pfile14.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p14-pfile14.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p15-pfile15.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p15-pfile15.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p16-pfile16.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p16-pfile16.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p17-pfile17.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p17-pfile17.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p18-pfile18.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p18-pfile18.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p19-pfile19.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p19-pfile19.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p20-pfile20.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/satellites/p20-pfile20.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p01.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p01.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p02.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p02.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p03.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p03.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p04.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p04.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p05.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p05.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p06.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p06.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p07.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p07.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p08.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p08.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p09.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p09.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p10.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p10.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p11.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p11.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p12.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p12.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p13.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p13.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p14.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p14.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p15.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p15.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p16.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p16.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p17.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p17.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p18.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p18.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p19.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p19.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p20.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/taxi/p20.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p01.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p01.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p02.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p02.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p03.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p03.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p04.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p04.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p05.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p05.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p06.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p06.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p07.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p07.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p08.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p08.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p09.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p09.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p10.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p10.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p11.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p11.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p12.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p12.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p13.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p13.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p14.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p14.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p15.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p15.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p16.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p16.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p17.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p17.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p18.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p18.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p19.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p19.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p20.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/wireless/p20.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p01.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p01.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p02.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p02.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p03.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p03.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p04.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p04.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p05.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p05.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p06.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p06.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p07.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p07.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p08.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p08.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p09.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p09.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p10.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p10.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p11.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p11.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p12.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p12.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p13.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p13.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p14.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p14.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p15.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p15.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p16.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p16.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p17.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p17.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p18.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p18.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p19.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p19.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p20.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/woodworking08/p20.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/domain.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/domain.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile10.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile10.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile12.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile12.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile13.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile13.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile14.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile14.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile15.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile15.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile16.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile16.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile17.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile17.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile18.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile18.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile19.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile19.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile20.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile20.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile3.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile3.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile4.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile4.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile5.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile5.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile6.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile6.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile7.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile7.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile8.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile8.pddl" />
+      <change beforePath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile9.pddl" afterPath="$PROJECT_DIR$/mapddl-benchmarks/zenotravel/pfile9.pddl" />
+      <change beforePath="$PROJECT_DIR$/src/Profiler" afterPath="$PROJECT_DIR$/src/Profiler" />
+      <change beforePath="$PROJECT_DIR$/src/__init__.py" afterPath="$PROJECT_DIR$/src/__init__.py" />
+      <change beforePath="$PROJECT_DIR$/src/connection/manager.py" afterPath="$PROJECT_DIR$/src/connection/manager.py" />
+      <change beforePath="$PROJECT_DIR$/src/connection/messagen.py" afterPath="$PROJECT_DIR$/src/connection/messagen.py" />
+      <change beforePath="$PROJECT_DIR$/src/data.pickle" afterPath="$PROJECT_DIR$/src/data.pickle" />
+      <change beforePath="$PROJECT_DIR$/src/grounding/__init__.py" afterPath="$PROJECT_DIR$/src/grounding/__init__.py" />
+      <change beforePath="$PROJECT_DIR$/src/grounding/agent_grounding.py" afterPath="$PROJECT_DIR$/src/grounding/agent_grounding.py" />
+      <change beforePath="$PROJECT_DIR$/src/grounding/semnet.py" afterPath="$PROJECT_DIR$/src/grounding/semnet.py" />
+      <change beforePath="$PROJECT_DIR$/src/grounding/sign_grounding.py" afterPath="$PROJECT_DIR$/src/grounding/sign_grounding.py" />
+      <change beforePath="$PROJECT_DIR$/src/grounding/sign_task.py" afterPath="$PROJECT_DIR$/src/grounding/sign_task.py" />
+      <change beforePath="$PROJECT_DIR$/src/m_profiler" afterPath="$PROJECT_DIR$/src/m_profiler" />
+      <change beforePath="$PROJECT_DIR$/src/mapbuilder/mapper.py" afterPath="$PROJECT_DIR$/src/mapbuilder/mapper.py" />
+      <change beforePath="$PROJECT_DIR$/src/mapplanner.py" afterPath="$PROJECT_DIR$/src/mapplanner.py" />
+      <change beforePath="$PROJECT_DIR$/src/pddl/__init__.py" afterPath="$PROJECT_DIR$/src/pddl/__init__.py" />
+      <change beforePath="$PROJECT_DIR$/src/pddl/errors.py" afterPath="$PROJECT_DIR$/src/pddl/errors.py" />
+      <change beforePath="$PROJECT_DIR$/src/pddl/lisp_iterators.py" afterPath="$PROJECT_DIR$/src/pddl/lisp_iterators.py" />
+      <change beforePath="$PROJECT_DIR$/src/pddl/lisp_parser.py" afterPath="$PROJECT_DIR$/src/pddl/lisp_parser.py" />
+      <change beforePath="$PROJECT_DIR$/src/pddl/parser.py" afterPath="$PROJECT_DIR$/src/pddl/parser.py" />
+      <change beforePath="$PROJECT_DIR$/src/pddl/parser_common.py" afterPath="$PROJECT_DIR$/src/pddl/parser_common.py" />
+      <change beforePath="$PROJECT_DIR$/src/pddl/pddl.py" afterPath="$PROJECT_DIR$/src/pddl/pddl.py" />
+      <change beforePath="$PROJECT_DIR$/src/pddl/tree_visitor.py" afterPath="$PROJECT_DIR$/src/pddl/tree_visitor.py" />
+      <change beforePath="$PROJECT_DIR$/src/pmaplanner.log" afterPath="$PROJECT_DIR$/src/pmaplanner.log" />
+      <change beforePath="$PROJECT_DIR$/src/prof_stats.py" afterPath="$PROJECT_DIR$/src/prof_stats.py" />
+      <change beforePath="$PROJECT_DIR$/src/search/__init__.py" afterPath="$PROJECT_DIR$/src/search/__init__.py" />
+      <change beforePath="$PROJECT_DIR$/src/search/mapsearch.py" afterPath="$PROJECT_DIR$/src/search/mapsearch.py" />
+      <change beforePath="$PROJECT_DIR$/src/search/pmaplanner.log" afterPath="$PROJECT_DIR$/src/search/pmaplanner.log" />
+      <change beforePath="$PROJECT_DIR$/src/visual/__init__.py" afterPath="$PROJECT_DIR$/src/visual/__init__.py" />
+      <change beforePath="$PROJECT_DIR$/src/visual/viz_steps.py" afterPath="$PROJECT_DIR$/src/visual/viz_steps.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,65 +1079,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="mapsearch.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/search/mapsearch.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="915">
-              <caret line="68" column="0" lean-forward="false" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mapper.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/mapbuilder/mapper.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="212" column="13" lean-forward="false" selection-start-line="212" selection-start-column="4" selection-end-line="212" selection-end-column="13" />
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_pydev_execfile.py" pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="18" lean-forward="true" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="codecs.py" pinned="false" current-in-tab="false">
-        <entry file="file:///usr/lib/python3.5/codecs.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="323" column="0" lean-forward="false" selection-start-line="323" selection-start-column="0" selection-end-line="323" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mapplanner.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/mapplanner.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="51" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-              <folding>
-                <element signature="e#17#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="sign_grounding.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/grounding/sign_grounding.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-505">
-              <caret line="672" column="8" lean-forward="false" selection-start-line="672" selection-start-column="8" selection-end-line="673" selection-end-column="44" />
+            <state relative-caret-position="394">
+              <caret line="105" column="0" lean-forward="false" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -79,23 +1091,53 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="manager.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/connection/manager.py">
+      <file leaf-file-name="dot_grounding.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/grounding/medicine/dot_grounding.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="126">
+              <caret line="7" column="10" lean-forward="false" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="semnet.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/grounding/semnet.py">
+      <file leaf-file-name="mapper.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/mapbuilder/mapper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3840">
-              <caret line="256" column="0" lean-forward="false" selection-start-line="256" selection-start-column="0" selection-end-line="256" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="3633">
+              <caret line="223" column="15" lean-forward="false" selection-start-line="223" selection-start-column="15" selection-end-line="223" selection-end-column="15" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+              </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="map_grounding.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/grounding/spatial_cognition/map_grounding.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="537">
+              <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="93" selection-end-column="18" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="robots_map_1.jpg" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/grounding/spatial_cognition/robots_map_1.jpg">
+          <provider selected="true" editor-type-id="images">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="robots_map.jpg" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/grounding/spatial_cognition/robots_map.jpg">
+          <provider selected="true" editor-type-id="images">
+            <state />
           </provider>
         </entry>
       </file>
@@ -127,6 +1169,11 @@
         <option value="$PROJECT_DIR$/src/grounding/sign_grounding.py" />
         <option value="$PROJECT_DIR$/src/mapplanner.py" />
         <option value="$PROJECT_DIR$/src/mapbuilder/mapper.py" />
+        <option value="$PROJECT_DIR$/src/task_complexity.py" />
+        <option value="$PROJECT_DIR$/src/grounding/map_grounding.py" />
+        <option value="$PROJECT_DIR$/src/grounding/dot_grounding.py" />
+        <option value="$PROJECT_DIR$/src/grounding/medicine/dot_grounding.py" />
+        <option value="$PROJECT_DIR$/src/grounding/spatial_cognition/map_grounding.py" />
       </list>
     </option>
   </component>
@@ -152,8 +1199,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -208,6 +1253,19 @@
               <item name="map-planner" type="b2602c69:ProjectViewProjectNode" />
               <item name="map-planner" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="grounding" type="462c0819:PsiDirectoryNode" />
+              <item name="spatial_cognition" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="map-planner" type="b2602c69:ProjectViewProjectNode" />
+              <item name="map-planner" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="mapbuilder" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="map-planner" type="b2602c69:ProjectViewProjectNode" />
+              <item name="map-planner" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="pddl" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -220,6 +1278,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -227,11 +1287,14 @@
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/experience" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/grounding/medicine" />
       <recent name="$PROJECT_DIR$/src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/grounding/spatial_cognition" />
+      <recent name="$PROJECT_DIR$/src/grounding/medicine" />
+      <recent name="$PROJECT_DIR$/experience" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -246,23 +1309,42 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.mapper">
-    <configuration name="mapper" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.map_grounding">
+    <configuration name="dot_grounding" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/mapbuilder" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/grounding/medicine" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="map-planner" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/mapbuilder/mapper.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/grounding/medicine/dot_grounding.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="map_grounding" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/grounding" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="map-planner" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/grounding/spatial_cognition/map_grounding.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
     </configuration>
     <configuration name="mapplanner" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -277,9 +1359,10 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="map-planner" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/mapplanner.py" />
-      <option name="PARAMETERS" value="../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task03.pddl" />
+      <option name="PARAMETERS" value="../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
     </configuration>
     <configuration name="prof_stats" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -297,17 +1380,40 @@
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
     </configuration>
-    <list size="3">
+    <configuration name="task_complexity" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="map-planner" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/task_complexity.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.mapplanner" />
       <item index="1" class="java.lang.String" itemvalue="Python.prof_stats" />
-      <item index="2" class="java.lang.String" itemvalue="Python.mapper" />
+      <item index="2" class="java.lang.String" itemvalue="Python.task_complexity" />
+      <item index="3" class="java.lang.String" itemvalue="Python.map_grounding" />
+      <item index="4" class="java.lang.String" itemvalue="Python.dot_grounding" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Python.mapper" />
-        <item index="1" class="java.lang.String" itemvalue="Python.mapplanner" />
-        <item index="2" class="java.lang.String" itemvalue="Python.prof_stats" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.map_grounding" />
+        <item index="1" class="java.lang.String" itemvalue="Python.dot_grounding" />
+        <item index="2" class="java.lang.String" itemvalue="Python.mapplanner" />
+        <item index="3" class="java.lang.String" itemvalue="Python.task_complexity" />
+        <item index="4" class="java.lang.String" itemvalue="Python.prof_stats" />
       </list>
     </recent_temporary>
   </component>
@@ -329,26 +1435,25 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="260" y="27" width="1400" height="1000" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24964234" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24928571" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.5028612" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.49713877" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.49713877" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39932886" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39932886" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -377,156 +1482,27 @@
           <line>223</line>
           <option name="timeStamp" value="148" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/grounding/sign_grounding.py</url>
+          <line>105</line>
+          <option name="timeStamp" value="161" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/search/mapsearch.py</url>
+          <line>59</line>
+          <option name="timeStamp" value="162" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/grounding/sign_grounding.py</url>
+          <line>14</line>
+          <option name="timeStamp" value="163" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="161" />
+      <option name="time" value="174" />
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="cell.xl is None" language="Python" />
-      </configuration>
-    </watches-manager>
+    <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/pddl/parser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="842" column="0" lean-forward="false" selection-start-line="842" selection-start-column="0" selection-end-line="842" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/connection/messagen.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1655">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks_constr/probLOGISTICS-4-3.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-163">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/prof_stats.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="40" column="21" lean-forward="false" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task10.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task15.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task14.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task13.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/depot/pfile1.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/driverlog/domain.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-450">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task33.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12">
-          <caret line="38" column="21" lean-forward="false" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-3.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="837">
-          <caret line="100" column="1" lean-forward="false" selection-start-line="100" selection-start-column="1" selection-end-line="100" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/rovers/domain.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-360">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/satellites/domain.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-558">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/zenotravel/domain.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-618">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/depot/domain.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/woodworking08/domain.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="49" column="61" lean-forward="true" selection-start-line="49" selection-start-column="61" selection-end-line="49" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/logistics00/city_trucks/domain.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="12" lean-forward="true" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/satellites/p06-pfile6.pddl">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -555,13 +1531,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS-10-0/problem-a1.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/probBLOCKS-10-0/problem-a1.pddl" />
     <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/logistics00/probLOGISTICS-11-0.pddl">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -594,20 +1564,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1020">
           <caret line="68" column="20" lean-forward="true" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="57" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="43" />
         </state>
       </provider>
     </entry>
@@ -660,45 +1616,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/grounding/agent_grounding.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/connection/manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
+        <state relative-caret-position="234">
           <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../lib/python3.4/multiprocessing/pool.py" />
     <entry file="file://$PROJECT_DIR$/src/grounding/semnet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3840">
+        <state relative-caret-position="4608">
           <caret line="256" column="0" lean-forward="false" selection-start-line="256" selection-start-column="0" selection-end-line="256" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/search/mapsearch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="915">
-          <caret line="68" column="0" lean-forward="false" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/mapplanner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="51" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-          <folding>
-            <element signature="e#17#32#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -706,7 +1636,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="1025" column="0" lean-forward="false" selection-start-line="1025" selection-start-column="0" selection-end-line="1025" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -719,38 +1648,226 @@
     </entry>
     <entry file="file:///usr/lib/python3.5/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
+        <state relative-caret-position="5814">
           <caret line="323" column="0" lean-forward="false" selection-start-line="323" selection-start-column="0" selection-end-line="323" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/driverlog/pfile1.pddl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/prof_stats.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="666">
+          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="55" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task32.pddl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1116">
+          <caret line="62" column="27" lean-forward="false" selection-start-line="62" selection-start-column="27" selection-end-line="62" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/task_complexity.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="18" column="10" lean-forward="false" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/search/mapsearch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-369">
+          <caret line="245" column="4" lean-forward="false" selection-start-line="245" selection-start-column="4" selection-end-line="245" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mapplanner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="95" column="0" lean-forward="true" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3/dist-packages/PIL/Image.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="1188" column="8" lean-forward="false" selection-start-line="1188" selection-start-column="8" selection-end-line="1188" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/domain.pddl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="882">
+          <caret line="49" column="61" lean-forward="false" selection-start-line="49" selection-start-column="61" selection-end-line="49" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/grounding/agent_grounding.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/connection/messagen.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-108">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapddl-benchmarks/blocksworld/signdomtask/task3constr/task03.pddl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/grounding/medicine/Knowledge.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/grounding/medicine/Knowledge.dot">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-282">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mapbuilder/mapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3633">
+          <caret line="223" column="15" lean-forward="false" selection-start-line="223" selection-start-column="15" selection-end-line="223" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/grounding/medicine/dot_grounding.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="10" lean-forward="false" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/grounding/robots_map_1.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="18" lean-forward="true" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+        <state relative-caret-position="306">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/grounding/sign_grounding.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-505">
-          <caret line="672" column="8" lean-forward="false" selection-start-line="672" selection-start-column="8" selection-end-line="673" selection-end-column="44" />
+        <state relative-caret-position="394">
+          <caret line="105" column="0" lean-forward="false" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/mapbuilder/mapper.py">
+    <entry file="file://$PROJECT_DIR$/src/grounding/spatial_cognition/robots_map_2.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.5/importlib/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="212" column="13" lean-forward="false" selection-start-line="212" selection-start-column="4" selection-end-line="212" selection-end-column="13" />
+        <state relative-caret-position="-1026">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.5/dist-packages/cv2/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="22" lean-forward="false" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
           <folding>
-            <element signature="e#0#16#0" expanded="true" />
+            <element signature="e#0#16#0" expanded="false" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/grounding/edged.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/grounding/spatial_cognition/edged.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/grounding/spatial_cognition/map_grounding.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="537">
+          <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="93" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/grounding/spatial_cognition/robots_map.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/grounding/spatial_cognition/robots_map_1.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
   </component>
