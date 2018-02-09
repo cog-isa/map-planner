@@ -72,33 +72,52 @@ def experiment_slam_input():
                         img_drawer.point((ii, jj), fill=(0, 0, 0))
             prev_color = []
 
+    whiteline = {}
+    line = []
+    for j in range(m):
+        counter = 0
+        for i in range(n):
+            if sum(im.getpixel((i, j))) // 3 == 255:
+                counter += 1
+                line.append((i, j))
+            else:
+                whiteline[counter] = line
+                counter = 0
+                line = []
+    a = sorted(list(whiteline))
+    a.reverse()
+    print(a)
+    for i, j in whiteline[a[1]]:
+        img_drawer.point((i, j), fill=(255, 0, 0))
+    print(len(whiteline))
+
     #TODO выделение комнат
 
-    open_cv_image = np.array(im)
-    # Convert RGB to BGR
-    open_cv_image = open_cv_image[:, :, ::-1].copy()
-    edged = cv2.Canny(open_cv_image, 10, 250)
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 10))
-    closed = cv2.morphologyEx(edged, cv2.MORPH_CLOSE, kernel)
-    # cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
-    # total = 0
-    # for c in cnts:
-    #     # аппроксимируем (сглаживаем) контур
-    #     peri = cv2.arcLength(c, True)
-    #     approx = cv2.approxPolyDP(c, 0.02 * peri, True)
-    #
-    #     # если у контура 4 вершины, предполагаем, что это книга
-    #     if len(approx) == 4:
-    #         cv2.drawContours(open_cv_image, [approx], -1, (0, 255, 0), 4)
-    #         total += 1
-    # print(total)
-    cv2.imwrite("spatial_cognition/robots_map_1.jpg", edged)
+    # open_cv_image = np.array(im)
+    # # Convert RGB to BGR
+    # open_cv_image = open_cv_image[:, :, ::-1].copy()
+    # edged = cv2.Canny(open_cv_image, 10, 250)
+    # kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 10))
+    # closed = cv2.morphologyEx(edged, cv2.MORPH_CLOSE, kernel)
+    # # cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
+    # # total = 0
+    # # for c in cnts:
+    # #     # аппроксимируем (сглаживаем) контур
+    # #     peri = cv2.arcLength(c, True)
+    # #     approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+    # #
+    # #     # если у контура 4 вершины, предполагаем, что это книга
+    # #     if len(approx) == 4:
+    # #         cv2.drawContours(open_cv_image, [approx], -1, (0, 255, 0), 4)
+    # #         total += 1
+    # # print(total)
+    # cv2.imwrite("spatial_cognition/robots_map_1.jpg", edged)
 
     #TODO выделение коридоров
 
     #TODO отрисовка робота, стола, блоков
 
-    # im.save('spatial_cognition/robots_map_1.jpg')
+    im.save('spatial_cognition/robots_map_1.jpg')
 
 
 if __name__ == '__main__':

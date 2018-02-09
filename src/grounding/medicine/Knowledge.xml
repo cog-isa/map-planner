@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<KnowledgeBase id="1" name="&quot;Термопластичные материалы в авиастроении&quot;" objectsLength="42" sectionsLength="6">
+<Sections>
+<Section id="0">
+<orderNumber>1</orderNumber>
+<name>Организации</name>
+<queryFlag>true</queryFlag>
+<isVisible>true</isVisible>
+<comment/>
+<Nodes>
+<Node>5</Node>
+<Node>4</Node>
+<Node>3</Node>
+<Node>2</Node>
+<Node>1</Node>
+<Node>0</Node>
+</Nodes>
+</Section>
+<Section id="1">
+<orderNumber>2</orderNumber>
+<name>Авторы патентов</name>
+<queryFlag>true</queryFlag>
+<isVisible>true</isVisible>
+<comment/>
+<Nodes>
+<Node>25</Node>
+<Node>24</Node>
+<Node>23</Node>
+<Node>22</Node>
+<Node>19</Node>
+<Node>21</Node>
+<Node>18</Node>
+<Node>20</Node>
+<Node>17</Node>
+<Node>16</Node>
+<Node>15</Node>
+<Node>14</Node>
+<Node>13</Node>
+<Node>12</Node>
+</Nodes>
+</Section>
+<Section id="2">
+<orderNumber>3</orderNumber>
+<name>Патенты</name>
+<queryFlag>true</queryFlag>
+<isVisible>true</isVisible>
+<comment/>
+<Nodes>
+<Node>6</Node>
+<Node>11</Node>
+<Node>10</Node>
+<Node>9</Node>
+<Node>8</Node>
+<Node>7</Node>
+</Nodes>
+</Section>
+<Section id="3">
+<orderNumber>4</orderNumber>
+<name>Технологии</name>
+<queryFlag>true</queryFlag>
+<isVisible>true</isVisible>
+<comment/>
+<Nodes>
+<Node>27</Node>
+<Node>26</Node>
+</Nodes>
+</Section>
+</Sections>
+</KnowledgeBase>
