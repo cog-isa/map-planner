@@ -1,5 +1,4 @@
 import numpy as np
-from PIL import Image, ImageDraw
 import random
 import cv2
 
@@ -48,7 +47,7 @@ def agent_placer(image, block_size):
     centre = round(pl[0][1]+(block_size*0.5)), round(pl[0][0]+(block_size*0.5))
     orient = tuple(reversed(pl[round(len(pl) - block_size*0.5)]))
 
-    color = np.random.random_integers(0, 255, size=(1, 3)).tolist()
+    color = np.random.random_integers(0, 125, size=(1, 3)).tolist()
     cv2.circle(image, centre, round(block_size*0.5), *color, 2)
     cv2.arrowedLine(image, centre, orient, *color, 2)
 
@@ -58,7 +57,7 @@ def agent_placer(image, block_size):
 def tables_placer(image,block_size):
     place = placer(image, block_size)
     pl = random.choice(place)
-    color = np.random.random_integers(0, 255, size=(1, 3)).tolist()
+    color = np.random.random_integers(0, 125, size=(1, 3)).tolist()
     px = pl[0][1], pl[0][0]+ round(block_size*0.5)
     py = pl[len(pl)-1][1],pl[len(pl)-1][0] - round(block_size*0.5)+1
     pz = px[0], pl[len(pl)-1][0]
@@ -72,7 +71,7 @@ def tables_placer(image,block_size):
 def block_placer(image, block_size):
     place = placer(image, block_size)
     pl = random.choice(place)
-    color = np.random.random_integers(0, 255, size=(1, 3)).tolist()
+    color = np.random.random_integers(0, 125, size=(1, 3)).tolist()
     px = tuple(reversed(pl[0]))
     py = pl[len(pl) - 1][1] - round(block_size * 0.5) + 1, pl[len(pl) - 1][0]- round(block_size * 0.5) + 1
 
@@ -100,6 +99,6 @@ if __name__ == "__main__":
    image_name = "test.jpg"
    image = map_builder(480, 620, 3)
 
-   image = object_builder(image, 2, 2, 6)
+   image = object_builder(image, 2, 2, 2)
 
    cv2.imwrite(image_name, image)
