@@ -100,7 +100,7 @@ def cell_creater(size, obj_loc, region_location):
                 cell_loc.setdefault(region, []).append(cell)
                 break
         else:
-            cell_loc.setdefault('wall', []).append(cell)
+            cell_loc.setdefault('border', []).append(cell)
 
     return cell_loc, cell_map
 
@@ -171,44 +171,98 @@ def map_recogn(map_path, types, agent):
 
     return region_map, cell_map, cell_location
 
-# def locate(regions, objects):
-#     """
-#     :param regions:
-#     :param objects:
-#     :return:
-#     """
-
 def ground(map_file, object_types, agent):
     """
     :param
     :return: Task
     """
+    # map recognition
+    region_map, cell_map, cell_location = map_recogn(map_file, object_types, agent)
 
-
-    # create sign map and matrix
     obj_signifs = {}
     obj_means = {}
-
     signs = {}
-    Map_sign = Sign("Map")
+    #I, They signs
+    I_sign = Sign("I")
+    They_sign = Sign("They")
+    obj_signifs[I_sign] = I_sign.add_significance()
+    signs[I_sign.name] = I_sign
+    obj_signifs[They_sign] = They_sign.add_significance()
+    signs[They_sign.name] = They_sign
 
-    obj_means[Map_sign] = Map_sign.add_meaning()
+    # create sign map and matrix
+    Map_sign = Sign("Map")
     obj_signifs[Map_sign] = Map_sign.add_significance()
     signs[Map_sign.name] = Map_sign
 
 
     # create regions signs and matrixes
-    for region in range(9):
-        Region_sign = Sign("Region" + str(region))
+    Region_sign = Sign("Region")
+    obj_signifs[Region_sign] = Region_sign.add_significance()
+    signs[Region_sign.name] = Region_sign
 
-        obj_means[Region_sign] = Region_sign.add_meaning()
-        obj_signifs[Region_sign] = Region_sign.add_significance()
-        signs[Region_sign.name] = Region_sign
+    for region in region_map:
+        Regions_sign = Sign(region)
+        obj_signifs[Regions_sign] = Regions_sign.add_significance()
+        signs[Regions_sign.name] = Regions_sign
+        Region_signif = Region_sign.add_significance()
+        connector = Region_signif.add_feature(obj_signifs[Regions_sign], zero_out=True)
+        Regions_sign.add_out_significance(connector)
+
+    # create cell signs and matrixes
+    Cell_sign = Sign("Cell")
+    obj_signifs[Cell_sign] = Cell_sign.add_significance()
+    signs[Cell_sign.name] = Cell_sign
+
+    Cellx_sign = Sign("Cell?X")
+    obj_signifs[Cellx_sign] = Cellx_sign.add_significance()
+    signs[Cellx_sign.name] = Cellx_sign
+
+    Celly_sign = Sign("Cell?Y")
+    obj_signifs[Celly_sign] = Celly_sign.add_significance()
+    signs[Celly_sign.name] = Celly_sign
+
+    for cell, value in cell_map.items():
+        Cells_sign = Sign(cell)
+        obj_signifs[Cells_sign] = Cells_sign.add_significance()
+        signs[Cells_sign.name] = Cells_sign
+        Cell_signif = Cell_sign.add_significance()
+        connector = Cell_signif.add_feature(obj_signifs[Cells_sign], zero_out=True)
+        Cells_sign.add_out_significance(connector)
+        if agent in value:
+            Cellx_signif = Cellx_sign.add_significance()
+            con = Cellx_signif.add_feature(obj_signifs[Cells_sign], zero_out=True)
+            Cells_sign.add_out_significance(con)
+        else:
+            Celly_signif = Celly_sign.add_significance()
+            con = Celly_signif.add_feature(Cell_signif, zero_out=True)
+            Cell_sign.add_out_significance(con)
 
     # create objects signs
-    region_map, cell_map = map_recogn(map_file, object_types, agent)
+    Object_sign = Sign('Object')
+    obj_signifs[Object_sign] = Object_sign.add_significance()
+    signs[Object_sign.name] = Object_sign
+    obj_signs = []
+    Block_sign = Sign('Block')
+    obj_signs.append(Block_sign)
+    Obstacle_sign = Sign('Obstacle')
+    obj_signs.append(Obstacle_sign)
+    Border_sign = Sign('Border')
+    obj_signs.append(Border_sign)
+    Nothing_sign = Sign('Nothing')
+    obj_signs.append(Nothing_sign)
+    Agent_sign = Sign('Agent')
+    obj_signs.append(Agent_sign)
+    Table_sign = Sign('Table')
+    obj_signs.append(Table_sign)
+    for s in obj_signs:
+        obj_signifs[s] = s.add_significance()
+        signs[s.name] = s
+        Object_sign_signif = Object_sign.add_significance()
+        connector = Object_sign_signif.add_feature(obj_signifs[s], zero_out=True)
+        s.add_out_significance(connector)
 
-
+    print()
     # locate objects
     pass
 
