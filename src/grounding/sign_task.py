@@ -54,20 +54,28 @@ class Task:
             self.goal_situation.add_image(dm)
 
             plan_sign = Sign(PLAN_PREFIX + self.name)
-            plan_mean = plan_sign.add_meaning()
-            connector = plan_mean.add_feature(self.start_situation.meanings[1])
-            self.start_situation.add_out_meaning(connector)
-            conn = plan_mean.add_feature(self.goal_situation.meanings[1], effect=True)
-            self.goal_situation.add_out_meaning(conn)
+            # plan_mean = plan_sign.add_meaning()
+            # connector = plan_mean.add_feature(self.start_situation.meanings[1])
+            # self.start_situation.add_out_meaning(connector)
+            # conn = plan_mean.add_feature(self.goal_situation.meanings[1], effect=True)
+            # self.goal_situation.add_out_meaning(conn)
 
             plan_image = plan_sign.add_image()
             # effect = False
             # for name, cm in plan:
-            #     # TODO: add actual triplet of components for all signs to access to the current image
+            #     # todo: add actual triplet of components for all signs to access to the current image
             #     im = cm.sign.add_image()
             #     connector = plan_image.add_feature(im, effect=effect)
             #     cm.sign.add_out_image(connector)
             #     effect = True
+
+            plan_signif = plan_sign.add_significance()
+            ss_signif = self.start_situation.add_significance()
+            gs_signif = self.goal_situation.add_significance()
+            conn = plan_signif.add_feature(ss_signif)
+            self.start_situation.add_out_significance(conn)
+            conn = plan_signif.add_feature(gs_signif, effect=True)
+            self.goal_situation.add_out_significance(conn)
 
             self.signs[plan_sign.name] = plan_sign
             self.signs[self.start_situation.name] = self.start_situation
