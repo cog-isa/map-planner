@@ -14,18 +14,11 @@ class Manager:
     # start server for every agent to communicate with each other and begin planning
     def agent_start(self, agent, port, others):
         agent.search_solution(port, others)
-        # if not solution[1] is "solution":
-
-        # return solution in queue or smthing else
-
 
     def search_solution(self):
         # binding a server socket for solution
         clagents = []
         port = 9097
-        # socket = MySocket()
-        # socket.bind('', port)
-        # socket.listen()
         import socket
         serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         serversocket.bind(('', port))
@@ -46,7 +39,6 @@ class Manager:
         while True:
 
             (clientsocket, address) = serversocket.accept()
-            # clientsocket.setblocking(0)
             solution = clientsocket.recv(1024)
             solution = solution.decode()
 

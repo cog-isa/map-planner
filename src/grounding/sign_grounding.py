@@ -111,10 +111,6 @@ def expand_ma(start_situation, goal_situation, signs, type_map, actions, start, 
     goal_added_events = goal_situation.meanings[1] - start_situation.meanings[1]
     goal_events = [goal_situation.meanings[1].get_event(event + 1) for event in
                    range(len(goal_situation.meanings[1].cause))]
-    # TODO найти те предикаты в которых не учавствуют объекты из гоал и скопировать в гоал
-    # TODO находим разницу целевой и начальной сит - смотрим по действиям если предикат из
-    # TODO разницы в add действия - берем и означиваем все дел эффекты действия - если они в
-    # TODO предикатах начальной ситуации - удаляем их, а оставшиеся после общего отбора предикаты кидаем в целевую ситуацию
 
     difference = []
     for predicate in goal:
@@ -340,7 +336,6 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
         role_signs = [sign for sign in act_mean.get_signs() if sign in agent_roles[ag]]
         for role_sign in role_signs: # changing agent's roles to agents cms
             if role_sign in act_mean.get_signs():
-                # logging.info("action {0}, role_sign {1}".format(act_signif.sign.name, role_sign.name))
                 act_mean.replace('meaning', role_sign, obj_means[ag.name])
         if ag in agents_with_constraints:
             predicates = [pred for pred in constraints[ag.name]]
@@ -361,7 +356,6 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
             agent_signs= []
             for predicate in agent_preds:
                 agent_signs.extend([signa[0] for signa in predicate.signature if signa[0] != ag.name])
-            #agent_signs = [pred.signature[1][0] for pred in agent_preds]
             for pred in non_agent_preds.copy():
                 signatures = []
                 for signa in pred.signature:
@@ -388,9 +382,9 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
                                             pred_roles.remove(role1)
                                         else:
                                             pred_roles.remove(role1)
-                                # в этот словарь складываем роль из матрицы к типу из предиката
+                                # matrixe role to predicate's type
                                 role_signifs.setdefault(role, set()).update(pred_role)
-                            # теперь заменяем знак типа на знак объекта и обновл. матрицу действия
+                            # change type sign to object sign
                             for key, pred_signats in role_signifs.items():
                                 for pred_signat in pred_signats.copy():
                                     for signa in pred.signature:
@@ -405,9 +399,7 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
                         else:
                             used_signs = set()
                         new_signs = pred_signats - used_signs
-                        # if not signs[signa[0]] in role_signifs.values()
                         for pred_sign in new_signs:
-                            #pred_sign = signs[predicate.signature[0][0]]
                             attributes = pred_sign.find_attribute()
                             key_at = None
                             depth = 2
@@ -421,17 +413,17 @@ def specialized(action, signs, events, obj_means, act_signif, agent, constraints
                                                 break
                                         else:
                                             depth-=1
-                                        break
+                                            break
                                 break
-                            role_signifs.setdefault(key_at, set()).add(pred_sign)
+                            if key_at:
+                                role_signifs.setdefault(key_at, set()).add(pred_sign)
 
 
-            #TODO
-
-            obj_signs = signs['block?x'], signs['block?y']
-            for obj_sign in obj_signs:
-                if obj_sign in role_signifs.keys():
-                    role_signifs.pop(obj_sign)
+            if 'truck' not in action.name and 'airplane' not in action.name:
+                obj_signs = signs['block?x'], signs['block?y']
+                for obj_sign in obj_signs:
+                    if obj_sign in role_signifs.keys():
+                        role_signifs.pop(obj_sign)
 
 
             pairs = mix_pairs(role_signifs)
@@ -520,7 +512,6 @@ def pred_resonate(base, sign, predicate, signs, signature):
             if not role in cm_signs:
                 break
         else:
-            #pm = cm.copy('significance', 'significance')
             return cm
     return None
 
@@ -545,12 +536,6 @@ def signify_connection(signs):
     agents_type = []
     for agent in agents:
         agents_type.append({cm.sign for cm in agent.sign.spread_up_activity_obj("significance", 1)})
-    # for type1 in agents_type:
-    #     for type2 in agents_type:
-    #         if type1 != type2:
-    #             type |= type1 & type2
-    #         else:
-    #             type = [t for t in type2 if t.name != "object"][0]
     types = [t for t in reduce(lambda x,y: x&y, agents_type) if t != signs["object"]]
     if types and len(agents):
         type = types[0]
@@ -720,17 +705,6 @@ def _expand_situation_ma_blocks(goal_situation, signs, pms, list_signs):
 
 
 def _expand_situation_ma_logistics(goal_situation, signs, pms):
-    # at_mean = signs['at'].add_meaning()
-    # apn_mean = signs['apn1'].add_meaning()
-    # apt_mean = pms[signs['apt1']]
-    # connector = at_mean.add_feature(apn_mean)
-    # connector = at_mean.add_feature(apt_mean)
-    # connector = goal_situation.meanings[1].add_feature(at_mean)
-    # conn = goal_situation.meanings[1].add_feature(apn_mean, connector.in_order)
-    # con = goal_situation.meanings[1].add_feature(apt_mean, connector.in_order)
-    # signs['at'].add_out_meaning(connector)
-    # signs['apn1'].add_out_meaning(conn)
-    # signs['apt1'].add_out_meaning(con)
 
     at_mean = signs['at'].add_meaning()
     tru1_mean = signs['tru1'].add_meaning()
@@ -743,15 +717,3 @@ def _expand_situation_ma_logistics(goal_situation, signs, pms):
     signs['at'].add_out_meaning(connector)
     signs['tru1'].add_out_meaning(conn)
     signs['pos1'].add_out_meaning(con)
-
-    # at_mean = signs['at'].add_meaning()
-    # tru2_mean = signs['tru2'].add_meaning()
-    # pos2_mean = pms[signs['pos2']]
-    # connector = at_mean.add_feature(tru2_mean)
-    # connector = at_mean.add_feature(pos2_mean)
-    # connector = goal_situation.meanings[1].add_feature(at_mean)
-    # conn = goal_situation.meanings[1].add_feature(tru2_mean, connector.in_order)
-    # con = goal_situation.meanings[1].add_feature(pos2_mean, connector.in_order)
-    # signs['at'].add_out_meaning(connector)
-    # signs['tru2'].add_out_meaning(conn)
-    # signs['pos2'].add_out_meaning(con)

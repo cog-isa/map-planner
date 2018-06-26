@@ -133,20 +133,6 @@ class CausalMatrix:
             else:
                 return False
 
-        # for event in smaller.cause:
-        #     for se in self.cause:
-        #         if event.resonate(base, se):
-        #             break
-        #     else:
-        #         return False
-        #
-        # for event in smaller.effect:
-        #     for se in self.effect:
-        #         if event.resonate(base, se):
-        #             break
-        #     else:
-        #         return False
-
         return True
 
     def copy(self, base, new_base, copied=None):
@@ -195,19 +181,6 @@ class CausalMatrix:
                         break
                 else:
                     return False
-
-            # for e1 in self.cause:
-            #     for e2 in pm.cause:
-            #         if e1.resonate(base, e2, check_order):
-            #             break
-            #     else:
-            #         return False
-            # for e1 in self.effect:
-            #     for e2 in pm.effect:
-            #         if e1.resonate(base, e2, check_order):
-            #             break
-            #     else:
-            #         return False
 
         return True
 
@@ -481,7 +454,6 @@ class Sign:
 
     def add_meaning(self, pm=None):
         if not pm:
-            # создается каузальная матрица личностных смыслов
             pm = CausalMatrix(self, self._next_meaning)
         else:
             pm.index = self._next_meaning

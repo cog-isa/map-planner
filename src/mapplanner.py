@@ -54,11 +54,6 @@ def _parse(domain_file, problem_file):
 def search_plan(domain, problem, saveload):
     from os import listdir
     agent_tasks = []
-    # if len(problem_numb) == 1:
-    #     problem_numb = "0"+problem_numb
-    # for domain in [file for file in listdir(domain_dir) if "domain" in file.lower()]:
-    #     agent_tasks.append([domain_dir+"/"+domain, domain_dir+"/task"+problem_numb +".pddl"])
-
     agent_tasks.append([domain, problem])
     subjects = set()
     solutions = []
@@ -79,9 +74,6 @@ def search_plan(domain, problem, saveload):
                     for obj, type in problem.objects.items():
                         if type.name == ag:
                             subjects.add(obj)
-        # for obj in problem.objects:
-        #     if problem.objects[obj].name == 'agent':
-        #         agents.append(obj)
 
     manager = Manager(subjects, problem, saveload)
     solution = manager.search_solution()
@@ -118,7 +110,6 @@ if __name__ == '__main__':
     rootLogger.addHandler(fileHandler)
     rootLogger.setLevel(args.loglevel.upper())
 
-    # args.problem = os.path.abspath(args.problem)
     if args.domain is None:
         args.domain = find_domain(args.problem_numb)
     else:

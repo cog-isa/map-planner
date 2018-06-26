@@ -1,23 +1,19 @@
-# map-planner
+# Planner version that can solve tasks described on pddl language.
+-----------------------------------------------------------------------
+**To start planner**:
 
-MAP-planning algorithm based on sign world model
+start `mapplanner.py` with argument
 
-../mapddl-benchmarks/blocksworld/domain.pddl ../mapddl-benchmarks/blocksworld/probBLOCKS-4-0.pddl
+(example: ../mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-1.pddl
+OR
+../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl)
+-----------------------------------------------------------------------
 
-
-With I and they:
-
-../mapddl-benchmarks/blocksworld/signdomtask/task2constr/task21.pddl
-
-with multiple roles:
-
-../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl
-
-where X  - problem number like 01, 1, 2, 50
-
-../mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-1.pddl
-
-../mapddl-benchmarks/robotsworld/task1.pddl
-
-
-to use experience you need to add -s suffix to the end of call
+**Tested on**:
+blocksworld, logistics00
+-----------------------------------------------------------------------
+**Requirements**:
+python 3.5+
+-----------------------------------------------------------------------
+To use experience you need to add -s suffix to the end of call.
+After saving the experience it can be called like an action
