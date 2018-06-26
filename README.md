@@ -1,12 +1,10 @@
-# Planner version that can solve tasks described on pddl language.
+## Planner version that can solve tasks described on pddl language.
 -----------------------------------------------------------------------
 **To start planner**:
-
 start `mapplanner.py` with argument
-
-(example: ../mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-1.pddl
+*(example: ../mapddl-benchmarks/logistics00/air_trucks_constr/probLOGISTICS-4-1.pddl
 OR
-../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl)
+../mapddl-benchmarks/blocksworld/signdomtask/task3constr/task31.pddl)*
 -----------------------------------------------------------------------
 
 **Tested on**:
