@@ -1,0 +1,84 @@
+{
+  "task-name": "spatial simple task 6",
+  "agents":
+        ["I"],
+  "map": {
+            "borders": {
+                    "border-1": {
+                        "x1": -20,
+                        "x2": 420,
+                        "y1": -20,
+                        "y2": -20
+                    },
+                    "border-2": {
+                        "x1": -20,
+                        "x2": -20,
+                        "y1": -20,
+                        "y2": 420
+                    },
+                    "border-3": {
+                        "x1": -20,
+                        "x2": 420,
+                        "y1": 420,
+                        "y2": 420
+                    },
+                    "border-4": {
+                        "x1": 420,
+                        "x2": 420,
+                        "y1": -20,
+                        "y2": 420
+                    }
+                },
+            "locations": {
+                    "location1": {
+                        "x1": 0,
+                        "x2": 400,
+                        "y1": 0,
+                        "y2": 400
+                    }
+                },
+            "map_size": [
+                    400,
+                    400
+                ]
+
+    },
+    "start" : {
+                "agent-actuator": {
+                    "agent": [
+                        "I"
+                    ],
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                "agent-orientation": "below",
+             "objects": {
+                    "agent": {
+                        "r": 10,
+                        "x": 200.0,
+                        "y": 66.0
+                    }
+                }
+            },
+    "finish": {
+                    "agent-actuator": {
+                    "agent": [
+                        "I"
+                    ],
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                    "agent-orientation": "below",
+                    "objects": {
+                        "agent": {
+                            "r": 10,
+                            "x": 200.0,
+                            "y": 333.0
+                        }
+                    }
+            }
+}

@@ -1,0 +1,57 @@
+{
+  "task-name": "spatial simple task 11",
+  "agents":
+        ["I"],
+  "map": {
+            "wall": [
+              [-20, -20, 220, -20],
+              [-20, -20, -20, 220],
+              [-20, 220, 220, 220],
+              [220, -20, 220, 220],
+              [67, -20, 220, 155]
+            ],
+            "map_size": [
+                    200,
+                    200
+                ]
+
+    },
+    "start" : {
+                "agent-actuator": {
+                    "agent": [
+                        "I"
+                    ],
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                "agent-orientation": "left",
+             "objects": {
+                    "agent": {
+                        "r": 10,
+                        "x": 189.0,
+                        "y": 189.0
+                    }
+                }
+            },
+    "finish": {
+                    "agent-actuator": {
+                    "agent": [
+                        "I"
+                    ],
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                    "agent-orientation": "above",
+                    "objects": {
+                        "agent": {
+                            "r": 10,
+                            "x": 33.0,
+                            "y": 33.0
+                        }
+                    }
+            }
+}

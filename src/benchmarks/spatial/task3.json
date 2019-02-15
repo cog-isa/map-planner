@@ -1,0 +1,104 @@
+{
+  "task-name": "spatial simple task 3",
+  "agents":
+        ["I"],
+  "map": {
+            "borders": {
+                    "border-1": {
+                        "x1": -20,
+                        "x2": 220,
+                        "y1": -20,
+                        "y2": -20
+                    },
+                    "border-2": {
+                        "x1": -20,
+                        "x2": -20,
+                        "y1": -20,
+                        "y2": 200
+                    },
+                    "border-3": {
+                        "x1": -20,
+                        "x2": 220,
+                        "y1": 220,
+                        "y2": 220
+                    },
+                    "border-4": {
+                        "x1": 220,
+                        "x2": 220,
+                        "y1": -20,
+                        "y2": 220
+                    }
+                },
+            "locations": {
+                    "location1": {
+                        "x1": 0,
+                        "x2": 200,
+                        "y1": 0,
+                        "y2": 200
+                    }
+                },
+            "map_size": [
+                    200,
+                    200
+                ]
+
+    },
+    "start" : {
+                "agent-actuator": {
+                    "holding": {
+                        "cause": [
+                            "I",
+                            "block-a"
+                        ],
+                        "effect": []
+                    }
+                },
+                "agent-orientation": "right",
+             "objects": {
+                    "agent": {
+                        "r": 10,
+                        "x": 100,
+                        "y": 100
+                    },
+                    "block-b": {
+                        "r": 5,
+                        "x": 165.0,
+                        "y": 33.0
+                    },
+                    "table-1": {
+                        "r": 20,
+                        "x": 165.0,
+                        "y": 33.0
+                    }
+                }
+            },
+    "finish": {
+                    "agent-actuator": {
+                        "holding": {
+                            "cause": [
+                                "I",
+                                "block-b"
+                            ],
+                            "effect": []
+                        }
+                    },
+                    "agent-orientation": "above",
+                    "objects": {
+                        "agent": {
+                            "r": 10,
+                            "x": 165.0,
+                            "y": 99.0
+                        },
+                        "table-1": {
+                            "r": 20,
+                            "x": 165.0,
+                            "y": 33.0
+                        },
+                        "block-a": {
+                            "r": 5,
+                            "x": 165.0,
+                            "y": 33.0
+                        }
+                    }
+            }
+}
