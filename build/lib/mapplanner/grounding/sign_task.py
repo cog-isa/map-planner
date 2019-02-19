@@ -97,29 +97,27 @@ class Task:
 
             # Save by parts of each size
             logging.info('\tSaving inner precedents of low lv planning... ')
-            abs_lv = plan[-1][-1][1]
+            #abs_lv = max([pl[-1][1] for pl in plan])
             low_lv_plan = []
             subplans = []
-            if abs_lv != 0:
-                biggest = max([act[-1][1] for act in plan])
-                flag = False
-                low_lv_plan.append([])
-                itera = -1
-                for act in plan:
-                    itera+=1
-                    if act[-1][1] == biggest and not flag:
-                        low_lv_plan[-1].append((act, itera))
-                    elif act[-1][1] != biggest:
-                        flag = True
-                    elif act[-1][1] == biggest and flag:
-                        low_lv_plan.append([])
-                        low_lv_plan[-1].append((act, itera))
-                        flag = False
+
+            prev_act = plan[0][-1][1]
+            index = 0
+            low_lv_plan.append([(plan[0], index)])
+            for action in plan[1:]:
+                index+=1
+                if action[-1][1] == prev_act:
+                    low_lv_plan[-1].append((action, index))
+                else:
+                    low_lv_plan.append([(action, index)])
+                    prev_act = action[-1][1]
+            low_lv_plan = [pl for pl in low_lv_plan if len(pl) > 2]
+
             for smaller in low_lv_plan:
                 if smaller:
                     start = [sign.meanings[1] for sign in exp_signs if smaller[0][0][0].sign.name in sign.name][0]
-                    if len(plan) > smaller[-1][1]+1:
-                        finish = plan[smaller[-1][1]+1][0]
+                    if len(plan) > smaller[-1][-1]+1:
+                        finish = smaller[-1][0][0]
                     else:
                         finish = self.goal_situation.meanings[1]
                     sub = self.plan_saver(start, finish, smaller, 'subpl_'+str(low_lv_plan.index(smaller)))

@@ -301,7 +301,13 @@ class MapSearch():
 
                 plan =  self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration,
                                                         prev_state, acts, plan)
-                print()
+            elif action[1].sign.name == 'Abstract':
+                cell_coords = active_pm.sign.images[1].spread_down_activity_view(1)
+                size = [cell_coords['cell-0'][0],
+                        cell_coords['cell-0'][1],
+                        cell_coords['cell-8'][2],
+                        cell_coords['cell-8'][3]]
+                #TODO вызываем Абстракт пока нет резалта (пока ситуация не нормализуется и действие не будет подходить Оо)
             elif 'subpl_' in action[1].sign.name:
                 sub_sign = action[1].sign
                 sub_acts = []
@@ -404,17 +410,26 @@ class MapSearch():
             map_size = self.additions[3]['map_size']
             borders = self.additions[3]['wall']
             orientation = self.additions[0][iteration]['agent-orientation']
-
+            rmap = [0, 0]
+            rmap.extend(map_size)
+            region_location, region_map = locater('region-', rmap, objects, borders)
             cell_coords = active_pm.sign.images[1].spread_down_activity_view(1)
             size = [cell_coords['cell-0'][0],
                     cell_coords['cell-0'][1],
                     cell_coords['cell-8'][2],
                     cell_coords['cell-8'][3]]
-            # x_size = objects[agent]['x'] - cell_coords['cell-0'][0]
-            # y_size = objects[agent]['y'] - cell_coords['cell-0'][1]
-            rmap = [0, 0]
-            rmap.extend(map_size)
-            region_location, region_map = locater('region-', rmap, objects, borders)
+            x_size = size[2]-size[0]
+            y_size = size[3]-size[1]
+            if x_size > map_size[0] //3 or y_size > map_size[1] //3:
+                agplx = self.additions[0][iteration]['objects'][agent]['x']
+                agply = self.additions[0][iteration]['objects'][agent]['y']
+                for _, rsize in region_location.items():
+                    if rsize[0] <= agplx <=rsize[2] and rsize[1] <= agply <=rsize[3]:
+                        # x_size = rsize[2] - rsize[0]
+                        # y_size = rsize[3] - rsize[1]
+                        # size = [rsize[0]- x_size, rsize[1]-y_size, rsize[2]+ x_size, rsize[3] + y_size]
+                        size = rsize
+                        break
             cell_location, cell_map, near_loc, cell_coords, _ = cell_creater(size, objects, region_location, borders)
             front_cell = None
             for reg, val in  self.additions[1]['region-4'].items():
@@ -433,6 +448,7 @@ class MapSearch():
             agent_state = state_prediction(self.world_model['I'], direction, holding)
             active_sit_new = define_situation(sit_name + 'sp', cell_map, events, agent_state, self.world_model)
             # define new current map
+            # TODO check replace exception
             active_map = define_map(st.MAP_PREFIX + str(st.SIT_COUNTER), region_map, cell_location, near_loc,
                                     self.additions[1],
                                     self.world_model)
@@ -899,7 +915,7 @@ class MapSearch():
             for agent, script in scripts:
                 if agent is None: agent = self.world_model['I']
                 estimation, cell_coords_new, new_x_y, \
-                cell_location, near_loc, region_map = self._state_prediction(active_pm, script, agent, iteration)
+                cell_location, near_loc, region_map, current_direction = self._state_prediction(active_pm, script, agent, iteration)
 
                 if not new_x_y['objects']['agent']['x'] in range(0, self.additions[3]['map_size'][0]) or \
                         not new_x_y['objects']['agent']['y'] in range(0, self.additions[3]['map_size'][1]):
@@ -927,14 +943,14 @@ class MapSearch():
                                     break
                         if goal_region:
                             break
-                    ag_orient = estimation.get_iner(self.world_model['orientation'], 'meaning')[0]
-                    iner_signs = ag_orient.get_signs()
-                    current_direction = None
-                    for sign in iner_signs:
-                        if sign != self.world_model["I"]:
-                            current_direction = sign
-                        if current_direction:
-                            break
+                    # ag_orient = estimation.get_iner(self.world_model['orientation'], 'meaning')[0]
+                    # iner_signs = ag_orient.get_signs()
+                    # current_direction = None
+                    # for sign in iner_signs:
+                    #     if sign != self.world_model["I"]:
+                    #         current_direction = sign
+                    #     if current_direction:
+                    #         break
                     stright = self.get_stright(active_pm, current_direction)
                     if goal_region.name != cont_region:
                         goal_dir = self.additions[1][cont_region][goal_region.name][1]
@@ -984,6 +1000,8 @@ class MapSearch():
                                 counter +=2 # +2 if agent go back to the stright goal way #TODO rework when go from far
 
                     else:
+                        # for exp act winning
+                        counter+=10
                         if self.clarification_lv <= self.goal_state['cl_lv']:
                             est_events = [event for event in estimation.cause if "I" not in event.get_signs_names()]
                             ce_events = [event for event in self.check_pm.cause if "I" not in event.get_signs_names()]
@@ -1144,7 +1162,7 @@ class MapSearch():
         history_benchmark['finish']['objects'].update(parsed['objects'])
         new_x_y = history_benchmark['finish']
         new_x_y['map_size'] = self.additions[3]['map_size']
-        new_x_y['borders'] = self.additions[3]['wall']
+        # new_x_y['wall'] = self.additions[3]['wall']
 
         agent_state = state_prediction(agent, history_benchmark['finish'])
 
@@ -1167,7 +1185,7 @@ class MapSearch():
                 searched[s] = None
         return searched
 
-    def new_action(self, active_pm, script, agent, iteration, flag):
+    def new_action(self, active_pm, script, agent, iteration):
         direction = None
         cell = None
         events = []
@@ -1213,7 +1231,7 @@ class MapSearch():
                 block = {}
                 block[block_name] = {'x': new_x_y['objects']['agent']['x'], 'y': new_x_y['objects']['agent']['y'], 'r': 5}
                 new_x_y['objects'].update(block)
-                # print()
+
         # for put-down script
         if script.sign.name == 'put-down':
             block_name = [sign.name for sign in script.get_iner(self.world_model['holding'], 'meaning')[0].get_signs() if
@@ -1222,7 +1240,7 @@ class MapSearch():
                           sign.name != block_name][0]
             new_x_y['objects'][block_name]['y'] = new_x_y['objects'][table_name]['y']
             new_x_y['objects'][block_name]['x'] = new_x_y['objects'][table_name]['x']
-        region_map, cell_map, cell_location, near_loc, cell_coords_new, _,_ = signs_markup(new_x_y,self.additions[3], 'agent', cell_coords)
+        region_map, cell_map, cell_location, near_loc, cell_coords_new, _,_ = signs_markup(new_x_y, self.additions[3], 'agent', cell_coords)
         sit_name = st.SIT_PREFIX + str(st.SIT_COUNTER)
         st.SIT_COUNTER+=1
         estimation = define_situation(sit_name + 'sp', cell_map, events, agent_state, self.world_model)
@@ -1231,14 +1249,48 @@ class MapSearch():
 
         return cell_map, direction, estimation, cell_coords_new, new_x_y, cell_location, near_loc, region_map
 
-    def _state_prediction(self, active_pm, script, agent, iteration, flag=False):
+    def sub_action(self, active_pm, script, agent, iteration):
+        applicable = []
+        direction = None
+        for sit in self.exp_sits:
+            result, checked = self._check_result(script, sit)
+            if result:
+                applicable.append(sit)
+        for estimation in applicable:
+            #TODO check all sits by map comparison
+            #cell_coords = sit.sign.images[1].spread_down_activity_view(depth=1)
+            searched = self.__search_cm(estimation.cause, [self.world_model['orientation'], self.world_model['holding'],
+                                                          self.world_model['employment']])
 
-        if script.sign.images and 'task' in script.sign.name:
+            orientation = searched[self.world_model['orientation']][0]
+            for sign in orientation.get_signs():
+                if sign != agent and sign != self.world_model['I']:
+                    direction = sign
+                    break
+            cell_coords = estimation.sign.images[1].spread_down_activity_view(depth=1)
+            new_x_y = deepcopy(self.additions[0][iteration])
+            new_x_y['objects']['agent']['x'] = (cell_coords['cell-4'][2] - cell_coords['cell-4'][0]) // 2 + cell_coords['cell-4'][0]
+            new_x_y['objects']['agent']['y'] = (cell_coords['cell-4'][3] - cell_coords['cell-4'][1]) // 2 + cell_coords['cell-4'][1]
+            new_x_y['agent-orientation'] = direction.name
+            region_map, cell_map, cell_location, near_loc, _, _, _ = signs_markup(new_x_y,self.additions[3],
+                                                                                                'agent', cell_coords['cell-4'])
+            state_fixation(estimation, cell_coords, signs, 'cell')
+
+            return cell_map, direction, estimation, cell_coords, new_x_y, cell_location, \
+            near_loc, region_map
+
+
+
+    def _state_prediction(self, active_pm, script, agent, iteration, flag=False):
+        if script.sign.images and 'task' in script.sign.name and not 'sub' in script.sign.name:
             cell_map, direction, estimation, cell_coords_new, new_x_y, cell_location, \
             near_loc, region_map = self.history_action(active_pm, script, agent, iteration)
+        elif script.sign.images and 'sub' in script.sign.name:
+            cell_map, direction, estimation, cell_coords_new, new_x_y, cell_location, \
+            near_loc, region_map = self.sub_action(active_pm, script, agent, iteration)
         else:
             cell_map, direction, estimation, cell_coords_new, new_x_y, cell_location, \
-            near_loc, region_map = self.new_action(active_pm, script, agent, iteration, flag)
+            near_loc, region_map = self.new_action(active_pm, script, agent, iteration)
 
         if flag:
             region = None
@@ -1251,7 +1303,7 @@ class MapSearch():
                                                                    direction.name, region))
             return estimation, cell_coords_new, new_x_y, cell_location, near_loc, region_map, direction.name
 
-        return estimation, cell_coords_new, new_x_y, cell_location, near_loc, region_map
+        return estimation, cell_coords_new, new_x_y, cell_location, near_loc, region_map, direction
 
     def _step_generating(self, active_pm, active_map, script, agent, iteration, prev_state, param):
         next_pm, cell_coords, parsed_map, cell_location, \
@@ -1392,6 +1444,8 @@ class MapSearch():
             new_chain = {}
             used_roles = []
         return merged_chains
+
+
 
 
 

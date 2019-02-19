@@ -527,7 +527,9 @@ def define_map(map_name, region_map, cell_location, near_loc, regions_struct, si
             if resonated(signif, regions_struct, region, contain_reg, signs):
                 am = signif.copy('significance', 'meaning')
                 break
-
+        if not am:
+            print('Did not find applicable map')
+            sys.exit(1)
         cell_meaning = signs["cell-4"].add_meaning()
         am.replace('meaning', signs["cell?x"], cell_meaning)
         inner_matrices = am.spread_down_activity('meaning', 3)
