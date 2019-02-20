@@ -943,14 +943,6 @@ class MapSearch():
                                     break
                         if goal_region:
                             break
-                    # ag_orient = estimation.get_iner(self.world_model['orientation'], 'meaning')[0]
-                    # iner_signs = ag_orient.get_signs()
-                    # current_direction = None
-                    # for sign in iner_signs:
-                    #     if sign != self.world_model["I"]:
-                    #         current_direction = sign
-                    #     if current_direction:
-                    #         break
                     stright = self.get_stright(active_pm, current_direction)
                     if goal_region.name != cont_region:
                         goal_dir = self.additions[1][cont_region][goal_region.name][1]
@@ -1001,7 +993,6 @@ class MapSearch():
 
                     else:
                         # for exp act winning
-                        counter+=10
                         if self.clarification_lv <= self.goal_state['cl_lv']:
                             est_events = [event for event in estimation.cause if "I" not in event.get_signs_names()]
                             ce_events = [event for event in self.check_pm.cause if "I" not in event.get_signs_names()]
@@ -1013,18 +1004,30 @@ class MapSearch():
                         elif self.clarification_lv > self.goal_state['cl_lv']:
                             #new_stright = self.get_stright(estimation, current_direction)
                             if stright[1] is None:
+                            # choose direction closely to  goal direction
                                 closely_to_stright = ['cell'+el[-2:] for el,desc in
-                                                      self.additions[1]['region'+stright[0].name[-2:]].items() if desc[0] == 'closely']
+                                                  self.additions[1]['region'+stright[0].name[-2:]].items() if desc[0] == 'closely']
                                 closely_to_stright.remove('cell-4')
                                 for cell in closely_to_stright:
                                     if 0 not in self.additions[2][iteration][cell]:
                                         break
                                 else:
                                     counter+=3
-                                # if current_direction.name == self.goal_state['agent-orientation']:
-                                #     counter+=1
+                                directions = []
+                                for reg, tup in self.additions[1]['region-4'].items():
+                                    if tup[1] == self.goal_state['agent-orientation']:
+                                        regs_to_goal = [reg for reg, tup2 in self.additions[1][reg].items() if tup2[0] == 'closely']
+                                        directions = [tup[1] for reg, tup in self.additions[1]['region-4'].items() if reg in regs_to_goal]
+                                        break
+                                if current_direction.name in directions:
+                                    counter+=2
                                 if prev_act == 'rotate' and script.sign.name == 'move':
-                                    counter+=1
+                                    counter+=2
+                                elif prev_act == 'rotate' and script.sign.name == 'rotate':
+                                    counter = 0
+
+                        if 'task' in script.sign.name:
+                            counter +=10
                     heuristic.append((counter, script.sign.name, script, agent))
         elif self.logic == 'classic':
             for agent, script in scripts:

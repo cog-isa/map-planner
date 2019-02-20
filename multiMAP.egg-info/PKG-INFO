@@ -14,7 +14,7 @@ Description: <h2>Multiagent planner based on sign world model.</h2>
         Create an object of MapPlanner class with arguments:
         <ol>
         <li>Path to benchmark (i.e. mapplanner/benchmarks/spatial/)
-        <li>Number of a task in integer format (i.e. 1,2,3…).</li>
+        <li>Number of a task in integer format (i.e. 1,2,3â€¦).</li>
         <li>Logic type. The current implementation of the planner supports classical and spatial logic (i.e. spatial or classic)</li>
         <li>Experience usability</li>
         <li>Gazebo visualization</li>

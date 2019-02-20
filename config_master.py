@@ -2,12 +2,12 @@ import configparser
 import os
 import pkg_resources
 
-def create_config(task_num = '1', is_load = 'True', refinement_lv = '1', benchmark_type = 'simple', benchmark = None, LogicType = 'classic'):
+def create_config(task_num = '1', is_load = 'True', refinement_lv = '1', benchmark_type = 'simple', benchmark = None, LogicType = 'classic', delim = '/'):
     """
     Create a config file
     """
 
-    delim = '/'
+    #delim = '/'
 
 
     if not benchmark:
