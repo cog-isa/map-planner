@@ -261,7 +261,7 @@ class MapSearch():
         logging.info('Clarify experience plan')
         applicable = []
         act = acts[0].sign
-
+        plan = []
         if not [ac for ac in self.exp_acts[act] if ac[0] is None]:
             exp_acts = copy(self.exp_acts[act])
             for agent, cm in exp_acts:
@@ -299,7 +299,7 @@ class MapSearch():
                 if action[0] is None: agent = plan[-1][3]
                 plan.append((active_pm, action[1].sign.name, action[1], agent, plan[-1][4], (next_map, self.clarification_lv)))
 
-                plan =  self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration,
+                plan = self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration,
                                                         prev_state, acts, plan)
             elif action[1].sign.name == 'Abstract':
                 cell_coords = active_pm.sign.images[1].spread_down_activity_view(1)
@@ -307,7 +307,7 @@ class MapSearch():
                         cell_coords['cell-0'][1],
                         cell_coords['cell-8'][2],
                         cell_coords['cell-8'][3]]
-                #TODO вызываем Абстракт пока нет резалта (пока ситуация не нормализуется и действие не будет подходить Оо)
+                #TODO check if abstract did not only by 1 step
             elif 'subpl_' in action[1].sign.name:
                 sub_sign = action[1].sign
                 sub_acts = []
@@ -318,11 +318,13 @@ class MapSearch():
                 for con in sub_sign.meanings[1].effect[0].coincidences:
                     sub_finish = con.out_sign.meanings[con.out_index]
 
-                plan = self.hierarchical_exp_search(active_pm, active_map, sub_finish, None, iteration,
-                                                        prev_state, sub_acts, plan, True)
+                plan.extend(self.hierarchical_exp_search(active_pm, active_map, sub_finish, None, iteration,
+                                                        prev_state, sub_acts, plan, True))
                 if plan:
                     subsearch = False
                     acts.pop(0)
+                    plan = self.hierarchical_exp_search(plan[-1][0], plan[-1][-1][0], check_pm, check_map, iteration,
+                                                        prev_state, acts, plan)
             else:
                 if check_map or subsearch:
                     next_pm, next_map, prev_state, direction = self._step_generating(active_pm, active_map, action[1], action[0],
@@ -463,8 +465,9 @@ class MapSearch():
             active_pm.sign.add_out_meaning(connector)
             connector = abstr_mean.add_feature(active_sit_new, effect=True)
             active_sit_new.sign.add_out_meaning(connector)
+
             plan.append(
-                (active_pm, 'Abstract', abstr_mean, self.world_model['I'], plan[-1][4], plan[-1][5]))
+                (active_pm, 'Abstract', abstr_mean, self.world_model['I'], plan[-1][4], (plan[-1][5][0], plan[-1][5][1]-1)))
 
             # decrease clarification
             self.clarification_lv -=1
@@ -916,6 +919,9 @@ class MapSearch():
                 if agent is None: agent = self.world_model['I']
                 estimation, cell_coords_new, new_x_y, \
                 cell_location, near_loc, region_map, current_direction = self._state_prediction(active_pm, script, agent, iteration)
+                old_cl_lv = self.clarification_lv
+                if 'task' in script.sign.name and not 'sub' in script.sign.name:
+                    self.clarification_lv = self.goal_state['cl_lv']
 
                 if not new_x_y['objects']['agent']['x'] in range(0, self.additions[3]['map_size'][0]) or \
                         not new_x_y['objects']['agent']['y'] in range(0, self.additions[3]['map_size'][1]):
@@ -943,7 +949,10 @@ class MapSearch():
                                     break
                         if goal_region:
                             break
-                    stright = self.get_stright(active_pm, current_direction)
+                    if not 'task' in script.sign.name:
+                        stright = self.get_stright(active_pm, current_direction)
+                    else:
+                        stright = self.get_stright(estimation, current_direction)
                     if goal_region.name != cont_region:
                         goal_dir = self.additions[1][cont_region][goal_region.name][1]
                         # do not rotate to the wall if there are no hole
@@ -992,7 +1001,6 @@ class MapSearch():
                                 counter +=2 # +2 if agent go back to the stright goal way #TODO rework when go from far
 
                     else:
-                        # for exp act winning
                         if self.clarification_lv <= self.goal_state['cl_lv']:
                             est_events = [event for event in estimation.cause if "I" not in event.get_signs_names()]
                             ce_events = [event for event in self.check_pm.cause if "I" not in event.get_signs_names()]
@@ -1002,7 +1010,6 @@ class MapSearch():
                                         counter += 1
                                         break
                         elif self.clarification_lv > self.goal_state['cl_lv']:
-                            #new_stright = self.get_stright(estimation, current_direction)
                             if stright[1] is None:
                             # choose direction closely to  goal direction
                                 closely_to_stright = ['cell'+el[-2:] for el,desc in
@@ -1028,6 +1035,9 @@ class MapSearch():
 
                         if 'task' in script.sign.name:
                             counter +=10
+
+                        if 'task' in script.sign.name and not 'sub' in script.sign.name:
+                            self.clarification_lv = old_cl_lv
                     heuristic.append((counter, script.sign.name, script, agent))
         elif self.logic == 'classic':
             for agent, script in scripts:

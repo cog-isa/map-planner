@@ -2,18 +2,18 @@ from mapplanner.mapplanner import MapPlanner
 
 from config_master import create_config, get_config
 import os
+import platform
 
 if __name__ == '__main__':
 
     config_path = ''
     # benchmark = '/home/gleb/PycharmProjects/map-planner/TestingBenchmark/task_vertical_clar/task9.json'
     # benchmark = '/home/gleb/PycharmProjects/map-planner/src/benchmarks/simple/blocks/task1.pddl'
-    import platform
 
-    if platform.system() != 'Linux':
-        delim = '\\'
-    else:
+    if platform.system() != 'Windows':
         delim = '/'
+    else:
+        delim = '\\'
     benchmark = os.getcwd() + delim + 'TestingBenchmark' + delim + 'task_anti_walls' + delim + 'task11.json'
     # task_num if simple/blocks/task in other approaches -
     # benchmark_type&task_num or path to benchmark
