@@ -5,7 +5,7 @@ import random
 from mapplanner.grounding.json_grounding import *
 from mapplanner.grounding.semnet import Sign
 
-MAX_CL_LV = 3
+MAX_CL_LV = 1
 
 class MapSearch():
     def __init__ (self, task, LogicalSearch, ref):
@@ -252,7 +252,7 @@ class MapSearch():
 
         return applicable_meanings
 
-    def hierarchical_exp_search(self, active_pm, active_map, check_pm, check_map, iteration, prev_state, acts, plan = [], subsearch = False):
+    def hierarchical_exp_search(self, active_pm, active_map, check_pm, check_map, iteration, prev_state, acts, cur_plan = [], subsearch = False, used = set()):
         """
         create a subplan using images info
         :param script: parametrs to generate plan
@@ -261,19 +261,28 @@ class MapSearch():
         logging.info('Clarify experience plan')
         applicable = []
         act = acts[0].sign
-        plan = []
+        finall_plan = []
+        plan = copy(cur_plan)
         if not [ac for ac in self.exp_acts[act] if ac[0] is None]:
             exp_acts = copy(self.exp_acts[act])
             for agent, cm in exp_acts:
                 result, checked = self._check_activity(cm, active_pm)
                 if result:
                     applicable.append((agent, checked))
+            # min = applicable[0][1].index
+            # for action in applicable:
+            #     if action[1].index < min:
+            #         min = action[1].index
+            # applicable = [el for el in applicable if el[1].index == min]
 
             if not applicable and exp_acts:
+                logging.info('No applicable actions was found')
                 if self.clarification_lv <= MAX_CL_LV:
                     active_pm, check_pm, active_map, check_map, iteration = self.devide_situation(active_pm, check_pm,
                                                                                                           iteration, 'agent')
-                    return self.hierarchical_exp_search(active_pm, active_map, check_pm, check_map, iteration, prev_state, acts, plan)
+                    plan =  self.hierarchical_exp_search(active_pm, active_map, check_pm, check_map, iteration, prev_state, acts, plan)
+                    if plan:
+                        finall_plan.extend(plan)
                 else:
                     return None
         else:
@@ -315,28 +324,39 @@ class MapSearch():
                     if act[1] not in sub_acts:
                         sub_acts.append(act[1])
                 sub_finish = None
-                for con in sub_sign.meanings[1].effect[0].coincidences:
-                    sub_finish = con.out_sign.meanings[con.out_index]
+                if len(acts) > 1:
+                    for con in acts[1].sign.meanings[1].cause[0].coincidences:
+                        sub_finish = con.out_sign.meanings[con.out_index]
+                else:
+                    for con in sub_sign.meanings[1].effect[0].coincidences:
+                        sub_finish = con.out_sign.meanings[con.out_index]
 
-                plan.extend(self.hierarchical_exp_search(active_pm, active_map, sub_finish, None, iteration,
-                                                        prev_state, sub_acts, plan, True))
+                plan = self.hierarchical_exp_search(active_pm, active_map, sub_finish, None, iteration,
+                                                        prev_state, sub_acts, plan, True)
                 if plan:
                     subsearch = False
-                    acts.pop(0)
-                    plan = self.hierarchical_exp_search(plan[-1][0], plan[-1][-1][0], check_pm, check_map, iteration,
+                    if acts:
+                        acts.pop(0)
+                    plan = self.hierarchical_exp_search(sub_finish, plan[-1][-1][-1][0], check_pm, check_map, iteration+1,
                                                         prev_state, acts, plan)
+                    if plan:
+                        finall_plan.extend(plan)
             else:
                 if check_map or subsearch:
                     next_pm, next_map, prev_state, direction = self._step_generating(active_pm, active_map, action[1], action[0],
                                                                                      iteration, prev_state, True)
                     ag_place = (prev_state[-1][2] - prev_state[-1][0]) // 2 + prev_state[-1][0], (
                             prev_state[-1][3] - prev_state[-1][1]) // 2 + prev_state[-1][1]
-                    included_map = [map for map in self.exp_maps if map.includes('meaning', next_map)]
+                    #included_map = [map for map in self.exp_maps if map.includes('meaning', next_map)]
                     included_sit = [sit for sit in self.exp_sits if sit.includes('meaning', next_pm)]
-                    if included_sit and included_map:
+                    if included_sit:
+                        if plan is None: plan = []
                         plan.append((active_pm, action[1].sign.name, action[1], action[0], (ag_place, direction),
                                      (next_map, self.clarification_lv)))
+                        #TODO poka ne used
+                        used.add(action)
                     else:
+                        print()
                         continue
                 else:
                     next_pm = self._time_shift_forward(active_pm, action[1])
@@ -346,29 +366,34 @@ class MapSearch():
                     if included_sit and included_map:
                         plan.append(
                             (active_pm, action[1].sign.name, action[1], action[0], None, (None, self.clarification_lv)))
+                if acts:
+                    acts.pop(0)
+                #else:
 
-                acts.pop(0)
 
                 if next_pm.includes('meaning', check_pm):
                     if check_map:
                         if next_map.includes('meaning', check_map):
-                            return plan
+                            finall_plan.append(plan)
                         else:
-                            #self.exp_sits = [sit for sit in self.exp_sits if sit != included_sit[0]]
-                            return self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration + 1,
-                                                                prev_state, acts, plan)
+                            plan = self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration + 1,
+                                                                prev_state, acts, plan, False, used)
+                            if plan:
+                                finall_plan.extend(plan)
                     elif subsearch:
                         if len(acts):
-                            return self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration + 1,
-                                                                prev_state, acts, plan, subsearch)
+                            plan =  self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration + 1,
+                                                                prev_state, acts, plan, subsearch, used)
+                            if plan:
+                                finall_plan.extend(plan)
                         else:
-                            return plan
-                    else:
-                        return plan
+                            finall_plan.append(plan)
                 else:
-                    #self.exp_sits = [sit for sit in self.exp_sits if sit != included_sit[0]]
-                    return self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration+1, prev_state, acts, plan, subsearch)
-        return plan
+                    plan = self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration+1, prev_state, acts, plan, subsearch, used)
+                    if plan:
+                        finall_plan.extend(plan)
+                        break
+        return finall_plan
 
     def pm_parser(self, pm, agent):
         pm_events = [ev for ev in pm.cause]
