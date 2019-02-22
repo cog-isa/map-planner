@@ -106,7 +106,16 @@ class Task:
             low_lv_plan.append([(plan[0], index)])
             for action in plan[1:]:
                 index+=1
-                if action[-1][1] == prev_act:
+                if action[1] == 'Clarify' or action[1] == 'Abstract':
+                    start = None
+                    finish = None
+                    for con in action[2].sign.meanings[1].cause[0].coincidences:
+                        start = con.out_sign.meanings[con.out_index]
+                    for con in action[2].sign.meanings[1].effect[0].coincidences:
+                        finish = con.out_sign.meanings[con.out_index]
+                    sub = [action[2].sign, start.sign, finish.sign]
+                    subplans.append((sub, index, index))
+                elif action[-1][1] == prev_act:
                     low_lv_plan[-1].append((action, index))
                 else:
                     low_lv_plan.append([(action, index)])
@@ -175,7 +184,10 @@ class Task:
                 flag = False
                 for index, value in ots.items():
                     if iter == value[0]:
-                        im = subplans[index][0][0].images[1]
+                        if subplans[index][0][0].images:
+                            im = subplans[index][0][0].images[1]
+                        else:
+                            im  = subplans[index][0][0].add_image()
                         connector = plan_image.add_feature(im)
                         subplans[index][0][0].add_out_image(connector)
                         flag = True

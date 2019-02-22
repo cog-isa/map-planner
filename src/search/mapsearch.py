@@ -331,7 +331,10 @@ class MapSearch():
                     for con in sub_sign.meanings[1].effect[0].coincidences:
                         sub_finish = con.out_sign.meanings[con.out_index]
 
-                plan = self.hierarchical_exp_search(active_pm, active_map, sub_finish, None, iteration,
+                for con in sub_sign.meanings[1].cause[0].coincidences:
+                    sub_start = con.out_sign.meanings[con.out_index]
+
+                plan = self.hierarchical_exp_search(sub_start, active_map, sub_finish, None, iteration,
                                                         prev_state, sub_acts, plan, True)
                 next_pm = sub_finish
                 next_map = plan[-1][-1][0]
@@ -382,6 +385,7 @@ class MapSearch():
                             finall_plans.extend(plan)
                     else:
                         finall_plans.extend(plan)
+                        break
             else:
                 plan = self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration+1, prev_state, acts, plan, subsearch)
                 if plan:
