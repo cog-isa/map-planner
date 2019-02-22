@@ -261,7 +261,7 @@ class MapSearch():
         logging.info('Clarify experience plan')
         applicable = []
         act = acts[0].sign
-        finall_plan = []
+        finall_plans = []
         plan = copy(cur_plan)
         if not [ac for ac in self.exp_acts[act] if ac[0] is None]:
             exp_acts = copy(self.exp_acts[act])
@@ -269,22 +269,18 @@ class MapSearch():
                 result, checked = self._check_activity(cm, active_pm)
                 if result:
                     applicable.append((agent, checked))
-            # min = applicable[0][1].index
-            # for action in applicable:
-            #     if action[1].index < min:
-            #         min = action[1].index
-            # applicable = [el for el in applicable if el[1].index == min]
 
             if not applicable and exp_acts:
                 logging.info('No applicable actions was found')
-                if self.clarification_lv <= MAX_CL_LV:
-                    active_pm, check_pm, active_map, check_map, iteration = self.devide_situation(active_pm, check_pm,
-                                                                                                          iteration, 'agent')
-                    plan =  self.hierarchical_exp_search(active_pm, active_map, check_pm, check_map, iteration, prev_state, acts, plan)
-                    if plan:
-                        finall_plan.extend(plan)
-                else:
-                    return None
+                # if self.clarification_lv <= MAX_CL_LV:
+                #     active_pm, check_pm, active_map, check_map, iteration = self.devide_situation(active_pm, check_pm,
+                #                                                                                           iteration, 'agent')
+                #     plan =  self.hierarchical_exp_search(active_pm, active_map, check_pm, check_map, iteration, prev_state, acts, plan)
+                #     if plan:
+                #         finall_plans.extend(plan)
+                # else:
+                #     return None
+                return None
         else:
             exp_acts = [act[1] for act in self.exp_acts[act] if len(act[1].cause) == 1]
             for exp_act in exp_acts:
@@ -308,24 +304,39 @@ class MapSearch():
                 if action[0] is None: agent = plan[-1][3]
                 plan.append((active_pm, action[1].sign.name, action[1], agent, plan[-1][4], (next_map, self.clarification_lv)))
 
-                plan = self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration,
-                                                        prev_state, acts, plan)
+                # plan = self.hierarchical_exp_search(next_pm, next_map, check_pm, check_map, iteration,
+                #                                         prev_state, acts, plan)
             elif action[1].sign.name == 'Abstract':
-                #TODO check if abstract did not only by 1 step && next map
-                # cell_coords = active_pm.sign.images[1].spread_down_activity_view(1)
-                # size = [cell_coords['cell-0'][0],
-                #         cell_coords['cell-0'][1],
-                #         cell_coords['cell-8'][2],
-                #         cell_coords['cell-8'][3]]
+
+                if plan:
+                    if isinstance(plan[0], tuple):
+                        iter = len(plan)
+                    else:
+                        iter = len(plan[0])
+                else:
+                    iter = iteration
+
                 new_active_pm = None
-                next_map = None
                 for con in action[1].sign.meanings[1].effect[0].coincidences:
                     new_active_pm = con.out_sign.meanings[con.out_index]
-                self.clarification_lv -=1
-                plan.append(
-                    (active_pm, action[1].sign.name, action[1], None, plan[-1][4], (plan[-1][-1][-1][0], self.clarification_lv)))
-                plan = self.hierarchical_exp_search(new_active_pm, next_map, check_pm, check_map, iteration,
+
+                abs_pm, abs_map, cell_map = self.abstract(active_pm, 'agent', iter)
+
+                while not new_active_pm.includes('meaning', abs_pm):
+                    abs_pm, abs_map, cell_map = self.abstract(abs_pm, 'agent', iter)
+
+                self.additions[0][iteration] = deepcopy(self.additions[0][iteration - 1])
+                self.additions[2][iteration] = cell_map
+
+                acts.pop(0)
+                #self.clarification_lv -=1
+                plan[0].append(
+                    (active_pm, action[1].sign.name, action[1], None, plan[0][-1][4], (plan[-1][-1][-1][0], self.clarification_lv)))
+                plan = self.hierarchical_exp_search(new_active_pm, abs_map, check_pm, check_map, iteration,
                                                         prev_state, acts, plan)
+                if plan:
+                    finall_plan.extend(plan)
+
 
             elif 'subpl_' in action[1].sign.name:
                 sub_sign = action[1].sign
@@ -462,9 +473,6 @@ class MapSearch():
                 agply = self.additions[0][iteration]['objects'][agent]['y']
                 for _, rsize in region_location.items():
                     if rsize[0] <= agplx <=rsize[2] and rsize[1] <= agply <=rsize[3]:
-                        # x_size = rsize[2] - rsize[0]
-                        # y_size = rsize[3] - rsize[1]
-                        # size = [rsize[0]- x_size, rsize[1]-y_size, rsize[2]+ x_size, rsize[3] + y_size]
                         size = rsize
                         break
             cell_location, cell_map, near_loc, cell_coords, _ = cell_creater(size, objects, region_location, borders)
@@ -485,7 +493,6 @@ class MapSearch():
             agent_state = state_prediction(self.world_model['I'], direction, holding)
             active_sit_new = define_situation(sit_name + 'sp', cell_map, events, agent_state, self.world_model)
             # define new current map
-            # TODO check replace exception
             active_map = define_map(st.MAP_PREFIX + str(st.SIT_COUNTER), region_map, cell_location, near_loc,
                                     self.additions[1],
                                     self.world_model)
@@ -511,6 +518,46 @@ class MapSearch():
 
         return active_pm, active_map, iteration-1, plan
 
+    def abstract(self, active_pm, agent, iteration):
+        objects = self.additions[0][iteration]['objects']
+        map_size = self.additions[3]['map_size']
+        borders = self.additions[3]['wall']
+        #orientation = self.additions[0][iteration]['agent-orientation']
+        rmap = [0, 0]
+        rmap.extend(map_size)
+        region_location, region_map = locater('region-', rmap, objects, borders)
+        cell_coords = active_pm.sign.images[1].spread_down_activity_view(1)
+        size = [cell_coords['cell-0'][0],
+                cell_coords['cell-0'][1],
+                cell_coords['cell-8'][2],
+                cell_coords['cell-8'][3]]
+        x_size = size[2] - size[0]
+        y_size = size[3] - size[1]
+        if x_size > map_size[0] // 3 or y_size > map_size[1] // 3:
+            agplx = self.additions[0][iteration]['objects'][agent]['x']
+            agply = self.additions[0][iteration]['objects'][agent]['y']
+            for _, rsize in region_location.items():
+                if rsize[0] <= agplx <= rsize[2] and rsize[1] <= agply <= rsize[3]:
+                    size = rsize
+                    break
+        cell_location, cell_map, near_loc, cell_coords, _ = cell_creater(size, objects, region_location, borders)
+        # define new sit
+        sit_name = st.SIT_PREFIX + str(st.SIT_COUNTER)
+        events, direction, holding = self.pm_parser(active_pm, agent)
+        agent_state = state_prediction(self.world_model['I'], direction, holding)
+        goal_pm = define_situation(sit_name + 'sp', cell_map, events, agent_state, self.world_model)
+        # define new map
+        goal_map = define_map(st.MAP_PREFIX + str(st.SIT_COUNTER), region_map, cell_location, near_loc,
+                                self.additions[1],
+                                self.world_model)
+        st.SIT_COUNTER += 1
+
+        state_fixation(goal_pm, cell_coords, signs, 'cell')
+
+        # decrease clarification
+        self.clarification_lv -= 1
+
+        return goal_pm, goal_map, cell_map
 
     def devide_situation(self, active_pm, check_pm, iteration, agent):
         # say that we are on the next lv of hierarchy
