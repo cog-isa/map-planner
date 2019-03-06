@@ -1041,10 +1041,14 @@ def spatial_ground(problem, agent, logic, exp_signs=None):
                 for view in im.cause[0].coincidences:
                     if view.view:
                         views.append(view.view)
-    for wall in problem.map['wall']:
-        if wall not in views:
-            cimage = ws.add_image()
-            cimage.add_view(wall, effect=False)
+    if 'wall' in problem.map:
+        for wall in problem.map['wall']:
+            if wall not in views:
+                cimage = ws.add_image()
+                cimage.add_view(wall, effect=False)
+    else:
+        logging.warning('There are no walls around! Check your task!!!')
+        sys.exit(1)
 
     if not exp_signs:
         _ground_predicates(problem.domain['predicates'], signs)

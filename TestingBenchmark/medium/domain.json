@@ -5,7 +5,7 @@
             "block",
             "obstacle",
             "table",
-            "border",
+            "wall",
             "nothing",
             "agent"
           ],
@@ -56,12 +56,6 @@
           "amount": [
             "few",
             "many"
-          ],
-          "border": [
-            "border-1",
-            "border-2",
-            "border-3",
-            "border-4"
           ],
           "block":[
             "block-a"

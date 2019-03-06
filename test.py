@@ -7,14 +7,14 @@ import platform
 if __name__ == '__main__':
 
     config_path = ''
-    # benchmark = '/home/gleb/PycharmProjects/map-planner/TestingBenchmark/task_vertical_clar/task9.json'
+    # benchmark = '/home/gleb/PycharmProjects/map-planner/TestingBenchmark/task_vertical_clar/task6.json'
     # benchmark = '/home/gleb/PycharmProjects/map-planner/src/benchmarks/simple/blocks/task1.pddl'
 
     if platform.system() != 'Windows':
         delim = '/'
     else:
         delim = '\\'
-    benchmark = os.getcwd() + delim + 'TestingBenchmark' + delim + 'task_walls' + delim + 'task10.json'
+    benchmark = os.getcwd() + delim + 'TestingBenchmark' + delim + 'simple'+ delim +'task5.json'
     # task_num if simple/blocks/task in other approaches -
     # benchmark_type&task_num or path to benchmark
     if not config_path:

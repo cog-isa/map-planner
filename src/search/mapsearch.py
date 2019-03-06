@@ -600,7 +600,11 @@ class MapSearch():
         active_pm.sign.add_out_meaning(connector)
         connector = clarify_mean.add_feature(active_sit_new, effect=True)
         active_sit_new.sign.add_out_meaning(connector)
-        current_plan.append((active_pm, 'Clarify', clarify_mean, self.world_model['I'], current_plan[-1][4], current_plan[-1][5]))
+        if current_plan:
+            current_plan.append((active_pm, 'Clarify', clarify_mean, self.world_model['I'], current_plan[-1][4], current_plan[-1][5]))
+        else:
+            current_plan.append(
+                (active_pm, 'Clarify', clarify_mean, self.world_model['I'], None, None))
 
         #start planning process
         plans = self._map_iteration(active_sit_new, active_map, iteration=iteration, current_plan=current_plan, Ch_m=goal_map, Ch_pm=goal_sit_new)
