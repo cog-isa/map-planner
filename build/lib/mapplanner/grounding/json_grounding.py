@@ -1080,6 +1080,12 @@ def spatial_ground(problem, agent, logic, exp_signs=None):
     goal_map = define_map('*goal_map*', region_map, cell_location, near_loc, regions_struct, signs)
     state_fixation(goal_situation, cell_coords, signs, 'cell')
 
+    #fixation map
+    map_size = scale(ms)
+    rmap = [0, 0, map_size[0], map_size[1]]
+    region_location, _ = locater('region-', rmap, initial_state['objects'], walls)
+    state_fixation(map_pms, region_location, signs, 'region')
+
     # TODO change in multiagent version
     signify_connection(signs)
     problem.goal['cl_lv'] = cl_lv

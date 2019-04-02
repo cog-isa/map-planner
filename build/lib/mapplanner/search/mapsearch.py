@@ -86,6 +86,9 @@ class MapSearch():
 
         if precedents and self.refinement_lv > 0:
             self.exp_sits = [sign.meanings[1] for name, sign in self.world_model.items() if 'exp_situation' in name]
+            # finish include
+            old_fnst = [sign.meanings[1] for name, sign in self.world_model.items() if ('*finish*' in name or '*start*' in name) and len(name)>8]
+            self.exp_sits.extend(old_fnst)
             self.exp_maps = [sign.meanings[1] for name, sign in self.world_model.items() if 'exp_map' in name]
             self.exp_acts = self.hierarch_acts()
 
@@ -1326,36 +1329,116 @@ class MapSearch():
         return cell_map, direction, estimation, cell_coords_new, new_x_y, cell_location, near_loc, region_map
 
     def sub_action(self, active_pm, script, agent, iteration):
-        applicable = []
-        direction = None
+        applicable = {'st':None, 'fn':None}
         for sit in self.exp_sits:
-            result, checked = self._check_result(script, sit)
-            if result:
-                applicable.append(sit)
-        for estimation in applicable:
-            #TODO check all sits by map comparison
-            #cell_coords = sit.sign.images[1].spread_down_activity_view(depth=1)
-            searched = self.__search_cm(estimation.cause, [self.world_model['orientation'], self.world_model['holding'],
-                                                          self.world_model['employment']])
+            if applicable['fn'] is None:
+                result, checked = self._check_result(script, sit)
+                if result:
+                    applicable['fn'] = sit
+            if applicable['st'] is None:
+                result, checked = self._check_activity(script, sit)
+                if result:
+                    applicable['st'] = sit
+            if applicable['fn'] and applicable['st']:
+                break
+        else:
+            if applicable['st'] is None:
+                logging.warning('Lost start situation for %s'%script.sign.name)
+            elif applicable['fn'] is None:
+                logging.warning('Lost finish situation for %s'%script.sign.name)
 
-            orientation = searched[self.world_model['orientation']][0]
-            for sign in orientation.get_signs():
-                if sign != agent and sign != self.world_model['I']:
-                    direction = sign
-                    break
-            cell_coords = estimation.sign.images[1].spread_down_activity_view(depth=1)
-            new_x_y = deepcopy(self.additions[0][iteration])
+        estim_old = applicable['fn']
+
+        events, direction, holding = self.pm_parser(estim_old, agent.name)
+
+        new_x_y = deepcopy(self.additions[0][iteration])
+        new_x_y['agent-orientation'] = direction.name
+        cell_coords = estim_old.sign.images[1].spread_down_activity_view(depth=1)
+        #check size
+        old_size = self.world_model['exp_*map*'].images[1].spread_down_activity_view(depth=1)
+        new_size = self.world_model['*map*'].images[1].spread_down_activity_view(depth=1)
+
+        if old_size != new_size:
+            new_x_y['objects']['agent']['x'], new_x_y['objects']['agent']['y'] = self.adapt_exp_situation(applicable, active_pm)
+            old_x = (cell_coords['cell-4'][2] - cell_coords['cell-4'][0]) // 2
+            old_y = (cell_coords['cell-4'][3] - cell_coords['cell-4'][1]) // 2
+            cell_coords_new = [new_x_y['objects']['agent']['x'] - old_x, new_x_y['objects']['agent']['y']-old_y,
+                               new_x_y['objects']['agent']['x'] + old_x, new_x_y['objects']['agent']['y']+old_y]
+
+            region_map, cell_map, cell_location, near_loc, cell_coords, _, _ = signs_markup(new_x_y,self.additions[3],
+                                                                                                'agent', cell_coords_new)
+            # for pick-up script
+            if holding:
+                block_name = [sign.name for sign in holding.get_signs() if 'block' in sign.name][0]
+                if block_name in new_x_y['objects'].keys():
+                    new_x_y['objects'][block_name]['y'] = new_x_y['objects']['agent']['y']
+                    new_x_y['objects'][block_name]['x'] = new_x_y['objects']['agent']['x']
+                else:
+                    block = {}
+                    block[block_name] = {'x': new_x_y['objects']['agent']['x'], 'y': new_x_y['objects']['agent']['y'],
+                                         'r': 5}
+                    new_x_y['objects'].update(block)
+
+            # for put-down script
+            if script.sign.name == 'put-down':
+                block_name = \
+                [sign.name for sign in script.get_iner(self.world_model['holding'], 'meaning')[0].get_signs() if
+                 'block' in sign.name][0]
+                table_name = \
+                [sign.name for sign in script.get_iner(self.world_model['ontable'], 'meaning')[0].get_signs() if
+                 sign.name != block_name][0]
+                new_x_y['objects'][block_name]['y'] = new_x_y['objects'][table_name]['y']
+                new_x_y['objects'][block_name]['x'] = new_x_y['objects'][table_name]['x']
+
+            agent_state = state_prediction(agent, direction, holding)
+            sit_name = st.SIT_PREFIX + str(st.SIT_COUNTER)
+            st.SIT_COUNTER += 1
+            new_situation = define_situation(sit_name + 'sp', cell_map, events, agent_state, signs)
+
+            state_fixation(new_situation, cell_coords, signs, 'cell')
+
+            return cell_map, direction, new_situation, cell_coords, new_x_y, cell_location, \
+            near_loc, region_map
+        else:
+
             new_x_y['objects']['agent']['x'] = (cell_coords['cell-4'][2] - cell_coords['cell-4'][0]) // 2 + cell_coords['cell-4'][0]
             new_x_y['objects']['agent']['y'] = (cell_coords['cell-4'][3] - cell_coords['cell-4'][1]) // 2 + cell_coords['cell-4'][1]
-            new_x_y['agent-orientation'] = direction.name
+
             region_map, cell_map, cell_location, near_loc, _, _, _ = signs_markup(new_x_y,self.additions[3],
                                                                                                 'agent', cell_coords['cell-4'])
-            state_fixation(estimation, cell_coords, signs, 'cell')
+            state_fixation(estim_old, cell_coords, signs, 'cell')
 
-            return cell_map, direction, estimation, cell_coords, new_x_y, cell_location, \
+            return cell_map, direction, estim_old, cell_coords, new_x_y, cell_location, \
             near_loc, region_map
 
+    def adapt_exp_situation(self, applicable, active_pm):
+        """
+        This function allows to adapt old exp to new task. Already used, when we adapt exp
+        200x200 matrix to 600x600 matrix
+        :param applicable: start and finish sits
+        :param active_pm: current pm on LS
+        :return: adapted agent coords
+        """
+        cell_coords_current = active_pm.sign.images[1].spread_down_activity_view(depth=1)
+        ag_coords_current_x = (cell_coords_current['cell-4'][2] - cell_coords_current['cell-4'][0]) // 2 + cell_coords_current['cell-4'][0]
+        ag_coords_current_y = (cell_coords_current['cell-4'][3] - cell_coords_current['cell-4'][1]) // 2 + cell_coords_current['cell-4'][1]
 
+        cell_coords_old_s = applicable['st'].sign.images[1].spread_down_activity_view(depth=1)
+        ag_coords_old_x_s = (cell_coords_old_s['cell-4'][2] - cell_coords_old_s['cell-4'][0]) // 2 + \
+                          cell_coords_old_s['cell-4'][0]
+        ag_coords_old_y_s = (cell_coords_old_s['cell-4'][3] - cell_coords_old_s['cell-4'][1]) // 2 + \
+                          cell_coords_old_s['cell-4'][1]
+
+        dif_x = ag_coords_current_x - ag_coords_old_x_s
+        dif_y = ag_coords_current_y - ag_coords_old_y_s
+
+        cell_coords_old_f = applicable['fn'].sign.images[1].spread_down_activity_view(depth=1)
+        ag_coords_old_x_f = (cell_coords_old_f['cell-4'][2] - cell_coords_old_f['cell-4'][0]) // 2 + \
+                          cell_coords_old_f['cell-4'][0]
+        ag_coords_old_y_f = (cell_coords_old_f['cell-4'][3] - cell_coords_old_f['cell-4'][1]) // 2 + \
+                          cell_coords_old_f['cell-4'][1]
+
+        return dif_x+ag_coords_old_x_f, dif_y+ag_coords_old_y_f
 
     def _state_prediction(self, active_pm, script, agent, iteration, flag=False):
         if script.sign.images and 'task' in script.sign.name and not 'sub' in script.sign.name:
