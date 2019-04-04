@@ -330,15 +330,23 @@ class MapSearch():
                     if act[1] not in sub_acts:
                         sub_acts.append(act[1])
                 sub_finish = None
-                if len(acts) > 1:
-                    for con in acts[1].sign.meanings[1].cause[0].coincidences:
-                        sub_finish = con.out_sign.meanings[con.out_index]
-                else:
-                    for con in sub_sign.meanings[1].effect[0].coincidences:
-                        sub_finish = con.out_sign.meanings[con.out_index]
 
-                for con in sub_sign.meanings[1].cause[0].coincidences:
-                    sub_start = con.out_sign.meanings[con.out_index]
+                old_size = self.world_model['exp_*map*'].images[1].spread_down_activity_view(depth=1)
+                new_size = self.world_model['*map*'].images[1].spread_down_activity_view(depth=1)
+                if old_size == new_size:
+                    if len(acts) > 1:
+                        for con in acts[1].sign.meanings[1].cause[0].coincidences:
+                            sub_finish = con.out_sign.meanings[con.out_index]
+                    else:
+                        for con in sub_sign.meanings[1].effect[0].coincidences:
+                            sub_finish = con.out_sign.meanings[con.out_index]
+
+
+                    for con in sub_sign.meanings[1].cause[0].coincidences:
+                        sub_start = con.out_sign.meanings[con.out_index]
+                else:
+                    sub_finish = check_pm
+                    sub_start = active_pm
 
                 plan = self.hierarchical_exp_search(sub_start, active_map, sub_finish, None, iteration,
                                                         prev_state, sub_acts, plan, True)
@@ -1502,7 +1510,7 @@ class MapSearch():
             elif self.clarification_lv > 0:
                 active_map = define_map(st.MAP_PREFIX + str(st.SIT_COUNTER), region_map, cell_location, near_loc,
                                         self.additions[1], self.world_model)
-        else:
+        elif 'exp_*map*' in self.world_model:
             old_size = self.world_model['exp_*map*'].images[1].spread_down_activity_view(depth=1)
             new_size = self.world_model['*map*'].images[1].spread_down_activity_view(depth=1)
             if old_size != new_size:
