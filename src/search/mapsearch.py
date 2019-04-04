@@ -85,12 +85,15 @@ class MapSearch():
             active_signif |= pm.sign.spread_up_activity_act('significance', 3)
 
         if precedents and self.refinement_lv > 0:
-            self.exp_sits = [sign.meanings[1] for name, sign in self.world_model.items() if 'exp_situation' in name]
-            # finish include
-            old_fnst = [sign.meanings[1] for name, sign in self.world_model.items() if ('*finish*' in name or '*start*' in name) and len(name)>8]
-            self.exp_sits.extend(old_fnst)
-            self.exp_maps = [sign.meanings[1] for name, sign in self.world_model.items() if 'exp_map' in name]
-            self.exp_acts = self.hierarch_acts()
+            if not self.exp_sits:
+                self.exp_sits = [sign.meanings[1] for name, sign in self.world_model.items() if 'exp_situation' in name]
+                # finish include
+                old_fnst = [sign.meanings[1] for name, sign in self.world_model.items() if ('*finish*' in name or '*start*' in name) and len(name)>8]
+                self.exp_sits.extend(old_fnst)
+            if not self.exp_maps:
+                self.exp_maps = [sign.meanings[1] for name, sign in self.world_model.items() if 'exp_map' in name]
+            if not self.exp_acts:
+                self.exp_acts = self.hierarch_acts()
 
         meanings = []
         for pm_signif in active_signif:
@@ -153,7 +156,7 @@ class MapSearch():
                 next_pm, next_map, prev_state, direction = self._step_generating(active_pm, active_map, script, agent, iteration, prev_state, True)
                 ag_place = (prev_state[-1][2] - prev_state[-1][0]) // 2 + prev_state[-1][0], (
                             prev_state[-1][3] - prev_state[-1][1]) // 2 + prev_state[-1][1]
-                if script.sign.images and self.refinement_lv >0:
+                if [cm for _, cm in script.sign.images.items() if not cm.is_empty()] and self.refinement_lv >0:
                     acts = []
                     for act in script.sign.images[1].spread_down_activity('image', 2):
                         if act[1] not in acts:
@@ -352,7 +355,14 @@ class MapSearch():
                     ag_place = (prev_state[-1][2] - prev_state[-1][0]) // 2 + prev_state[-1][0], (
                             prev_state[-1][3] - prev_state[-1][1]) // 2 + prev_state[-1][1]
                     #included_map = [map for map in self.exp_maps if map.includes('meaning', next_map)]
-                    included_sit = [sit for sit in self.exp_sits if sit.includes('meaning', next_pm)]
+
+                    old_size = self.world_model['exp_*map*'].images[1].spread_down_activity_view(depth=1)
+                    new_size = self.world_model['*map*'].images[1].spread_down_activity_view(depth=1)
+                    if old_size == new_size:
+                        included_sit = [sit for sit in self.exp_sits if sit.includes('meaning', next_pm)]
+                    else:
+                        included_sit = True
+
                     if included_sit:
                         if plan is None: plan = []
                         plan.append((active_pm, action[1].sign.name, action[1], action[0], (ag_place, direction),
@@ -1250,6 +1260,14 @@ class MapSearch():
         estimation = define_situation(sit_name + 'sp', cell_map, events, agent_state, self.world_model)
         state_fixation(estimation, cell_coords, signs, 'cell')
 
+        #check size
+        old_size = self.world_model['exp_*map*'].images[1].spread_down_activity_view(depth=1)
+        new_size = self.world_model['*map*'].images[1].spread_down_activity_view(depth=1)
+
+        if old_size != new_size:
+            #Calculate how many times cur sit bigger than old or vice versa
+            self.clarification_lv += int((new_size['region-8'][3] // old_size['region-8'][3] ) / 3)
+
         return cell_map, direction, estimation, cell_coords, new_x_y, cell_location, \
             near_loc, region_map
 
@@ -1359,6 +1377,9 @@ class MapSearch():
         new_size = self.world_model['*map*'].images[1].spread_down_activity_view(depth=1)
 
         if old_size != new_size:
+            #Calculate how many times cur sit bigger than old or vice versa
+            self.clarification_lv += int((new_size['region-8'][3] // old_size['region-8'][3] ) / 3)
+
             new_x_y['objects']['agent']['x'], new_x_y['objects']['agent']['y'] = self.adapt_exp_situation(applicable, active_pm)
             old_x = (cell_coords['cell-4'][2] - cell_coords['cell-4'][0]) // 2
             old_y = (cell_coords['cell-4'][3] - cell_coords['cell-4'][1]) // 2
@@ -1414,7 +1435,7 @@ class MapSearch():
     def adapt_exp_situation(self, applicable, active_pm):
         """
         This function allows to adapt old exp to new task. Already used, when we adapt exp
-        200x200 matrix to 600x600 matrix
+        200x200 matrix to 600x600 matrix.
         :param applicable: start and finish sits
         :param active_pm: current pm on LS
         :return: adapted agent coords
@@ -1481,7 +1502,14 @@ class MapSearch():
             elif self.clarification_lv > 0:
                 active_map = define_map(st.MAP_PREFIX + str(st.SIT_COUNTER), region_map, cell_location, near_loc,
                                         self.additions[1], self.world_model)
-
+        else:
+            old_size = self.world_model['exp_*map*'].images[1].spread_down_activity_view(depth=1)
+            new_size = self.world_model['*map*'].images[1].spread_down_activity_view(depth=1)
+            if old_size != new_size:
+                active_map = define_map(st.MAP_PREFIX + str(st.SIT_COUNTER), region_map, cell_location, near_loc,
+                                        self.additions[1],
+                                        self.world_model)
+                print('map has been changed!')
         return next_pm, active_map, prev_state, direction
 
     def _time_shift_backward(self, active_pm, script):
