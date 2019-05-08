@@ -67,7 +67,7 @@ class Agent:
                     cm = connector.out_sign.significances[1].copy('significance', 'meaning')
                 elif len(others) == 0:
                     method = 'save_achievement'
-        search = MapSearch(task, self.LogicalSearch, self.ref)
+        search = MapSearch(task, self.LogicalSearch, self.ref, self.problem.task_file)
         solutions = search.search_plan()
         sol_acronims = []
         for sol in solutions:

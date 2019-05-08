@@ -1,5 +1,5 @@
 import logging
-
+import json
 import mapplanner.grounding.sign_task as st
 import random
 from mapplanner.grounding.json_grounding import *
@@ -8,7 +8,7 @@ from mapplanner.grounding.semnet import Sign
 MAX_CL_LV = 1
 
 class MapSearch():
-    def __init__ (self, task, LogicalSearch, ref):
+    def __init__ (self, task, LogicalSearch, ref, task_file):
         self.world_model = task.signs
         self.check_pm = task.goal_situation.meanings[1]
         self.active_pm = task.start_situation.meanings[1]
@@ -28,6 +28,7 @@ class MapSearch():
         self.exp_sits = []
         self.exp_maps = []
         self.exp_acts = {}
+        self.task_file = task_file
         if task.goal_map:
             self.check_map = task.goal_map.meanings[1]
         else:
@@ -154,8 +155,15 @@ class MapSearch():
             subplan = None
             if self.logic == 'spatial':
                 next_pm, next_map, prev_state, direction = self._step_generating(active_pm, active_map, script, agent, iteration, prev_state, True)
+
                 ag_place = (prev_state[-1][2] - prev_state[-1][0]) // 2 + prev_state[-1][0], (
                             prev_state[-1][3] - prev_state[-1][1]) // 2 + prev_state[-1][1]
+
+                if script.sign.name != 'rotate':
+                    tactical_response = self.__get_tactical(counter, script, prev_state)
+                    if not eval(tactical_response['doable']):
+                        continue
+
                 if [cm for _, cm in script.sign.images.items() if not cm.is_empty()] and self.refinement_lv >0:
                     acts = []
                     for act in script.sign.images[1].spread_down_activity('image', 2):
@@ -1646,6 +1654,39 @@ class MapSearch():
             new_chain = {}
             used_roles = []
         return merged_chains
+
+    def __get_tactical(self, counter, script, cell_history):
+        new_request = self.task_file.copy()
+        new_cell = cell_history[-1]
+        size = new_cell[2] - new_cell[0], new_cell[3] - new_cell[1]
+        old_orientation = self.additions[0][counter-1]['agent-orientation']
+        new_orientation = self.additions[0][counter]['agent-orientation']
+
+        agent_old = self.additions[0][counter-1]['objects']['agent']
+        agent_new = self.additions[0][counter]['objects']['agent']
+
+        start = {'agent-orientation': old_orientation}
+        start['agent'] = agent_old
+        finish = {'agent-orientation': new_orientation}
+        finish['agent'] = agent_new
+
+        request = {}
+        request['start'] = start
+        request['finish'] = finish
+        request['cell-cize'] = size
+        request['name'] = script.sign.name
+        request['counter'] = counter
+
+        new_request['current-action'] = request
+
+        file_name = 'request_' + script.sign.name + '_' + str(counter)+ '.json'
+
+        with open(file_name, 'w') as outfile:
+            json.dump(new_request, outfile)
+
+        tactical_response = {}
+        tactical_response['doable'] = 'True'
+        return tactical_response
 
 
 

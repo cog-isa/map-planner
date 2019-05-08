@@ -1119,7 +1119,7 @@ class Problem:
             self.vanished = self.map['vanished']
         except KeyError:
             self.vanished = {}
-
+        self.task_file = problem_parsed
         self.constraints = constraints
 
     def __repr__(self):
