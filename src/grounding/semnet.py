@@ -1,7 +1,5 @@
 import itertools
 from copy import copy
-import numpy as np
-
 
 class CausalMatrix:
     """
@@ -126,7 +124,7 @@ class CausalMatrix:
         @return: an object of class View
         """
 
-        if not isinstance(view, (list, tuple, np.ndarray)):
+        if not isinstance(view, (list, tuple)):
             raise Exception('Views can be only tuple, list or ndarray!')
 
         if effect:
