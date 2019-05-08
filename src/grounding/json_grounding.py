@@ -1031,7 +1031,9 @@ def spatial_ground(problem, agent, logic, exp_signs=None):
             obj_sign.add_out_significance(connector)
 
     if exp_signs:
-        ws = {**signs, **exp_signs}['wall']
+        signs.update(exp_signs)
+        ws = signs['wall']
+        #ws = {**signs, **exp_signs}['wall']
     else:
         ws = signs['wall']
     views = []

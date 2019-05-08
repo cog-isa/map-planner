@@ -22,7 +22,6 @@ class MapPlanner():
         self.agpath = kwgs['agpath']
         self.domain, self.problem = self.clarify_problem(kwgs['path'], kwgs['task'], self.LogicType)
         self.refinement = eval(kwgs['refinement_lv'])
-
         logging.info('multiMAP ready to plan')
     def searcher(self):
         return self.find_solution(self.domain, self.problem, self.LogicType, self.is_load, self.gazebo, self.LogicalSearch)
