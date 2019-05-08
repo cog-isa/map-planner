@@ -58,11 +58,13 @@
             "many"
           ],
           "block":[
-            "block-a"
+            "block-a",
+            "block-b"
           ],
           "table":[
             "table-1",
-            "table-2"
+            "table-2",
+            "table-3"
           ]
       },
   "roles":

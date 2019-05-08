@@ -1110,9 +1110,14 @@ class Problem:
         """
         self.name = problem_parsed['task-name']
         self.domain = domain
-        self.initial_state = problem_parsed['start']
-        self.goal = problem_parsed['finish']
+        self.initial_state = problem_parsed['global-start']
+        self.goal = problem_parsed['global-finish']
         self.map = problem_parsed['map']
+        try:
+            self.vanished = self.map['vanished']
+        except KeyError:
+            self.vanished = {}
+
         self.constraints = constraints
 
     def __repr__(self):
