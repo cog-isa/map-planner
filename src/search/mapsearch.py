@@ -1679,7 +1679,7 @@ class MapSearch():
 
         new_request['current-action'] = request
 
-        file_name = 'request_' + script.sign.name + '_' + str(counter)+ '.json'
+        file_name = 'requests/request_' + script.sign.name + '_' + str(counter)+ '.json'
 
         with open(file_name, 'w') as outfile:
             json.dump(new_request, outfile)
