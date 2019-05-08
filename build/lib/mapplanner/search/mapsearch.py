@@ -266,25 +266,32 @@ class MapSearch():
         """
         logging.info('Clarify experience plan')
         applicable = []
-        act = acts[0].sign
+        act = None
+        while len(cur_plan) < len(acts):
+            act = acts[iteration].sign
+            break
         finall_plans = []
         plan = copy(cur_plan)
-        if not [ac for ac in self.exp_acts[act] if ac[0] is None]:
-            exp_acts = copy(self.exp_acts[act])
-            for agent, cm in exp_acts:
-                result, checked = self._check_activity(cm, active_pm)
-                if result:
-                    applicable.append((agent, checked))
+        if act:
+            if not [ac for ac in self.exp_acts[act] if ac[0] is None]:
+                exp_acts = copy(self.exp_acts[act])
+                for agent, cm in exp_acts:
+                    result, checked = self._check_activity(cm, active_pm)
+                    if result:
+                        applicable.append((agent, checked))
 
-            if not applicable and exp_acts:
-                logging.info('No applicable actions was found')
-                return None
+                if not applicable and exp_acts:
+                    logging.info('No applicable actions was found')
+                    return None
+            else:
+                exp_acts = [act[1] for act in self.exp_acts[act] if len(act[1].cause) == 1]
+                for exp_act in exp_acts:
+                    result, checked = self._check_activity(exp_act, active_pm)
+                    if result:
+                        applicable.append((None, checked))
         else:
-            exp_acts = [act[1] for act in self.exp_acts[act] if len(act[1].cause) == 1]
-            for exp_act in exp_acts:
-                result, checked = self._check_activity(exp_act, active_pm)
-                if result:
-                    applicable.append((None, checked))
+            finall_plans = cur_plan
+
         for action in applicable:
             if action[1].sign.name == 'Clarify':
                 result = False
@@ -297,7 +304,7 @@ class MapSearch():
                     else:
                         break
                     result, checked = self._check_result(action[1], next_pm)
-                acts.pop(0)
+                #acts.pop(0)
                 agent = action[0]
                 if action[0] is None: agent = plan[-1][3]
                 plan.append((active_pm, action[1].sign.name, action[1], agent, plan[-1][4], (next_map, self.clarification_lv)))
@@ -318,7 +325,7 @@ class MapSearch():
                 self.additions[0][iteration] = deepcopy(self.additions[0][iteration - 1])
                 self.additions[2][iteration] = cell_map
 
-                acts.pop(0)
+                #acts.pop(0)
                 if action[0] is None: agent = plan[-1][3]
                 plan.append(
                     (active_pm, action[1].sign.name, action[1], agent, plan[-1][4], (next_map, self.clarification_lv)))
@@ -354,8 +361,8 @@ class MapSearch():
                 next_map = plan[-1][-1][0]
                 if plan:
                     subsearch = False
-                    if acts:
-                        acts.pop(0)
+                    # if acts:
+                    #     acts.pop(0)
             else:
                 if check_map or subsearch:
                     next_pm, next_map, prev_state, direction = self._step_generating(active_pm, active_map, action[1], action[0],
@@ -385,8 +392,8 @@ class MapSearch():
                     if included_sit and included_map:
                         plan.append(
                             (active_pm, action[1].sign.name, action[1], action[0], None, (None, self.clarification_lv)))
-                if acts:
-                    acts.pop(0)
+                # if acts:
+                #     acts.pop(0)
 
 
             if next_pm.includes('meaning', check_pm):
@@ -1203,14 +1210,14 @@ class MapSearch():
     def scale_history_situation(self, history_benchmark, iteration):
         new_objects = {}
 
-        for stobj, scoords in history_benchmark['start']['objects'].items():
+        for stobj, scoords in history_benchmark['global-start']['objects'].items():
             for curobj, curcoords in self.additions[0][iteration]['objects'].items():
                 if stobj == curobj:
                     koef_x = curcoords['x'] - scoords['x']
                     koef_y = curcoords['y'] - scoords['y']
-                    new_objects[curobj] = {'x': history_benchmark['finish']['objects'][stobj]['x']+koef_x,
-                                           'y': history_benchmark['finish']['objects'][stobj]['y']+koef_y,
-                                           'r': history_benchmark['finish']['objects'][stobj]['r']}
+                    new_objects[curobj] = {'x': history_benchmark['global-finish']['objects'][stobj]['x']+koef_x,
+                                           'y': history_benchmark['global-finish']['objects'][stobj]['y']+koef_y,
+                                           'r': history_benchmark['global-finish']['objects'][stobj]['r']}
 
         return {'objects': new_objects}, {'map_size': self.additions[3]['map_size'], 'wall': self.additions[3]['wall']}
 
@@ -1253,15 +1260,15 @@ class MapSearch():
                     if con.out_sign.name == "I":
                         events.append(ev)
 
-        orientation = history_benchmark['finish']['agent-orientation']
+        orientation = history_benchmark['global-finish']['agent-orientation']
         direction = self.world_model[orientation]
 
-        history_benchmark['finish']['objects'].update(parsed['objects'])
-        new_x_y = history_benchmark['finish']
+        history_benchmark['global-finish']['objects'].update(parsed['objects'])
+        new_x_y = history_benchmark['global-finish']
         new_x_y['map_size'] = self.additions[3]['map_size']
         # new_x_y['wall'] = self.additions[3]['wall']
 
-        agent_state = state_prediction(agent, history_benchmark['finish'])
+        agent_state = state_prediction(agent, history_benchmark['global-finish'])
 
         sit_name = st.SIT_PREFIX + str(st.SIT_COUNTER)
         st.SIT_COUNTER+=1
