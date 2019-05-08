@@ -160,7 +160,7 @@ class MapSearch():
                             prev_state[-1][3] - prev_state[-1][1]) // 2 + prev_state[-1][1]
 
                 if script.sign.name != 'rotate':
-                    tactical_response = self.__get_tactical(counter, script, prev_state)
+                    tactical_response = self.__get_tactical(iteration, script, prev_state)
                     if not eval(tactical_response['doable']):
                         continue
 
@@ -1659,11 +1659,11 @@ class MapSearch():
         new_request = self.task_file.copy()
         new_cell = cell_history[-1]
         size = new_cell[2] - new_cell[0], new_cell[3] - new_cell[1]
-        old_orientation = self.additions[0][counter-1]['agent-orientation']
-        new_orientation = self.additions[0][counter]['agent-orientation']
+        old_orientation = self.additions[0][max(self.additions[0].keys())-1]['agent-orientation']
+        new_orientation = self.additions[0][max(self.additions[0].keys())]['agent-orientation']
 
-        agent_old = self.additions[0][counter-1]['objects']['agent']
-        agent_new = self.additions[0][counter]['objects']['agent']
+        agent_old = self.additions[0][max(self.additions[0].keys())-1]['objects']['agent']
+        agent_new = self.additions[0][max(self.additions[0].keys())]['objects']['agent']
 
         start = {'agent-orientation': old_orientation}
         start['agent'] = agent_old

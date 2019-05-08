@@ -14,7 +14,7 @@ if __name__ == '__main__':
         delim = '/'
     else:
         delim = '\\'
-    benchmark = os.getcwd() + delim + 'TestingBenchmark' + delim + 'simple'+ delim +'task71.json'
+    benchmark = os.getcwd() + delim + 'TestingBenchmark' + delim + 'simple'+ delim +'task72.json'
     # task_num if simple/blocks/task in other approaches -
     # benchmark_type&task_num or path to benchmark
     if not config_path:

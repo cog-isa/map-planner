@@ -54,26 +54,5 @@
                             "y": 607.0
                         }
                     }
-            },
-    "current-action":{
-                "start": {
-                "agent-orientation": "below",
-                    "agent": {
-                        "r": 10,
-                        "x": 121.0,
-                        "y": 40.0
-                    }
-
-                  },
-                "finish": {
-                "agent-orientation": "right",
-                    "agent": {
-                      "r": 10,
-                      "x": 364.0,
-                      "y": 364.0
-                    }
-                  },
-               "cell-size": [81, 81]
-
-    }
+            }
 }
