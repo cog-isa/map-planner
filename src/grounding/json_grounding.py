@@ -1101,7 +1101,7 @@ def spatial_ground(problem, agent, logic, exp_signs=None):
 
 
 class Problem:
-    def __init__(self, domain, problem_parsed, constraints):
+    def __init__(self, domain, problem_parsed, problem_file, constraints):
         """
         name: The name of the problem
         domain: The domain in which the problem has to be solved
@@ -1119,7 +1119,7 @@ class Problem:
             self.vanished = self.map['vanished']
         except KeyError:
             self.vanished = {}
-        self.task_file = problem_parsed
+        self.task_file = problem_file
         self.constraints = constraints
 
     def __repr__(self):

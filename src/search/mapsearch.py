@@ -4,6 +4,8 @@ import mapplanner.grounding.sign_task as st
 import random
 from mapplanner.grounding.json_grounding import *
 from mapplanner.grounding.semnet import Sign
+import os
+
 
 MAX_CL_LV = 1
 
@@ -158,11 +160,6 @@ class MapSearch():
 
                 ag_place = (prev_state[-1][2] - prev_state[-1][0]) // 2 + prev_state[-1][0], (
                             prev_state[-1][3] - prev_state[-1][1]) // 2 + prev_state[-1][1]
-
-                if script.sign.name != 'rotate':
-                    tactical_response = self.__get_tactical(iteration, script, prev_state)
-                    if not eval(tactical_response['doable']):
-                        continue
 
                 if [cm for _, cm in script.sign.images.items() if not cm.is_empty()] and self.refinement_lv >0:
                     acts = []
@@ -1019,6 +1016,18 @@ class MapSearch():
                 estimation, cell_coords_new, new_x_y, \
                 cell_location, near_loc, region_map, current_direction = self._state_prediction(active_pm, script, agent, iteration)
                 old_cl_lv = self.clarification_lv
+
+                #####################################################TACTICAL_LEVEL_CALL######################
+                if script.sign.name == 'move':
+                    tactical_response = self.__get_tactical(iteration, script, cell_coords_new, new_x_y)
+                    if not tactical_response['doable']:
+                        logging.info('This move does not allowed by tactical response')
+                        continue
+
+                ######################################################END OF CALL#############################
+
+
+
                 if 'task' in script.sign.name and not 'sub' in script.sign.name:
                     self.clarification_lv = self.goal_state['cl_lv']
 
@@ -1655,15 +1664,15 @@ class MapSearch():
             used_roles = []
         return merged_chains
 
-    def __get_tactical(self, counter, script, cell_history):
-        new_request = self.task_file.copy()
-        new_cell = cell_history[-1]
-        size = new_cell[2] - new_cell[0], new_cell[3] - new_cell[1]
-        old_orientation = self.additions[0][max(self.additions[0].keys())-1]['agent-orientation']
-        new_orientation = self.additions[0][max(self.additions[0].keys())]['agent-orientation']
+    def __get_tactical(self, counter, script, cell_coords, new_x_y):
 
-        agent_old = self.additions[0][max(self.additions[0].keys())-1]['objects']['agent']
-        agent_new = self.additions[0][max(self.additions[0].keys())]['objects']['agent']
+        new_cell = cell_coords['cell-4']
+        size = new_cell[2] - new_cell[0], new_cell[3] - new_cell[1]
+        old_orientation = self.additions[0][max(self.additions[0].keys())]['agent-orientation']
+        new_orientation = new_x_y['agent-orientation']
+
+        agent_old = self.additions[0][max(self.additions[0].keys())]['objects']['agent']
+        agent_new = new_x_y['objects']['agent']
 
         start = {'agent-orientation': old_orientation}
         start['agent'] = agent_old
@@ -1673,19 +1682,31 @@ class MapSearch():
         request = {}
         request['start'] = start
         request['finish'] = finish
-        request['cell-cize'] = size
+        request['cell-size'] = size
         request['name'] = script.sign.name
         request['counter'] = counter
 
+        with open(self.task_file) as data_file1:
+            new_request = json.load(data_file1)
+
         new_request['current-action'] = request
 
-        file_name = 'requests/request_' + script.sign.name + '_' + str(counter)+ '.json'
+        path = '/'
+        for part in self.task_file.split('/')[1:-1]:
+            path += part+'/'
+
+
+        file_name = path + 'requests'+'/request_' + script.sign.name + '_' + str(counter)+ '.json'
 
         with open(file_name, 'w') as outfile:
             json.dump(new_request, outfile)
 
-        tactical_response = {}
-        tactical_response['doable'] = 'True'
+        #TODO Here is a server
+        response_path = path + 'responses'+'/result_' + script.sign.name + '_' + str(counter)+ '.json'
+        with open(response_path) as data_file1:
+            tactical_response = json.load(data_file1)
+
+        tactical_response = tactical_response['result']
         return tactical_response
 
 

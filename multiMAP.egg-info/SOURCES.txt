@@ -1,5 +1,4 @@
 MANIFEST.in
-README.md
 setup.py
 multiMAP.egg-info/PKG-INFO
 multiMAP.egg-info/SOURCES.txt

@@ -4,6 +4,8 @@ import mapplanner.grounding.sign_task as st
 import random
 from mapplanner.grounding.json_grounding import *
 from mapplanner.grounding.semnet import Sign
+import os
+
 
 MAX_CL_LV = 1
 
@@ -1656,7 +1658,7 @@ class MapSearch():
         return merged_chains
 
     def __get_tactical(self, counter, script, cell_history):
-        new_request = self.task_file.copy()
+
         new_cell = cell_history[-1]
         size = new_cell[2] - new_cell[0], new_cell[3] - new_cell[1]
         old_orientation = self.additions[0][max(self.additions[0].keys())-1]['agent-orientation']
@@ -1673,18 +1675,30 @@ class MapSearch():
         request = {}
         request['start'] = start
         request['finish'] = finish
-        request['cell-cize'] = size
+        request['cell-size'] = size
         request['name'] = script.sign.name
         request['counter'] = counter
 
+        with open(self.task_file) as data_file1:
+            new_request = json.load(data_file1)
+
         new_request['current-action'] = request
 
-        file_name = 'requests/request_' + script.sign.name + '_' + str(counter)+ '.json'
+        path = '/'
+        for part in self.task_file.split('/')[1:-1]:
+            path += part+'/'
+
+
+        file_name = path + 'requests'+'/request_' + script.sign.name + '_' + str(counter)+ '.json'
 
         with open(file_name, 'w') as outfile:
             json.dump(new_request, outfile)
 
-        tactical_response = {}
+        #TODO Here is a server
+        response_path = path + 'responses'+'/result_' + script.sign.name + '_' + str(counter)+ '.json'
+        with open(response_path) as data_file1:
+            tactical_response = json.load(data_file1)
+
         tactical_response['doable'] = 'True'
         return tactical_response
 

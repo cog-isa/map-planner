@@ -122,7 +122,7 @@ class MapPlanner():
         with open(domain_file) as data_file2:
             signs_structure = json.load(data_file2)
 
-        problem = Problem(signs_structure, problem_parsed, None)
+        problem = Problem(signs_structure, problem_parsed, problem_file, None)
 
         return self.agent_manager(problem_parsed['agents'], problem, logic, saveload, gazebo, LogicalSearch)
 

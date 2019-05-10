@@ -2,3 +2,8 @@
 *.pyc
 .idea
 *.soln
+dist
+build
+multiMAP.eff-info
+env
+
