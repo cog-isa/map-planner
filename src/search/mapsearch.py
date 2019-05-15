@@ -1,10 +1,13 @@
 import logging
 import json
+import math
+
 import mapplanner.grounding.sign_task as st
 import random
 from mapplanner.grounding.json_grounding import *
 from mapplanner.grounding.semnet import Sign
 import os
+import subprocess
 
 
 MAX_CL_LV = 1
@@ -1016,15 +1019,21 @@ class MapSearch():
                 estimation, cell_coords_new, new_x_y, \
                 cell_location, near_loc, region_map, current_direction = self._state_prediction(active_pm, script, agent, iteration)
                 old_cl_lv = self.clarification_lv
+                counter = 0
 
                 #####################################################TACTICAL_LEVEL_CALL######################
+                if not 'task' in script.sign.name:
+                    stright = self.get_stright(active_pm, current_direction)
+                else:
+                    stright = self.get_stright(estimation, current_direction)
                 if script.sign.name == 'move':
-                    tactical_response = self.__get_tactical(iteration, script, cell_coords_new, new_x_y)
+                    tactical_response = self.__get_tactical(iteration, script, cell_coords_new, new_x_y, active_pm)
                     if not tactical_response['doable']:
                         logging.info('This move does not allowed by tactical response')
                         continue
-
-                ######################################################END OF CALL#############################
+                    else:
+                        counter+=4
+                            ######################################################END OF CALL#############################
 
 
 
@@ -1040,7 +1049,6 @@ class MapSearch():
                         if cell_coords_new['cell-4'] in prev_state and self.clarification_lv == 0:
                             break
                 else:
-                    counter = 0
                     cont_region = None
                     goal_region = None
                     for reg, cellz in cell_location.items():
@@ -1057,24 +1065,24 @@ class MapSearch():
                                     break
                         if goal_region:
                             break
-                    if not 'task' in script.sign.name:
-                        stright = self.get_stright(active_pm, current_direction)
-                    else:
-                        stright = self.get_stright(estimation, current_direction)
+                    # if not 'task' in script.sign.name:
+                    #     stright = self.get_stright(active_pm, current_direction)
+                    # else:
+                    #     stright = self.get_stright(estimation, current_direction)
                     if goal_region.name != cont_region:
-                        goal_dir = self.additions[1][cont_region][goal_region.name][1]
+                        # goal_dir = self.additions[1][cont_region][goal_region.name][1]
                         # do not rotate to the wall if there are no hole
-                        if current_direction.name == goal_dir:
-                            if stright[1] and not self.clarification_lv < self.goal_state['cl_lv']:
-                                counter = 0
-                            else:
-                                counter += 2 # +2 if current dir is the same to goal dir
+                        # if current_direction.name == goal_dir:
+                        #     if stright[1] and not self.clarification_lv < self.goal_state['cl_lv']:
+                        #         counter = 0
+                        #     else:
+                        #         counter += 2 # +2 if current dir is the same to goal dir
                         # for move action
-                        elif cell_coords_new['cell-4'] != active_pm.sign.images[1].spread_down_activity_view(1)['cell-4']:
+                        if cell_coords_new['cell-4'] != active_pm.sign.images[1].spread_down_activity_view(1)['cell-4']:
                             if not stright[1]:
                                 counter += 1 # +1
                                 if prev_act == 'rotate':
-                                    counter+=2
+                                    counter+=4 # was +2
                         # for pick-up and put-down actions
                         elif self.difference(active_pm, estimation)[0]:
                             old = self.difference(active_pm, estimation)[1]
@@ -1084,29 +1092,50 @@ class MapSearch():
                                         break
                                 else:
                                     counter+=3
-                        else:
-                            # check closely to goal region regions
-                            closely_goal = [reg for reg, ratio in self.additions[1][goal_region.name].items() if
-                                            ratio[0] == 'closely']
-                            closely_dirs = set()
-                            if cont_region not in closely_goal:
-                                for region in closely_goal:
-                                    closely_dirs.add(self.additions[1][cont_region][region][1])
-                                if current_direction.name in closely_dirs:
-                                    if stright[1]:
-                                        counter = 0
-                                    else:
-                                        counter += 2 # +2 if rotate to closely to goal region
-                            else:
-                                if current_direction.name == goal_dir:
-                                    counter += 2 # +2 if in closely reg and rotate to future_reg
-                                elif not stright[1]:
-                                    if self.cell_closer(cell_coords_new['cell-4'],cell_coords_new[stright[0].name], 'agent'):
-                                        counter+=1
-
-                        if self.linear_cell(cell_coords_new['cell-4'],cell_coords_new[stright[0].name], 'agent'):
+                        ################################################CWM################################################
+                        elif script.sign.name == 'rotate':
+                            tactical_response = self.__get_tactical(iteration, script, cell_coords_new, new_x_y, active_pm)
                             if not stright[1]:
-                                counter +=2 # +2 if agent go back to the stright goal way #TODO rework when go from far
+                                cur_c = cell_coords_new['cell-4']
+                                cur_coords = cur_c[0] + ((cur_c[2] - cur_c[0]) // 2), cur_c[1] + (
+                                            (cur_c[3] - cur_c[1]) // 2)
+                                str_c = cell_coords_new[stright[0].name]
+                                strcell_coord = str_c[0] + ((str_c[2] - str_c[0]) // 2), str_c[1] + (
+                                            (str_c[3] - str_c[1]) // 2)
+                                t_c = tactical_response['target-cell']
+                                targ_coord = t_c[0] + ((t_c[2] - t_c[0]) // 2), t_c[1] + ((t_c[3] - t_c[1]) // 2)
+
+                                a = math.sqrt(
+                                    (targ_coord[1] - cur_coords[1]) ** 2 + (targ_coord[0] - cur_coords[0]) ** 2)
+                                b = math.sqrt(
+                                    (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
+
+                                if a > b:
+                                    counter += 3
+                        ################################################CWM################################################
+                        # else:
+                        #     # check closely to goal region regions
+                        #     closely_goal = [reg for reg, ratio in self.additions[1][goal_region.name].items() if
+                        #                     ratio[0] == 'closely']
+                        #     closely_dirs = set()
+                        #     if cont_region not in closely_goal:
+                        #         for region in closely_goal:
+                        #             closely_dirs.add(self.additions[1][cont_region][region][1])
+                        #         if current_direction.name in closely_dirs:
+                        #             if stright[1]:
+                        #                 counter = 0
+                        #             else:
+                        #                 counter += 2 # +2 if rotate to closely to goal region
+                        #     else:
+                        #         if current_direction.name == goal_dir:
+                        #             counter += 2 # +2 if in closely reg and rotate to future_reg
+                        #         elif not stright[1]:
+                        #             if self.cell_closer(cell_coords_new['cell-4'],cell_coords_new[stright[0].name], 'agent'):
+                        #                 counter+=1
+                        #
+                        # if self.linear_cell(cell_coords_new['cell-4'],cell_coords_new[stright[0].name], 'agent'):
+                        #     if not stright[1]:
+                        #         counter +=2 # +2 if agent go back to the stright goal way #TODO rework when go from far
 
                     else:
                         if self.clarification_lv <= self.goal_state['cl_lv']:
@@ -1350,6 +1379,9 @@ class MapSearch():
         new_x_y = deepcopy(self.additions[0][iteration])
         new_x_y['objects']['agent']['x'] = (cell_coords[2] - cell_coords[0]) // 2 + cell_coords[0]
         new_x_y['objects']['agent']['y'] = (cell_coords[3] - cell_coords[1]) // 2 + cell_coords[1]
+        if script.sign.name == 'rotate':
+            new_x_y['agent-orientation'] = direction.name
+
         # for pick-up script
         if holding:
             block_name = [sign.name for sign in holding.get_signs() if 'block' in sign.name][0]
@@ -1664,14 +1696,18 @@ class MapSearch():
             used_roles = []
         return merged_chains
 
-    def __get_tactical(self, counter, script, cell_coords, new_x_y):
-
+    def __get_tactical(self, counter, script, cell_coords, new_x_y, active_pm):
         new_cell = cell_coords['cell-4']
         size = new_cell[2] - new_cell[0], new_cell[3] - new_cell[1]
         old_orientation = self.additions[0][max(self.additions[0].keys())]['agent-orientation']
         new_orientation = new_x_y['agent-orientation']
 
-        agent_old = self.additions[0][max(self.additions[0].keys())]['objects']['agent']
+        agent_old = deepcopy(new_x_y['objects']['agent'])
+        if script.sign.name == 'move':
+            old_cell = active_pm.sign.images[1].spread_down_activity_view(1)['cell-4']
+            ag_c = old_cell[0] + ((old_cell[2]-old_cell[0])/2), old_cell[1] + ((old_cell[3]-old_cell[1])/2)
+            agent_old['x'] = ag_c[0]
+            agent_old['y'] = ag_c[1]
         agent_new = new_x_y['objects']['agent']
 
         start = {'agent-orientation': old_orientation}
@@ -1696,12 +1732,35 @@ class MapSearch():
             path += part+'/'
 
 
-        file_name = path + 'requests'+'/request_' + script.sign.name + '_' + str(counter)+ '.json'
+        request_path = path + 'requests'+'/request_' + script.sign.name + '_' + str(counter)+ '.json'
 
-        with open(file_name, 'w') as outfile:
+        with open(request_path, 'w') as outfile:
             json.dump(new_request, outfile)
 
         #TODO Here is a server
+        exepath = '/'
+        for part in self.task_file.split('/')[1:-4]:
+            exepath += part+'/'
+        exepath+= 'ASearch/AStar-JPS-ThetaStar'
+
+        #args = '"' + exepath+'AStar-JPS-ThetaStar" ' + '"'+request_path+'"'
+        #subprocess.call(args, shell=True)
+
+        cmd = [exepath, request_path]
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = p.communicate()
+        if p.returncode != 0:
+            logging.info(stderr)
+            logging.info(p.returncode)
+            p2 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if p2.returncode != 0:
+                raise Exception('Can not access the Astar search')
+            else:
+                subprocess.Popen.kill(p2)
+
+        else:
+            subprocess.Popen.kill(p)
+
         response_path = path + 'responses'+'/result_' + script.sign.name + '_' + str(counter)+ '.json'
         with open(response_path) as data_file1:
             tactical_response = json.load(data_file1)

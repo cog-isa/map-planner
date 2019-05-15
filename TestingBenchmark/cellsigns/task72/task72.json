@@ -28,7 +28,7 @@
                         "effect": []
                     }
                 },
-                "agent-orientation": "below",
+                "agent-orientation": "below-right",
              "objects": {
                     "agent": {
                         "r": 10,
