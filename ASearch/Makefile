@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/gleb/PycharmProjects/map-planner/src/ASearch
+CMAKE_SOURCE_DIR = /home/gleb/PycharmProjects/map-planner/ASearch
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/gleb/PycharmProjects/map-planner/src/ASearch
+CMAKE_BINARY_DIR = /home/gleb/PycharmProjects/map-planner/ASearch
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/gleb/PycharmProjects/map-planner/src/ASearch/CMakeFiles /home/gleb/PycharmProjects/map-planner/src/ASearch/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gleb/PycharmProjects/map-planner/ASearch/CMakeFiles /home/gleb/PycharmProjects/map-planner/ASearch/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/gleb/PycharmProjects/map-planner/src/ASearch/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gleb/PycharmProjects/map-planner/ASearch/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

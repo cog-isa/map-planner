@@ -24,11 +24,35 @@ bool ISearch::stopCriterion()
 
 SearchResult ISearch::startSearch(ILogger *Logger, const JSON_Map &map, const EnvironmentOptions &options)
 {
-    if(map.lineOfSight(map.start_i, map.start_j, map.cur_goal_i, map.cur_goal_j))
-        sresult.straight_line = true;
+    if(map.start_i != map.cur_goal_i || map.start_j != map.cur_goal_j)
+    {
+        if(map.lineOfSight(map.start_i, map.start_j, map.cur_goal_i, map.cur_goal_j))
+            sresult.straight_line = true;
+        else
+            sresult.straight_line = false;
+    }
     else
+    {
         sresult.straight_line = false;
-
+        if(map.goal_direction == 1  && map.CellOnGrid(map.start_i-1, map.start_j) && map.CellIsTraversable(map.start_i-1, map.start_j))
+            sresult.straight_line = true;
+        else if(map.goal_direction == 2  && map.CellOnGrid(map.start_i-1, map.start_j+1) && map.CellIsTraversable(map.start_i-1, map.start_j+1))
+            sresult.straight_line = true;
+        else if(map.goal_direction == 3  && map.CellOnGrid(map.start_i, map.start_j+1) && map.CellIsTraversable(map.start_i, map.start_j+1))
+            sresult.straight_line = true;
+        else if(map.goal_direction == 4  && map.CellOnGrid(map.start_i+1, map.start_j+1) && map.CellIsTraversable(map.start_i+1, map.start_j+1))
+            sresult.straight_line = true;
+        else if(map.goal_direction == 5  && map.CellOnGrid(map.start_i+1, map.start_j) && map.CellIsTraversable(map.start_i+1, map.start_j))
+            sresult.straight_line = true;
+        else if(map.goal_direction == 6  && map.CellOnGrid(map.start_i+1, map.start_j-1) && map.CellIsTraversable(map.start_i+1, map.start_j-1))
+            sresult.straight_line = true;
+        else if(map.goal_direction == 7  && map.CellOnGrid(map.start_i, map.start_j-1) && map.CellIsTraversable(map.start_i, map.start_j-1))
+            sresult.straight_line = true;
+        else if(map.goal_direction == 8  && map.CellOnGrid(map.start_i-1, map.start_j-1) && map.CellIsTraversable(map.start_i-1, map.start_j-1))
+            sresult.straight_line = true;
+        else
+            std::cout<<"WRONG DIRECTION OF CURRENT ACTION!\n";
+    }
     if(map.lineOfSight(map.start_i, map.start_j, map.goal_i, map.goal_j))
     {
         sresult.lu_i = map.goal_i*map.cellsize;

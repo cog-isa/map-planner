@@ -37,6 +37,7 @@ public:
     int     start_i, start_j;
     int     goal_i, goal_j;
     int     cur_goal_i, cur_goal_j;
+    int     goal_direction;
     int     cellsize;
     std::vector<obstacle> obstacles;
     std::vector<std::vector<int>> grid;

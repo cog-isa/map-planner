@@ -153,7 +153,7 @@ class MapSearch():
 
         logging.info("len of curent plan is: {0}. Len of candidates: {1}".format(len(current_plan), len(candidates)))
 
-        for counter, name, script, ag_mask in candidates:
+        for counter, name, script, ag_mask, _ in candidates:
             logging.debug('\tChoose {0}: {1} -> {2}'.format(counter, name, script))
             plan = copy(current_plan)
 
@@ -1020,6 +1020,7 @@ class MapSearch():
                 cell_location, near_loc, region_map, current_direction = self._state_prediction(active_pm, script, agent, iteration)
                 old_cl_lv = self.clarification_lv
                 counter = 0
+                path = 0
 
                 #####################################################TACTICAL_LEVEL_CALL######################
                 if not 'task' in script.sign.name:
@@ -1032,7 +1033,14 @@ class MapSearch():
                         logging.info('This move does not allowed by tactical response')
                         continue
                     else:
-                        counter+=4
+                        str_c = cell_coords_new[stright[0].name]
+                        strcell_coord = str_c[0] + ((str_c[2] - str_c[0]) // 2), str_c[1] + (
+                                (str_c[3] - str_c[1]) // 2)
+                        t_c = tactical_response['target-cell']
+                        targ_coord = t_c[0] + ((t_c[2] - t_c[0]) // 2), t_c[1] + ((t_c[3] - t_c[1]) // 2)
+                        path = math.sqrt(
+                            (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
+                        counter+=2
                             ######################################################END OF CALL#############################
 
 
@@ -1083,6 +1091,8 @@ class MapSearch():
                                 counter += 1 # +1
                                 if prev_act == 'rotate':
                                     counter+=4 # was +2
+                                if prev_act is None:
+                                    counter+=1
                         # for pick-up and put-down actions
                         elif self.difference(active_pm, estimation)[0]:
                             old = self.difference(active_pm, estimation)[1]
@@ -1112,6 +1122,7 @@ class MapSearch():
 
                                 if a > b:
                                     counter += 3
+                                    path = b
                         ################################################CWM################################################
                         # else:
                         #     # check closely to goal region regions
@@ -1175,7 +1186,7 @@ class MapSearch():
 
                         if 'task' in script.sign.name and not 'sub' in script.sign.name:
                             self.clarification_lv = old_cl_lv
-                    heuristic.append((counter, script.sign.name, script, agent))
+                    heuristic.append((counter, script.sign.name, script, agent, path))
         elif self.logic == 'classic':
             for agent, script in scripts:
                 estimation = self._time_shift_forward(active_pm, script)
@@ -1192,7 +1203,12 @@ class MapSearch():
                     heuristic.append((counter, script.sign.name, script, agent))
         if heuristic:
             best_heuristics = max(heuristic, key=lambda x: x[0])
-            return list(filter(lambda x: x[0] == best_heuristics[0], heuristic))
+            heus = list(filter(lambda x: x[0] == best_heuristics[0], heuristic))
+            if self.logic == 'spatial':
+                pl = min([el[-1] for el in heus])
+                if pl:
+                    heus = list(filter(lambda x: x[-1] == pl, heus))
+            return heus
         else:
             return None
 
@@ -1288,7 +1304,7 @@ class MapSearch():
                 with open(file) as data:
                     jfile = json.load(data)
                     if 'task-name' in jfile:
-                        if jfile['task-name'] in script.sign.name:
+                        if script.sign.name.endswith(jfile['task-name']):
                             history_benchmark = jfile
                             break
                         else:

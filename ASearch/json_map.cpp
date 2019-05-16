@@ -62,7 +62,25 @@ bool JSON_Map::getMap(const char *FileName)
     goal_i = j["global-finish"]["objects"]["agent"]["y"];
     std::cout<<"h\n";
     goal_i/=cellsize;
-
+    std::string direction = j["current-action"]["finish"]["agent-orientation"];
+    if(direction=="above")
+        goal_direction = 1;
+    else if(direction=="above-right")
+        goal_direction = 2;
+    else if(direction=="right")
+        goal_direction = 3;
+    else if(direction=="below-right")
+        goal_direction = 4;
+    else if(direction=="below")
+        goal_direction = 5;
+    else if(direction=="below-left")
+        goal_direction = 6;
+    else if(direction=="left")
+        goal_direction = 7;
+    else if(direction=="above-left")
+        goal_direction = 8;
+    else
+        goal_direction = 0;
     createGrid();
     return true;
 }
