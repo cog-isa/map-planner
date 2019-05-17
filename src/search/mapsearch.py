@@ -1040,7 +1040,6 @@ class MapSearch():
                         targ_coord = t_c[0] + ((t_c[2] - t_c[0]) // 2), t_c[1] + ((t_c[3] - t_c[1]) // 2)
                         path = math.sqrt(
                             (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
-                        counter+=2
                             ######################################################END OF CALL#############################
 
 
@@ -1087,6 +1086,7 @@ class MapSearch():
                         #         counter += 2 # +2 if current dir is the same to goal dir
                         # for move action
                         if cell_coords_new['cell-4'] != active_pm.sign.images[1].spread_down_activity_view(1)['cell-4']:
+                            counter += 2
                             if not stright[1]:
                                 counter += 1 # +1
                                 if prev_act == 'rotate':

@@ -1,5 +1,5 @@
 {
-  "task-name": "spatial simple task 71",
+  "task-name": "spatial simple task 2",
   "agents":
         ["I"],
   "map": {
@@ -8,7 +8,10 @@
               [-20, -20, -20, 749],
               [-20, 749, 749, 749],
               [749, -20, 749, 749],
-              [165, -20, 495, 243],
+              [165, -20, 331, 81],
+              [165, 165, 410, 250],
+              [410, 51, 490, 250],
+              [490, 165, 500, 250],
               [243, 500, 565, 770]
             ],
             "map_size": [
@@ -27,7 +30,7 @@
                         "effect": []
                     }
                 },
-                "agent-orientation": "below-right",
+                "agent-orientation": "right",
              "objects": {
                     "agent": {
                         "r": 10,
@@ -46,12 +49,12 @@
                         "effect": []
                     }
                 },
-                    "agent-orientation": "below",
+                    "agent-orientation": "right",
                     "objects": {
                         "agent": {
                             "r": 10,
-                            "x": 710.0,
-                            "y": 631.0
+                            "x": 631.0,
+                            "y": 121.0
                         }
                     }
             }
