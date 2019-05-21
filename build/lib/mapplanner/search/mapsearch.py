@@ -1040,6 +1040,26 @@ class MapSearch():
                         targ_coord = t_c[0] + ((t_c[2] - t_c[0]) // 2), t_c[1] + ((t_c[3] - t_c[1]) // 2)
                         path = math.sqrt(
                             (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
+                elif script.sign.name == 'rotate':
+                    tactical_response = self.__get_tactical(iteration, script, cell_coords_new, new_x_y, active_pm)
+                    if not stright[1]:
+                        cur_c = cell_coords_new['cell-4']
+                        cur_coords = cur_c[0] + ((cur_c[2] - cur_c[0]) // 2), cur_c[1] + (
+                                    (cur_c[3] - cur_c[1]) // 2)
+                        str_c = cell_coords_new[stright[0].name]
+                        strcell_coord = str_c[0] + ((str_c[2] - str_c[0]) // 2), str_c[1] + (
+                                    (str_c[3] - str_c[1]) // 2)
+                        t_c = tactical_response['target-cell']
+                        targ_coord = t_c[0] + ((t_c[2] - t_c[0]) // 2), t_c[1] + ((t_c[3] - t_c[1]) // 2)
+
+                        a = math.sqrt(
+                            (targ_coord[1] - cur_coords[1]) ** 2 + (targ_coord[0] - cur_coords[0]) ** 2)
+                        b = math.sqrt(
+                            (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
+
+                        if a > b:
+                            counter += 3
+                            path = b
                             ######################################################END OF CALL#############################
 
 
@@ -1103,26 +1123,7 @@ class MapSearch():
                                 else:
                                     counter+=3
                         ################################################CWM################################################
-                        elif script.sign.name == 'rotate':
-                            tactical_response = self.__get_tactical(iteration, script, cell_coords_new, new_x_y, active_pm)
-                            if not stright[1]:
-                                cur_c = cell_coords_new['cell-4']
-                                cur_coords = cur_c[0] + ((cur_c[2] - cur_c[0]) // 2), cur_c[1] + (
-                                            (cur_c[3] - cur_c[1]) // 2)
-                                str_c = cell_coords_new[stright[0].name]
-                                strcell_coord = str_c[0] + ((str_c[2] - str_c[0]) // 2), str_c[1] + (
-                                            (str_c[3] - str_c[1]) // 2)
-                                t_c = tactical_response['target-cell']
-                                targ_coord = t_c[0] + ((t_c[2] - t_c[0]) // 2), t_c[1] + ((t_c[3] - t_c[1]) // 2)
 
-                                a = math.sqrt(
-                                    (targ_coord[1] - cur_coords[1]) ** 2 + (targ_coord[0] - cur_coords[0]) ** 2)
-                                b = math.sqrt(
-                                    (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
-
-                                if a > b:
-                                    counter += 3
-                                    path = b
                         ################################################CWM################################################
                         # else:
                         #     # check closely to goal region regions
@@ -1148,7 +1149,7 @@ class MapSearch():
                         #     if not stright[1]:
                         #         counter +=2 # +2 if agent go back to the stright goal way #TODO rework when go from far
 
-                    else:
+                    elif path == 0:
                         if self.clarification_lv <= self.goal_state['cl_lv']:
                             est_events = [event for event in estimation.cause if "I" not in event.get_signs_names()]
                             ce_events = [event for event in self.check_pm.cause if "I" not in event.get_signs_names()]

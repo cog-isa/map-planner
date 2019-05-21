@@ -38,7 +38,7 @@ class MapSearch():
             self.check_map = task.goal_map.meanings[1]
         else:
             self.check_map = None
-        self.MAX_ITERATION = 16
+        self.MAX_ITERATION = 20
         logging.debug('Start: {0}'.format(self.check_pm.longstr()))
         logging.debug('Finish: {0}'.format(self.active_pm.longstr()))
 
@@ -1020,29 +1020,46 @@ class MapSearch():
                 cell_location, near_loc, region_map, current_direction = self._state_prediction(active_pm, script, agent, iteration)
                 old_cl_lv = self.clarification_lv
                 counter = 0
-                path = 0
+                path = -1
 
                 #####################################################TACTICAL_LEVEL_CALL######################
                 if not 'task' in script.sign.name:
                     stright = self.get_stright(active_pm, current_direction)
                 else:
                     stright = self.get_stright(estimation, current_direction)
+                tactical_response = self.__get_tactical(iteration, script, cell_coords_new, new_x_y, active_pm)
+                t_c = tactical_response['target-cell']
+                # Coords of the local goal cell
+                targ_coord = t_c[0] + ((t_c[2] - t_c[0]) // 2), t_c[1] + ((t_c[3] - t_c[1]) // 2)
+                # Coords of the current cell
+                cur_c = active_pm.sign.images[1].spread_down_activity_view(1)['cell-4']
+                cur_coords = cur_c[0] + ((cur_c[2] - cur_c[0]) // 2), cur_c[1] + (
+                        (cur_c[3] - cur_c[1]) // 2)
+                # Coords of the stright cell
+                if not stright[1]:
+                    str_c = cell_coords_new[stright[0].name]
+                    strcell_coord = str_c[0] + ((str_c[2] - str_c[0]) // 2), str_c[1] + (
+                            (str_c[3] - str_c[1]) // 2)
+                else:
+                    strcell_coord = 0, 0
                 if script.sign.name == 'move':
-                    tactical_response = self.__get_tactical(iteration, script, cell_coords_new, new_x_y, active_pm)
                     if not tactical_response['doable']:
                         logging.info('This move does not allowed by tactical response')
                         continue
                     else:
-                        str_c = cell_coords_new[stright[0].name]
-                        strcell_coord = str_c[0] + ((str_c[2] - str_c[0]) // 2), str_c[1] + (
-                                (str_c[3] - str_c[1]) // 2)
-                        t_c = tactical_response['target-cell']
-                        targ_coord = t_c[0] + ((t_c[2] - t_c[0]) // 2), t_c[1] + ((t_c[3] - t_c[1]) // 2)
                         path = math.sqrt(
                             (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
+                elif script.sign.name == 'rotate':
+                    if not stright[1]:
+                        a = math.sqrt(
+                            (targ_coord[1] - cur_coords[1]) ** 2 + (targ_coord[0] - cur_coords[0]) ** 2)
+                        b = math.sqrt(
+                            (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
+
+                        if a > b:
+                            counter += 3
+                            path = b
                             ######################################################END OF CALL#############################
-
-
 
                 if 'task' in script.sign.name and not 'sub' in script.sign.name:
                     self.clarification_lv = self.goal_state['cl_lv']
@@ -1103,26 +1120,7 @@ class MapSearch():
                                 else:
                                     counter+=3
                         ################################################CWM################################################
-                        elif script.sign.name == 'rotate':
-                            tactical_response = self.__get_tactical(iteration, script, cell_coords_new, new_x_y, active_pm)
-                            if not stright[1]:
-                                cur_c = cell_coords_new['cell-4']
-                                cur_coords = cur_c[0] + ((cur_c[2] - cur_c[0]) // 2), cur_c[1] + (
-                                            (cur_c[3] - cur_c[1]) // 2)
-                                str_c = cell_coords_new[stright[0].name]
-                                strcell_coord = str_c[0] + ((str_c[2] - str_c[0]) // 2), str_c[1] + (
-                                            (str_c[3] - str_c[1]) // 2)
-                                t_c = tactical_response['target-cell']
-                                targ_coord = t_c[0] + ((t_c[2] - t_c[0]) // 2), t_c[1] + ((t_c[3] - t_c[1]) // 2)
 
-                                a = math.sqrt(
-                                    (targ_coord[1] - cur_coords[1]) ** 2 + (targ_coord[0] - cur_coords[0]) ** 2)
-                                b = math.sqrt(
-                                    (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
-
-                                if a > b:
-                                    counter += 3
-                                    path = b
                         ################################################CWM################################################
                         # else:
                         #     # check closely to goal region regions
@@ -1149,37 +1147,55 @@ class MapSearch():
                         #         counter +=2 # +2 if agent go back to the stright goal way #TODO rework when go from far
 
                     else:
-                        if self.clarification_lv <= self.goal_state['cl_lv']:
-                            est_events = [event for event in estimation.cause if "I" not in event.get_signs_names()]
-                            ce_events = [event for event in self.check_pm.cause if "I" not in event.get_signs_names()]
-                            for event in est_events:
-                                for ce in ce_events:
-                                    if event.resonate('meaning', ce):
-                                        counter += 1
-                                        break
-                        elif self.clarification_lv > self.goal_state['cl_lv']:
-                            if stright[1] is None:
-                            # choose direction closely to  goal direction
-                                closely_to_stright = ['cell'+el[-2:] for el,desc in
-                                                  self.additions[1]['region'+stright[0].name[-2:]].items() if desc[0] == 'closely']
-                                closely_to_stright.remove('cell-4')
-                                for cell in closely_to_stright:
-                                    if 0 not in self.additions[2][iteration][cell]:
-                                        break
-                                else:
-                                    counter+=3
-                                directions = []
-                                for reg, tup in self.additions[1]['region-4'].items():
-                                    if tup[1] == self.goal_state['agent-orientation']:
-                                        regs_to_goal = [reg for reg, tup2 in self.additions[1][reg].items() if tup2[0] == 'closely']
-                                        directions = [tup[1] for reg, tup in self.additions[1]['region-4'].items() if reg in regs_to_goal]
-                                        break
-                                if current_direction.name in directions:
-                                    counter+=2
-                                if prev_act == 'rotate' and script.sign.name == 'move':
-                                    counter+=2
-                                elif prev_act == 'rotate' and script.sign.name == 'rotate':
-                                    counter = 0
+                        prev_mid = prev_state[-1][0] + ((prev_state[-1][2] - prev_state[-1][0]) // 2), prev_state[-1][1] + (
+                                    (prev_state[-1][3] - prev_state[-1][1]) // 2)
+
+                        a = math.sqrt(
+                            (targ_coord[1] - prev_mid[1]) ** 2 + (targ_coord[0] - prev_mid[0]) ** 2)
+
+
+                        if a < 5:
+                            if self.clarification_lv <= self.goal_state['cl_lv']:
+                                est_events = [event for event in estimation.cause if "I" not in event.get_signs_names()]
+                                ce_events = [event for event in self.check_pm.cause if "I" not in event.get_signs_names()]
+                                for event in est_events:
+                                    for ce in ce_events:
+                                        if event.resonate('meaning', ce):
+                                            counter += 1
+                                            break
+                            # elif self.clarification_lv > self.goal_state['cl_lv']:
+                            #     if stright[1] is None:
+                            #     # choose direction closely to  goal direction
+                            #         closely_to_stright = ['cell'+el[-2:] for el,desc in
+                            #                           self.additions[1]['region'+stright[0].name[-2:]].items() if desc[0] == 'closely']
+                            #         closely_to_stright.remove('cell-4')
+                            #         for cell in closely_to_stright:
+                            #             if 0 not in self.additions[2][iteration][cell]:
+                            #                 break
+                            #         else:
+                            #             counter+=3
+                            #         directions = []
+                            #         for reg, tup in self.additions[1]['region-4'].items():
+                            #             if tup[1] == self.goal_state['agent-orientation']:
+                            #                 regs_to_goal = [reg for reg, tup2 in self.additions[1][reg].items() if tup2[0] == 'closely']
+                            #                 directions = [tup[1] for reg, tup in self.additions[1]['region-4'].items() if reg in regs_to_goal]
+                            #                 break
+                            #         if current_direction.name in directions:
+                            #             counter+=2
+                            #         if prev_act == 'rotate' and script.sign.name == 'move':
+                            #             counter+=2
+                            #         elif prev_act == 'rotate' and script.sign.name == 'rotate':
+                            #             counter = 0
+                        elif not stright[1]:
+
+                            a = math.sqrt(
+                                (targ_coord[1] - cur_coords[1]) ** 2 + (targ_coord[0] - cur_coords[0]) ** 2)
+                            b = math.sqrt(
+                                (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
+
+                            if a >= b:
+                                counter += 4
+                                path = b
 
                         if 'task' in script.sign.name:
                             counter +=10
@@ -1202,12 +1218,11 @@ class MapSearch():
                                 break
                     heuristic.append((counter, script.sign.name, script, agent))
         if heuristic:
-            best_heuristics = max(heuristic, key=lambda x: x[0])
-            heus = list(filter(lambda x: x[0] == best_heuristics[0], heuristic))
+            best_heuristics = max([heu[0] for heu in heuristic if heu[0] >=0])
+            heus = list(filter(lambda x: x[0] == best_heuristics, heuristic))
             if self.logic == 'spatial':
                 pl = min([el[-1] for el in heus])
-                if pl:
-                    heus = list(filter(lambda x: x[-1] == pl, heus))
+                heus = list(filter(lambda x: x[-1] == pl, heus))
             return heus
         else:
             return None
@@ -1559,7 +1574,7 @@ class MapSearch():
                     region = reg
                     break
             self.additions[2][iteration+1] = cell_map
-            print("act: {0}, cell: {1}, dir: {2}, reg: {3}".format(script.sign.name, cell_coords_new['cell-4'],
+            print("{0}. act: {1}, cell: {2}, dir: {3}, reg: {4}".format(str(iteration), script.sign.name, cell_coords_new['cell-4'],
                                                                    direction.name, region))
             return estimation, cell_coords_new, new_x_y, cell_location, near_loc, region_map, direction.name
 

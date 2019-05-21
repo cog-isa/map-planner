@@ -49,11 +49,11 @@
                         "effect": []
                     }
                 },
-                    "agent-orientation": "right",
+                    "agent-orientation": "above",
                     "objects": {
                         "agent": {
                             "r": 10,
-                            "x": 631.0,
+                            "x": 600.0,
                             "y": 121.0
                         }
                     }
