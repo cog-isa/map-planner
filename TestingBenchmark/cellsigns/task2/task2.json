@@ -1,5 +1,5 @@
 {
-  "task-name": "spatial simple task 2",
+  "task-name": "spatial cellsigns task 2",
   "agents":
         ["I"],
   "map": {
@@ -49,11 +49,11 @@
                         "effect": []
                     }
                 },
-                    "agent-orientation": "above",
+                    "agent-orientation": "right",
                     "objects": {
                         "agent": {
                             "r": 10,
-                            "x": 600.0,
+                            "x": 607.0,
                             "y": 121.0
                         }
                     }

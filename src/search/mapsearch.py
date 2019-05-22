@@ -1035,13 +1035,13 @@ class MapSearch():
                 cur_c = active_pm.sign.images[1].spread_down_activity_view(1)['cell-4']
                 cur_coords = cur_c[0] + ((cur_c[2] - cur_c[0]) // 2), cur_c[1] + (
                         (cur_c[3] - cur_c[1]) // 2)
-                # Coords of the stright cell
+                # Coords of the stright cell. If there are empty space.
                 if not stright[1]:
-                    str_c = cell_coords_new[stright[0].name]
+                    str_c = active_pm.sign.images[1].spread_down_activity_view(1)[stright[0].name]
                     strcell_coord = str_c[0] + ((str_c[2] - str_c[0]) // 2), str_c[1] + (
                             (str_c[3] - str_c[1]) // 2)
                 else:
-                    strcell_coord = 0, 0
+                    strcell_coord = None
                 if script.sign.name == 'move':
                     if not tactical_response['doable']:
                         logging.info('This move does not allowed by tactical response')
@@ -1101,14 +1101,14 @@ class MapSearch():
                         #         counter = 0
                         #     else:
                         #         counter += 2 # +2 if current dir is the same to goal dir
+
                         # for move action
                         if cell_coords_new['cell-4'] != active_pm.sign.images[1].spread_down_activity_view(1)['cell-4']:
-                            counter += 2
                             if not stright[1]:
-                                counter += 1 # +1
+                                counter += 3
                                 if prev_act == 'rotate':
                                     counter+=4 # was +2
-                                if prev_act is None:
+                                elif prev_act is None:
                                     counter+=1
                         # for pick-up and put-down actions
                         elif self.difference(active_pm, estimation)[0]:
@@ -1119,9 +1119,6 @@ class MapSearch():
                                         break
                                 else:
                                     counter+=3
-                        ################################################CWM################################################
-
-                        ################################################CWM################################################
                         # else:
                         #     # check closely to goal region regions
                         #     closely_goal = [reg for reg, ratio in self.additions[1][goal_region.name].items() if
@@ -1146,57 +1143,64 @@ class MapSearch():
                         #     if not stright[1]:
                         #         counter +=2 # +2 if agent go back to the stright goal way #TODO rework when go from far
 
+                    ################################################CWM################################################
+
                     else:
-                        prev_mid = prev_state[-1][0] + ((prev_state[-1][2] - prev_state[-1][0]) // 2), prev_state[-1][1] + (
-                                    (prev_state[-1][3] - prev_state[-1][1]) // 2)
-
-                        a = math.sqrt(
-                            (targ_coord[1] - prev_mid[1]) ** 2 + (targ_coord[0] - prev_mid[0]) ** 2)
-
-
-                        if a < 5:
-                            if self.clarification_lv <= self.goal_state['cl_lv']:
-                                est_events = [event for event in estimation.cause if "I" not in event.get_signs_names()]
-                                ce_events = [event for event in self.check_pm.cause if "I" not in event.get_signs_names()]
-                                for event in est_events:
-                                    for ce in ce_events:
-                                        if event.resonate('meaning', ce):
-                                            counter += 1
-                                            break
-                            # elif self.clarification_lv > self.goal_state['cl_lv']:
-                            #     if stright[1] is None:
-                            #     # choose direction closely to  goal direction
-                            #         closely_to_stright = ['cell'+el[-2:] for el,desc in
-                            #                           self.additions[1]['region'+stright[0].name[-2:]].items() if desc[0] == 'closely']
-                            #         closely_to_stright.remove('cell-4')
-                            #         for cell in closely_to_stright:
-                            #             if 0 not in self.additions[2][iteration][cell]:
-                            #                 break
-                            #         else:
-                            #             counter+=3
-                            #         directions = []
-                            #         for reg, tup in self.additions[1]['region-4'].items():
-                            #             if tup[1] == self.goal_state['agent-orientation']:
-                            #                 regs_to_goal = [reg for reg, tup2 in self.additions[1][reg].items() if tup2[0] == 'closely']
-                            #                 directions = [tup[1] for reg, tup in self.additions[1]['region-4'].items() if reg in regs_to_goal]
-                            #                 break
-                            #         if current_direction.name in directions:
-                            #             counter+=2
-                            #         if prev_act == 'rotate' and script.sign.name == 'move':
-                            #             counter+=2
-                            #         elif prev_act == 'rotate' and script.sign.name == 'rotate':
-                            #             counter = 0
-                        elif not stright[1]:
+                        if prev_state:
+                            prev_mid = prev_state[-1][0] + ((prev_state[-1][2] - prev_state[-1][0]) // 2), prev_state[-1][1] + (
+                                        (prev_state[-1][3] - prev_state[-1][1]) // 2)
+                            goal_coords = self.goal_state['objects']['agent']['x'], self.goal_state['objects']['agent']['y']
 
                             a = math.sqrt(
-                                (targ_coord[1] - cur_coords[1]) ** 2 + (targ_coord[0] - cur_coords[0]) ** 2)
-                            b = math.sqrt(
-                                (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
+                                (goal_coords[1] - prev_mid[1]) ** 2 + (goal_coords[0] - prev_mid[0]) ** 2)
 
-                            if a >= b:
-                                counter += 4
-                                path = b
+                            # if we are already in the goal cell
+                            if a < 10:
+                                if self.clarification_lv <= self.goal_state['cl_lv']:
+                                    est_events = [event for event in estimation.cause if "I" not in event.get_signs_names()]
+                                    ce_events = [event for event in self.check_pm.cause if "I" not in event.get_signs_names()]
+                                    for event in est_events:
+                                        for ce in ce_events:
+                                            if event.resonate('meaning', ce):
+                                                counter += 1
+                                                break
+                                # elif self.clarification_lv > self.goal_state['cl_lv']:
+                                #     if stright[1] is None:
+                                #     # choose direction closely to  goal direction
+                                #         closely_to_stright = ['cell'+el[-2:] for el,desc in
+                                #                           self.additions[1]['region'+stright[0].name[-2:]].items() if desc[0] == 'closely']
+                                #         closely_to_stright.remove('cell-4')
+                                #         for cell in closely_to_stright:
+                                #             if 0 not in self.additions[2][iteration][cell]:
+                                #                 break
+                                #         else:
+                                #             counter+=3
+                                #         directions = []
+                                #         for reg, tup in self.additions[1]['region-4'].items():
+                                #             if tup[1] == self.goal_state['agent-orientation']:
+                                #                 regs_to_goal = [reg for reg, tup2 in self.additions[1][reg].items() if tup2[0] == 'closely']
+                                #                 directions = [tup[1] for reg, tup in self.additions[1]['region-4'].items() if reg in regs_to_goal]
+                                #                 break
+                                #         if current_direction.name in directions:
+                                #             counter+=2
+                                #         if prev_act == 'rotate' and script.sign.name == 'move':
+                                #             counter+=2
+                                #         elif prev_act == 'rotate' and script.sign.name == 'rotate':
+                                #             counter = 0
+                            #
+                            elif not stright[1]:
+                                if script.sign.name == 'move':
+                                    counter+=2
+                                a = math.sqrt(
+                                    (targ_coord[1] - cur_coords[1]) ** 2 + (targ_coord[0] - cur_coords[0]) ** 2)
+                                b = math.sqrt(
+                                    (targ_coord[1] - strcell_coord[1]) ** 2 + (targ_coord[0] - strcell_coord[0]) ** 2)
 
+                                if a >= b:
+                                    counter += 4
+                                    path = b
+
+                        ################################################CWM################################################
                         if 'task' in script.sign.name:
                             counter +=10
 
@@ -1284,17 +1288,17 @@ class MapSearch():
                 extfiles.extend(self.recursive_files(os.path.join(root, sub), ext))
             return extfiles
 
-    def scale_history_situation(self, history_benchmark, iteration):
+    def scale_history_situation(self, history_benchmark, iteration, start, finish):
         new_objects = {}
 
-        for stobj, scoords in history_benchmark['global-start']['objects'].items():
+        for stobj, scoords in history_benchmark[start]['objects'].items():
             for curobj, curcoords in self.additions[0][iteration]['objects'].items():
                 if stobj == curobj:
                     koef_x = curcoords['x'] - scoords['x']
                     koef_y = curcoords['y'] - scoords['y']
-                    new_objects[curobj] = {'x': history_benchmark['global-finish']['objects'][stobj]['x']+koef_x,
-                                           'y': history_benchmark['global-finish']['objects'][stobj]['y']+koef_y,
-                                           'r': history_benchmark['global-finish']['objects'][stobj]['r']}
+                    new_objects[curobj] = {'x': history_benchmark[finish]['objects'][stobj]['x']+koef_x,
+                                           'y': history_benchmark[finish]['objects'][stobj]['y']+koef_y,
+                                           'r': history_benchmark[finish]['objects'][stobj]['r']}
 
         return {'objects': new_objects}, {'map_size': self.additions[3]['map_size'], 'wall': self.additions[3]['wall']}
 
@@ -1327,7 +1331,17 @@ class MapSearch():
                     else:
                         continue
 
-        parsed, static = self.scale_history_situation(history_benchmark, iteration)
+        start = 'global-start'
+        finish = 'global-finish'
+
+        try:
+            a = history_benchmark[start]
+        except KeyError:
+            start = 'start'
+            finish = 'finish'
+
+
+        parsed, static = self.scale_history_situation(history_benchmark, iteration, start, finish)
 
         region_map, cell_map, cell_location, near_loc, cell_coords, _, _ = signs_markup(parsed, static, 'agent')
         events = []
@@ -1337,15 +1351,15 @@ class MapSearch():
                     if con.out_sign.name == "I":
                         events.append(ev)
 
-        orientation = history_benchmark['global-finish']['agent-orientation']
+        orientation = history_benchmark[finish]['agent-orientation']
         direction = self.world_model[orientation]
 
-        history_benchmark['global-finish']['objects'].update(parsed['objects'])
-        new_x_y = history_benchmark['global-finish']
+        history_benchmark[finish]['objects'].update(parsed['objects'])
+        new_x_y = history_benchmark[finish]
         new_x_y['map_size'] = self.additions[3]['map_size']
         # new_x_y['wall'] = self.additions[3]['wall']
 
-        agent_state = state_prediction(agent, history_benchmark['global-finish'])
+        agent_state = state_prediction(agent, history_benchmark[finish])
 
         sit_name = st.SIT_PREFIX + str(st.SIT_COUNTER)
         st.SIT_COUNTER+=1
