@@ -1,6 +1,7 @@
 import itertools
 from copy import copy
 
+
 class CausalMatrix:
     """
     Causal matrix - main structure in causal network defining causal and hierarchical relations
@@ -272,6 +273,39 @@ class CausalMatrix:
                             check_pm(pm)
         return active_chains
 
+    def spread_down_htn_activity_act(self, base, depth):
+        """
+        Spread activity down in hierarchy from the HTN
+        @param base: name of semantic net that activity spreads on
+        @param depth: recursive depth of spreading
+        @return: List of Causal Matrices on the lowest level
+        """
+
+        active_matrices = []
+
+        def check_pm(pm):
+            if not pm.is_empty() and not pm.is_causal():
+                matrices = pm.spread_down_htn_activity_act(base, depth - 1)
+                active_matrices.extend(matrices)
+            else:
+                active_matrices.append(pm)
+        if depth > 0:
+            if self.effect:
+                print("Can't get inner matrices from the matrixe: {0} -> {1}".format(self.sign.name, self.index))
+            for event in self.cause:
+                for connector in event.coincidences:
+                    if connector.out_index > 0:
+                        # connector.out_sign with index
+                        pm = connector.get_out_cm(base)
+                        check_pm(pm)
+                    else:
+                        pms = getattr(connector.out_sign, base + 's')
+                        for index, pm in pms.items():
+                            check_pm(pm)
+        return active_matrices
+
+
+
     def spread_down_activity_view(self, depth):
         """
         :param depth: depth of view search
@@ -293,8 +327,6 @@ class CausalMatrix:
                                     fviews.update(pm.spread_down_activity_view(depth-1))
         return fviews
 
-
-
     def get_iner(self, sign, base):
         iner = []
         for event in itertools.chain(self.cause, self.effect):
@@ -304,6 +336,7 @@ class CausalMatrix:
                         cm = getattr(connector.out_sign, base+'s')[connector.out_index]
                         iner.append(cm)
         return iner
+
 
 
 class Event:
@@ -337,17 +370,15 @@ class Event:
         self.coincidences.add(connector)
         getattr(connector.out_sign, 'add_out_' + base)(connector)
 
-    def resonate(self, base, event, check_order=True, logic = 'spatial'):
+    def resonate(self, base, event, check_order=True):
         if not len(self.coincidences) == len(event.coincidences):
-            if logic == 'classic':
-                return False
-            else:
-                if not len(self.coincidences) == 1 and not [con.out_sign.name for con in self.coincidences][0] in [con.out_sign.name for con in event.coincidences]:
-                    return False
+            return False
         for connector in self.coincidences:
             for conn in event.coincidences:
                 if connector.out_sign == conn.out_sign:
-                    if connector.get_out_cm(base).get_signs() == conn.get_out_cm(base).get_signs():
+                    cm = connector.get_out_cm(base)
+                    pm = conn.get_out_cm(base)
+                    if cm.get_signs() == pm.get_signs():
                         break
             else:
                 return False
@@ -586,12 +617,12 @@ class Sign:
             deleted = []
         for event in cm.cause:
             for connector in event.coincidences:
-                if (connector.out_sign, connector.out_index) not in deleted:
+                if (connector.out_sign, connector.out_index) not in deleted and connector.out_index !=0:
                     connector.out_sign.remove_significance(connector.get_out_cm('significance'), deleted)
                     deleted.append((connector.out_sign, connector.out_index))
         for event in cm.effect:
             for connector in event.coincidences:
-                if (connector.out_sign, connector.out_index) not in deleted:
+                if (connector.out_sign, connector.out_index) not in deleted and connector.out_index !=0:
                     connector.out_sign.remove_significance(connector.get_out_cm('significance'), deleted)
                     deleted.append((connector.out_sign, connector.out_index))
 
@@ -758,14 +789,6 @@ class Sign:
                     pms = actuator.in_sign.spread_up_activity_motor(base, depth-1)
                     actions |= pms
         return actions
-
-    def find_attribute(self):
-        attribute = []
-        for connector in self.out_significances:
-            if not connector.in_sign.name == "object":
-                attribute.append(connector.in_sign)
-        attribute = list(set(attribute))
-        return attribute
 
     def get_role(self, base = "significance"):
         sub_role = set()

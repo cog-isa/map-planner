@@ -1,27 +1,22 @@
-from mapplanner.mapplanner import MapPlanner
+from mapcore.mapplanner import MapPlanner
 
 from config_master import create_config, get_config
-import os
 import platform
+
 
 if __name__ == '__main__':
 
     config_path = ''
-    # benchmark = '/home/gleb/PycharmProjects/map-planner/TestingBenchmark/task_vertical_clar/task6.json'
-    # benchmark = '/home/gleb/PycharmProjects/map-planner/src/benchmarks/simple/blocks/task1.pddl'
 
     if platform.system() != 'Windows':
         delim = '/'
     else:
         delim = '\\'
-    benchmark = os.getcwd() + delim + 'TestingBenchmark' + delim + 'cellsigns'+ delim +'task4'+ delim+'task4.json'
-    # task_num if simple/blocks/task in other approaches -
-    # benchmark_type&task_num or path to benchmark
+
     if not config_path:
-        # path = create_config(benchmark = benchmark, refinement_lv='1')
-        path = create_config(benchmark=benchmark, LogicType='spatial', refinement_lv='1', delim=delim)
+        path = create_config(task_num = 1, delim=delim, backward = 'True', task_type = 'classic')
     else:
         path = config_path
     # after 1 time creating config simply send a path
     planner = MapPlanner(**get_config(path))
-    solution = planner.searcher()
+    solution = planner.search()

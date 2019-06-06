@@ -1,12 +1,12 @@
 *.log
 *.pyc
 .idea
+*.swm
 *.soln
 dist
 build
-multiMAP.eff-info
+__pychache__
+mapcore.egg-info
 env
-CMakeFiles
-cmake_install.cmake
-CMakeCache.txt
-AStar-*
+venv
+.DS_store

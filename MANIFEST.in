@@ -1,7 +1,5 @@
-include src/benchmarks/spatial/*.json
-include src/benchmarks/mapddl/blocksworld/*.pddl
+include src/benchmarks/hierarchical/*.hddl
 include src/benchmarks/simple/blocks/*.pddl
-include src/benchmarks/spatial/*.ini
-include src/benchmarks/mapddl/blocksworld/*.ini
+include src/benchmarks/hierarchical/*.ini
 include src/benchmarks/simple/blocks/*.ini
 

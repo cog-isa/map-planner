@@ -654,7 +654,6 @@ def parse_action_stmt(iter):
     eff = parse_effect_stmt(iter)
     return ActionStmt(name, agent, param, pre, eff)
 
-
 def parse_predicates_stmt(iter):
     """
     Parse a PredicatesStmt which is essentially a list of predicates preceded
