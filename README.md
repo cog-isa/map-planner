@@ -11,7 +11,7 @@ about a sign world model you can find in:
 2. [Behavior control as a function of consciousness. I. World model and goal setting.](Https://link.springer.com/article/10.1134/S1064230714040121)
 3. [Behavior Control as a Function of Consciousness. II. Synthesis of a Behavior Plan.](https://www.researchgate.net/publication/284156107_Behavior_Control_as_a_Function_of_Consciousness_II_Synthesis_of_a_Behavior_Plan)
 4. [Sign-based Approach to the Task of Role Distribution in the
-Coalition of Cognitive Agents.](proceedings.spiiras.nw.ru/index.php/sp/issue/view/186/69)
+Coalition of Cognitive Agents.](https://www.researchgate.net/publication/324146839_Sign-based_Approach_to_the_Task_of_Role_Distribution_in_the_Coalition_of_Cognitive_Agents)
 
 **MAPPLANNER** is an open source library that allows building a semiotic network 
 of characters based on the input data described in the common formats .pddl and .hddl. 
