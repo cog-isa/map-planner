@@ -15,14 +15,16 @@ logger = logging.getLogger("process-main")
 
 class MapPlanner():
     def __init__(self, **kwargs):
-        kwgs = kwargs['Settings']
-        self.agtype = kwgs['agtype']
-        self.agpath = kwgs['agpath']
-        self.TaskType = kwgs['tasktype']
-        self.domain, self.problem = self.find_domain(kwgs['path'], kwgs['task'])
-        self.refinement = eval(kwgs['refinement_lv'])
-        self.backward = eval(kwgs['backward'])
-        logger.info('MAP algorithm has started...')
+        if 'Settings' in kwargs.keys():
+            self.kwgs = kwargs['Settings']
+        else:
+            self.kwgs = kwargs
+        self.agpath = self.kwgs['agpath']
+        self.TaskType = self.kwgs['tasktype']
+        self.domain, self.problem = self.find_domain(self.kwgs['path'], self.kwgs['task'])
+        self.refinement = eval(self.kwgs['refinement_lv'])
+        self.backward = eval(self.kwgs['backward'])
+        logger.info('MAP algorithm start planning...')
 
     def search_upper(self, path, file):
         """
@@ -97,7 +99,7 @@ class MapPlanner():
 
         problem = self._parse(self.domain, self.problem)
         logger.info('Parsing was finished...')
-        manager = Manager(problem, self.agpath, self.agtype, backward=self.backward)
+        manager = Manager(problem, self.agpath, backward=self.backward)
         solution = manager.manage_agent()
         return solution
 
