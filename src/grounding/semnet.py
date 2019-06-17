@@ -372,7 +372,8 @@ class Event:
 
     def resonate(self, base, event, check_order=True):
         if not len(self.coincidences) == len(event.coincidences):
-            return False
+            if not len(self.coincidences) == 1 and not [con.out_sign.name for con in self.coincidences][0] in [con.out_sign.name for con in event.coincidences]:
+                return False
         for connector in self.coincidences:
             for conn in event.coincidences:
                 if connector.out_sign == conn.out_sign:
