@@ -655,11 +655,22 @@ class Sign:
             if connector.out_index == cm.index:
                 self.out_images.remove(connector)
 
-
         if self.images[cm.index]:
             del self.images[cm.index]
         else:
             raise Exception('Already removed!')
+
+    def remove_view(self, cm):
+        for event in itertools.chain(cm.cause, cm.effect):
+            for connector in event.coincidences:
+                if connector.out_index > 0:
+                    pm = connector.get_out_cm('image')
+                    del pm.sign.images[pm.index]
+                    for connector in copy(pm.sign.out_images):
+                        if connector.out_index == pm.index:
+                            pm.sign.out_images.remove(connector)
+        del self.images[cm.index]
+
 
     def rename(self, new_name):
         new_sign = Sign(new_name)
