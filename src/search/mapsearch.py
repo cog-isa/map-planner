@@ -392,7 +392,9 @@ class MapSearch():
         if not result:
             expanded = pm.expand('meaning')
             if not len(expanded.effect) == 0:
-                return self._check_activity(expanded, next_cm, backward, prec_search)
+                result = self._check_activity(expanded, next_cm, backward, prec_search)
+                #TODO delete False expanded
+                return result
             else:
                 expanded.sign.remove_meaning(expanded)
                 return False, pm
