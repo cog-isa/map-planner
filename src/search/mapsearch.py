@@ -24,30 +24,47 @@ class MapSearch():
             self.check_pm = task.goal_situation.images[1]
             self.active_pm = task.start_situation.images[1]
 
+        self.precedents = set()
+
         logging.debug('Start: {0}'.format(self.check_pm.longstr()))
         logging.debug('Finish: {0}'.format(self.active_pm.longstr()))
 
     def search_plan(self):
         self.I_sign, self.I_obj, self.agents = self.__get_agents()
+        self._precedent_activation()
         plans = self._map_iteration(self.active_pm, iteration=0, current_plan=[])
         return plans
 
     def _precedent_search(self, active_pm):
         precedents = []
         active_cm = active_pm.copy('image', 'meaning')
-        for name, sign in self.world_model.items():
-            for index, cm in sign.meanings.copy().items():
-                result, checked = self._check_activity(cm, active_cm, self.backward, True)
+        for cm in self.precedents:
+            result, checked = self._check_activity(cm, active_cm, self.backward, True)
+            if result:
+                agents = checked.get_signs() & self.agents
+                if not agents: agent = self.I_sign
+                else: agent = agents.pop()
                 if result:
-                    agents = checked.get_signs() & self.agents
-                    if not agents: agent = self.I_sign
-                    else: agent = agents.pop()
-                    if result:
-                        precedents.append((agent, checked))
-                else:
-                    if cm != checked:
-                        sign.remove_meaning(checked)
+                    precedents.append((agent, checked))
         return precedents
+
+
+    def _precedent_activation(self):
+        if not self.exp_sits:
+            self.exp_sits = [sign.images[1] for name, sign in self.world_model.items() if 'exp_situation' in name]
+            # finish include
+            old_fnst = [sign.images[1] for name, sign in self.world_model.items() if
+                        ('*finish*' in name or '*start*' in name) and len(name) > 8]
+            self.exp_sits.extend(old_fnst)
+        if not self.exp_acts:
+            self.exp_acts = self.hierarch_acts()
+
+        for sit in self.exp_sits:
+            if sit.sign.out_meanings:
+                precedent = sit.sign.spread_up_activity_act('meaning', 1)
+                if precedent:
+                    pr = list(precedent)[0].sign
+                    self.precedents.add(pr.meanings[1])
 
     def applicable_search(self, meanings, active_pm):
         applicable_meanings = set()
