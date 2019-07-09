@@ -1,26 +1,18 @@
 import configparser
 import os
-import sys
 import pkg_resources
 
-def create_config(task_num = '1', refinement_lv = '1', benchmark = None, delim = '/', backward = 'True', task_type = 'classic'):
+def create_config(task_num = '1', is_load = 'True',backward = 'True', refinement_lv = '1', benchmark_type = 'spatial', benchmark = None, task_type = 'classic', delim = '/', subsearch = 'greedy'):
     """
-    Create a config file for map-core algorithm
+    Create a config file
     """
     if not benchmark:
-        folder = 'simple'+delim+ 'blocks'+delim
-        ext = '.pddl'
-        if task_type == 'htn':
-            folder = 'hierarchical' +delim
-            ext = '.hddl'
-        elif task_type != 'classic':
-            print('Wrong task_type!!! (classic or htn)!!')
-            sys.exit(1)
-        path_bench = 'benchmarks' +delim + folder
+        path_bench = 'benchmarks'+delim+benchmark_type+delim +'task'+task_num
+        task_type = 'spatial'
         if not isinstance(task_num, str):
             task_num = str(task_num)
-        p_FILE = pkg_resources.resource_filename('mapcore', path_bench+'task'+task_num+ext)
-        domain_load = pkg_resources.resource_filename('mapcore', path_bench+'domain'+ext)
+        p_FILE = pkg_resources.resource_filename('mapspatial', path_bench+'task'+task_num+'.json')
+        domain_load = pkg_resources.resource_filename('mapspatial', path_bench+'domain'+'.json')
         path = "".join([p.strip() + delim for p in p_FILE.split(delim)[:-1]])
     else:
         splited = benchmark.split(delim)
@@ -32,16 +24,17 @@ def create_config(task_num = '1', refinement_lv = '1', benchmark = None, delim =
     config.add_section("Settings")
     config.set("Settings", "path", path)
     config.set("Settings", "task", task_num)
-    config.set("Settings", "agpath", "mapcore.agent.agent_search")
-    config.set("Settings", "agtype", "Agent")
-    config.set("Settings", "backward", backward)
+    config.set("Settings", "is_load", is_load)
+    config.set("Settings", "agpath", "mapspatial.agent.agent_search")
+    config.set("Settings", "gazebo", "False")
     config.set("Settings", "refinement_lv", refinement_lv)
     config.set("Settings", "TaskType", task_type)
+    config.set("Settings", "backward", backward)
+    config.set("Settings", "subsearch", subsearch)
 
     with open(path_to_write, "w") as config_file:
         config.write(config_file)
     return path_to_write
-
 
 def get_config(path):
     """

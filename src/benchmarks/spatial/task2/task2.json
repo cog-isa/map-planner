@@ -1,0 +1,61 @@
+{
+  "task-name": "spatial task 2",
+  "agents":
+        ["I"],
+  "map": {
+            "wall": [
+              [-20, -20, 749, -20],
+              [-20, -20, -20, 749],
+              [-20, 749, 749, 749],
+              [749, -20, 749, 749],
+              [165, -20, 331, 81],
+              [165, 165, 410, 250],
+              [410, 51, 490, 250],
+              [490, 165, 500, 250],
+              [243, 500, 565, 770]
+            ],
+            "map-size": [
+                    729,
+                    729
+                ]
+
+    },
+    "global-start" : {
+                "agent-actuator": {
+                    "agent": [
+                        "I"
+                    ],
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                "agent-orientation": "right",
+             "objects": {
+                    "agent": {
+                        "r": 10,
+                        "x": 40.0,
+                        "y": 121.0
+                    }
+                }
+            },
+    "global-finish": {
+                    "agent-actuator": {
+                    "agent": [
+                        "I"
+                    ],
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                    "agent-orientation": "right",
+                    "objects": {
+                        "agent": {
+                            "r": 10,
+                            "x": 607.0,
+                            "y": 121.0
+                        }
+                    }
+            }
+}

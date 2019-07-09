@@ -1,0 +1,86 @@
+{
+  "task-name": "spatial task 0",
+  "agents":
+        ["I"],
+  "map": {
+            "wall": [
+              [-20, -20, 749, -20],
+              [-20, -20, -20, 749],
+              [-20, 749, 749, 749],
+              [749, -20, 749, 749]
+            ],
+            "map-size": [
+                    729,
+                    729
+                ]
+
+    },
+    "global-start" : {
+                "agent-actuator": {
+                    "agent": [
+                        "I"
+                    ],
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                "agent-orientation": "right",
+             "objects": {
+                    "agent": {
+                        "r": 10,
+                        "x": 121.0,
+                        "y": 363.0
+                    },
+                    "table-1": {
+                        "r": 20,
+                        "x": 363.0,
+                        "y": 121.0
+                    },
+                    "table-2": {
+                        "r": 20,
+                        "x": 363.0,
+                        "y": 363.0
+                    },
+                    "table-3": {
+                        "r": 20,
+                        "x": 363.0,
+                        "y": 607.0
+                    }
+                }
+            },
+    "global-finish": {
+                    "agent-actuator": {
+                    "agent": [
+                        "I"
+                    ],
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                    "agent-orientation": "right",
+                    "objects": {
+                    "agent": {
+                        "r": 10,
+                        "x": 523.0,
+                        "y": 363.0
+                    },
+                    "table-1": {
+                        "r": 20,
+                        "x": 363.0,
+                        "y": 121.0
+                    },
+                    "table-2": {
+                        "r": 20,
+                        "x": 363.0,
+                        "y": 363.0
+                    },
+                    "table-3": {
+                        "r": 20,
+                        "x": 363.0,
+                        "y": 607.0
+                    }
+                    }
+            }
+}

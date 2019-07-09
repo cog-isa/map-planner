@@ -1,5 +1,8 @@
 import logging
 import os
+import json
+from mapcore.mapplanner import MapPlanner as MPcore
+from mapspatial.agent.manager import Manager
 
 SOLUTION_FILE_SUFFIX = '.soln'
 
@@ -13,34 +16,11 @@ else:
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("process-main")
 
-class MapPlanner():
+class MapPlanner(MPcore):
     def __init__(self, **kwargs):
-        if 'Settings' in kwargs.keys():
-            self.kwgs = kwargs['Settings']
-        else:
-            self.kwgs = kwargs
-        self.agpath = self.kwgs['agpath']
-        self.TaskType = self.kwgs['tasktype']
-        self.domain, self.problem = self.find_domain(self.kwgs['path'], self.kwgs['task'])
-        self.refinement = eval(self.kwgs['refinement_lv'])
-        self.backward = eval(self.kwgs['backward'])
-        logger.info('MAP algorithm start planning...')
-
-    def search_upper(self, path, file):
-        """
-        Recursive domain search
-        :param path: path to the current task
-        :param file: domain name
-        :return: full path to the domain
-        """
-        if not file in os.listdir(path):
-            new_path = delim
-            for element in path.split(delim)[1:-2]:
-                new_path+=element + delim
-            return self.search_upper(new_path, file)
-        else:
-            return path + delim + file
-
+        super().__init__(**kwargs)
+        self.subsearch = kwargs['Settings']['subsearch']
+        #self.domain, self.problem = self.find_domain(self.kwgs['path'], self.kwgs['task'])
 
     def find_domain(self, path, number):
         """
@@ -49,11 +29,16 @@ class MapPlanner():
         :param number: task number
         :return:
         """
-        ext = '.pddl'
-        if self.TaskType == 'htn':
+        if self.TaskType == 'spatial':
+            ext = '.json'
+            path += 'task' + number + delim
+        elif self.TaskType == 'htn':
             ext = '.hddl'
-        domain = 'domain' + ext
+        else:
+            ext = '.pddl'
         task = 'task' + number + ext
+        domain = 'domain' + ext
+
         if not domain in os.listdir(path):
             domain2 = self.search_upper(path, domain)
             if not domain2:
@@ -69,68 +54,37 @@ class MapPlanner():
 
         return domain, problem
 
-    def _parse(self, domain_file, problem_file):
+    def search_spatial(self):
         """
-        pddl Parser
-        :param domain_file:
-        :param problem_file:
-        :return:
+        spatial plan search
+        :return: the final solution with cell coordinates
         """
-        from mapcore.pddl.parser import Parser
+        from mapspatial.grounding.json_grounding import Problem
+        logging.info('Parsing Problem {0}'.format(self.problem))
+        with open(self.problem) as data_file1:
+            problem_parsed = json.load(data_file1)
+        logging.info('Parsing Domain {0}'.format(self.domain))
+        with open(self.domain) as data_file2:
+            signs_structure = json.load(data_file2)
 
-        parser = Parser(domain_file, problem_file)
-        logging.info('Parsing Domain {0}'.format(domain_file))
-        domain = parser.parse_domain()
-        logging.info('Parsing Problem {0}'.format(problem_file))
-        problem = parser.parse_problem(domain)
-        logging.debug(domain)
-        logging.info('{0} Predicates parsed'.format(len(domain.predicates)))
-        logging.info('{0} Actions parsed'.format(len(domain.actions)))
-        logging.info('{0} Objects parsed'.format(len(problem.objects)))
-        logging.info('{0} Constants parsed'.format(len(domain.constants)))
-        return problem
-
-    def search_classic(self):
-        """
-        classic PDDL-based plan search search
-        :return: the final solution
-        """
-        from mapcore.agent.manager import Manager
-
-        problem = self._parse(self.domain, self.problem)
+        logging.info('{0} Objects parsed'.format(len(problem_parsed['global-start']['objects'])))
+        logging.info('{0} Predicates parsed'.format(len(signs_structure['predicates'])))
+        logging.info('{0} Actions parsed'.format(len(signs_structure['actions'])))
+        logging.info('Map contain {0} walls'.format(len(problem_parsed['map']['wall'])))
+        logging.info('Map size is {0}:{1}'.format(problem_parsed['map']['map-size'][0], problem_parsed['map']['map-size'][1]))
+        problem = Problem(signs_structure, problem_parsed, self.problem, None)
         logger.info('Parsing was finished...')
-        manager = Manager(problem, self.agpath, backward=self.backward)
+        manager = Manager(problem, self.agpath, backward=self.backward, subsearch = self.subsearch)
         solution = manager.manage_agent()
         return solution
 
-    def search_htn(self):
-        """
-        classic HTN-based plan search
-        :return: the final solution
-        """
-        from mapcore.hddl.hddl_parser import HTNParser
-        from mapcore.grounding.hddl_grounding import ground
-        from mapcore.search.htnsearch import HTNSearch
-        parser = HTNParser(self.domain, self.problem)
-        logging.info('Parsing was finished...')
-        logging.info('Parsing Domain {0}'.format(self.domain))
-        domain = parser.ParseDomain(parser.domain)
-        logging.info('Parsing Problem {0}'.format(self.problem))
-        problem = parser.ParseProblem(parser.problem)
-        logging.info('{0} Objects parsed'.format(len(problem['objects'])))
-        logging.info('{0} Predicates parsed'.format(len(domain['predicates'])))
-        logging.info('{0} Actions parsed'.format(len(domain['actions'])))
-        logging.info('{0} Methods parsed'.format(len(domain['methods'])))
-        signs = ground(domain, problem)
-        logging.info('{0} Signs created'.format(len(signs)))
-        htn = HTNSearch(signs)
-        solution = htn.search_plan()
-        return solution
 
     def search(self):
         if self.TaskType == 'classic':
             return self.search_classic()
         elif self.TaskType == 'htn':
             return self.search_htn()
+        elif self.TaskType == 'spatial':
+            return self.search_spatial()
         else:
             raise Exception('Tasks can be classic or htn!!!')

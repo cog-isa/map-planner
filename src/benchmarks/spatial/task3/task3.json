@@ -1,0 +1,59 @@
+{
+  "task-name": "spatial task 3",
+  "agents":
+        ["I"],
+  "map": {
+            "wall": [
+              [-20, -20, 749, -20],
+              [-20, -20, -20, 749],
+              [-20, 749, 749, 749],
+              [749, -20, 749, 749]
+            ],
+	    "vanished": {
+		"wall": [244, 244, 485, 485]
+		},
+            "map-size": [
+                    729,
+                    729
+                ]
+
+    },
+    "global-start" : {
+                "agent-actuator": {
+                    "agent": [
+                        "I"
+                    ],
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                "agent-orientation": "below-right",
+             "objects": {
+                    "agent": {
+                        "r": 10,
+                        "x": 121.0,
+                        "y": 40.0
+                    }
+                }
+            },
+    "global-finish": {
+                    "agent-actuator": {
+                    "agent": [
+                        "I"
+                    ],
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                    "agent-orientation": "below",
+                    "objects": {
+                        "agent": {
+                            "r": 10,
+                            "x": 607.0,
+                            "y": 607.0
+                        }
+                    }
+            }
+}

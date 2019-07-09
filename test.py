@@ -1,4 +1,8 @@
-from mapcore.mapplanner import MapPlanner
+try:
+    from mapspatial.mapplanner import MapPlanner
+except Exception:
+    print('Install map-spatial extension!')
+    exit(1)
 
 from config_master import create_config, get_config
 import platform
@@ -14,7 +18,7 @@ if __name__ == '__main__':
         delim = '\\'
 
     if not config_path:
-        path = create_config(task_num = 1, delim=delim, backward = 'False', task_type = 'classic')
+        path = create_config(task_num = '0', delim=delim, backward = 'True', task_type = 'spatial', subsearch = 'greedy')
     else:
         path = config_path
     # after 1 time creating config simply send a path

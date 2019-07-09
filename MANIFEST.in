@@ -1,5 +1,5 @@
-include src/benchmarks/hierarchical/*.hddl
-include src/benchmarks/simple/blocks/*.pddl
-include src/benchmarks/hierarchical/*.ini
-include src/benchmarks/simple/blocks/*.ini
+include src/benchmarks/spatial/*.json
+include src/benchmarks/spatial/task*/*.json
+include src/benchmarks/spatial/task*/*.ini
+
 
