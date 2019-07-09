@@ -1,33 +1,32 @@
 
-![Sign World Model](SWM1.jpg "Title")
+![Sign World Model](SWMSPAT.jpg "Title")
 
 
-**Sign world model** is a psychologically plausible way 
-of representing the knowledge of a cognitive agent. The method was 
-developed on the basis of the work of outstanding Soviet and 
-Russian psychologists and neurophysiologists. In more detail, 
-about a sign world model you can find in:
-1. [Signed world view of the subject of behavior.](https://www.rfbr.ru/rffi/ru/books/o_2052004)
-2. [Behavior control as a function of consciousness. I. World model and goal setting.](Https://link.springer.com/article/10.1134/S1064230714040121)
-3. [Behavior Control as a Function of Consciousness. II. Synthesis of a Behavior Plan.](https://www.researchgate.net/publication/284156107_Behavior_Control_as_a_Function_of_Consciousness_II_Synthesis_of_a_Behavior_Plan)
-4. [Sign-based Approach to the Task of Role Distribution in the
-Coalition of Cognitive Agents.](proceedings.spiiras.nw.ru/index.php/sp/issue/view/186/69)
-
-**MAPPLANNER** is an open source library that allows building a semiotic network 
-of characters based on the input data described in the common formats .pddl and .hddl. 
-In addition, the library is simplified implemented the highest 
-cognitive function of a person - planning. 
-This library implements [case-based planning](https://www.sciencedirect.com/book/9780123220608/case-based-planning) 
-and [HTN planning](https://en.wikipedia.org/wiki/Hierarchical_task_network).
+**Spatial planner** is an open source library that allows to synthesize agent's plan 
+with use multilevel hierarchical representations of spatial knowledge. The roots of 
+this method go to the work of D.A. Pospelov and S. O. Varosyan - Non-metric spatial 
+logic (1982).
+1. [Spatial reasoning and planning in sign-based world model.](https://link.springer.com/chapter/10.1007/978-3-030-00617-4_1)
+2. [Task and Spatial Planning by the Cognitive Agent with Human-like Knowledge Representation](https://www.springerprofessional.de/en/task-and-spatial-planning-by-the-cognitive-agent-with-human-like/16109284)
 
 ## Installation
-
+To use this library you need to install map-core.
 To install the current release:
 
 ```
+>>>cd map-planner
+>>>git checkout map-spatial
 >>>python3 setup.py sdist
 >>>pip3 install .
 ```
+
+To use astar heuristic in path planning - download C++ compiler
+
+```
+>>>make ./ASearch
+>>>cmake ./ASearch
+```
+
 
 To run the test example:
 
@@ -40,14 +39,16 @@ python3 test.py
 ```python
 # task_num - number of the current task. Its needed iff you 
 # test basic tasks
-task_num = '1' # - string value
+task_num = '0' # - string value
 # benchmark - a string path to your benchmark. If you don't
 # have benchmarks - use basic
 benchmark = None 
 # backward - its a planning method. Current library can plan 
 # forward and backward with classic .pddl tasks
 backward = 'True'# - string value
-# switch classic and htn planners
-task_type = 'classic'# 'htn'
+# this planner use spatial logic
+task_type = 'spatial'
+subsearch = 'greedy' # or astar
+
 ```
 All feedback you can send to [email](mailto:kiselev@isa.ru)
