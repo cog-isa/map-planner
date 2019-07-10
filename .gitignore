@@ -6,7 +6,7 @@
 dist
 build
 __pychache__
-mapcore.egg-info
+*.egg-info
 env
 venv
 .DS_store
