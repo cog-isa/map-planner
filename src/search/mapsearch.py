@@ -1733,9 +1733,14 @@ class SpSearch(MapSearch):
                 stright = self.get_stright(active_pm, current_direction)
 
             for reg, cellz in cell_location.items():
-                if stright[0].name in cellz:
-                    cont_region = reg
-                    break
+                if script.sign.name == 'rotate':
+                    if stright[0].name in cellz:
+                        cont_region = reg
+                        break
+                else:
+                    if 'cell-4' in cellz:
+                        cont_region = reg
+                        break
             if cont_region == 'wall':
                 return 0,0
             agent_sign = self.world_model['agent']
@@ -1755,6 +1760,7 @@ class SpSearch(MapSearch):
                 goal = self.init_state
             goal_coords = goal['objects']['agent']['x'], goal['objects']['agent']['y']
 
+            # further are coefficient game
             if stright and script.sign.name == 'rotate':
                 f_cs = cell_coords_new[stright[0].name]
             else:
@@ -1764,8 +1770,25 @@ class SpSearch(MapSearch):
                     f_cs = cell_coords_new[stright[0].name]
             f_c = f_cs[0] + ((f_cs[2] - f_cs[0]) // 2), f_cs[1] + (
                             (f_cs[3] - f_cs[1]) // 2)
+            # path next cell - goal
             path = math.sqrt(
                         (goal_coords[1] - f_c[1]) ** 2 + (goal_coords[0] - f_c[0]) ** 2)
+            if prev_state:
+                prev_mid = prev_state[-1][0] + ((prev_state[-1][2] - prev_state[-1][0]) // 2), prev_state[-1][1] + (
+                        (prev_state[-1][3] - prev_state[-1][1]) // 2)
+                size = prev_state[-1][2] - prev_state[-1][0]
+            else:
+                prev_mid =self.additions[0][iteration]['objects']['agent']['x'], self.additions[0][iteration]['objects']['agent']['y']
+                size = f_cs[2] - f_cs[0]
+            # path current cell - goal
+            a = math.sqrt(
+                (goal_coords[1] - prev_mid[1]) ** 2 + (goal_coords[0] - prev_mid[0]) ** 2)
+
+            # if next cell closer - good
+            if not stright[1]:
+                if path <= a:
+                    counter += 4
+
             if goal_region.name != cont_region:
                 goal_dir = self.additions[1][cont_region][goal_region.name][1]
                 # do not rotate to the wall if there are no hole
@@ -1817,55 +1840,49 @@ class SpSearch(MapSearch):
                         counter += 2  # +2 if agent go back to the stright goal way #TODO rework when go from far
 
             else:
-                if prev_state:
-                    prev_mid = prev_state[-1][0] + ((prev_state[-1][2] - prev_state[-1][0]) // 2), prev_state[-1][1] + (
-                            (prev_state[-1][3] - prev_state[-1][1]) // 2)
-
-                    a = math.sqrt(
-                        (goal_coords[1] - prev_mid[1]) ** 2 + (goal_coords[0] - prev_mid[0]) ** 2)
-
-                    size = prev_state[-1][2] - prev_state[-1][0]
-
-                    if not stright[1]:
-                        if path <= a:
-                            counter += 4
-                        if script.sign.name == 'move':
-                            counter += 1
-
-                    # if we are already in the goal cell
-                    if a < size:
-                        if self.clarification_lv <= self.goal_state['cl_lv']:
-                            est_events = [event for event in estimation.cause if "I" not in event.get_signs_names()]
-                            ce_events = [event for event in self.check_pm.cause if "I" not in event.get_signs_names()]
-                            for event in est_events:
-                                for ce in ce_events:
-                                    if event.resonate('image', ce):
-                                        counter += 1
-                                        break
-                        elif self.clarification_lv > self.goal_state['cl_lv']:
-                            if stright[1] is None:
-                            # choose direction closely to  goal direction
-                                closely_to_stright = ['cell'+el[-2:] for el,desc in
-                                                  self.additions[1]['region'+stright[0].name[-2:]].items() if desc[0] == 'closely']
-                                closely_to_stright.remove('cell-4')
-                                for cell in closely_to_stright:
-                                    if 0 not in self.additions[2][iteration][cell]:
-                                        break
-                                else:
-                                    counter+=3
-                                directions = []
-                                for reg, tup in self.additions[1]['region-4'].items():
-                                    if tup[1] == self.goal_state['agent-orientation']:
-                                        regs_to_goal = [reg for reg, tup2 in self.additions[1][reg].items() if tup2[0] == 'closely']
-                                        directions = [tup[1] for reg, tup in self.additions[1]['region-4'].items() if reg in regs_to_goal]
-                                        break
-                                if current_direction.name in directions:
-                                    counter+=2
-                                if prev_act == 'rotate' and script.sign.name == 'move':
-                                    counter+=2
-                                elif prev_act == 'rotate' and script.sign.name == 'rotate':
-                                    counter = 0
-
+                if not stright[1] and script.sign.name == 'move':
+                    counter += 1
+                # if we are already in the goal cell
+                if a < size:
+                    if self.clarification_lv <= self.goal_state['cl_lv']:
+                        est_events = [event for event in estimation.cause if "I" not in event.get_signs_names()]
+                        ce_events = [event for event in self.check_pm.cause if "I" not in event.get_signs_names()]
+                        for event in est_events:
+                            for ce in ce_events:
+                                if event.resonate('image', ce):
+                                    counter += 1
+                                    break
+                    elif self.clarification_lv > self.goal_state['cl_lv']:
+                        if stright[1] is None:
+                        # choose direction closely to  goal direction
+                            closely_to_stright = ['cell'+el[-2:] for el,desc in
+                                              self.additions[1]['region'+stright[0].name[-2:]].items() if desc[0] == 'closely']
+                            closely_to_stright.remove('cell-4')
+                            for cell in closely_to_stright:
+                                if 0 not in self.additions[2][iteration][cell]:
+                                    break
+                            else:
+                                counter+=3
+                            directions = []
+                            for reg, tup in self.additions[1]['region-4'].items():
+                                if tup[1] == self.goal_state['agent-orientation']:
+                                    regs_to_goal = [reg for reg, tup2 in self.additions[1][reg].items() if tup2[0] == 'closely']
+                                    directions = [tup[1] for reg, tup in self.additions[1]['region-4'].items() if reg in regs_to_goal]
+                                    break
+                            if current_direction.name in directions:
+                                counter+=2
+                            if prev_act == 'rotate' and script.sign.name == 'move':
+                                counter+=2
+                            elif prev_act == 'rotate' and script.sign.name == 'rotate':
+                                counter = 0
+                # we are in region, but not in cell.
+                else:
+                    if current_direction.name == self.goal_state['agent-orientation']:
+                        counter += 2
+                    if path < a:
+                        counter += 3
+                    if prev_act == 'rotate' and script.sign.name == 'rotate':
+                        counter = 0
 
         return counter , path
 
