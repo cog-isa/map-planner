@@ -1,0 +1,13 @@
+release/tinyxml2.o
+release/xmllogger.o
+release/isearch.o
+release/mission.o
+release/map.o
+release/config.o
+release/astar.o
+release/asearch.o
+release/jp_search.o
+release/theta.o
+release/environmentoptions.o
+release/json_map.o
+release/json_logger.o

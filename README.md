@@ -20,12 +20,11 @@ To install the current release:
 >>>pip3 install .
 ```
 
-To use astar heuristic in path planning - download C++ compiler
-
-```
->>>make ./ASearch
->>>cmake ./ASearch
-```
+To use astar heuristic in path planning:
+1. Download C++ compiler.
+2. Create a directory "astar" in src directory
+3. Build ASearch and copy /release/ASearch.exe to src/astar
+4. Create requests directory and responses directory inside benchmark directory
 
 
 To run the test example:

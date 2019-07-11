@@ -1,0 +1,13 @@
+debug/tinyxml2.o
+debug/xmllogger.o
+debug/isearch.o
+debug/mission.o
+debug/map.o
+debug/config.o
+debug/astar.o
+debug/asearch.o
+debug/jp_search.o
+debug/theta.o
+debug/environmentoptions.o
+debug/json_map.o
+debug/json_logger.o
