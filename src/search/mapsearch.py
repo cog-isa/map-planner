@@ -1540,24 +1540,29 @@ class SpSearch(MapSearch):
 
         new_request['current-action'] = request
 
-        path = '/'
-        for part in self.task_file.split('/')[1:-1]:
-            path += part+'/'
+        import platform
+        import os
+        if platform.system == 'Linux':
+            delim = '/'
+            path = '/'
+            for part in self.task_file.split('/')[1:-1]:
+                path += part + '/'
+        else:
+            delim = '\\'
+            path = ''
+            for part in self.task_file.split(delim)[:-1]:
+                path += part + delim
 
-
-        request_path = path + 'requests'+'/request_' + script.sign.name + '_' + str(counter)+ '.json'
+        request_path = path + 'requests'+delim+'request_' + script.sign.name + '_' + str(counter)+ '.json'
 
         with open(request_path, 'w') as outfile:
             json.dump(new_request, outfile)
 
         #TODO Here is a server
-        exepath = '/'
-        for part in self.task_file.split('/')[1:-4]:
-            exepath += part+'/'
-        exepath+= 'ASearch/AStar-JPS-ThetaStar'
-
-        #args = '"' + exepath+'AStar-JPS-ThetaStar" ' + '"'+request_path+'"'
-        #subprocess.call(args, shell=True)
+        exepath = ''
+        for part in self.task_file.split(delim)[:-4]:
+            exepath += part+delim
+        exepath+= 'astar' +delim+ 'ASearch.exe'
 
         cmd = [exepath, request_path]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -1574,7 +1579,7 @@ class SpSearch(MapSearch):
         else:
             subprocess.Popen.kill(p)
 
-        response_path = path + 'responses'+'/result_' + script.sign.name + '_' + str(counter)+ '.json'
+        response_path = path + 'responses'+delim+'result_' + script.sign.name + '_' + str(counter)+ '.json'
         with open(response_path) as data_file1:
             tactical_response = json.load(data_file1)
 

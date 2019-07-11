@@ -1,5 +1,6 @@
 include src/benchmarks/spatial/*.json
 include src/benchmarks/spatial/task*/*.json
 include src/benchmarks/spatial/task*/*.ini
-
-
+include src/benchmarks/spatial/task*/requests/*.json
+include src/benchmarks/spatial/task*/responses/*.json
+include src/astar/*.exe

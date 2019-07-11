@@ -48,7 +48,7 @@ benchmark = None
 backward = 'True'# - string value
 # this planner use spatial logic
 task_type = 'spatial'
-subsearch = 'greedy' # or astar
+subsearch = 'greedy' # or ASearch
 
 ```
 All feedback you can send to [email](mailto:kiselev@isa.ru)
