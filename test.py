@@ -18,7 +18,7 @@ if __name__ == '__main__':
         delim = '\\'
 
     if not config_path:
-        path = create_config(task_num = '1', delim=delim, backward = 'False', task_type = 'spatial', subsearch = 'ASearch')
+        path = create_config(task_num = '0', delim=delim, backward = 'False', task_type = 'maspatial')
     else:
         path = config_path
     # after 1 time creating config simply send a path

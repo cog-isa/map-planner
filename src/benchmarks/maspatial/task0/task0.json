@@ -1,0 +1,90 @@
+{
+  "task-name": "maspatial task 0",
+  "agents":
+        ["ag1", "ag2"],
+  "map": {
+            "wall": [
+              [-20, -20, 749, -20],
+              [-20, -20, -20, 749],
+              [-20, 749, 749, 749],
+              [749, -20, 749, 749]
+            ],
+            "map-size": [
+                    729,
+                    729
+                ]
+
+    },
+    "global-start" : {
+                "ag1":{
+                  "agent-actuator": {
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                "agent-orientation": "right"},
+                "ag2":{
+                  "agent-actuator": {
+                    "handempty": {
+                        "cause": [],
+                        "effect": []
+                    }
+                },
+                "agent-orientation": "right"},
+
+             "objects": {
+                    "ag1": {
+                        "r": 10,
+                        "x": 121.0,
+                        "y": 121.0
+                    },
+                    "ag2": {
+                        "r": 10,
+                        "x": 121.0,
+                        "y": 607.0
+                    },
+                    "table-1": {
+                        "r": 20,
+                        "x": 363.0,
+                        "y": 121.0
+                    }
+                }
+            },
+    "global-finish": {
+                  "ag1":{
+                    "agent-actuator": {
+                      "handempty": {
+                          "cause": [],
+                          "effect": []
+                      }
+                  },
+                  "agent-orientation": "right"},
+                  "ag2":{
+                    "agent-actuator": {
+                      "handempty": {
+                          "cause": [],
+                          "effect": []
+                      }
+                  },
+                "agent-orientation": "right"},
+                    "agent-orientation": "right",
+                    "objects": {
+                    "ag1": {
+                        "r": 10,
+                        "x": 607.0,
+                        "y": 607.0
+                    },
+                    "ag2": {
+                        "r": 10,
+                        "x": 607.0,
+                        "y": 121.0
+                    },
+                    "table-1": {
+                        "r": 20,
+                        "x": 363.0,
+                        "y": 121.0
+                    }
+                    }
+            }
+}

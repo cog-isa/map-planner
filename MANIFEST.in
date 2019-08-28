@@ -3,4 +3,9 @@ include src/benchmarks/spatial/task*/*.json
 include src/benchmarks/spatial/task*/*.ini
 include src/benchmarks/spatial/task*/requests/*.json
 include src/benchmarks/spatial/task*/responses/*.json
+include src/benchmarks/maspatial/*.json
+include src/benchmarks/maspatial/task*/*.json
+include src/benchmarks/maspatial/task*/*.ini
+include src/benchmarks/maspatial/task*/requests/*.json
+include src/benchmarks/maspatial/task*/responses/*.json
 include src/astar/*.exe

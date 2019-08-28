@@ -957,13 +957,11 @@ def state_fixation(state, el_coords, signs, element):
     return im
 
 
-def spatial_ground(problem, agent, exp_signs=None, backward = False):
+def spatial_ground(problem, plagent, agents, exp_signs=None, backward = False):
     initial_state = problem.initial_state
     initial_state.update(problem.map)
     goal_state = problem.goal_state
     goal_state.update(problem.map)
-    # TODO change in multiagent variant
-    agent = 'agent'
 
     obj_signifs = {}
     obj_means = {}
@@ -1012,11 +1010,24 @@ def spatial_ground(problem, agent, exp_signs=None, backward = False):
                 tp_signif = type_sign.add_significance()
                 connector = tp_signif.add_feature(obj_signif, zero_out=True)
                 obj_sign.add_out_significance(connector)
-                if obj_sign.name == agent:
+                if obj_sign.name == plagent:
                     connector = obj_signif.add_feature(obj_signifs[I_sign], zero_out=True)
                     I_sign.add_out_significance(connector)
         else:
             obj_signifs[type_sign] = type_sign.add_significance()
+
+    others = {signs[ag] for ag in agents if ag != plagent}
+
+    for subagent in others:
+        if not They_sign in subagent.significances[1].get_signs():
+            signif = obj_signifs[They_sign]
+            if signif.is_empty():
+                They_signif = signif
+            else:
+                They_signif = They_sign.add_significance()
+            connector = subagent.significances[1].add_feature(They_signif, zero_out=True)
+            They_sign.add_out_significance(connector)
+            obj_means[subagent] = subagent.add_meaning()
 
     for role_name, smaller in roles.items():
         role_sign = Sign(role_name)
@@ -1067,35 +1078,36 @@ def spatial_ground(problem, agent, exp_signs=None, backward = False):
     walls = maps[0].pop('wall')
     static_map = {'map-size': ms, 'wall': walls}
 
-    region_map, cell_map, cell_location, near_loc, cell_coords, size, cl_lv = signs_markup(initial_state, static_map,
-                                                                                           agent)
-    regions_struct = get_struct()
-    map_pms = define_map('*map*', region_map, cell_location, near_loc, regions_struct, signs)
-    agent_state_start = state_prediction(I_sign, initial_state)
-    start_situation = define_situation('*start*', cell_map, events, agent_state_start, signs)
-    state_fixation(start_situation, cell_coords, signs, 'cell')
-    problem.initial_state['cl_lv'] = cl_lv
-    # Define goal situation
-    region_map, cell_map, cell_location, near_loc, cell_coords, size, cl_lv = signs_markup(goal_state, static_map,
-                                                                                           agent)
-    agent_state_finish = state_prediction(I_sign, goal_state)
-    goal_situation = define_situation('*finish*', cell_map, events, agent_state_finish, signs)
-    goal_map = define_map('*goal_map*', region_map, cell_location, near_loc, regions_struct, signs)
-    state_fixation(goal_situation, cell_coords, signs, 'cell')
+    for agent in agents:
+        region_map, cell_map, cell_location, near_loc, cell_coords, size, cl_lv = signs_markup(initial_state, static_map,
+                                                                                               plagent)
+        regions_struct = get_struct()
+        map_pms = define_map('*map*', region_map, cell_location, near_loc, regions_struct, signs)
+        agent_state_start = state_prediction(I_sign, initial_state)
+        start_situation = define_situation('*start*', cell_map, events, agent_state_start, signs)
+        state_fixation(start_situation, cell_coords, signs, 'cell')
+        problem.initial_state['cl_lv'] = cl_lv
+        # Define goal situation
+        region_map, cell_map, cell_location, near_loc, cell_coords, size, cl_lv = signs_markup(goal_state, static_map,
+                                                                                               plagent)
+        agent_state_finish = state_prediction(I_sign, goal_state)
+        goal_situation = define_situation('*finish*', cell_map, events, agent_state_finish, signs)
+        goal_map = define_map('*goal_map*', region_map, cell_location, near_loc, regions_struct, signs)
+        state_fixation(goal_situation, cell_coords, signs, 'cell')
 
-    #fixation map
-    map_size = scale(ms)
-    rmap = [0, 0, map_size[0], map_size[1]]
-    region_location, _ = locater('region-', rmap, initial_state['objects'], walls)
-    state_fixation(map_pms, region_location, signs, 'region')
+        #fixation map
+        map_size = scale(ms)
+        rmap = [0, 0, map_size[0], map_size[1]]
+        region_location, _ = locater('region-', rmap, initial_state['objects'], walls)
+        state_fixation(map_pms, region_location, signs, 'region')
 
-    # TODO change in multiagent version
-    signify_connection(signs)
-    problem.goal_state['cl_lv'] = cl_lv
-    cells = {}
-    cells[0] = cell_map
-    additions = []
-    additions.extend([maps, regions_struct, cells, static_map])
+        # TODO change in multiagent version
+        signify_connection(signs)
+        problem.goal_state['cl_lv'] = cl_lv
+        cells = {}
+        cells[0] = cell_map
+        additions = []
+        additions.extend([maps, regions_struct, cells, static_map])
 
     return SpTask(problem.name, signs, start_situation.sign, goal_situation.sign, goal_map, map_pms,
                 additions, problem.initial_state, {key:value for key, value in problem.goal_state.items() if key not in static_map}, static_map)

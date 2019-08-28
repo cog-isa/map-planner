@@ -29,7 +29,7 @@ class MapPlanner(MPcore):
         :param number: task number
         :return:
         """
-        if self.TaskType == 'spatial':
+        if 'spatial' in self.TaskType:
             ext = '.json'
             path += 'task' + number + delim
         elif self.TaskType == 'htn':
@@ -38,7 +38,6 @@ class MapPlanner(MPcore):
             ext = '.pddl'
         task = 'task' + number + ext
         domain = 'domain' + ext
-
         if not domain in os.listdir(path):
             domain2 = self.search_upper(path, domain)
             if not domain2:
@@ -73,9 +72,10 @@ class MapPlanner(MPcore):
         logging.info('Map contain {0} walls'.format(len(problem_parsed['map']['wall'])))
         logging.info('Map size is {0}:{1}'.format(problem_parsed['map']['map-size'][0], problem_parsed['map']['map-size'][1]))
         problem = Problem(signs_structure, problem_parsed, self.problem, None)
+        agents = self._get_agents(problem)
         logger.info('Parsing was finished...')
-        manager = Manager(problem, self.agpath, backward=self.backward, subsearch = self.subsearch)
-        solution = manager.manage_agent()
+        manager = Manager(agents, problem, self.agpath, backward=self.backward, subsearch = self.subsearch)
+        solution = manager.manage_agents()
         return solution
 
 
@@ -84,7 +84,18 @@ class MapPlanner(MPcore):
             return self.search_classic()
         elif self.TaskType == 'htn':
             return self.search_htn()
-        elif self.TaskType == 'spatial':
+        elif 'spatial' in self.TaskType:
             return self.search_spatial()
         else:
-            raise Exception('Tasks can be classic or htn!!!')
+            raise Exception('Tasks can be classic, htn oe spatial!!! Check your task_type.')
+
+    def _get_agents(self, problem):
+        agents = []
+        if problem.constraints:
+            agents.extend(list(problem['constraints'].keys()))
+        else:
+            for el, struct in problem.initial_state.items():
+                if 'ag' in el and struct['agent-orientation']:
+                    agents.append(el)
+
+        return agents

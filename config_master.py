@@ -2,18 +2,18 @@ import configparser
 import os
 import pkg_resources
 
-def create_config(task_num = '1', is_load = 'True',backward = 'True', refinement_lv = '1', benchmark_type = 'spatial', benchmark = None, task_type = 'classic', delim = '/', subsearch = 'greedy'):
+def create_config(task_num = '1', is_load = 'True',backward = 'True', refinement_lv = '1',
+                  benchmark = None, task_type = 'spatial', delim = '/', subsearch = 'greedy'):
     """
     Create a config file
     """
     if not benchmark:
-        path_bench = 'benchmarks'+delim+benchmark_type+delim +'task'+task_num
-        task_type = 'spatial'
+        path_bench = 'benchmarks'+delim+task_type+delim
         if not isinstance(task_num, str):
             task_num = str(task_num)
-        p_FILE = pkg_resources.resource_filename('mapspatial', path_bench+'task'+task_num+'.json')
+        p_FILE = pkg_resources.resource_filename('mapspatial', path_bench+'task'+task_num+delim+'task'+task_num+'.json')
         domain_load = pkg_resources.resource_filename('mapspatial', path_bench+'domain'+'.json')
-        path = "".join([p.strip() + delim for p in p_FILE.split(delim)[:-1]])
+        path = "".join([p.strip() + delim for p in p_FILE.split(delim)[:-2]])
     else:
         splited = benchmark.split(delim)
         task_num = "".join([s for s in splited[-1] if s.isdigit()])
