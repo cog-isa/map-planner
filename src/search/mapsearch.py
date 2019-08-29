@@ -20,7 +20,7 @@ from mapspatial.grounding.json_grounding import *
 MAX_CL_LV = 1
 
 class SpSearch(MapSearch):
-    def __init__ (self, task, ref, task_file, backward, subsearch):
+    def __init__ (self, task, task_file, backward, subsearch):
         super().__init__(task, backward)
         self.MAX_ITERATION = 30
         if self.backward:
@@ -41,7 +41,6 @@ class SpSearch(MapSearch):
         self.agents = set()
         self.I_sign = None
         self.I_obj = None
-        self.refinement_lv = ref
         self.init_state = task.initial_state
         self.goal_state = task.goal_state
         self.clarification_lv = task.initial_state['cl_lv']

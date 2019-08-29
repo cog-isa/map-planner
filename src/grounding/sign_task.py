@@ -15,16 +15,28 @@ PLAN_PREFIX = 'action_'
 MAP_PREFIX = 'map_'
 
 
-class SpTask(Task):
-    def __init__(self, name, signs, start_situation, goal_situation, goal_map, map_pms,
+class SpTask:
+
+    def __init__(self, name, signs, agent_state,
                 additions, initial_state, goal_state, static_map):
-        super(SpTask, self).__init__(name, signs, start_situation, goal_situation)
-        self.goal_map = goal_map
-        self.map_pms = map_pms
+        self.name = name
+        self.signs = signs
+        self.start_situation = agent_state['I']['start-sit']
+        self.goal_situation = agent_state['I']['goal-sit']
+        self.goal_map = agent_state['I']['goal-map']
+        self.start_map = agent_state['I']['start-map']
         self.additions = additions
         self.initial_state = initial_state
         self.static = static_map
         self.goal_state = goal_state
+
+    def __str__(self):
+        s = 'Task {0}\n  Signs:  {1}\n  Start:  {2}\n  Goal: {3}\n'
+        return s.format(self.name, '\n'.join(map(repr, self.signs)),
+                        self.start_situation, self.goal_situation)
+
+    def __repr__(self):
+        return '<Task {0}, signs: {1}>'.format(self.name, len(self.signs))
 
     def save_signs(self, plan):
         """
@@ -55,8 +67,8 @@ class SpTask(Task):
             plan_map = [pm[5][0].sign for pm in plan]
             if self.start_situation not in plan_sit:
                 plan_sit.append(self.start_situation)
-            if self.map_pms.sign not in plan_map:
-                plan_map.append(self.map_pms.sign)
+            if self.start_map.sign not in plan_map:
+                plan_map.append(self.start_map.sign)
             if self.goal_situation not in plan_sit:
                 plan_sit.append(self.goal_situation)
             if self.goal_map.sign not in plan_map:

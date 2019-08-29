@@ -68,7 +68,6 @@
                       }
                   },
                 "agent-orientation": "right"},
-                    "agent-orientation": "right",
                     "objects": {
                     "ag1": {
                         "r": 10,
