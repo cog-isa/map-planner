@@ -14,6 +14,20 @@ def agent_activation(agpath, agtype, name, agents, problem, backward, subsearch,
     childpipe.send((name, new_signs))
     # load info about the major agent
     major_agent = childpipe.recv()
+
+    # search scenario
+    ##### todo create pddl automatically
+
+    task_paths = problem.task_file.split('/')[1:-1]
+    import os
+    domain_file = os.getcwd()+'/src/benchmarks/maspatial/'+task_paths[-1]+'/scenario/domain.pddl'
+    task_file = os.getcwd() + '/src/benchmarks/maspatial/' + task_paths[-1] + '/scenario/'+task_paths[-1]+'.pddl'
+    scenarios = workman.loadScenario(domain_file, task_file)
+    print()
+
+    # send to action by action to agent who needs to perform this action
+    ###### create spatial representation of classic situation
+
     # search solution and send it to major agent
     solution = workman.search_solution()
     childpipe.send(solution)

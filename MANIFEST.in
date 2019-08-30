@@ -8,4 +8,6 @@ include src/benchmarks/maspatial/task*/*.json
 include src/benchmarks/maspatial/task*/*.ini
 include src/benchmarks/maspatial/task*/requests/*.json
 include src/benchmarks/maspatial/task*/responses/*.json
+include src/benchmarks/maspatial/task*/scenario/task*.pddl
+include src/benchmarks/maspatial/task*/scenario/domain.pddl
 include src/astar/*.exe

@@ -46,6 +46,20 @@ class SpAgent:
         else:
             return 0
 
+    # PDDL scenario search
+    def loadScenario(self, domain_file, problem_file):
+        from mapcore.pddl.parser import Parser
+        from mapmulti.grounding import pddl_grounding
+        from mapmulti.search.mapsearch import MapSearch as Search
+        parser = Parser(domain_file, problem_file)
+        domain = parser.parse_domain()
+        problem = parser.parse_problem(domain)
+        task = pddl_grounding.ground(problem, self.name, {})
+        search = Search(task, self.backward)
+        solutions = search.search_plan()
+        return solutions
+
+
     def search_solution(self):
         """
         This function is needed to synthesize all plans, choose the best one and
