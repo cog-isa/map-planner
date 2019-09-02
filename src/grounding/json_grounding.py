@@ -900,7 +900,11 @@ def _ground_actions(actions, obj_means, constraints, signs, agents):
 
         for part, iner in smaller.items():
             for predicate, conditions in iner.items():
-                matrices.append(get_predicate(predicate, conditions))
+                pred = get_predicate(predicate, conditions)
+                if pred:
+                    matrices.append(pred)
+                else:
+                    raise Exception("predicate *{0}* has wrong definition in action *{1}*".format(predicate, action_name))
             for el in matrices:
                 if part == "cause":
                     connector = act_signif.add_feature(el, effect=False)

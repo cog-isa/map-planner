@@ -61,6 +61,10 @@
             "block-a",
             "block-b"
           ],
+          "size": [
+            "big",
+            "small"
+          ],
           "table":[
             "table-1",
             "table-2",
@@ -92,6 +96,9 @@
             ["table"],
           "table?y":[
             "table"
+          ],
+          "size?x": [
+            "size"
           ],
           "region?x": [
             "region"
@@ -156,17 +163,22 @@
                 },
                 "contain-8": {
                         "cause":
-                            ["cell?y", "amount","block?x"],
+                            ["cell?y", "few","block?x"],
                         "effect":
                             []
                           },
                 "contain-9": {
                         "cause":
-                            ["cell?y", "amount","table?x"],
+                            ["cell?y", "few","table?x"],
+                        "effect":
+                            []
+                          },
+                "contain-10": {
+                        "cause":
+                            ["cell?y", "few","block?y"],
                         "effect":
                             []
                           }
-
       },
       "closely": {
                 "closely-1":{
@@ -414,6 +426,32 @@
                               ],
                               "effect": []
                       }
+      },
+      "blocktype": {
+                      "cause":
+                              ["size?x", "block?x"],
+                      "effect":
+                              []
+      },
+      "clear": {
+                      "clear-1": {
+                            "cause":
+                                ["block?x"],
+                            "effect":
+                                    []
+                      },
+                      "clear-2": {
+                            "cause":
+                                ["block?y"],
+                            "effect":
+                                    []
+                      }
+      },
+      "on": {
+        "cause":
+                ["block?x", "block?y"],
+        "effect":
+                []
       }
 
   },
@@ -474,6 +512,382 @@
                                   }
             }
       },
+      "pick-up": {
+            "cause":{
+                      "orientation":{
+                              "cause":
+                                ["agent", "dir-start"],
+                              "effect":
+                                []
+                                    },
+                      "location":{
+                              "cause":
+                                ["distance","dir-start"],
+                              "effect":
+                                []
+                                },
+                      "contain-1": {
+                              "cause":
+                                  ["cell?y", "few","table?x"],
+                              "effect":
+                                  []
+                                },
+                      "contain-2": {
+                              "cause":
+                                  ["cell?y", "few", "block?x"],
+                              "effect":
+                                  []
+                                },
+                      "ontable":{
+                               "cause":
+                                      ["table?x","block?x"],
+                               "effect":
+                                      []
+                      },
+                      "handempty":{
+                                      "cause":
+                                              ["agent"],
+                                      "effect":
+                                              []
+                      },
+                      "clear": {
+                                    "cause":
+                                            ["block?x"],
+                                    "effect":
+                                            []
+                                   },
+                      "employment":{
+                              "cause":
+                                  ["cell?x", "agent"],
+                              "effect":
+                                  []
+                                  }
+            },
+            "effect":
+            {
+                      "orientation":{
+                              "cause":
+                                ["agent", "dir-start"],
+                              "effect":
+                                []
+                                    },
+                      "location":{
+                              "cause":
+                                ["distance","dir-start"],
+                              "effect":
+                                []
+                                },
+                      "contain": {
+                              "cause":
+                                  ["cell?y", "few","table?x"],
+                              "effect":
+                                  []
+                                },
+                      "holding": {
+                              "cause":
+                                  ["agent", "block?x"],
+                              "effect":
+                                  []
+                                },
+                      "employment":{
+                              "cause":
+                                  ["cell?x", "agent"],
+                              "effect":
+                                  []
+                                  }
+            }
+      },
+      "put-down": {
+            "cause":{
+                      "orientation":{
+                              "cause":
+                                ["agent", "dir-start"],
+                              "effect":
+                                []
+                                    },
+                      "location":{
+                              "cause":
+                                ["distance","dir-start"],
+                              "effect":
+                                []
+                                },
+                      "contain": {
+                              "cause":
+                                  ["cell?y", "few", "table?x"],
+                              "effect":
+                                  []
+                                },
+                      "holding": {
+                              "cause":
+                                  ["agent", "block?x"],
+                              "effect":
+                                  []
+                                },
+                      "employment":{
+                              "cause":
+                                  ["cell?x", "agent"],
+                              "effect":
+                                  []
+                                  }
+            },
+            "effect":
+            {
+                      "orientation":{
+                              "cause":
+                                ["agent", "dir-start"],
+                              "effect":
+                                []
+                                    },
+                      "location":{
+                              "cause":
+                                ["distance","dir-start"],
+                              "effect":
+                                []
+                                },
+                      "contain-1": {
+                              "cause":
+                                  ["cell?y", "few", "table?x"],
+                              "effect":
+                                  []
+                                },
+                      "contain-2": {
+                              "cause":
+                                  ["cell?y", "few", "block?x"],
+                              "effect":
+                                  []
+                                },
+                      "ontable":{
+                               "cause":
+                                      ["table?x","block?x"],
+                               "effect":
+                                      []
+                      },
+                      "handempty":{
+                                "cause":
+                                        ["agent"],
+                                "effect":
+                                        []
+                      },
+                      "clear": {
+                                "cause":
+                                        ["block?x"],
+                                "effect":
+                                        []
+                               },
+                      "employment":{
+                              "cause":
+                                  ["cell?x", "agent"],
+                              "effect":
+                                  []
+                                  }
+      }
+        },
+      "stack": {
+            "cause":{
+                      "orientation":{
+                              "cause":
+                                ["agent", "dir-start"],
+                              "effect":
+                                []
+                                    },
+                      "location":{
+                              "cause":
+                                ["distance","dir-start"],
+                              "effect":
+                                []
+                                },
+                      "contain-1": {
+                              "cause":
+                                  ["cell?y", "few", "table?x"],
+                              "effect":
+                                  []
+                                },
+                      "holding": {
+                              "cause":
+                                  ["agent", "block?x"],
+                              "effect":
+                                  []
+                                },
+                      "contain-2": {
+                              "cause":
+                                  ["cell?y",  "few", "block?y"],
+                              "effect":
+                                  []
+                                },
+                      "clear": {
+                            "cause":
+                                ["block?y"],
+                            "effect":
+                                    []
+                      },
+                      "employment":{
+                              "cause":
+                                  ["cell?x", "agent"],
+                              "effect":
+                                  []
+                                  }
+            },
+            "effect":
+            {
+                      "orientation":{
+                              "cause":
+                                ["agent", "dir-start"],
+                              "effect":
+                                []
+                                    },
+                      "location":{
+                              "cause":
+                                ["distance","dir-start"],
+                              "effect":
+                                []
+                                },
+                      "contain-1": {
+                              "cause":
+                                  ["cell?y", "few", "table?x"],
+                              "effect":
+                                  []
+                                },
+                      "contain-2": {
+                              "cause":
+                                  ["cell?y", "few", "block?y"],
+                              "effect":
+                                  []
+                                },
+                      "contain-3": {
+                              "cause":
+                                  ["cell?y", "few", "block?x"],
+                              "effect":
+                                  []
+                                },
+                      "on": {
+                              "cause":
+                                      ["block?x", "block?y"],
+                              "effect":
+                                    []
+                      },
+                      "clear": {
+                            "cause":
+                                ["block?x"],
+                            "effect":
+                                    []
+                      },
+                      "handempty": {
+                              "cause":
+                                  ["agent"],
+                              "effect":
+                                  []
+                                },
+                      "employment":{
+                              "cause":
+                                  ["cell?x", "agent"],
+                              "effect":
+                                  []
+                                  }
+            }
+      },
+      "unstack": {
+            "cause":{
+                      "orientation":{
+                              "cause":
+                                ["agent", "dir-start"],
+                              "effect":
+                                []
+                                    },
+                      "location":{
+                              "cause":
+                                ["distance","dir-start"],
+                              "effect":
+                                []
+                                },
+                      "contain-1": {
+                              "cause":
+                                  ["cell?y", "few", "table?x"],
+                              "effect":
+                                  []
+                                },
+                      "contain-2": {
+                              "cause":
+                                  ["cell?y", "few", "block?y"],
+                              "effect":
+                                  []
+                                },
+                      "contain-3": {
+                              "cause":
+                                  ["cell?y", "few", "block?x"],
+                              "effect":
+                                  []
+                                },
+                      "on": {
+                              "cause":
+                                      ["block?x", "block?y"],
+                              "effect":
+                                    []
+                      },
+                      "clear": {
+                            "cause":
+                                ["block?x"],
+                            "effect":
+                                    []
+                      },
+                      "handempty": {
+                              "cause":
+                                  ["agent"],
+                              "effect":
+                                  []
+                                },
+                      "employment": {
+                        "cause": [
+                          "cell?x",
+                          "agent"
+                        ],
+                        "effect": []
+                      }
+            },
+            "effect": {
+                       "orientation":{
+                              "cause":
+                                ["agent", "dir-start"],
+                              "effect":
+                                []
+                                    },
+                      "location":{
+                              "cause":
+                                ["distance","dir-start"],
+                              "effect":
+                                []
+                                },
+                      "contain-1": {
+                              "cause":
+                                  ["cell?y", "few", "table?x"],
+                              "effect":
+                                  []
+                                },
+                      "holding": {
+                              "cause":
+                                  ["agent", "block?x"],
+                              "effect":
+                                  []
+                                },
+                      "contain-2": {
+                              "cause":
+                                  ["cell?y", "few", "block?y"],
+                              "effect":
+                                  []
+                                },
+                      "clear": {
+                            "cause":
+                                ["block?y"],
+                            "effect":
+                                    []
+                      },
+                      "employment":{
+                              "cause":
+                                  ["cell?x", "agent"],
+                              "effect":
+                                  []
+                                  }
+            }
+      },
       "rotate":{
               "cause":{
                         "orientation":{
@@ -504,6 +918,5 @@
                                   }
               }
       }
+    }
   }
-
-}
