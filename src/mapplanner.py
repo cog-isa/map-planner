@@ -21,7 +21,7 @@ class MapPlanner():
             self.kwgs = kwargs
         self.agpath = self.kwgs['agpath']
         self.TaskType = self.kwgs['tasktype']
-        self.domain, self.problem = self.find_domain(self.kwgs['path'], self.kwgs['task'])
+        self.domain, self.problem = self.find_domain(self.kwgs['domain'],self.kwgs['path'], self.kwgs['task'])
         self.refinement = eval(self.kwgs['refinement_lv'])
         self.backward = eval(self.kwgs['backward'])
         logger.info('MAP algorithm start planning...')
@@ -42,7 +42,7 @@ class MapPlanner():
             return path + delim + file
 
 
-    def find_domain(self, path, number):
+    def find_domain(self, domain, path, number):
         """
         Domain search function
         :param path: path to current task
@@ -52,8 +52,8 @@ class MapPlanner():
         ext = '.pddl'
         if self.TaskType == 'htn':
             ext = '.hddl'
-        domain = 'domain' + ext
         task = 'task' + number + ext
+        domain += ext
         if not domain in os.listdir(path):
             domain2 = self.search_upper(path, domain)
             if not domain2:

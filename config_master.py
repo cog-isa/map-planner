@@ -3,12 +3,13 @@ import os
 import sys
 import pkg_resources
 
-def create_config(task_num = '1', refinement_lv = '1', benchmark = None, delim = '/', backward = 'True', task_type = 'classic'):
+def create_config(domen = 'blocks', task_num = '1', refinement_lv = '1', benchmark = None, delim = '/', backward = 'True', task_type = 'classic'):
     """
     Create a config file for map-core algorithm
     """
+    domain = 'domain'
     if not benchmark:
-        folder = 'simple'+delim+ 'blocks'+delim
+        folder = 'simple'+delim+ domen +delim
         ext = '.pddl'
         if task_type == 'htn':
             folder = 'hierarchical' +delim
@@ -20,7 +21,11 @@ def create_config(task_num = '1', refinement_lv = '1', benchmark = None, delim =
         if not isinstance(task_num, str):
             task_num = str(task_num)
         p_FILE = pkg_resources.resource_filename('mapcore', path_bench+'task'+task_num+ext)
-        domain_load = pkg_resources.resource_filename('mapcore', path_bench+'domain'+ext)
+        try:
+            domain_load = pkg_resources.resource_filename('mapcore', path_bench+domain+ext)
+        except KeyError:
+            domain = domain+task_num
+            domain_load = pkg_resources.resource_filename('mapcore', path_bench + domain + ext)
         path = "".join([p.strip() + delim for p in p_FILE.split(delim)[:-1]])
     else:
         splited = benchmark.split(delim)
@@ -30,6 +35,7 @@ def create_config(task_num = '1', refinement_lv = '1', benchmark = None, delim =
 
     config = configparser.ConfigParser()
     config.add_section("Settings")
+    config.set("Settings", "domain", domain)
     config.set("Settings", "path", path)
     config.set("Settings", "task", task_num)
     config.set("Settings", "agpath", "mapcore.agent.agent_search")

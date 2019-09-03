@@ -113,6 +113,7 @@ class MapSearch():
                         merged_chains.append(chain)
                         break
             scripts = self._generate_meanings(merged_chains)
+            logging.info("Generated {0} scripts for {1} action on step {2}".format(str(len(scripts)), pm_signif.sign.name, str(iteration)))
             meanings.extend(scripts)
 
         applicable_meanings = self.applicable_search(precedents + meanings, active_pm)
@@ -260,6 +261,8 @@ class MapSearch():
             for el in rev_chain:
                 if len(el.cause) == 0:
                     continue
+                elif len(el.sign.images) > 1:
+                    break
                 elif len(el.cause) == 1:
                     if len(el.cause[0].coincidences) ==1:
                         index = chain.index(el)
@@ -276,6 +279,8 @@ class MapSearch():
                     if len(el.cause[0].coincidences) ==1:
                         index = chain.index(el)
                         break
+                elif len(el.sign.images) > 1:
+                    continue
                 else:
                     continue
             if index:
@@ -597,10 +602,10 @@ class MapSearch():
         for item in replace_map:
             elements.append(item[1])
         elements = list(itertools.product(*elements))
-        clean_el = copy(elements)
-        for element in clean_el:
-            if not len(set(element)) == len(element):
-                elements.remove(element)
+        # clean_el = copy(elements)
+        # for element in clean_el:
+        #     if not len(set(element)) == len(element):
+        #         elements.remove(element)
         for element in elements:
             for obj in element:
                 avalaible_roles = [x for x in replace_map if x not in used_roles]
