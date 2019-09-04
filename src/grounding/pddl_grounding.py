@@ -83,6 +83,25 @@ def signify_predicates(predicates, updated_predicates, signs, subtype_map, const
     for predicate in predicates:
         pred_sign = Sign(predicate.name)
         signs[predicate.name] = pred_sign
+        def update_single(facts):
+            for fact in facts:
+                role_name = fact[1][0].name + fact[0]
+                fact_name = fact[1][0].name
+                if role_name not in signs:
+                    role_sign = Sign(role_name)
+                    signs[role_name] = role_sign
+                else:
+                    role_sign = signs[role_name]
+                if fact_name not in signs:
+                    fact_sign = Sign(fact_name)
+                    signs[fact_name] = fact_sign
+                else:
+                    fact_sign = signs[fact_name]
+                role_signif = role_sign.add_significance()
+                fact_signif = fact_sign.add_significance()
+                connector = role_signif.add_feature(fact_signif, zero_out=True)
+                fact_sign.add_out_significance(connector)
+
 
         def update_significance(fact, predicate, subtype_map, updated_predicates, index, effect=False, constants=None):
             def add_sign(updated_fact, ufn, ufr):
@@ -190,13 +209,14 @@ def signify_predicates(predicates, updated_predicates, signs, subtype_map, const
                                 conn = pred_signif.add_feature(element, zero_out=True)
                                 element.sign.add_out_significance(conn)
                                 break
-        if len(predicate.signature) != 0:
+        # predicate with solo signa or without signa simular to role
+        if len(predicate.signature) >=2:
             signifs = {}
             for index in range(len(predicate.signature)):
                 update_significance(predicate.signature[index], predicate, subtype_map, updated_predicates, index, constants = constants)
         else:
+            update_single(updated_predicates[predicate.name])
             pred_sign.add_significance()
-
 
 def signify_actions(actions, signs, obj_means):
     for action in actions:
@@ -207,6 +227,8 @@ def signify_actions(actions, signs, obj_means):
             pred_sign = signs[predicate.name]
             if len(pred_sign.significances) > 1:
                 pred_cm = pred_resonate('significance', pred_sign, predicate, signs, signature)
+                if not pred_cm:
+                    raise Exception('Cant find *{0}* matrice in *{1}* action'.format(predicate.name, action.name))
             elif len(pred_sign.significances) == 0:
                 pred_cm = pred_sign.add_significance()
             else:
@@ -370,76 +392,52 @@ def _define_situation(name, predicates, signs, network = 'image'):
         pred_cm = getattr(pred_sign, 'add_'+network)()
         connector = sit_cm.add_feature(pred_cm)
         getattr(pred_sign, 'add_out_'+network)(connector)
-        # if len(predicate.signature) == 1:
-        #     obj_sign = signs[predicate.signature[0][0]]
-        #     sig_cm = get_or_add(obj_sign)
-        #     conn = sit_cm.add_feature(sig_cm, connector.in_order)
-        #     getattr(obj_sign, 'add_out_' + network)(conn)
-        # elif len(predicate.signature) > 1:
-        #     pre_signs = set()
-        #     for fact in predicate.signature:
-        #         role_signs = [con.in_sign for con in getattr(signs[fact[0]], 'out_significances') if con.in_sign.name != 'object']
-        #         for el in role_signs:
-        #             if el.significances:
-        #                 if len(el.significances[1].cause) == 1 and len(el.significances[1].effect) == 0:
-        #                     pre_signs.add(el)
-        #     if len(pre_signs) < len(predicate.signature):
-        #         for fact in predicate.signature:
-        #             fact_sign = signs[fact[0]]
-        #             fact_cm = get_or_add(fact_sign)
-        #             conn = pred_cm.add_feature(fact_cm)
-        #             getattr(fact_sign, 'add_out_' + network)(conn)
-        #     else:
-        #         for fact in predicate.signature:
-        #             fact_sign = signs[fact[0]]
-        #             fact_image = get_or_add(fact_sign)
-        #             conn = sit_cm.add_feature(fact_image, connector.in_order)
-        #             getattr(fact_sign, 'add_out_' + network)(conn)
-        #             conn = pred_cm.add_feature(fact_image)
-        #             getattr(fact_sign, 'add_out_' + network)(conn)
-        for fact in predicate.signature:
-            fact_sign = signs[fact[0]]
-            fact_cm = get_or_add(fact_sign)
-            conn = pred_cm.add_feature(fact_cm)
-            getattr(fact_sign, 'add_out_' + network)(conn)
-
+        if len(predicate.signature) == 1:
+            obj_sign = signs[predicate.signature[0][0]]
+            sig_cm = get_or_add(obj_sign)
+            conn = sit_cm.add_feature(sig_cm, connector.in_order)
+            getattr(obj_sign, 'add_out_' + network)(conn)
+        elif len(predicate.signature) > 1:
+            pre_signs = set()
+            for fact in predicate.signature:
+                role_signs = [con.in_sign for con in getattr(signs[fact[0]], 'out_significances') if con.in_sign.name != 'object']
+                for el in role_signs:
+                    if el.significances:
+                        if len(el.significances[1].cause) == 1 and len(el.significances[1].effect) == 0:
+                            pre_signs.add(el)
+            if len(pre_signs) < len(predicate.signature):
+                for fact in predicate.signature:
+                    fact_sign = signs[fact[0]]
+                    fact_cm = get_or_add(fact_sign)
+                    conn = pred_cm.add_feature(fact_cm)
+                    getattr(fact_sign, 'add_out_' + network)(conn)
+            else:
+                for fact in predicate.signature:
+                    fact_sign = signs[fact[0]]
+                    fact_image = get_or_add(fact_sign)
+                    conn = sit_cm.add_feature(fact_image, connector.in_order)
+                    getattr(fact_sign, 'add_out_' + network)(conn)
+                    conn = pred_cm.add_feature(fact_image)
+                    getattr(fact_sign, 'add_out_' + network)(conn)
     return situation, elements
 
 
 def _expand_situation_blocks(goal_situation, signs, pms, list_signs):
     ont_image = signs['ontable'].add_image()
     a_image = pms[signs[list_signs[1]]]
-    conn = ont_image.add_feature(a_image)
-    a_image.sign.add_out_image(conn)
-    conn= goal_situation.images[1].add_feature(ont_image)
+    connector = goal_situation.images[1].add_feature(ont_image)
+    conn = goal_situation.images[1].add_feature(a_image, connector.in_order)
     signs['ontable'].add_out_image(conn)
-
+    signs[list_signs[1]].add_out_image(conn)
     cl_image = signs['clear'].add_image()
     d_image = pms[signs[list_signs[0]]]
-    conn = cl_image.add_feature(d_image)
-    d_image.sign.add_out_image(conn)
-    conn= goal_situation.images[1].add_feature(cl_image)
+    connector = goal_situation.images[1].add_feature(cl_image)
+    conn = goal_situation.images[1].add_feature(d_image, connector.in_order)
     signs['clear'].add_out_image(conn)
-
+    signs[list_signs[0]].add_out_image(conn)
     he_image = signs['handempty'].add_image()
     connector = goal_situation.images[1].add_feature(he_image)
     signs['handempty'].add_out_image(connector)
-
-    # ont_image = signs['ontable'].add_image()
-    # a_image = pms[signs[list_signs[1]]]
-    # connector = goal_situation.images[1].add_feature(ont_image)
-    # conn = goal_situation.images[1].add_feature(a_image, connector.in_order)
-    # signs['ontable'].add_out_image(conn)
-    # signs[list_signs[1]].add_out_image(conn)
-    # cl_image = signs['clear'].add_image()
-    # d_image = pms[signs[list_signs[0]]]
-    # connector = goal_situation.images[1].add_feature(cl_image)
-    # conn = goal_situation.images[1].add_feature(d_image, connector.in_order)
-    # signs['clear'].add_out_image(conn)
-    # signs[list_signs[0]].add_out_image(conn)
-    # he_image = signs['handempty'].add_image()
-    # connector = goal_situation.images[1].add_feature(he_image)
-    # signs['handempty'].add_out_image(connector)
 
 def _expand_situation_logistics(goal_situation, signs, pms):
 
