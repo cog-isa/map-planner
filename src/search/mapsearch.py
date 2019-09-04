@@ -71,7 +71,9 @@ class MapSearch():
         for agent, cm in meanings:
             result, checked = self._check_activity(cm, active_pm.sign.meanings[1], self.backward)
             if result:
-                applicable_meanings.add((agent, checked))
+                maxlen = max([len(ev.coincidences) for ev in checked.cause])
+                if maxlen != 1:
+                    applicable_meanings.add((agent, checked))
         return applicable_meanings
 
     def _experience_parts(self, precedents):
@@ -255,21 +257,21 @@ class MapSearch():
         return I_sign, I_obj, agent_back
 
     def _generate_meanings(self, chains):
-        def __get_role_index(chain):
-            index = 0
-            rev_chain = reversed(chain)
+        def __get_role_index(chain, rd):
+            index = None
+            rev_chain = list(reversed(chain))
             for el in rev_chain:
                 if len(el.cause) == 0:
                     continue
                 elif len(el.sign.images) > 1:
-                    break
+                    return index
+                elif rev_chain.index(el) > rd:
+                    return index
                 elif len(el.cause) == 1:
                     if len(el.cause[0].coincidences) ==1:
                         index = chain.index(el)
                     else:
                         return index
-                else:
-                    return index
             return None
 
         def __get_big_role_index(chain):
@@ -291,8 +293,10 @@ class MapSearch():
 
         replace_map = {}
         main_pm = None
+        # Depth on which role is.
+        rd = 2 # 0 1 2 from the end <= this is maximum
         for chain in chains:
-            role_index = __get_role_index(chain)
+            role_index = __get_role_index(chain, rd)
             if role_index:
                 if not chain[role_index].sign in replace_map:
                     replace_map[chain[role_index].sign] = [chain[-1]]
@@ -358,13 +362,6 @@ class MapSearch():
                 role_signs = rkeys & pm_signs
                 for role_sign in role_signs:
                     new_map[role_sign] = replace_map[role_sign]
-
-                for chain in pm_mean:
-                    if chain[-1].sign in big_replace and not chain[-1].sign in new_map :
-                        for cm in big_replace.get(chain[-1].sign):
-                            if self.world_model['cell?x'] in cm.get_signs() and self.world_model['cell?y'] in cm.get_signs():
-                                new_map[chain[-1].sign] = [cm]
-
 
                 ma_combinations = self.mix_pairs(new_map)
 
@@ -602,10 +599,10 @@ class MapSearch():
         for item in replace_map:
             elements.append(item[1])
         elements = list(itertools.product(*elements))
-        # clean_el = copy(elements)
-        # for element in clean_el:
-        #     if not len(set(element)) == len(element):
-        #         elements.remove(element)
+        clean_el = copy(elements)
+        for element in clean_el:
+            if not len(set(element)) == len(element):
+                elements.remove(element)
         for element in elements:
             for obj in element:
                 avalaible_roles = [x for x in replace_map if x not in used_roles]
