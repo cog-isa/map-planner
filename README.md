@@ -34,6 +34,18 @@ To run the test example:
 ```
 python3 test.py
 ```
+#### Check the correctness of filling the benchmark, according to the basic principles of PDDL 3
+The current planner can only work with domain and benchmark described by the following criteria:
+
+#####Domain: 
+1. Data types are indicated as a separate field. 
+In each action in the column :parameters, the data type of each parameter is indicated.
+2. The names of predicates, types, actions, variables must be unique.
+3. If in the effect of the action the predicate is not placed in the set of deleted facts, 
+then it must be duplicated.
+#####Task:
+1. Minimum required fields -:objects, :init and :goal.
+2. In the goal field, predicates describing the stationary state of the environment should be duplicated.
 
 #### Try your tasks
 

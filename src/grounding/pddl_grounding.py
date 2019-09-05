@@ -74,8 +74,8 @@ def ground(problem, agent, exp_signs=None):
     if problem.name.startswith("blocks"):
         list_signs = task_signs(problem)
         _expand_situation_blocks(goal_situation, signs, pms, list_signs)  # For task
-    elif problem.name.startswith("logistics"):
-        _expand_situation_logistics(goal_situation, signs, pms)
+    # elif problem.name.startswith("logistics"):
+    #     _expand_situation_logistics(goal_situation, signs, pms)
     return Task(problem.name, signs, start_situation, goal_situation)
 
 
@@ -268,13 +268,21 @@ def signify_actions(actions, signs, obj_means):
 def pred_resonate(base, sign, predicate, signs, signature):
     cms = getattr(sign, base + 's')
     roles = []
+    # for fact in predicate.signature:
+    #     sfact = [signa for signa in signature if fact[0] == signa[0]]
+    #     if sfact:
+    #         if sfact[0][1][0].name+sfact[0][0] in signs:
+    #             roles.extend(sfact)
+    #     else:
+    #         roles.append(fact)
     for fact in predicate.signature:
-        sfact = [signa for signa in signature if fact[0] == signa[0]]
-        if sfact:
-            if sfact[0][1][0].name+sfact[0][0] in signs:
-                roles.extend(sfact)
-        else:
+        if fact[1][0].name+fact[0] in signs:
             roles.append(fact)
+        else:
+            sfact = [signa for signa in signature if fact[0] == signa[0]]
+            if sfact:
+                if sfact[0][1][0].name+sfact[0][0] in signs:
+                    roles.extend(sfact)
     uroles = []
     for signa in roles:
         if not signa[0].startswith('?'):
