@@ -14,11 +14,12 @@ PLAN_PREFIX = 'action_'
 
 
 class Task:
-    def __init__(self, name, signs, start_situation, goal_situation):
+    def __init__(self, name, signs, start_situation, goal_situation, subtasks=None):
         self.name = name
         self.signs = signs
         self.start_situation = start_situation
         self.goal_situation = goal_situation
+        self.subtasks = subtasks
 
     def __str__(self):
         s = 'Task {0}\n  Signs:  {1}\n  Start:  {2}\n  Goal: {3}\n'

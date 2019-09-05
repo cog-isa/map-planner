@@ -73,9 +73,7 @@ def ground(problem, agent, exp_signs=None):
     goal_situation, pms = _define_situation('*finish*', problem.goal, signs, 'image')
     if problem.name.startswith("blocks"):
         list_signs = task_signs(problem)
-        _expand_situation_blocks(goal_situation, signs, pms, list_signs)  # For task
-    # elif problem.name.startswith("logistics"):
-    #     _expand_situation_logistics(goal_situation, signs, pms)
+        _expand_situation_blocks(goal_situation, signs, pms, list_signs)
     return Task(problem.name, signs, start_situation, goal_situation)
 
 

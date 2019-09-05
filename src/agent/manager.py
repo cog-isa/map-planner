@@ -1,17 +1,19 @@
 import multiprocessing
 import time
 import importlib
+import logging
 from multiprocessing import Process
 
 class Manager:
-    def __init__(self, problem, agpath = 'mapplanner.agent.agent_search', agtype = 'Agent', backward = True):
+    def __init__(self, problem, agpath = 'mapplanner.agent.agent_search', agtype = 'Agent', TaskType = 'pddl', backward = False):
         self.problem = problem
         self.solution = []
         self.finished = None
         self.agtype = agtype
         self.agpath = agpath
-        self.ref = 1
+        self.TaskType = TaskType
         self.backward = backward
+
 
     def agent_start(self, agent):
         """
@@ -19,7 +21,6 @@ class Manager:
         :param agent: I
         :return: flag that task accomplished
         """
-        import logging
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger("process-%r" % (agent.name))
         logger.info('Agent {0} start planning'.format(agent.name))
@@ -36,7 +37,7 @@ class Manager:
         """
         class_ = getattr(importlib.import_module(self.agpath), self.agtype)
         workman = class_()
-        workman.initialize(self.problem, self.backward)
+        workman.initialize(self.problem, self.TaskType, self.backward)
         multiprocessing.set_start_method('spawn')
         ag = Process(target=self.agent_start, args = (workman, ))
         ag.start()

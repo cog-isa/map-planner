@@ -1,4 +1,5 @@
 from mapcore.grounding.semnet import Sign
+from mapcore.grounding.sign_task import Task
 from mapcore.search.htnsearch import mix_pairs
 from copy import copy
 
@@ -314,7 +315,8 @@ def _create_methods_tree(domain):
     return tree
 
 
-def ground(domain, problem, agent = 'I', exp_signs=None):
+def ground(problem, agent = 'I', exp_signs=None):
+    domain = problem.domain
     for type, stype in domain['types']:
         stype_sign = __add_sign(stype)
         stype_signif = stype_sign.add_significance()
@@ -322,7 +324,7 @@ def ground(domain, problem, agent = 'I', exp_signs=None):
         connector = stype_signif.add_feature(obj_signifs[type_sign], zero_out=True)
         type_sign.add_out_significance(connector)
 
-    for obj, type in problem['objects']:
+    for obj, type in problem.objects:
         obj_sign = __add_sign(obj)
         obj_means[obj_sign] = obj_sign.add_meaning()
         type_sign = signs[type]
@@ -349,8 +351,9 @@ def ground(domain, problem, agent = 'I', exp_signs=None):
         __ground_method(method.parameters, method.subtasks, method.ordering, method.task, domain, 2)
 
     #Ground Init
-    for init in problem['inits']:
-        start = __add_sign('*start %s*'%str(problem['inits'].index(init)), False)
+    start = None
+    for init in problem.inits:
+        start = __add_sign('*start %s*'%str(problem.inits.index(init)), False)
         sit_im = start.add_image()
         for predicate in init:
             pred_im = _ground_htn_predicate(predicate.name, predicate.signature)
@@ -360,8 +363,10 @@ def ground(domain, problem, agent = 'I', exp_signs=None):
 
 
     #Ground htns to meanings
-    for htn in problem['htns']:
-        htn_name = 'htn_' + str(problem['htns'].index(htn))
+    goal = None
+    subtasks = []
+    for htn in problem.htns:
+        htn_name = 'htn_' + str(problem.htns.index(htn))
         htn_sign = __add_sign(htn_name, False)
         htn_mean = htn_sign.add_meaning()
         for task in htn.ordering:
@@ -369,8 +374,9 @@ def ground(domain, problem, agent = 'I', exp_signs=None):
             cm = __ground_htn_subtask(subtask[0], subtask[1], domain)
             connector = htn_mean.add_feature(cm)
             cm.sign.add_out_meaning(connector)
+        subtasks.append(htn_sign)
 
-    return signs
+    return Task(problem.name, signs, start, goal, subtasks)
 
 
 

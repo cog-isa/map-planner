@@ -10,7 +10,7 @@ import itertools
 MAX_CL_LV = 1
 
 class MapSearch():
-    def __init__ (self, task, backward):
+    def __init__ (self, task, TaskType, backward):
         self.world_model = task.signs
         self.MAX_ITERATION = 30
         self.exp_acts = []

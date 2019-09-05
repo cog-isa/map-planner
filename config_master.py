@@ -3,7 +3,7 @@ import os
 import sys
 import pkg_resources
 
-def create_config(domen = 'blocks', task_num = '1', refinement_lv = '1', benchmark = None, delim = '/', backward = 'True', task_type = 'classic'):
+def create_config(domen = 'blocks', task_num = '1', refinement_lv = '1', benchmark = None, delim = '/', backward = 'True', task_type = 'pddl'):
     """
     Create a config file for map-core algorithm
     """
@@ -11,11 +11,11 @@ def create_config(domen = 'blocks', task_num = '1', refinement_lv = '1', benchma
     if not benchmark:
         folder = 'simple'+delim+ domen +delim
         ext = '.pddl'
-        if task_type == 'htn':
+        if task_type == 'hddl':
             folder = 'hierarchical' +delim
             ext = '.hddl'
-        elif task_type != 'classic':
-            print('Wrong task_type!!! (classic or htn)!!')
+        elif task_type != 'pddl':
+            print('Wrong task_type!!! (pddl or hddl)!!')
             sys.exit(1)
         path_bench = 'benchmarks' +delim + folder
         if not isinstance(task_num, str):

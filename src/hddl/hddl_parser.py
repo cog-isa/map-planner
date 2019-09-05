@@ -65,23 +65,34 @@ class HTNParser:
         self.utokens = [':types', ':predicates', ':task', ':method', ':action']
         return self.ParseBlock(descr)
 
-    def ParseProblem(self, descr):
+    def ParseProblem(self, descr, domain):
         self.utokens = [':objects', ':htn', ':init']
-        return self.ParseBlock(descr)
+        task = self.ParseBlock(descr)
+        problem_name = re.search('problem(.*)\)', descr)
+        problem_name = problem_name.group(1)
+        name = problem_name.strip()
+        return Problem(name, domain, task)
 
-# if __name__ == '__main__':
-#
-#     domain_file = '../benchmarks/hierarchical/domain.hddl'
-#     problem_file = '../benchmarks/hierarchical/task1.hddl'
-#
-#     parser = Parser(domain_file, problem_file)
-#     domain = parser.ParseDomain(parser.domain)
-#     problem = parser.ParseProblem(parser.problem)
-#
-#
-#     ground(domain, problem)
-#
-#     htn = HTNSearch(signs)
-#     plan = htn.search_plan()
-#     print()
+class Problem:
+    def __init__(self, name, domain, task):
+        """
+        name: The name of the problem
+        domain: The domain in which the problem has to be solved
+        objects: A dict name->type of objects that are used in the problem
+        init: A list of predicates describing the initial state
+        goal: A list of predicates describing the goal state
+        """
+        self.name = name
+        self.domain = domain
+        self.objects = task['objects']
+        self.inits = task['inits']
+        self.htns = task['htns']
+
+    def __repr__(self):
+        return ('< Problem definition: %s >'
+                 %
+                self.name)
+
+    __str__ = __repr__
+
 

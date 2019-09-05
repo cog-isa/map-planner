@@ -60,6 +60,6 @@ benchmark = None
 # forward and backward with classic .pddl tasks
 backward = 'True'# - string value
 # switch classic and htn planners
-task_type = 'classic'# 'htn'
+task_type = 'pddl'# 'hddl'
 ```
 All feedback you can send to [email](mailto:kiselev@isa.ru)

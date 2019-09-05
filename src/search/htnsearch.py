@@ -1,7 +1,6 @@
 import logging
 
 import mapcore.grounding.sign_task as st
-import random
 from mapcore.grounding.semnet import Sign
 from copy import copy
 import itertools
@@ -10,17 +9,17 @@ import itertools
 MAX_CL_LV = 1
 
 class HTNSearch():
-    def __init__ (self, signs):
-        self.world_model = signs
+    def __init__ (self, task, backward):
+        self.world_model = task.signs
         self.MAX_ITERATION = 30
         self.exp_acts = []
         self.exp_sits = []
-        self.htn = self.world_model['htn_0'].meanings[1]
+        self.htn = task.goal_situation[0].sign.meanings[1]
         self.scenario = self.htn.spread_down_htn_activity_act('meaning', 4)
-        self.active_pm = self.world_model['*start 0*'].images[1]
+        self.active_pm = task.start_situation
+        self.backward = backward
         logging.debug('Start: {0}'.format(self.active_pm.longstr()))
-        # logging.basicConfig(level=logging.INFO)
-        # logger = logging.getLogger("process-%r" % ('I'))
+
 
     def search_plan(self):
         self.I_sign, self.I_obj, self.agents = self.__get_agents()
@@ -90,88 +89,6 @@ class HTNSearch():
 
         return final_plans
 
-    #
-    # def hierarch_acts(self):
-    #     """
-    #     This function implements experience actions search in agent's world model
-    #     :return:
-    #     """
-    #     exp_acts = {}
-    #     for name, sign in self.world_model.items():
-    #         if sign.meanings and sign.images:
-    #             for index, cm in sign.meanings.items():
-    #                 if cm.is_causal():
-    #                     exp_acts.setdefault(sign, {})[index] = cm
-    #
-    #     applicable_meanings = {}
-    #     used = {key: {} for key in exp_acts.keys()}
-    #     for agent in self.agents:
-    #         for conn in agent.out_meanings:
-    #             if conn.in_sign in exp_acts and not conn.in_index in used[conn.in_sign]:
-    #                 if conn.in_index in exp_acts[conn.in_sign]:
-    #                     applicable_meanings.setdefault(conn.in_sign, []).append((agent, exp_acts[conn.in_sign][conn.in_index]))
-    #                     used.setdefault(conn.in_sign, {})[conn.in_index] = getattr(conn.in_sign, 'meanings')[conn.in_index]
-    #
-    #
-    #     for key1, value1 in exp_acts.items():
-    #         for key2, value2 in value1.items():
-    #             if not key2 in used[key1]:
-    #                 applicable_meanings.setdefault(key1, []).append(
-    #                     (None, value2))
-    #
-    #     return applicable_meanings
-    #
-    # def hierarchical_exp_search(self, active_pm, check_pm, iteration, prev_state, acts, cur_plan = []):
-    #     """
-    #     create a subplan using images info
-    #     :param script: parametrs to generate plan
-    #     :return:plan
-    #     """
-    #     if not cur_plan:
-    #         logging.info('Clarify experience plan')
-    #     applicable = []
-    #     if self.backward:
-    #         act = acts[-(iteration+1)].sign
-    #     else:
-    #         act = acts[iteration].sign
-    #     finall_plans = []
-    #     plan = copy(cur_plan)
-    #
-    #     for agent, cm in [action for action in self.exp_acts[act] if (action[0] is not None and len(action[1].cause))]:
-    #         result, checked = self._check_activity(cm, active_pm.sign.meanings[1], self.backward)
-    #         if result:
-    #             applicable.append((agent, checked))
-    #
-    #     if not applicable:
-    #         logging.info('No applicable actions was found')
-    #         return None
-    #
-    #     for action in applicable:
-    #         next_pm = self._time_shift_forward(active_pm.sign.meanings[1], action[1], self.backward)
-    #         included_sit = [sit for sit in self.exp_sits if sit.includes('image', next_pm)]
-    #         if included_sit:
-    #             plan.append(
-    #                 (active_pm, action[1].sign.name, action[1], action[0]))
-    #             logging.info('Experience action %s added to plan' % action[1].sign.name)
-    #         else:
-    #             continue
-    #         # if acts:
-    #             # if not self.backward:
-    #             #     acts.pop(0)
-    #             # else:
-    #             #     acts.pop(-1)
-    #         if next_pm.includes('image', check_pm):
-    #                 if plan:
-    #                     finall_plans.extend(plan)
-    #                 else:
-    #                     finall_plans.extend(plan)
-    #                     break
-    #         else:
-    #             plan = self.hierarchical_exp_search(next_pm, check_pm, iteration+1, prev_state, acts, plan)
-    #             if plan:
-    #                 finall_plans.extend(plan)
-    #                 break
-    #     return finall_plans
 
     def __get_agents(self):
         agent_back = set()

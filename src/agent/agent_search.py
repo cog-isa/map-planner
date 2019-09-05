@@ -4,6 +4,7 @@ import time
 from mapcore.grounding import pddl_grounding
 from mapcore.search.mapsearch import MapSearch
 from mapcore.grounding.sign_task import Task
+from mapcore.grounding import hddl_grounding
 
 
 class Agent:
@@ -11,7 +12,7 @@ class Agent:
         pass
 
     # Initialization
-    def initialize(self, problem, backward):
+    def initialize(self, problem, TaskType, backward):
         """
         This function allows agent to be initialized. We do not use basic __init__ to let
         user choose a valid variant of agent. You can take agent with othe abilities.
@@ -23,6 +24,7 @@ class Agent:
         self.solution = []
         self.final_solution = ''
         self.backward = backward
+        self.TaskType = TaskType
 
     # Grounding tasks
     def load_sw(self):
@@ -32,7 +34,10 @@ class Agent:
         """
         logging.info('Grounding start: {0}'.format(self.problem.name))
         signs = Task.load_signs(self.name)
-        task = pddl_grounding.ground(self.problem, self.name, signs)
+        if self.TaskType == 'hddl':
+            task = hddl_grounding.ground(self.problem, self.name, signs)
+        else:
+            task = pddl_grounding.ground(self.problem, self.name, signs)
         logging.info('Grounding end: {0}'.format(self.problem.name))
         logging.info('{0} Signs created'.format(len(task.signs)))
         return task
@@ -44,7 +49,7 @@ class Agent:
         """
         task = self.load_sw()
         logging.info('Search start: {0}, Start time: {1}'.format(task.name, time.clock()))
-        search = MapSearch(task, self.backward)
+        search = MapSearch(task, self.TaskType, self.backward)
         solutions = search.search_plan()
         self.solution = search.long_relations(solutions)
         if self.backward:
