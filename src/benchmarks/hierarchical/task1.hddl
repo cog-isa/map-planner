@@ -7,7 +7,7 @@
 		room_0 - room
 		room_1 - room
 		room_2 - room
-		I - agent
+		ag1 - agent
 	)
 	(:htn
 		:parameters ()
@@ -20,13 +20,13 @@
 		)
 	)
 	(:init
-		(handempty I)
+		(handempty ag1)
 		(hallway room_0 room_1)
 		(hallway room_1 room_0)
 		(hallway room_1 room_2)
 		(hallway room_2 room_1)
 		(at block_a room_0)
 		(at block_b room_0)
-		(at I room_1)
+		(at ag1 room_1)
 	)
 )

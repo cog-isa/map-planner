@@ -291,7 +291,7 @@ class CausalMatrix:
                 active_matrices.append(pm)
         if depth > 0:
             if self.effect:
-                print("Can't get inner matrices from the matrixe: {0} -> {1}".format(self.sign.name, self.index))
+                print("Can't get inner matrices from the matrix: {0} -> {1}".format(self.sign.name, self.index))
             for event in self.cause:
                 for connector in event.coincidences:
                     if connector.out_index > 0:

@@ -19,7 +19,7 @@ class Agent:
         :param problem: problem
         :param ref: the dynamic value of plan clarification
         """
-        self.name = 'I'
+        self.name = [el[0] for el in problem.objects if el[1] == 'agent'][0]
         self.problem = problem
         self.solution = []
         self.final_solution = ''

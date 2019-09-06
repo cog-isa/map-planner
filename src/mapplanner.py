@@ -70,7 +70,7 @@ class MapPlanner():
 
         return domain, problem
 
-    def _parse(self, domain_file, problem_file):
+    def _parse_pddl(self, domain_file, problem_file):
         """
         pddl Parser
         :param domain_file:
@@ -91,43 +91,35 @@ class MapPlanner():
         logging.info('{0} Constants parsed'.format(len(domain.constants)))
         return problem
 
-    def search_classic(self):
+    def _parse_hddl(self, domain_file, problem_file):
         """
-        classic PDDL-based plan search search
-        :return: the final solution
-        """
-        problem = self._parse(self.domain, self.problem)
-        logger.info('Parsing was finished...')
-        manager = Manager(problem, self.agpath, TaskType=self.TaskType, backward=self.backward)
-        solution = manager.manage_agent()
-        return solution
-
-    def search_htn(self):
-        """
-        classic HTN-based plan search
-        :return: the final solution
+        pddl Parser
+        :param domain_file:
+        :param problem_file:
+        :return:
         """
         from mapcore.hddl.hddl_parser import HTNParser
-
-        import re
         parser = HTNParser(self.domain, self.problem)
         logging.info('Parsing was finished...')
         logging.info('Parsing Domain {0}'.format(self.domain))
         domain = parser.ParseDomain(parser.domain)
         logging.info('Parsing Problem {0}'.format(self.problem))
         problem = parser.ParseProblem(parser.problem, domain)
-        # logging.info('{0} Objects parsed'.format(len(problem['objects'])))
-        # logging.info('{0} Predicates parsed'.format(len(domain['predicates'])))
-        # logging.info('{0} Actions parsed'.format(len(domain['actions'])))
-        # logging.info('{0} Methods parsed'.format(len(domain['methods'])))
-        manager = Manager(problem, self.agpath, TaskType=self.TaskType)
-        solution = manager.manage_agent()
-        return solution
+        logging.info('{0} Predicates parsed'.format(len(domain['predicates'])))
+        logging.info('{0} Actions parsed'.format(len(domain['actions'])))
+        return problem
+
 
     def search(self):
-        if self.TaskType == 'pddl':
-            return self.search_classic()
-        elif self.TaskType == 'hddl':
-            return self.search_htn()
+        """
+        classic PDLL- or HTN- based plan search
+        :return: the final solution
+        """
+        if self.TaskType == 'hddl':
+            problem = self._parse_hddl(self.domain, self.problem)
         else:
-            raise Exception('Tasks can be classic or htn!!!')
+            problem = self._parse_pddl(self.domain, self.problem)
+        logger.info('Parsing was finished...')
+        manager = Manager(problem, self.agpath, TaskType=self.TaskType, backward=self.backward)
+        solution = manager.manage_agent()
+        return solution

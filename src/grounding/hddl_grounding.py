@@ -8,6 +8,77 @@ obj_signifs = {}
 obj_means = {}
 
 
+def ground(problem, plagent, exp_signs = None):
+    domain = problem.domain
+    # ground I and They
+    I_sign = Sign("I")
+    obj_means[I_sign] = I_sign.add_meaning()
+    obj_signifs[I_sign] = I_sign.add_significance()
+    signs[I_sign.name] = I_sign
+    They_sign = Sign("They")
+    obj_means[They_sign] = They_sign.add_meaning()
+    obj_signifs[They_sign] = They_sign.add_significance()
+    signs[They_sign.name] = They_sign
+
+    for type, stype in domain['types']:
+        stype_sign = __add_sign(stype)
+        stype_signif = stype_sign.add_significance()
+        type_sign = __add_sign(type)
+        connector = stype_signif.add_feature(obj_signifs[type_sign], zero_out=True)
+        type_sign.add_out_significance(connector)
+
+    for obj, type in problem.objects:
+        obj_sign = __add_sign(obj)
+        obj_means[obj_sign] = obj_sign.add_meaning()
+        type_sign = signs[type]
+        tp_signif = type_sign.add_significance()
+        connector = tp_signif.add_feature(obj_signifs[obj_sign], zero_out=True)
+        obj_sign.add_out_significance(connector)
+        if obj_sign.name == plagent:
+            connector = obj_signifs[obj_sign].add_feature(obj_signifs[I_sign], zero_out=True)
+            I_sign.add_out_significance(connector)
+            obj_means[obj_sign] = obj_sign.add_meaning()
+
+    for predicate in domain['predicates']:
+        _ground_predicate(predicate.name, predicate.signature)
+
+    for action in domain['actions']:
+        _ground_action(action.name, action.parameters, action.preconditions, action.effect, plagent=plagent)
+
+    for task in domain['tasks']:
+        __add_sign(task.name, False)
+
+    methods = sorted(domain['methods'], key=lambda method: len(method.subtasks))
+    for method in methods:
+        __ground_method(method.parameters, method.subtasks, method.ordering, method.task, domain, 2)
+
+    #Ground Init
+    start = None
+    for init in problem.inits:
+        start = __add_sign('*start %s*'%str(problem.inits.index(init)), False)
+        sit_im = start.add_image()
+        for predicate in init:
+            pred_im = _ground_htn_predicate(predicate.name, predicate.signature, plagent)
+            connector = sit_im.add_feature(pred_im)
+            pred_im.sign.add_out_image(connector)
+        sit_im.copy('image', 'meaning')
+
+    #Ground htns to meanings
+    goal = None
+    subtasks = []
+    for htn in problem.htns:
+        htn_name = 'htn_' + str(problem.htns.index(htn))
+        htn_sign = __add_sign(htn_name, False)
+        htn_mean = htn_sign.add_meaning()
+        for task in htn.ordering:
+            subtask = htn.subtasks[task]
+            cm = __ground_htn_subtask(subtask[0], subtask[1], domain)
+            connector = htn_mean.add_feature(cm)
+            cm.sign.add_out_meaning(connector)
+        subtasks.append(htn_sign)
+
+    return Task(problem.name, signs, start, goal, subtasks)
+
 def __add_sign(sname, need_signif = True):
     if sname in signs:
         sign = signs[sname]
@@ -39,8 +110,7 @@ def _ground_predicate(name, signature):
             new_obj.add_out_significance(connector)
     return pred_signif
 
-
-def _ground_action(name, parameters, preconditions, effect):
+def _ground_action(name, parameters, preconditions, effect, constraints = None, plagent = None):
     action_sign = __add_sign(name, False)
     act_signif = action_sign.add_significance()
     def __update_significance(predicate, effect = False):
@@ -82,16 +152,24 @@ def _ground_action(name, parameters, preconditions, effect):
         __update_significance(predicate, effect=True)
 
     I_sign = signs['I']
+    I_obj = I_sign.out_significances[0].in_sign
+    agent_roles = I_obj.get_role()
     act_meaning = act_signif.copy('significance', 'meaning')
     connector = act_meaning.add_feature(obj_means[I_sign])
     efconnector = act_meaning.add_feature(obj_means[I_sign], effect=True)
     I_sign.add_out_meaning(connector)
-
+    roles = set()
+    for chain in act_meaning.spread_down_activity('meaning', 3):
+        if chain[-1].sign in agent_roles:
+            roles.add(chain[-2].sign)
+    for elem in roles:
+        act_meaning.replace('meaning', elem, obj_means[I_sign])
     return act_signif
 
-def __ground_single_method(parameters, subtask, domain, depth):
+
+def __ground_single_method(parameters, subtask, problem, depth):
     signifs = []
-    actions = list(filter(lambda x: x.name ==subtask[0], domain['actions']))
+    actions = list(filter(lambda x: x.name ==subtask[0], problem['actions']))
     if len(actions):
         action = actions[0]
         subtask_parameters = []
@@ -144,7 +222,7 @@ def __ground_single_method(parameters, subtask, domain, depth):
         if depth <= 1:
             return None
             #raise Exception("Can not ground method with low depth")
-        methods = list(filter(lambda x: x.task == subtask[0], domain['methods']))
+        methods = list(filter(lambda x: x.task == subtask[0], problem['methods']))
         for old_method in methods:
             change = []
             for param1 in subtask[1]:
@@ -196,17 +274,17 @@ def __ground_single_method(parameters, subtask, domain, depth):
                         break
                 else:
                     old_t_param.append(param1)
-            signif = __ground_method(new_params, old_subtasks, old_method.ordering, old_method.task, domain, depth - 1)
+            signif = __ground_method(new_params, old_subtasks, old_method.ordering, old_method.task, problem, depth - 1)
             if signif:
                 signifs.extend(signif)
     return signifs
 
-def __ground_method(parameters, subtasks, ordering, task, domain, depth):
+def __ground_method(parameters, subtasks, ordering, task, problem, depth):
     task = signs[task]
     stasks = {}
     task_signifs = []
     for tasknum, subtask in subtasks.items():
-        signifs = __ground_single_method(parameters, subtask, domain, depth)
+        signifs = __ground_single_method(parameters, subtask, problem, depth)
         if signifs:
             stasks[tasknum] = signifs
         else:
@@ -230,8 +308,8 @@ def __ground_method(parameters, subtasks, ordering, task, domain, depth):
     return task_signifs
 
 
-def __ground_htn_subtask(name, args, domain):
-    methods  = [method for method in domain['methods'] if method.task == name]
+def __ground_htn_subtask(name, args, problem):
+    methods  = [method for method in problem['methods'] if method.task == name]
     change = {}
     fin_meth = None
     tparams = []
@@ -260,6 +338,7 @@ def __ground_htn_subtask(name, args, domain):
         for connector in event.coincidences:
             cm = getattr(connector.out_sign, 'significances')[connector.out_index]
             acts.append(cm)
+    htn_methods = {}
     for stask, parameters in fin_meth.subtasks.items():
         bothel = [el for el in parameters[1] if el in chparams]
         if not bothel:
@@ -270,21 +349,26 @@ def __ground_htn_subtask(name, args, domain):
             htn_method = act.copy('significance', 'meaning')
         for sign, cm in change.items():
             htn_method.replace('meaning', sign, cm)
+        htn_methods[stask] = htn_method
+    for task in fin_meth.ordering:
+        htn_method = htn_methods[task]
         connector = fin_meth_mean.add_feature(htn_method)
         htn_method.sign.add_out_meaning(connector)
 
     return fin_meth_mean
 
 
-def _ground_htn_predicate(name, signature):
+def _ground_htn_predicate(name, signature, plagent):
     pred_sign = signs[name]
     pred_im = pred_sign.add_image()
     for element in signature:
-        el_sign = signs[element]
+        if element != plagent:
+            el_sign = signs[element]
+        else:
+            el_sign = signs["I"]
         el_image = el_sign.add_image()
         con = pred_im.add_feature(el_image)
         el_sign.add_out_image(con)
-
     return pred_im
 
 
@@ -314,69 +398,6 @@ def _create_methods_tree(domain):
 
     return tree
 
-
-def ground(problem, agent = 'I', exp_signs=None):
-    domain = problem.domain
-    for type, stype in domain['types']:
-        stype_sign = __add_sign(stype)
-        stype_signif = stype_sign.add_significance()
-        type_sign = __add_sign(type)
-        connector = stype_signif.add_feature(obj_signifs[type_sign], zero_out=True)
-        type_sign.add_out_significance(connector)
-
-    for obj, type in problem.objects:
-        obj_sign = __add_sign(obj)
-        obj_means[obj_sign] = obj_sign.add_meaning()
-        type_sign = signs[type]
-        tp_signif = type_sign.add_significance()
-        connector = tp_signif.add_feature(obj_signifs[obj_sign], zero_out=True)
-        obj_sign.add_out_significance(connector)
-
-    for predicate in domain['predicates']:
-        _ground_predicate(predicate.name, predicate.signature)
-
-    for action in domain['actions']:
-        _ground_action(action.name, action.parameters, action.preconditions, action.effect)
-
-    for task in domain['tasks']:
-        __add_sign(task.name, False)
-
-    #methods = _create_methods_tree(domain)
-    # for depth, leaf in methods.items():
-    #     for method in leaf:
-    #         __ground_method(method.parameters, method.subtasks, method.ordering, method.task, domain, depth)
-
-    methods = sorted(domain['methods'], key=lambda method: len(method.subtasks))
-    for method in methods:
-        __ground_method(method.parameters, method.subtasks, method.ordering, method.task, domain, 2)
-
-    #Ground Init
-    start = None
-    for init in problem.inits:
-        start = __add_sign('*start %s*'%str(problem.inits.index(init)), False)
-        sit_im = start.add_image()
-        for predicate in init:
-            pred_im = _ground_htn_predicate(predicate.name, predicate.signature)
-            connector = sit_im.add_feature(pred_im)
-            pred_im.sign.add_out_image(connector)
-        sit_im.copy('image', 'meaning')
-
-
-    #Ground htns to meanings
-    goal = None
-    subtasks = []
-    for htn in problem.htns:
-        htn_name = 'htn_' + str(problem.htns.index(htn))
-        htn_sign = __add_sign(htn_name, False)
-        htn_mean = htn_sign.add_meaning()
-        for task in htn.ordering:
-            subtask = htn.subtasks[task]
-            cm = __ground_htn_subtask(subtask[0], subtask[1], domain)
-            connector = htn_mean.add_feature(cm)
-            cm.sign.add_out_meaning(connector)
-        subtasks.append(htn_sign)
-
-    return Task(problem.name, signs, start, goal, subtasks)
 
 
 
