@@ -19,7 +19,10 @@ class Agent:
         :param problem: problem
         :param ref: the dynamic value of plan clarification
         """
-        self.name = [el[0] for el in problem.objects if el[1] == 'agent'][0]
+        try:
+            self.name = [el[0] for el in problem.objects if el[1] == 'agent'][0]
+        except IndexError:
+            self.name = 'I'
         self.problem = problem
         self.solution = []
         self.final_solution = ''
@@ -50,7 +53,9 @@ class Agent:
         task = self.load_sw()
         logging.info('Search start: {0}, Start time: {1}'.format(task.name, time.clock()))
         search = MapSearch(task, self.TaskType, self.backward)
-        solutions = search.search_plan()
+        solutions, goal = search.search_plan()
+        if goal:
+            task.goal_situation = goal
         self.solution = search.long_relations(solutions)
         if self.backward:
             self.solution = list(reversed(self.solution))

@@ -16,6 +16,7 @@ class MapSearch():
         self.backward = backward
         self.TaskType = TaskType
         self.scenario = None
+        self.goal = None
         if TaskType == 'pddl':
             self.MAX_ITERATION = 30
             if self.backward:
@@ -37,7 +38,7 @@ class MapSearch():
         self.I_sign, self.I_obj, self.agents = self.__get_agents()
         self._precedent_activation()
         plans = self._map_iteration(self.active_pm, iteration=0, current_plan=[])
-        return plans
+        return plans, self.goal
 
     def _map_iteration(self, active_pm, iteration, current_plan, prev_state = []):
         logging.debug('STEP {0}:'.format(iteration))
@@ -80,12 +81,15 @@ class MapSearch():
                         merged_chains.append(chain)
                         break
             scripts = self._generate_meanings(merged_chains, act_matrice)
-            logging.info("Generated {0} scripts for {1} action on step {2}".format(str(len(scripts)), pm_signif.name, str(iteration)))
+            logging.debug("Generated {0} scripts for {1} action on step {2}".format(str(len(scripts)), pm_signif.name, str(iteration)))
             meanings.extend(scripts)
 
         applicable_meanings = self.applicable_search(precedents + meanings, active_pm)
 
-        candidates = self._meta_check_activity(active_pm, applicable_meanings, [x for x, _, _, _ in current_plan])
+        if self.check_pm:
+            candidates = self._meta_check_activity(active_pm, applicable_meanings, [x for x, _, _, _ in current_plan])
+        else:
+            candidates = [(0, script.sign.name, script, agent) for agent, script in applicable_meanings]
 
         if not candidates:
             logging.debug('\tNot found applicable scripts ({0})'.format([x for _, x, _, _ in current_plan]))
@@ -115,7 +119,15 @@ class MapSearch():
                 logging.info(
                     'action {0} was changed to {1}'.format(script.sign.name, [part[1] for part in subplan]))
                 prev_state.append(active_pm)
-            if next_pm.includes('image', self.check_pm):
+
+            _isbuild = False
+            if self.check_pm:
+                if next_pm.includes('image', self.check_pm):
+                    _isbuild = True
+            elif self.check_pm is None and iteration == self.MAX_ITERATION-1:
+                _isbuild = True
+                self.goal = next_pm.sign
+            if _isbuild:
                 final_plans.append(plan)
                 plan_actions = [x.sign.name for _, _, x, _ in plan]
                 logging.info("len of detected plan is: {0}".format(len(plan)))
@@ -124,7 +136,6 @@ class MapSearch():
                 recursive_plans = self._map_iteration(next_pm, iteration + 1, plan, prev_state)
                 if recursive_plans:
                     final_plans.extend(recursive_plans)
-
         return final_plans
 
     def _precedent_search(self, active_pm):
@@ -162,7 +173,7 @@ class MapSearch():
         for agent, cm in meanings:
             result, checked = self._check_activity(cm, active_pm.sign.meanings[1], self.backward)
             if result:
-                maxlen = max([len(ev.coincidences) for ev in checked.cause])
+                maxlen = max([len(el) for el in checked.spread_down_activity('meaning', 3)])
                 if maxlen != 1:
                     applicable_meanings.add((agent, checked))
         return applicable_meanings
@@ -241,11 +252,6 @@ class MapSearch():
                 logging.info('Experience action %s added to plan' % action[1].sign.name)
             else:
                 continue
-            # if acts:
-                # if not self.backward:
-                #     acts.pop(0)
-                # else:
-                #     acts.pop(-1)
             if next_pm.includes('image', check_pm):
                     if plan:
                         finall_plans.extend(plan)
@@ -284,7 +290,7 @@ class MapSearch():
                         index = chain.index(el)
                     else:
                         return index
-            return None
+            return index
         def __generator(combinations, pms, pm_signs, pm):
             for combination in combinations:
                 cm = pm.copy('meaning', 'meaning')
@@ -316,7 +322,7 @@ class MapSearch():
                     if not chain[-1] in replace_map[chain[role_index].sign]:
                         replace_map[chain[role_index].sign].append(chain[-1])
 
-                main_pm = chain[0]
+            main_pm = chain[0]
 
         connectors = [agent.out_meanings for agent in self.agents]
 
@@ -376,6 +382,20 @@ class MapSearch():
                     if len(old_pms) == 64:
                         break
         else:
+            I_sign = self.world_model['I']
+            I_obj = I_sign.out_significances[0].in_sign
+            agent_roles = I_obj.get_role()
+            I_mean = I_sign.add_meaning()
+            connector = sm.add_feature(I_mean)
+            efconnector = sm.add_feature(I_mean, effect=True)
+            I_sign.add_out_meaning(connector)
+            roles = set()
+
+            for chain in sm.spread_down_activity('meaning', 3):
+                if chain[-1].sign in agent_roles:
+                    roles.add(chain[-2].sign)
+            for elem in roles:
+                sm.replace('meaning', elem, I_mean)
             changed_roles = set()
             pm_chains = sm.spread_down_activity('meaning', 5)
             for chain in pm_chains:
@@ -385,7 +405,8 @@ class MapSearch():
 
             new_map = {}
             for elem in changed_roles:
-                new_map[elem[0]] = {el for el in replace_map[elem[0]] if el != elem[1]}
+                if elem[1].sign != I_sign:
+                    new_map[elem[0]] = {el for el in replace_map[elem[0]] if el != elem[1]}
             for key, value in replace_map.items():
                 if key not in new_map:
                     new_map[key] = value
@@ -393,6 +414,7 @@ class MapSearch():
             pm_signs = set()
             for pm_list in pm_chains:
                 pm_signs |= set([c.sign for c in pm_list])
+
             combinations = self.mix_pairs(new_map, True)
             pms = __generator(combinations, pms, pm_signs, sm)
         return pms

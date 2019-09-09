@@ -44,10 +44,14 @@ class Task:
         :return:
         """
         def __is_role(pm, agents):
-            chains = pm.spread_down_activity('meaning', 6)
+            try:
+                chains = pm.spread_down_activity('meaning', 6)
+            except Exception:
+                print()
             for chain in chains:
                 if chain[-1].sign not in agents:
-                    if len(chain[-1].sign.significances[1].cause) != 0:
+                    maxim = max([len(cm.cause) for cm in chain[-1].sign.significances.values()])
+                    if maxim != 0:
                         break
             else:
                 return False

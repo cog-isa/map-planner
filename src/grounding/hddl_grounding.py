@@ -348,7 +348,8 @@ def __ground_htn_subtask(name, args, problem):
             act = acts[fin_meth.ordering.index(stask)]
             htn_method = act.copy('significance', 'meaning')
         for sign, cm in change.items():
-            htn_method.replace('meaning', sign, cm)
+            pm = cm.copy('meaning', 'meaning')
+            htn_method.replace('meaning', sign, pm)
         htn_methods[stask] = htn_method
     for task in fin_meth.ordering:
         htn_method = htn_methods[task]
